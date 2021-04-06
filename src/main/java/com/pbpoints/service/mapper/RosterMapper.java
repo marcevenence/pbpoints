@@ -2,19 +2,31 @@ package com.pbpoints.service.mapper;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.service.dto.RosterDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link Roster} and its DTO {@link RosterDTO}.
  */
-@Mapper(componentModel = "spring", uses = { TeamMapper.class, EventCategoryMapper.class })
-public interface RosterMapper extends EntityMapper<RosterDTO, Roster> {
-    @Mapping(target = "team", source = "team", qualifiedByName = "name")
-    @Mapping(target = "eventCategory", source = "eventCategory", qualifiedByName = "id")
-    RosterDTO toDto(Roster s);
+@Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TeamMapper.class, EventCategoryMapper.class })
+public interface RosterMapper extends com.pbpoints.service.mapper.EntityMapper<RosterDTO, Roster> {
+    @Mapping(source = "team.id", target = "teamId")
+    @Mapping(source = "team.name", target = "teamName")
+    @Mapping(source = "eventCategory.id", target = "eventCategoryId")
+    RosterDTO toDto(Roster roster);
 
-    @Named("id")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    RosterDTO toDtoId(Roster roster);
+    @Mapping(source = "teamId", target = "team")
+    @Mapping(source = "eventCategoryId", target = "eventCategory")
+    @Mapping(target = "players", ignore = true)
+    @Mapping(target = "removePlayer", ignore = true)
+    Roster toEntity(RosterDTO rosterDTO);
+
+    default Roster fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Roster roster = new Roster();
+        roster.setId(id);
+        return roster;
+    }
 }

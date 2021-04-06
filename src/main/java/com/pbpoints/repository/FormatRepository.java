@@ -1,11 +1,12 @@
 package com.pbpoints.repository;
 
 import com.pbpoints.domain.Format;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data SQL repository for the Format entity.
+ * Spring Data  repository for the Format entity.
  */
 @SuppressWarnings("unused")
 @Repository

@@ -44,27 +44,6 @@ public class ProvinceService {
     }
 
     /**
-     * Partially update a province.
-     *
-     * @param provinceDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<ProvinceDTO> partialUpdate(ProvinceDTO provinceDTO) {
-        log.debug("Request to partially update Province : {}", provinceDTO);
-
-        return provinceRepository
-            .findById(provinceDTO.getId())
-            .map(
-                existingProvince -> {
-                    provinceMapper.partialUpdate(existingProvince, provinceDTO);
-                    return existingProvince;
-                }
-            )
-            .map(provinceRepository::save)
-            .map(provinceMapper::toDto);
-    }
-
-    /**
      * Get all the provinces.
      *
      * @param pageable the pagination information.

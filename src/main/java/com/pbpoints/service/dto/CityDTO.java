@@ -18,7 +18,7 @@ public class CityDTO implements Serializable {
 
     private String longitude;
 
-    private ProvinceDTO province;
+    private Long provinceId;
 
     public Long getId() {
         return id;
@@ -52,12 +52,12 @@ public class CityDTO implements Serializable {
         this.longitude = longitude;
     }
 
-    public ProvinceDTO getProvince() {
-        return province;
+    public Long getProvinceId() {
+        return provinceId;
     }
 
-    public void setProvince(ProvinceDTO province) {
-        this.province = province;
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
     }
 
     @Override
@@ -65,31 +65,40 @@ public class CityDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CityDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CityDTO cityDTO = (CityDTO) o;
-        if (this.id == null) {
+        if (cityDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, cityDTO.id);
+        return Objects.equals(getId(), cityDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "CityDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", latitude='" + getLatitude() + "'" +
-            ", longitude='" + getLongitude() + "'" +
-            ", province=" + getProvince() +
-            "}";
+        return (
+            "CityDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", latitude='" +
+            getLatitude() +
+            "'" +
+            ", longitude='" +
+            getLongitude() +
+            "'" +
+            ", province=" +
+            getProvinceId() +
+            "}"
+        );
     }
 }

@@ -44,27 +44,6 @@ public class CityService {
     }
 
     /**
-     * Partially update a city.
-     *
-     * @param cityDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<CityDTO> partialUpdate(CityDTO cityDTO) {
-        log.debug("Request to partially update City : {}", cityDTO);
-
-        return cityRepository
-            .findById(cityDTO.getId())
-            .map(
-                existingCity -> {
-                    cityMapper.partialUpdate(existingCity, cityDTO);
-                    return existingCity;
-                }
-            )
-            .map(cityRepository::save)
-            .map(cityMapper::toDto);
-    }
-
-    /**
      * Get all the cities.
      *
      * @param pageable the pagination information.

@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,26 +28,23 @@ public class EventCategoryCriteria implements Serializable, Criteria {
 
     private BooleanFilter splitDeck;
 
-    private LongFilter gameId;
-
-    private LongFilter rosterId;
-
     private LongFilter eventId;
 
     private LongFilter categoryId;
 
     private LongFilter formatId;
 
+    private LongFilter gameId;
+
     public EventCategoryCriteria() {}
 
     public EventCategoryCriteria(EventCategoryCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.splitDeck = other.splitDeck == null ? null : other.splitDeck.copy();
-        this.gameId = other.gameId == null ? null : other.gameId.copy();
-        this.rosterId = other.rosterId == null ? null : other.rosterId.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.categoryId = other.categoryId == null ? null : other.categoryId.copy();
         this.formatId = other.formatId == null ? null : other.formatId.copy();
+        this.gameId = other.gameId == null ? null : other.gameId.copy();
     }
 
     @Override
@@ -59,13 +56,6 @@ public class EventCategoryCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
@@ -74,55 +64,11 @@ public class EventCategoryCriteria implements Serializable, Criteria {
         return splitDeck;
     }
 
-    public BooleanFilter splitDeck() {
-        if (splitDeck == null) {
-            splitDeck = new BooleanFilter();
-        }
-        return splitDeck;
-    }
-
     public void setSplitDeck(BooleanFilter splitDeck) {
         this.splitDeck = splitDeck;
     }
 
-    public LongFilter getGameId() {
-        return gameId;
-    }
-
-    public LongFilter gameId() {
-        if (gameId == null) {
-            gameId = new LongFilter();
-        }
-        return gameId;
-    }
-
-    public void setGameId(LongFilter gameId) {
-        this.gameId = gameId;
-    }
-
-    public LongFilter getRosterId() {
-        return rosterId;
-    }
-
-    public LongFilter rosterId() {
-        if (rosterId == null) {
-            rosterId = new LongFilter();
-        }
-        return rosterId;
-    }
-
-    public void setRosterId(LongFilter rosterId) {
-        this.rosterId = rosterId;
-    }
-
     public LongFilter getEventId() {
-        return eventId;
-    }
-
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
-        }
         return eventId;
     }
 
@@ -134,13 +80,6 @@ public class EventCategoryCriteria implements Serializable, Criteria {
         return categoryId;
     }
 
-    public LongFilter categoryId() {
-        if (categoryId == null) {
-            categoryId = new LongFilter();
-        }
-        return categoryId;
-    }
-
     public void setCategoryId(LongFilter categoryId) {
         this.categoryId = categoryId;
     }
@@ -149,15 +88,16 @@ public class EventCategoryCriteria implements Serializable, Criteria {
         return formatId;
     }
 
-    public LongFilter formatId() {
-        if (formatId == null) {
-            formatId = new LongFilter();
-        }
-        return formatId;
-    }
-
     public void setFormatId(LongFilter formatId) {
         this.formatId = formatId;
+    }
+
+    public LongFilter getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(LongFilter gameId) {
+        this.gameId = gameId;
     }
 
     @Override
@@ -172,30 +112,29 @@ public class EventCategoryCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(splitDeck, that.splitDeck) &&
-            Objects.equals(gameId, that.gameId) &&
-            Objects.equals(rosterId, that.rosterId) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(categoryId, that.categoryId) &&
-            Objects.equals(formatId, that.formatId)
+            Objects.equals(formatId, that.formatId) &&
+            Objects.equals(gameId, that.gameId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, splitDeck, gameId, rosterId, eventId, categoryId, formatId);
+        return Objects.hash(id, splitDeck, eventId, categoryId, formatId, gameId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "EventCategoryCriteria{" +
+        return (
+            "EventCategoryCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (splitDeck != null ? "splitDeck=" + splitDeck + ", " : "") +
-            (gameId != null ? "gameId=" + gameId + ", " : "") +
-            (rosterId != null ? "rosterId=" + rosterId + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
             (formatId != null ? "formatId=" + formatId + ", " : "") +
-            "}";
+            (gameId != null ? "gameId=" + gameId + ", " : "") +
+            "}"
+        );
     }
 }

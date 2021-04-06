@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.City;
 import com.pbpoints.repository.CityRepository;
-import com.pbpoints.service.criteria.CityCriteria;
+import com.pbpoints.service.dto.CityCriteria;
 import com.pbpoints.service.dto.CityDTO;
 import com.pbpoints.service.mapper.CityMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class CityQueryService extends QueryService<City> {
         Specification<City> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), City_.id));
+                specification = specification.and(buildSpecification(criteria.getId(), City_.id));
             }
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), City_.name));

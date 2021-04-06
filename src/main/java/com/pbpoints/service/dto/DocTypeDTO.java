@@ -45,29 +45,24 @@ public class DocTypeDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DocTypeDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         DocTypeDTO docTypeDTO = (DocTypeDTO) o;
-        if (this.id == null) {
+        if (docTypeDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, docTypeDTO.id);
+        return Objects.equals(getId(), docTypeDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "DocTypeDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
+        return "DocTypeDTO{" + "id=" + getId() + ", name='" + getName() + "'" + ", description='" + getDescription() + "'" + "}";
     }
 }

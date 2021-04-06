@@ -3,7 +3,6 @@ package com.pbpoints.service.dto;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.Roster} entity.
@@ -15,9 +14,11 @@ public class RosterDTO implements Serializable {
 
     private Boolean active;
 
-    private TeamDTO team;
+    private Long teamId;
 
-    private EventCategoryDTO eventCategory;
+    private String teamName;
+
+    private Long eventCategoryId;
 
     public Long getId() {
         return id;
@@ -27,7 +28,7 @@ public class RosterDTO implements Serializable {
         this.id = id;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 
@@ -35,20 +36,28 @@ public class RosterDTO implements Serializable {
         this.active = active;
     }
 
-    public TeamDTO getTeam() {
-        return team;
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public void setTeam(TeamDTO team) {
-        this.team = team;
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
-    public EventCategoryDTO getEventCategory() {
-        return eventCategory;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setEventCategory(EventCategoryDTO eventCategory) {
-        this.eventCategory = eventCategory;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public Long getEventCategoryId() {
+        return eventCategoryId;
+    }
+
+    public void setEventCategoryId(Long eventCategoryId) {
+        this.eventCategoryId = eventCategoryId;
     }
 
     @Override
@@ -56,30 +65,39 @@ public class RosterDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof RosterDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         RosterDTO rosterDTO = (RosterDTO) o;
-        if (this.id == null) {
+        if (rosterDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, rosterDTO.id);
+        return Objects.equals(getId(), rosterDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "RosterDTO{" +
-            "id=" + getId() +
-            ", active='" + getActive() + "'" +
-            ", team=" + getTeam() +
-            ", eventCategory=" + getEventCategory() +
-            "}";
+        return (
+            "RosterDTO{" +
+            "id=" +
+            getId() +
+            ", active='" +
+            isActive() +
+            "'" +
+            ", team=" +
+            getTeamId() +
+            ", team='" +
+            getTeamName() +
+            "'" +
+            ", eventCategory=" +
+            getEventCategoryId() +
+            "}"
+        );
     }
 }

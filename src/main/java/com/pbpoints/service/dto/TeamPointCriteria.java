@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -50,25 +50,11 @@ public class TeamPointCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public FloatFilter getPoints() {
-        return points;
-    }
-
-    public FloatFilter points() {
-        if (points == null) {
-            points = new FloatFilter();
-        }
         return points;
     }
 
@@ -80,25 +66,11 @@ public class TeamPointCriteria implements Serializable, Criteria {
         return teamId;
     }
 
-    public LongFilter teamId() {
-        if (teamId == null) {
-            teamId = new LongFilter();
-        }
-        return teamId;
-    }
-
     public void setTeamId(LongFilter teamId) {
         this.teamId = teamId;
     }
 
     public LongFilter getTournamentId() {
-        return tournamentId;
-    }
-
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
         return tournamentId;
     }
 
@@ -128,14 +100,15 @@ public class TeamPointCriteria implements Serializable, Criteria {
         return Objects.hash(id, points, teamId, tournamentId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TeamPointCriteria{" +
+        return (
+            "TeamPointCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (points != null ? "points=" + points + ", " : "") +
             (teamId != null ? "teamId=" + teamId + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

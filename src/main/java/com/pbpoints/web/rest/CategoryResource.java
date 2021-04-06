@@ -1,25 +1,21 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.CategoryRepository;
 import com.pbpoints.service.CategoryQueryService;
 import com.pbpoints.service.CategoryService;
-import com.pbpoints.service.criteria.CategoryCriteria;
+import com.pbpoints.service.dto.CategoryCriteria;
 import com.pbpoints.service.dto.CategoryDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,17 +39,10 @@ public class CategoryResource {
 
     private final CategoryService categoryService;
 
-    private final CategoryRepository categoryRepository;
-
     private final CategoryQueryService categoryQueryService;
 
-    public CategoryResource(
-        CategoryService categoryService,
-        CategoryRepository categoryRepository,
-        CategoryQueryService categoryQueryService
-    ) {
+    public CategoryResource(CategoryService categoryService, CategoryQueryService categoryQueryService) {
         this.categoryService = categoryService;
-        this.categoryRepository = categoryRepository;
         this.categoryQueryService = categoryQueryService;
     }
 
@@ -73,84 +62,40 @@ public class CategoryResource {
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity
             .created(new URI("/api/categories/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            //.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /categories/:id} : Updates an existing category.
+     * {@code PUT  /categories} : Updates an existing category.
      *
-     * @param id the id of the categoryDTO to save.
      * @param categoryDTO the categoryDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoryDTO,
      * or with status {@code 400 (Bad Request)} if the categoryDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the categoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/categories/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody CategoryDTO categoryDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Category : {}, {}", id, categoryDTO);
+    @PutMapping("/categories")
+    public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO) throws URISyntaxException {
+        log.debug("REST request to update Category : {}", categoryDTO);
         if (categoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, categoryDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!categoryRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         CategoryDTO result = categoryService.save(categoryDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categoryDTO.getId().toString()))
+            //.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categoryDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categoryDTO.getName()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /categories/:id} : Partial updates given fields of an existing category, field will ignore if it is null
-     *
-     * @param id the id of the categoryDTO to save.
-     * @param categoryDTO the categoryDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated categoryDTO,
-     * or with status {@code 400 (Bad Request)} if the categoryDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the categoryDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the categoryDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/categories/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<CategoryDTO> partialUpdateCategory(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody CategoryDTO categoryDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Category partially : {}, {}", id, categoryDTO);
-        if (categoryDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, categoryDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!categoryRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<CategoryDTO> result = categoryService.partialUpdate(categoryDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, categoryDTO.getId().toString())
-        );
     }
 
     /**
      * {@code GET  /categories} : get all the categories.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of categories in body.
      */

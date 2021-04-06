@@ -21,7 +21,9 @@ public class FormatDTO implements Serializable {
 
     private Integer playersQty;
 
-    private TournamentDTO tournament;
+    private Long tournamentId;
+
+    private String tournamentName;
 
     public Long getId() {
         return id;
@@ -63,12 +65,20 @@ public class FormatDTO implements Serializable {
         this.playersQty = playersQty;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
+    public String getTournamentName() {
+        return tournamentName;
+    }
+
+    public void setTournamentName(String tournamentName) {
+        this.tournamentName = tournamentName;
     }
 
     @Override
@@ -76,32 +86,44 @@ public class FormatDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof FormatDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         FormatDTO formatDTO = (FormatDTO) o;
-        if (this.id == null) {
+        if (formatDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, formatDTO.id);
+        return Objects.equals(getId(), formatDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "FormatDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", coeficient=" + getCoeficient() +
-            ", playersQty=" + getPlayersQty() +
-            ", tournament=" + getTournament() +
-            "}";
+        return (
+            "FormatDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", coeficient=" +
+            getCoeficient() +
+            ", playersQty=" +
+            getPlayersQty() +
+            ", tournament=" +
+            getTournamentId() +
+            ", tournament='" +
+            getTournamentName() +
+            "'" +
+            "}"
+        );
     }
 }

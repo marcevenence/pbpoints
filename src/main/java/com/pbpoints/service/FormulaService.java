@@ -45,27 +45,6 @@ public class FormulaService {
     }
 
     /**
-     * Partially update a formula.
-     *
-     * @param formulaDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<FormulaDTO> partialUpdate(FormulaDTO formulaDTO) {
-        log.debug("Request to partially update Formula : {}", formulaDTO);
-
-        return formulaRepository
-            .findById(formulaDTO.getId())
-            .map(
-                existingFormula -> {
-                    formulaMapper.partialUpdate(existingFormula, formulaDTO);
-                    return existingFormula;
-                }
-            )
-            .map(formulaRepository::save)
-            .map(formulaMapper::toDto);
-    }
-
-    /**
      * Get all the formulas.
      *
      * @return the list of entities.

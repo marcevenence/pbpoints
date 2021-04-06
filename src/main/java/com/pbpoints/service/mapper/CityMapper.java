@@ -2,18 +2,26 @@ package com.pbpoints.service.mapper;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.service.dto.CityDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link City} and its DTO {@link CityDTO}.
  */
-@Mapper(componentModel = "spring", uses = { ProvinceMapper.class })
-public interface CityMapper extends EntityMapper<CityDTO, City> {
-    @Mapping(target = "province", source = "province", qualifiedByName = "id")
-    CityDTO toDto(City s);
+@Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.ProvinceMapper.class })
+public interface CityMapper extends com.pbpoints.service.mapper.EntityMapper<CityDTO, City> {
+    @Mapping(source = "province.id", target = "provinceId")
+    CityDTO toDto(City city);
 
-    @Named("id")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    CityDTO toDtoId(City city);
+    @Mapping(source = "provinceId", target = "province")
+    City toEntity(CityDTO cityDTO);
+
+    default City fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        City city = new City();
+        city.setId(id);
+        return city;
+    }
 }

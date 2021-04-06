@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,20 +28,20 @@ public class RosterCriteria implements Serializable, Criteria {
 
     private BooleanFilter active;
 
-    private LongFilter playerId;
-
     private LongFilter teamId;
 
     private LongFilter eventCategoryId;
+
+    private LongFilter playerId;
 
     public RosterCriteria() {}
 
     public RosterCriteria(RosterCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.active = other.active == null ? null : other.active.copy();
-        this.playerId = other.playerId == null ? null : other.playerId.copy();
         this.teamId = other.teamId == null ? null : other.teamId.copy();
         this.eventCategoryId = other.eventCategoryId == null ? null : other.eventCategoryId.copy();
+        this.playerId = other.playerId == null ? null : other.playerId.copy();
     }
 
     @Override
@@ -53,13 +53,6 @@ public class RosterCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
@@ -68,40 +61,11 @@ public class RosterCriteria implements Serializable, Criteria {
         return active;
     }
 
-    public BooleanFilter active() {
-        if (active == null) {
-            active = new BooleanFilter();
-        }
-        return active;
-    }
-
     public void setActive(BooleanFilter active) {
         this.active = active;
     }
 
-    public LongFilter getPlayerId() {
-        return playerId;
-    }
-
-    public LongFilter playerId() {
-        if (playerId == null) {
-            playerId = new LongFilter();
-        }
-        return playerId;
-    }
-
-    public void setPlayerId(LongFilter playerId) {
-        this.playerId = playerId;
-    }
-
     public LongFilter getTeamId() {
-        return teamId;
-    }
-
-    public LongFilter teamId() {
-        if (teamId == null) {
-            teamId = new LongFilter();
-        }
         return teamId;
     }
 
@@ -113,15 +77,16 @@ public class RosterCriteria implements Serializable, Criteria {
         return eventCategoryId;
     }
 
-    public LongFilter eventCategoryId() {
-        if (eventCategoryId == null) {
-            eventCategoryId = new LongFilter();
-        }
-        return eventCategoryId;
-    }
-
     public void setEventCategoryId(LongFilter eventCategoryId) {
         this.eventCategoryId = eventCategoryId;
+    }
+
+    public LongFilter getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(LongFilter playerId) {
+        this.playerId = playerId;
     }
 
     @Override
@@ -136,26 +101,27 @@ public class RosterCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(active, that.active) &&
-            Objects.equals(playerId, that.playerId) &&
             Objects.equals(teamId, that.teamId) &&
-            Objects.equals(eventCategoryId, that.eventCategoryId)
+            Objects.equals(eventCategoryId, that.eventCategoryId) &&
+            Objects.equals(playerId, that.playerId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, active, playerId, teamId, eventCategoryId);
+        return Objects.hash(id, active, teamId, eventCategoryId, playerId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "RosterCriteria{" +
+        return (
+            "RosterCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (active != null ? "active=" + active + ", " : "") +
-            (playerId != null ? "playerId=" + playerId + ", " : "") +
             (teamId != null ? "teamId=" + teamId + ", " : "") +
             (eventCategoryId != null ? "eventCategoryId=" + eventCategoryId + ", " : "") +
-            "}";
+            (playerId != null ? "playerId=" + playerId + ", " : "") +
+            "}"
+        );
     }
 }

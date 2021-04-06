@@ -2,15 +2,19 @@ package com.pbpoints.service.mapper;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.service.dto.DocTypeDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
 
 /**
  * Mapper for the entity {@link DocType} and its DTO {@link DocTypeDTO}.
  */
 @Mapper(componentModel = "spring", uses = {})
-public interface DocTypeMapper extends EntityMapper<DocTypeDTO, DocType> {
-    @Named("id")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    DocTypeDTO toDtoId(DocType docType);
+public interface DocTypeMapper extends com.pbpoints.service.mapper.EntityMapper<DocTypeDTO, DocType> {
+    default DocType fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        DocType docType = new DocType();
+        docType.setId(id);
+        return docType;
+    }
 }

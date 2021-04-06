@@ -18,14 +18,6 @@ public interface FormatService {
     FormatDTO save(FormatDTO formatDTO);
 
     /**
-     * Partially updates a format.
-     *
-     * @param formatDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<FormatDTO> partialUpdate(FormatDTO formatDTO);
-
-    /**
      * Get all the formats.
      *
      * @param pageable the pagination information.

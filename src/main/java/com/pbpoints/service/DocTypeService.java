@@ -44,27 +44,6 @@ public class DocTypeService {
     }
 
     /**
-     * Partially update a docType.
-     *
-     * @param docTypeDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<DocTypeDTO> partialUpdate(DocTypeDTO docTypeDTO) {
-        log.debug("Request to partially update DocType : {}", docTypeDTO);
-
-        return docTypeRepository
-            .findById(docTypeDTO.getId())
-            .map(
-                existingDocType -> {
-                    docTypeMapper.partialUpdate(existingDocType, docTypeDTO);
-                    return existingDocType;
-                }
-            )
-            .map(docTypeRepository::save)
-            .map(docTypeMapper::toDto);
-    }
-
-    /**
      * Get all the docTypes.
      *
      * @param pageable the pagination information.

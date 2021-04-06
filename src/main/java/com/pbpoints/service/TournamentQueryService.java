@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.repository.TournamentRepository;
-import com.pbpoints.service.criteria.TournamentCriteria;
+import com.pbpoints.service.dto.TournamentCriteria;
 import com.pbpoints.service.dto.TournamentDTO;
 import com.pbpoints.service.mapper.TournamentMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class TournamentQueryService extends QueryService<Tournament> {
         Specification<Tournament> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), Tournament_.id));
+                specification = specification.and(buildSpecification(criteria.getId(), Tournament_.id));
             }
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Tournament_.name));

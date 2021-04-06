@@ -29,9 +29,9 @@ public class EventDTO implements Serializable {
 
     private Instant updatedDate;
 
-    private CityDTO city;
+    private Long tournamentId;
 
-    private TournamentDTO tournament;
+    private Long cityId;
 
     public Long getId() {
         return id;
@@ -97,20 +97,20 @@ public class EventDTO implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public CityDTO getCity() {
-        return city;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setCity(CityDTO city) {
-        this.city = city;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public Long getCityId() {
+        return cityId;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 
     @Override
@@ -118,36 +118,54 @@ public class EventDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof EventDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         EventDTO eventDTO = (EventDTO) o;
-        if (this.id == null) {
+        if (eventDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, eventDTO.id);
+        return Objects.equals(getId(), eventDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "EventDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", fromDate='" + getFromDate() + "'" +
-            ", endDate='" + getEndDate() + "'" +
-            ", endInscriptionDate='" + getEndInscriptionDate() + "'" +
-            ", status='" + getStatus() + "'" +
-            ", createDate='" + getCreateDate() + "'" +
-            ", updatedDate='" + getUpdatedDate() + "'" +
-            ", city=" + getCity() +
-            ", tournament=" + getTournament() +
-            "}";
+        return (
+            "EventDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", fromDate='" +
+            getFromDate() +
+            "'" +
+            ", endDate='" +
+            getEndDate() +
+            "'" +
+            ", endInscriptionDate='" +
+            getEndInscriptionDate() +
+            "'" +
+            ", status='" +
+            getStatus() +
+            "'" +
+            ", createDate='" +
+            getCreateDate() +
+            "'" +
+            ", updatedDate='" +
+            getUpdatedDate() +
+            "'" +
+            ", tournament=" +
+            getTournamentId() +
+            ", city=" +
+            getCityId() +
+            "}"
+        );
     }
 }

@@ -14,9 +14,11 @@ public class PlayerDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private EventDTO event;
+    private Long eventId;
 
-    private PlayerPointDTO playerPoint;
+    private String eventName;
+
+    private Long playerPointId;
 
     public Long getId() {
         return id;
@@ -34,20 +36,28 @@ public class PlayerDetailPointDTO implements Serializable {
         this.points = points;
     }
 
-    public EventDTO getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setEvent(EventDTO event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
-    public PlayerPointDTO getPlayerPoint() {
-        return playerPoint;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setPlayerPoint(PlayerPointDTO playerPoint) {
-        this.playerPoint = playerPoint;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public Long getPlayerPointId() {
+        return playerPointId;
+    }
+
+    public void setPlayerPointId(Long playerPointId) {
+        this.playerPointId = playerPointId;
     }
 
     @Override
@@ -55,30 +65,38 @@ public class PlayerDetailPointDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PlayerDetailPointDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         PlayerDetailPointDTO playerDetailPointDTO = (PlayerDetailPointDTO) o;
-        if (this.id == null) {
+        if (playerDetailPointDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, playerDetailPointDTO.id);
+        return Objects.equals(getId(), playerDetailPointDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "PlayerDetailPointDTO{" +
-            "id=" + getId() +
-            ", points=" + getPoints() +
-            ", event=" + getEvent() +
-            ", playerPoint=" + getPlayerPoint() +
-            "}";
+        return (
+            "PlayerDetailPointDTO{" +
+            "id=" +
+            getId() +
+            ", points=" +
+            getPoints() +
+            ", event=" +
+            getEventId() +
+            ", event='" +
+            getEventName() +
+            "'" +
+            ", playerPoint=" +
+            getPlayerPointId() +
+            "}"
+        );
     }
 }

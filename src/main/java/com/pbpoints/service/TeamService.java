@@ -25,9 +25,12 @@ public class TeamService {
 
     private final TeamMapper teamMapper;
 
-    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper) {
+    private final UserService userService;
+
+    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper, UserService userService) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
+        this.userService = userService;
     }
 
     /**
@@ -38,30 +41,12 @@ public class TeamService {
      */
     public TeamDTO save(TeamDTO teamDTO) {
         log.debug("Request to save Team : {}", teamDTO);
+        if (teamDTO.getOwnerId() == null) {
+            teamDTO.setOwnerId(userService.getUserWithAuthorities().get().getId());
+        }
         Team team = teamMapper.toEntity(teamDTO);
         team = teamRepository.save(team);
         return teamMapper.toDto(team);
-    }
-
-    /**
-     * Partially update a team.
-     *
-     * @param teamDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<TeamDTO> partialUpdate(TeamDTO teamDTO) {
-        log.debug("Request to partially update Team : {}", teamDTO);
-
-        return teamRepository
-            .findById(teamDTO.getId())
-            .map(
-                existingTeam -> {
-                    teamMapper.partialUpdate(existingTeam, teamDTO);
-                    return existingTeam;
-                }
-            )
-            .map(teamRepository::save)
-            .map(teamMapper::toDto);
     }
 
     /**
@@ -86,6 +71,18 @@ public class TeamService {
     public Optional<TeamDTO> findOne(Long id) {
         log.debug("Request to get Team : {}", id);
         return teamRepository.findById(id).map(teamMapper::toDto);
+    }
+
+    /**
+     * Get one team by Name and Owner.
+     *
+     * @param name the name of the entity and Owner.
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<Team> findByNameAndIdOwner(String name, Long id) {
+        log.debug("Request to get Team : {}", name);
+        return teamRepository.findByNameAndIdOwner(name, id);
     }
 
     /**

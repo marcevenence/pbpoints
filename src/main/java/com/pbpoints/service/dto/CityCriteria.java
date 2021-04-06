@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -53,25 +53,11 @@ public class CityCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -83,13 +69,6 @@ public class CityCriteria implements Serializable, Criteria {
         return latitude;
     }
 
-    public StringFilter latitude() {
-        if (latitude == null) {
-            latitude = new StringFilter();
-        }
-        return latitude;
-    }
-
     public void setLatitude(StringFilter latitude) {
         this.latitude = latitude;
     }
@@ -98,25 +77,11 @@ public class CityCriteria implements Serializable, Criteria {
         return longitude;
     }
 
-    public StringFilter longitude() {
-        if (longitude == null) {
-            longitude = new StringFilter();
-        }
-        return longitude;
-    }
-
     public void setLongitude(StringFilter longitude) {
         this.longitude = longitude;
     }
 
     public LongFilter getProvinceId() {
-        return provinceId;
-    }
-
-    public LongFilter provinceId() {
-        if (provinceId == null) {
-            provinceId = new LongFilter();
-        }
         return provinceId;
     }
 
@@ -147,15 +112,16 @@ public class CityCriteria implements Serializable, Criteria {
         return Objects.hash(id, name, latitude, longitude, provinceId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "CityCriteria{" +
+        return (
+            "CityCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (latitude != null ? "latitude=" + latitude + ", " : "") +
             (longitude != null ? "longitude=" + longitude + ", " : "") +
             (provinceId != null ? "provinceId=" + provinceId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

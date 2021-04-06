@@ -1,15 +1,13 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.CityRepository;
 import com.pbpoints.service.CityQueryService;
 import com.pbpoints.service.CityService;
-import com.pbpoints.service.criteria.CityCriteria;
+import com.pbpoints.service.dto.CityCriteria;
 import com.pbpoints.service.dto.CityDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,13 +38,10 @@ public class CityResource {
 
     private final CityService cityService;
 
-    private final CityRepository cityRepository;
-
     private final CityQueryService cityQueryService;
 
-    public CityResource(CityService cityService, CityRepository cityRepository, CityQueryService cityQueryService) {
+    public CityResource(CityService cityService, CityQueryService cityQueryService) {
         this.cityService = cityService;
-        this.cityRepository = cityRepository;
         this.cityQueryService = cityQueryService;
     }
 
@@ -67,82 +61,38 @@ public class CityResource {
         CityDTO result = cityService.save(cityDTO);
         return ResponseEntity
             .created(new URI("/api/cities/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /cities/:id} : Updates an existing city.
+     * {@code PUT  /cities} : Updates an existing city.
      *
-     * @param id the id of the cityDTO to save.
      * @param cityDTO the cityDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated cityDTO,
      * or with status {@code 400 (Bad Request)} if the cityDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the cityDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/cities/{id}")
-    public ResponseEntity<CityDTO> updateCity(@PathVariable(value = "id", required = false) final Long id, @RequestBody CityDTO cityDTO)
-        throws URISyntaxException {
-        log.debug("REST request to update City : {}, {}", id, cityDTO);
+    @PutMapping("/cities")
+    public ResponseEntity<CityDTO> updateCity(@RequestBody CityDTO cityDTO) throws URISyntaxException {
+        log.debug("REST request to update City : {}", cityDTO);
         if (cityDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, cityDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!cityRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         CityDTO result = cityService.save(cityDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, cityDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, cityDTO.getName()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /cities/:id} : Partial updates given fields of an existing city, field will ignore if it is null
-     *
-     * @param id the id of the cityDTO to save.
-     * @param cityDTO the cityDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated cityDTO,
-     * or with status {@code 400 (Bad Request)} if the cityDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the cityDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the cityDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/cities/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<CityDTO> partialUpdateCity(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody CityDTO cityDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update City partially : {}, {}", id, cityDTO);
-        if (cityDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, cityDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!cityRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<CityDTO> result = cityService.partialUpdate(cityDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, cityDTO.getId().toString())
-        );
     }
 
     /**
      * {@code GET  /cities} : get all the cities.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of cities in body.
      */

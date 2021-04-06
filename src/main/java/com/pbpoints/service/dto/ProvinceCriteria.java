@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,17 +28,17 @@ public class ProvinceCriteria implements Serializable, Criteria {
 
     private StringFilter name;
 
-    private LongFilter cityId;
-
     private LongFilter countryId;
+
+    private LongFilter cityId;
 
     public ProvinceCriteria() {}
 
     public ProvinceCriteria(ProvinceCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
-        this.cityId = other.cityId == null ? null : other.cityId.copy();
         this.countryId = other.countryId == null ? null : other.countryId.copy();
+        this.cityId = other.cityId == null ? null : other.cityId.copy();
     }
 
     @Override
@@ -50,13 +50,6 @@ public class ProvinceCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
@@ -65,45 +58,24 @@ public class ProvinceCriteria implements Serializable, Criteria {
         return name;
     }
 
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
-        return name;
-    }
-
     public void setName(StringFilter name) {
         this.name = name;
-    }
-
-    public LongFilter getCityId() {
-        return cityId;
-    }
-
-    public LongFilter cityId() {
-        if (cityId == null) {
-            cityId = new LongFilter();
-        }
-        return cityId;
-    }
-
-    public void setCityId(LongFilter cityId) {
-        this.cityId = cityId;
     }
 
     public LongFilter getCountryId() {
         return countryId;
     }
 
-    public LongFilter countryId() {
-        if (countryId == null) {
-            countryId = new LongFilter();
-        }
-        return countryId;
-    }
-
     public void setCountryId(LongFilter countryId) {
         this.countryId = countryId;
+    }
+
+    public LongFilter getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(LongFilter cityId) {
+        this.cityId = cityId;
     }
 
     @Override
@@ -118,24 +90,25 @@ public class ProvinceCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
-            Objects.equals(cityId, that.cityId) &&
-            Objects.equals(countryId, that.countryId)
+            Objects.equals(countryId, that.countryId) &&
+            Objects.equals(cityId, that.cityId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cityId, countryId);
+        return Objects.hash(id, name, countryId, cityId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "ProvinceCriteria{" +
+        return (
+            "ProvinceCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
-            (cityId != null ? "cityId=" + cityId + ", " : "") +
             (countryId != null ? "countryId=" + countryId + ", " : "") +
-            "}";
+            (cityId != null ? "cityId=" + cityId + ", " : "") +
+            "}"
+        );
     }
 }

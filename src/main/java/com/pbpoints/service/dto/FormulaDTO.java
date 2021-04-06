@@ -26,7 +26,9 @@ public class FormulaDTO implements Serializable {
 
     private String example;
 
-    private TournamentDTO tournament;
+    private Long tournamentId;
+
+    private String tournamentName;
 
     public Long getId() {
         return id;
@@ -84,12 +86,20 @@ public class FormulaDTO implements Serializable {
         this.example = example;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
+    public String getTournamentName() {
+        return tournamentName;
+    }
+
+    public void setTournamentName(String tournamentName) {
+        this.tournamentName = tournamentName;
     }
 
     @Override
@@ -97,34 +107,52 @@ public class FormulaDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof FormulaDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         FormulaDTO formulaDTO = (FormulaDTO) o;
-        if (this.id == null) {
+        if (formulaDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, formulaDTO.id);
+        return Objects.equals(getId(), formulaDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "FormulaDTO{" +
-            "id=" + getId() +
-            ", formula='" + getFormula() + "'" +
-            ", var1='" + getVar1() + "'" +
-            ", var2='" + getVar2() + "'" +
-            ", var3='" + getVar3() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", example='" + getExample() + "'" +
-            ", tournament=" + getTournament() +
-            "}";
+        return (
+            "FormulaDTO{" +
+            "id=" +
+            getId() +
+            ", formula='" +
+            getFormula() +
+            "'" +
+            ", var1='" +
+            getVar1() +
+            "'" +
+            ", var2='" +
+            getVar2() +
+            "'" +
+            ", var3='" +
+            getVar3() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", example='" +
+            getExample() +
+            "'" +
+            ", tournament=" +
+            getTournamentId() +
+            ", tournament='" +
+            getTournamentName() +
+            "'" +
+            "}"
+        );
     }
 }

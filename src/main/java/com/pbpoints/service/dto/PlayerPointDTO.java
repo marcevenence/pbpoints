@@ -14,11 +14,17 @@ public class PlayerPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private TournamentDTO tournament;
+    private Long tournamentId;
 
-    private UserDTO user;
+    private String tournamentName;
 
-    private CategoryDTO category;
+    private Long userId;
+
+    private String userLogin;
+
+    private Long categoryId;
+
+    private String categoryName;
 
     public Long getId() {
         return id;
@@ -36,28 +42,52 @@ public class PlayerPointDTO implements Serializable {
         this.points = points;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public String getTournamentName() {
+        return tournamentName;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setTournamentName(String tournamentName) {
+        this.tournamentName = tournamentName;
     }
 
-    public CategoryDTO getCategory() {
-        return category;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     @Override
@@ -65,31 +95,46 @@ public class PlayerPointDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PlayerPointDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         PlayerPointDTO playerPointDTO = (PlayerPointDTO) o;
-        if (this.id == null) {
+        if (playerPointDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, playerPointDTO.id);
+        return Objects.equals(getId(), playerPointDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "PlayerPointDTO{" +
-            "id=" + getId() +
-            ", points=" + getPoints() +
-            ", tournament=" + getTournament() +
-            ", user=" + getUser() +
-            ", category=" + getCategory() +
-            "}";
+        return (
+            "PlayerPointDTO{" +
+            "id=" +
+            getId() +
+            ", points=" +
+            getPoints() +
+            ", tournament=" +
+            getTournamentId() +
+            ", tournament='" +
+            getTournamentName() +
+            "'" +
+            ", user=" +
+            getUserId() +
+            ", user='" +
+            getUserLogin() +
+            "'" +
+            ", category=" +
+            getCategoryId() +
+            ", category='" +
+            getCategoryName() +
+            "'" +
+            "}"
+        );
     }
 }

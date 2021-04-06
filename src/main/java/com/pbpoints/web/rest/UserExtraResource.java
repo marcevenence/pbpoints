@@ -1,6 +1,5 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.UserExtraRepository;
 import com.pbpoints.service.UserExtraService;
 import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
@@ -10,14 +9,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,11 +38,8 @@ public class UserExtraResource {
 
     private final UserExtraService userExtraService;
 
-    private final UserExtraRepository userExtraRepository;
-
-    public UserExtraResource(UserExtraService userExtraService, UserExtraRepository userExtraRepository) {
+    public UserExtraResource(UserExtraService userExtraService) {
         this.userExtraService = userExtraService;
-        this.userExtraRepository = userExtraRepository;
     }
 
     /**
@@ -61,6 +55,9 @@ public class UserExtraResource {
         if (userExtraDTO.getId() != null) {
             throw new BadRequestAlertException("A new userExtra cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        if (Objects.isNull(userExtraDTO.getUserId())) {
+            throw new BadRequestAlertException("Invalid association value provided", ENTITY_NAME, "idnull");
+        }
         UserExtraDTO result = userExtraService.save(userExtraDTO);
         return ResponseEntity
             .created(new URI("/api/user-extras/" + result.getId()))
@@ -69,32 +66,20 @@ public class UserExtraResource {
     }
 
     /**
-     * {@code PUT  /user-extras/:id} : Updates an existing userExtra.
+     * {@code PUT  /user-extras} : Updates an existing userExtra.
      *
-     * @param id the id of the userExtraDTO to save.
      * @param userExtraDTO the userExtraDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
      * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/user-extras/{id}")
-    public ResponseEntity<UserExtraDTO> updateUserExtra(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody UserExtraDTO userExtraDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update UserExtra : {}, {}", id, userExtraDTO);
+    @PutMapping("/user-extras")
+    public ResponseEntity<UserExtraDTO> updateUserExtra(@Valid @RequestBody UserExtraDTO userExtraDTO) throws URISyntaxException {
+        log.debug("REST request to update UserExtra : {}", userExtraDTO);
         if (userExtraDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, userExtraDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!userExtraRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         UserExtraDTO result = userExtraService.save(userExtraDTO);
         return ResponseEntity
             .ok()
@@ -103,45 +88,11 @@ public class UserExtraResource {
     }
 
     /**
-     * {@code PATCH  /user-extras/:id} : Partial updates given fields of an existing userExtra, field will ignore if it is null
-     *
-     * @param id the id of the userExtraDTO to save.
-     * @param userExtraDTO the userExtraDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
-     * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the userExtraDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/user-extras/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<UserExtraDTO> partialUpdateUserExtra(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody UserExtraDTO userExtraDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update UserExtra partially : {}, {}", id, userExtraDTO);
-        if (userExtraDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, userExtraDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!userExtraRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<UserExtraDTO> result = userExtraService.partialUpdate(userExtraDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, userExtraDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /user-extras} : get all the userExtras.
      *
+
      * @param pageable the pagination information.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userExtras in body.
      */
     @GetMapping("/user-extras")
@@ -180,4 +131,17 @@ public class UserExtraResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+    /*@GetMapping("/user-extras/roster")
+    public ResponseEntity<UserExtraDTO> getUserExtraToRoster(@RequestParam(value="idUser", required=true) Long idUser, @RequestParam(value="idRoster", required=true) Long idRoster,
+            @RequestParam(value="idEventCategory", required=true) Long idEventCategory) {
+        log.debug("REST request to get UserExtra to Roster --> iduser: {}, idRoster: {}, idEventCategory: {}", idUser,
+                idRoster, idEventCategory);
+        Optional<UserExtraDTO> userExtraDTO;
+        try {
+            userExtraDTO = userExtraService.getUniqueUserToRoster(idUser, idRoster, idEventCategory);
+        }catch (Exception e) {
+            throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "genericError");
+        }
+        return ResponseUtil.wrapOrNotFound(userExtraDTO);
+    }*/
 }

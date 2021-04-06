@@ -1,25 +1,21 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.FormatRepository;
 import com.pbpoints.service.FormatQueryService;
 import com.pbpoints.service.FormatService;
-import com.pbpoints.service.criteria.FormatCriteria;
+import com.pbpoints.service.dto.FormatCriteria;
 import com.pbpoints.service.dto.FormatDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,13 +39,10 @@ public class FormatResource {
 
     private final FormatService formatService;
 
-    private final FormatRepository formatRepository;
-
     private final FormatQueryService formatQueryService;
 
-    public FormatResource(FormatService formatService, FormatRepository formatRepository, FormatQueryService formatQueryService) {
+    public FormatResource(FormatService formatService, FormatQueryService formatQueryService) {
         this.formatService = formatService;
-        this.formatRepository = formatRepository;
         this.formatQueryService = formatQueryService;
     }
 
@@ -69,84 +62,38 @@ public class FormatResource {
         FormatDTO result = formatService.save(formatDTO);
         return ResponseEntity
             .created(new URI("/api/formats/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /formats/:id} : Updates an existing format.
+     * {@code PUT  /formats} : Updates an existing format.
      *
-     * @param id the id of the formatDTO to save.
      * @param formatDTO the formatDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated formatDTO,
      * or with status {@code 400 (Bad Request)} if the formatDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the formatDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/formats/{id}")
-    public ResponseEntity<FormatDTO> updateFormat(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody FormatDTO formatDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Format : {}, {}", id, formatDTO);
+    @PutMapping("/formats")
+    public ResponseEntity<FormatDTO> updateFormat(@Valid @RequestBody FormatDTO formatDTO) throws URISyntaxException {
+        log.debug("REST request to update Format : {}", formatDTO);
         if (formatDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, formatDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!formatRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         FormatDTO result = formatService.save(formatDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, formatDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, formatDTO.getName()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /formats/:id} : Partial updates given fields of an existing format, field will ignore if it is null
-     *
-     * @param id the id of the formatDTO to save.
-     * @param formatDTO the formatDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated formatDTO,
-     * or with status {@code 400 (Bad Request)} if the formatDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the formatDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the formatDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/formats/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<FormatDTO> partialUpdateFormat(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody FormatDTO formatDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Format partially : {}, {}", id, formatDTO);
-        if (formatDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, formatDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!formatRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<FormatDTO> result = formatService.partialUpdate(formatDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, formatDTO.getId().toString())
-        );
     }
 
     /**
      * {@code GET  /formats} : get all the formats.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of formats in body.
      */

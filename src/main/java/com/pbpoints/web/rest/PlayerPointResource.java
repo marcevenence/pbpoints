@@ -1,25 +1,21 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.PlayerPointRepository;
 import com.pbpoints.service.PlayerPointQueryService;
 import com.pbpoints.service.PlayerPointService;
-import com.pbpoints.service.criteria.PlayerPointCriteria;
+import com.pbpoints.service.dto.PlayerPointCriteria;
 import com.pbpoints.service.dto.PlayerPointDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,17 +39,10 @@ public class PlayerPointResource {
 
     private final PlayerPointService playerPointService;
 
-    private final PlayerPointRepository playerPointRepository;
-
     private final PlayerPointQueryService playerPointQueryService;
 
-    public PlayerPointResource(
-        PlayerPointService playerPointService,
-        PlayerPointRepository playerPointRepository,
-        PlayerPointQueryService playerPointQueryService
-    ) {
+    public PlayerPointResource(PlayerPointService playerPointService, PlayerPointQueryService playerPointQueryService) {
         this.playerPointService = playerPointService;
-        this.playerPointRepository = playerPointRepository;
         this.playerPointQueryService = playerPointQueryService;
     }
 
@@ -78,32 +67,20 @@ public class PlayerPointResource {
     }
 
     /**
-     * {@code PUT  /player-points/:id} : Updates an existing playerPoint.
+     * {@code PUT  /player-points} : Updates an existing playerPoint.
      *
-     * @param id the id of the playerPointDTO to save.
      * @param playerPointDTO the playerPointDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerPointDTO,
      * or with status {@code 400 (Bad Request)} if the playerPointDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the playerPointDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/player-points/{id}")
-    public ResponseEntity<PlayerPointDTO> updatePlayerPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody PlayerPointDTO playerPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update PlayerPoint : {}, {}", id, playerPointDTO);
+    @PutMapping("/player-points")
+    public ResponseEntity<PlayerPointDTO> updatePlayerPoint(@Valid @RequestBody PlayerPointDTO playerPointDTO) throws URISyntaxException {
+        log.debug("REST request to update PlayerPoint : {}", playerPointDTO);
         if (playerPointDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, playerPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!playerPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         PlayerPointDTO result = playerPointService.save(playerPointDTO);
         return ResponseEntity
             .ok()
@@ -112,45 +89,11 @@ public class PlayerPointResource {
     }
 
     /**
-     * {@code PATCH  /player-points/:id} : Partial updates given fields of an existing playerPoint, field will ignore if it is null
-     *
-     * @param id the id of the playerPointDTO to save.
-     * @param playerPointDTO the playerPointDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerPointDTO,
-     * or with status {@code 400 (Bad Request)} if the playerPointDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the playerPointDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the playerPointDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/player-points/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<PlayerPointDTO> partialUpdatePlayerPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody PlayerPointDTO playerPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update PlayerPoint partially : {}, {}", id, playerPointDTO);
-        if (playerPointDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, playerPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!playerPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<PlayerPointDTO> result = playerPointService.partialUpdate(playerPointDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, playerPointDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /player-points} : get all the playerPoints.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of playerPoints in body.
      */

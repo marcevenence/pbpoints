@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.Status;
 import java.io.Serializable;
@@ -83,25 +83,11 @@ public class TournamentCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -113,25 +99,11 @@ public class TournamentCriteria implements Serializable, Criteria {
         return closeInscrDays;
     }
 
-    public IntegerFilter closeInscrDays() {
-        if (closeInscrDays == null) {
-            closeInscrDays = new IntegerFilter();
-        }
-        return closeInscrDays;
-    }
-
     public void setCloseInscrDays(IntegerFilter closeInscrDays) {
         this.closeInscrDays = closeInscrDays;
     }
 
     public StatusFilter getStatus() {
-        return status;
-    }
-
-    public StatusFilter status() {
-        if (status == null) {
-            status = new StatusFilter();
-        }
         return status;
     }
 
@@ -143,25 +115,11 @@ public class TournamentCriteria implements Serializable, Criteria {
         return categorize;
     }
 
-    public BooleanFilter categorize() {
-        if (categorize == null) {
-            categorize = new BooleanFilter();
-        }
-        return categorize;
-    }
-
     public void setCategorize(BooleanFilter categorize) {
         this.categorize = categorize;
     }
 
     public IntegerFilter getCantPlayersNextCategory() {
-        return cantPlayersNextCategory;
-    }
-
-    public IntegerFilter cantPlayersNextCategory() {
-        if (cantPlayersNextCategory == null) {
-            cantPlayersNextCategory = new IntegerFilter();
-        }
         return cantPlayersNextCategory;
     }
 
@@ -173,13 +131,6 @@ public class TournamentCriteria implements Serializable, Criteria {
         return qtyTeamGroups;
     }
 
-    public IntegerFilter qtyTeamGroups() {
-        if (qtyTeamGroups == null) {
-            qtyTeamGroups = new IntegerFilter();
-        }
-        return qtyTeamGroups;
-    }
-
     public void setQtyTeamGroups(IntegerFilter qtyTeamGroups) {
         this.qtyTeamGroups = qtyTeamGroups;
     }
@@ -188,25 +139,11 @@ public class TournamentCriteria implements Serializable, Criteria {
         return eventId;
     }
 
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
-        }
-        return eventId;
-    }
-
     public void setEventId(LongFilter eventId) {
         this.eventId = eventId;
     }
 
     public LongFilter getOwnerId() {
-        return ownerId;
-    }
-
-    public LongFilter ownerId() {
-        if (ownerId == null) {
-            ownerId = new LongFilter();
-        }
         return ownerId;
     }
 
@@ -241,10 +178,10 @@ public class TournamentCriteria implements Serializable, Criteria {
         return Objects.hash(id, name, closeInscrDays, status, categorize, cantPlayersNextCategory, qtyTeamGroups, eventId, ownerId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TournamentCriteria{" +
+        return (
+            "TournamentCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (closeInscrDays != null ? "closeInscrDays=" + closeInscrDays + ", " : "") +
@@ -254,6 +191,7 @@ public class TournamentCriteria implements Serializable, Criteria {
             (qtyTeamGroups != null ? "qtyTeamGroups=" + qtyTeamGroups + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

@@ -1,25 +1,23 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.RosterRepository;
+import com.pbpoints.domain.EventCategory;
+import com.pbpoints.domain.User;
 import com.pbpoints.service.RosterQueryService;
 import com.pbpoints.service.RosterService;
-import com.pbpoints.service.criteria.RosterCriteria;
+import com.pbpoints.service.dto.RosterCriteria;
 import com.pbpoints.service.dto.RosterDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,13 +41,10 @@ public class RosterResource {
 
     private final RosterService rosterService;
 
-    private final RosterRepository rosterRepository;
-
     private final RosterQueryService rosterQueryService;
 
-    public RosterResource(RosterService rosterService, RosterRepository rosterRepository, RosterQueryService rosterQueryService) {
+    public RosterResource(RosterService rosterService, RosterQueryService rosterQueryService) {
         this.rosterService = rosterService;
-        this.rosterRepository = rosterRepository;
         this.rosterQueryService = rosterQueryService;
     }
 
@@ -66,6 +61,7 @@ public class RosterResource {
         if (rosterDTO.getId() != null) {
             throw new BadRequestAlertException("A new roster cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        rosterDTO.setActive(true);
         RosterDTO result = rosterService.save(rosterDTO);
         return ResponseEntity
             .created(new URI("/api/rosters/" + result.getId()))
@@ -74,32 +70,20 @@ public class RosterResource {
     }
 
     /**
-     * {@code PUT  /rosters/:id} : Updates an existing roster.
+     * {@code PUT  /rosters} : Updates an existing roster.
      *
-     * @param id the id of the rosterDTO to save.
      * @param rosterDTO the rosterDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rosterDTO,
      * or with status {@code 400 (Bad Request)} if the rosterDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the rosterDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/rosters/{id}")
-    public ResponseEntity<RosterDTO> updateRoster(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody RosterDTO rosterDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Roster : {}, {}", id, rosterDTO);
+    @PutMapping("/rosters")
+    public ResponseEntity<RosterDTO> updateRoster(@Valid @RequestBody RosterDTO rosterDTO) throws URISyntaxException {
+        log.debug("REST request to update Roster : {}", rosterDTO);
         if (rosterDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, rosterDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!rosterRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         RosterDTO result = rosterService.save(rosterDTO);
         return ResponseEntity
             .ok()
@@ -108,45 +92,11 @@ public class RosterResource {
     }
 
     /**
-     * {@code PATCH  /rosters/:id} : Partial updates given fields of an existing roster, field will ignore if it is null
-     *
-     * @param id the id of the rosterDTO to save.
-     * @param rosterDTO the rosterDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rosterDTO,
-     * or with status {@code 400 (Bad Request)} if the rosterDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the rosterDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the rosterDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/rosters/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<RosterDTO> partialUpdateRoster(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody RosterDTO rosterDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Roster partially : {}, {}", id, rosterDTO);
-        if (rosterDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, rosterDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!rosterRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<RosterDTO> result = rosterService.partialUpdate(rosterDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, rosterDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /rosters} : get all the rosters.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rosters in body.
      */
@@ -197,5 +147,34 @@ public class RosterResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    /**
+     * {@code GET  /rosters} : get all the rosters for the {@link User} logged.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rosters in body.
+     */
+    @GetMapping("/rosters/owner")
+    public ResponseEntity<List<RosterDTO>> getRosterByLoggedUser() {
+        log.debug("REST request to get Rosters by User Logged");
+        Optional<List<RosterDTO>> rostersDTO = rosterService.findByLogguedUser();
+        return ResponseUtil.wrapOrNotFound(rostersDTO);
+    }
+
+    /**
+     * {@code GET  /rosters} : get all the rosters for the {@link EventCategory} available.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rosters in body.
+     */
+    @GetMapping("/rosters/event-category/available")
+    public ResponseEntity<List<RosterDTO>> findAvailableByEventCategory(
+        @RequestParam(value = "idEventCategory", required = true) Long idEventCategory
+    ) {
+        log.debug("REST request to get Rosters Available for EventCategory");
+        if (idEventCategory == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        Optional<List<RosterDTO>> rostersDTO = rosterService.findAvailableByEventCategory(idEventCategory);
+        return ResponseUtil.wrapOrNotFound(rostersDTO);
     }
 }

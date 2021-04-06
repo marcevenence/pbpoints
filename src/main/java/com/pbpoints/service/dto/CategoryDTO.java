@@ -37,7 +37,9 @@ public class CategoryDTO implements Serializable {
     @NotNull
     private Integer order;
 
-    private TournamentDTO tournament;
+    private Long tournamentId;
+
+    private String tournamentName;
 
     public Long getId() {
         return id;
@@ -119,12 +121,20 @@ public class CategoryDTO implements Serializable {
         this.order = order;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
+    public String getTournamentName() {
+        return tournamentName;
+    }
+
+    public void setTournamentName(String tournamentName) {
+        this.tournamentName = tournamentName;
     }
 
     @Override
@@ -132,37 +142,56 @@ public class CategoryDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CategoryDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CategoryDTO categoryDTO = (CategoryDTO) o;
-        if (this.id == null) {
+        if (categoryDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, categoryDTO.id);
+        return Objects.equals(getId(), categoryDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "CategoryDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", gameTimeType='" + getGameTimeType() + "'" +
-            ", gameTime=" + getGameTime() +
-            ", stopTimeType='" + getStopTimeType() + "'" +
-            ", stopTime=" + getStopTime() +
-            ", totalPoints=" + getTotalPoints() +
-            ", difPoints=" + getDifPoints() +
-            ", order=" + getOrder() +
-            ", tournament=" + getTournament() +
-            "}";
+        return (
+            "CategoryDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", description='" +
+            getDescription() +
+            "'" +
+            ", gameTimeType='" +
+            getGameTimeType() +
+            "'" +
+            ", gameTime=" +
+            getGameTime() +
+            ", stopTimeType='" +
+            getStopTimeType() +
+            "'" +
+            ", stopTime=" +
+            getStopTime() +
+            ", totalPoints=" +
+            getTotalPoints() +
+            ", difPoints=" +
+            getDifPoints() +
+            ", order=" +
+            getOrder() +
+            ", tournament=" +
+            getTournamentId() +
+            ", tournament='" +
+            getTournamentName() +
+            "'" +
+            "}"
+        );
     }
 }

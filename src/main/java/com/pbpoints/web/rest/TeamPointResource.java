@@ -1,25 +1,21 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.TeamPointRepository;
 import com.pbpoints.service.TeamPointQueryService;
 import com.pbpoints.service.TeamPointService;
-import com.pbpoints.service.criteria.TeamPointCriteria;
+import com.pbpoints.service.dto.TeamPointCriteria;
 import com.pbpoints.service.dto.TeamPointDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,17 +39,10 @@ public class TeamPointResource {
 
     private final TeamPointService teamPointService;
 
-    private final TeamPointRepository teamPointRepository;
-
     private final TeamPointQueryService teamPointQueryService;
 
-    public TeamPointResource(
-        TeamPointService teamPointService,
-        TeamPointRepository teamPointRepository,
-        TeamPointQueryService teamPointQueryService
-    ) {
+    public TeamPointResource(TeamPointService teamPointService, TeamPointQueryService teamPointQueryService) {
         this.teamPointService = teamPointService;
-        this.teamPointRepository = teamPointRepository;
         this.teamPointQueryService = teamPointQueryService;
     }
 
@@ -78,32 +67,20 @@ public class TeamPointResource {
     }
 
     /**
-     * {@code PUT  /team-points/:id} : Updates an existing teamPoint.
+     * {@code PUT  /team-points} : Updates an existing teamPoint.
      *
-     * @param id the id of the teamPointDTO to save.
      * @param teamPointDTO the teamPointDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamPointDTO,
      * or with status {@code 400 (Bad Request)} if the teamPointDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the teamPointDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/team-points/{id}")
-    public ResponseEntity<TeamPointDTO> updateTeamPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody TeamPointDTO teamPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update TeamPoint : {}, {}", id, teamPointDTO);
+    @PutMapping("/team-points")
+    public ResponseEntity<TeamPointDTO> updateTeamPoint(@Valid @RequestBody TeamPointDTO teamPointDTO) throws URISyntaxException {
+        log.debug("REST request to update TeamPoint : {}", teamPointDTO);
         if (teamPointDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, teamPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!teamPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         TeamPointDTO result = teamPointService.save(teamPointDTO);
         return ResponseEntity
             .ok()
@@ -112,45 +89,11 @@ public class TeamPointResource {
     }
 
     /**
-     * {@code PATCH  /team-points/:id} : Partial updates given fields of an existing teamPoint, field will ignore if it is null
-     *
-     * @param id the id of the teamPointDTO to save.
-     * @param teamPointDTO the teamPointDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamPointDTO,
-     * or with status {@code 400 (Bad Request)} if the teamPointDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the teamPointDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the teamPointDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/team-points/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<TeamPointDTO> partialUpdateTeamPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody TeamPointDTO teamPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update TeamPoint partially : {}, {}", id, teamPointDTO);
-        if (teamPointDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, teamPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!teamPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<TeamPointDTO> result = teamPointService.partialUpdate(teamPointDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamPointDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /team-points} : get all the teamPoints.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of teamPoints in body.
      */

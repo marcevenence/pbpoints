@@ -1,25 +1,23 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.EventCategoryRepository;
 import com.pbpoints.service.EventCategoryQueryService;
 import com.pbpoints.service.EventCategoryService;
-import com.pbpoints.service.criteria.EventCategoryCriteria;
+import com.pbpoints.service.dto.EventCategoryCriteria;
 import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -34,26 +32,16 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class EventCategoryResource {
 
-    private final Logger log = LoggerFactory.getLogger(EventCategoryResource.class);
-
     private static final String ENTITY_NAME = "eventCategory";
+    private final Logger log = LoggerFactory.getLogger(EventCategoryResource.class);
+    private final EventCategoryService eventCategoryService;
+    private final EventCategoryQueryService eventCategoryQueryService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final EventCategoryService eventCategoryService;
-
-    private final EventCategoryRepository eventCategoryRepository;
-
-    private final EventCategoryQueryService eventCategoryQueryService;
-
-    public EventCategoryResource(
-        EventCategoryService eventCategoryService,
-        EventCategoryRepository eventCategoryRepository,
-        EventCategoryQueryService eventCategoryQueryService
-    ) {
+    public EventCategoryResource(EventCategoryService eventCategoryService, EventCategoryQueryService eventCategoryQueryService) {
         this.eventCategoryService = eventCategoryService;
-        this.eventCategoryRepository = eventCategoryRepository;
         this.eventCategoryQueryService = eventCategoryQueryService;
     }
 
@@ -71,81 +59,38 @@ public class EventCategoryResource {
         if (eventCategoryDTO.getId() != null) {
             throw new BadRequestAlertException("A new eventCategory cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        EventCategoryDTO result = eventCategoryService.save(eventCategoryDTO);
-        return ResponseEntity
-            .created(new URI("/api/event-categories/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        try {
+            EventCategoryDTO result = eventCategoryService.save(eventCategoryDTO);
+            return ResponseEntity
+                .created(new URI("/api/event-categories/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getCategoryName()))
+                .body(result);
+        } catch (DuplicateKeyException e) {
+            throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "duplicateError");
+        }
     }
 
     /**
-     * {@code PUT  /event-categories/:id} : Updates an existing eventCategory.
+     * {@code PUT  /event-categories} : Updates an existing eventCategory.
      *
-     * @param id the id of the eventCategoryDTO to save.
      * @param eventCategoryDTO the eventCategoryDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventCategoryDTO,
      * or with status {@code 400 (Bad Request)} if the eventCategoryDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the eventCategoryDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/event-categories/{id}")
-    public ResponseEntity<EventCategoryDTO> updateEventCategory(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody EventCategoryDTO eventCategoryDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update EventCategory : {}, {}", id, eventCategoryDTO);
+    @PutMapping("/event-categories")
+    public ResponseEntity<EventCategoryDTO> updateEventCategory(@Valid @RequestBody EventCategoryDTO eventCategoryDTO)
+        throws URISyntaxException {
+        log.debug("REST request to update EventCategory : {}", eventCategoryDTO);
         if (eventCategoryDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, eventCategoryDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!eventCategoryRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         EventCategoryDTO result = eventCategoryService.save(eventCategoryDTO);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventCategoryDTO.getId().toString()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /event-categories/:id} : Partial updates given fields of an existing eventCategory, field will ignore if it is null
-     *
-     * @param id the id of the eventCategoryDTO to save.
-     * @param eventCategoryDTO the eventCategoryDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventCategoryDTO,
-     * or with status {@code 400 (Bad Request)} if the eventCategoryDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the eventCategoryDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the eventCategoryDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/event-categories/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<EventCategoryDTO> partialUpdateEventCategory(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody EventCategoryDTO eventCategoryDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update EventCategory partially : {}, {}", id, eventCategoryDTO);
-        if (eventCategoryDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, eventCategoryDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!eventCategoryRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<EventCategoryDTO> result = eventCategoryService.partialUpdate(eventCategoryDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventCategoryDTO.getId().toString())
-        );
     }
 
     /**
@@ -202,5 +147,28 @@ public class EventCategoryResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @PostMapping("/event-categories/fixture({idEventCategory})")
+    public ResponseEntity<String> createEventCategoryFixture(@PathVariable Long idEventCategory) {
+        log.debug("REST request to generar a fixture from: {}", idEventCategory);
+        if (idEventCategory == null) {
+            throw new BadRequestAlertException("A eventCategory cannot have an empty ID", ENTITY_NAME, "idexists");
+        }
+        try {
+            eventCategoryService.generarFixture(idEventCategory);
+        } catch (NoResultException e) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok().body("Fixture generado con éxito");
+    }
+
+    @GetMapping("/event-categories/upd/{id}")
+    public ResponseEntity<Long> enableUpdate(@PathVariable Long id) {
+        log.debug("REST request to check if event is Closed or Inscripcion is Closed: {}", id);
+        Long result = eventCategoryService.validEvent(id);
+        ResponseEntity<Long> resp = ResponseEntity.ok().body(result);
+        return resp;
     }
 }

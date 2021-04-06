@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Lob;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.UserExtra} entity.
@@ -25,9 +24,12 @@ public class UserExtraDTO implements Serializable {
     private byte[] picture;
 
     private String pictureContentType;
-    private UserDTO user;
 
-    private DocTypeDTO docType;
+    private Long docTypeId;
+
+    private Long userId;
+
+    private String userLogin;
 
     public Long getId() {
         return id;
@@ -77,20 +79,28 @@ public class UserExtraDTO implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public Long getDocTypeId() {
+        return docTypeId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setDocTypeId(Long docTypeId) {
+        this.docTypeId = docTypeId;
     }
 
-    public DocTypeDTO getDocType() {
-        return docType;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setDocType(DocTypeDTO docType) {
-        this.docType = docType;
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     @Override
@@ -98,33 +108,48 @@ public class UserExtraDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof UserExtraDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         UserExtraDTO userExtraDTO = (UserExtraDTO) o;
-        if (this.id == null) {
+        if (userExtraDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, userExtraDTO.id);
+        return Objects.equals(getId(), userExtraDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "UserExtraDTO{" +
-            "id=" + getId() +
-            ", numDoc='" + getNumDoc() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", bornDate='" + getBornDate() + "'" +
-            ", picture='" + getPicture() + "'" +
-            ", user=" + getUser() +
-            ", docType=" + getDocType() +
-            "}";
+        return (
+            "UserExtraDTO{" +
+            "id=" +
+            getId() +
+            ", numDoc='" +
+            getNumDoc() +
+            "'" +
+            ", phone='" +
+            getPhone() +
+            "'" +
+            ", bornDate='" +
+            getBornDate() +
+            "'" +
+            ", picture='" +
+            getPicture() +
+            "'" +
+            ", docType=" +
+            getDocTypeId() +
+            ", user=" +
+            getUserId() +
+            ", user='" +
+            getUserLogin() +
+            "'" +
+            "}"
+        );
     }
 }

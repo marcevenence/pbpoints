@@ -18,14 +18,6 @@ public interface PlayerPointService {
     PlayerPointDTO save(PlayerPointDTO playerPointDTO);
 
     /**
-     * Partially updates a playerPoint.
-     *
-     * @param playerPointDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<PlayerPointDTO> partialUpdate(PlayerPointDTO playerPointDTO);
-
-    /**
      * Get all the playerPoints.
      *
      * @param pageable the pagination information.

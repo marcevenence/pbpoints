@@ -1,15 +1,20 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
 import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.BooleanFilter;
-import tech.jhipster.service.filter.DoubleFilter;
-import tech.jhipster.service.filter.Filter;
-import tech.jhipster.service.filter.FloatFilter;
-import tech.jhipster.service.filter.IntegerFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
+
+//import tech.jhipster.service.Criteria;
+//import tech.jhipster.service.filter.BooleanFilter;;
+//import tech.jhipster.service.filter.DoubleFilter;
+//import tech.jhipster.service.filter.Filter;
+//import tech.jhipster.service.filter.FloatFilter;
+//import tech.jhipster.service.filter.IntegerFilter;
+//import tech.jhipster.service.filter.LongFilter;
+//import tech.jhipster.service.filter.StringFilter;
 
 /**
  * Criteria class for the {@link com.pbpoints.domain.Team} entity. This class is used
@@ -17,8 +22,6 @@ import tech.jhipster.service.filter.StringFilter;
  * the Http GET request parameters.
  * For example the following could be a valid request:
  * {@code /teams?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
- * fix type specific filters.
  */
 public class TeamCriteria implements Serializable, Criteria {
 
@@ -50,25 +53,11 @@ public class TeamCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -80,25 +69,11 @@ public class TeamCriteria implements Serializable, Criteria {
         return active;
     }
 
-    public BooleanFilter active() {
-        if (active == null) {
-            active = new BooleanFilter();
-        }
-        return active;
-    }
-
     public void setActive(BooleanFilter active) {
         this.active = active;
     }
 
     public LongFilter getOwnerId() {
-        return ownerId;
-    }
-
-    public LongFilter ownerId() {
-        if (ownerId == null) {
-            ownerId = new LongFilter();
-        }
         return ownerId;
     }
 
@@ -128,14 +103,15 @@ public class TeamCriteria implements Serializable, Criteria {
         return Objects.hash(id, name, active, ownerId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TeamCriteria{" +
+        return (
+            "TeamCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (active != null ? "active=" + active + ", " : "") +
             (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

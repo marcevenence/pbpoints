@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -53,25 +53,11 @@ public class PlayerPointCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public FloatFilter getPoints() {
-        return points;
-    }
-
-    public FloatFilter points() {
-        if (points == null) {
-            points = new FloatFilter();
-        }
         return points;
     }
 
@@ -83,13 +69,6 @@ public class PlayerPointCriteria implements Serializable, Criteria {
         return tournamentId;
     }
 
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
-        return tournamentId;
-    }
-
     public void setTournamentId(LongFilter tournamentId) {
         this.tournamentId = tournamentId;
     }
@@ -98,25 +77,11 @@ public class PlayerPointCriteria implements Serializable, Criteria {
         return userId;
     }
 
-    public LongFilter userId() {
-        if (userId == null) {
-            userId = new LongFilter();
-        }
-        return userId;
-    }
-
     public void setUserId(LongFilter userId) {
         this.userId = userId;
     }
 
     public LongFilter getCategoryId() {
-        return categoryId;
-    }
-
-    public LongFilter categoryId() {
-        if (categoryId == null) {
-            categoryId = new LongFilter();
-        }
         return categoryId;
     }
 
@@ -147,15 +112,16 @@ public class PlayerPointCriteria implements Serializable, Criteria {
         return Objects.hash(id, points, tournamentId, userId, categoryId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "PlayerPointCriteria{" +
+        return (
+            "PlayerPointCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (points != null ? "points=" + points + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (categoryId != null ? "categoryId=" + categoryId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

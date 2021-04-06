@@ -45,6 +45,15 @@ public class UserExtra implements Serializable {
     @ManyToOne
     private DocType docType;
 
+    public UserExtra() {
+        super();
+    }
+
+    public UserExtra(User user) {
+        super();
+        this.user = user;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;

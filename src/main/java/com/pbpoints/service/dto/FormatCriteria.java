@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -56,25 +56,11 @@ public class FormatCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -86,25 +72,11 @@ public class FormatCriteria implements Serializable, Criteria {
         return description;
     }
 
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
-        return description;
-    }
-
     public void setDescription(StringFilter description) {
         this.description = description;
     }
 
     public FloatFilter getCoeficient() {
-        return coeficient;
-    }
-
-    public FloatFilter coeficient() {
-        if (coeficient == null) {
-            coeficient = new FloatFilter();
-        }
         return coeficient;
     }
 
@@ -116,25 +88,11 @@ public class FormatCriteria implements Serializable, Criteria {
         return playersQty;
     }
 
-    public IntegerFilter playersQty() {
-        if (playersQty == null) {
-            playersQty = new IntegerFilter();
-        }
-        return playersQty;
-    }
-
     public void setPlayersQty(IntegerFilter playersQty) {
         this.playersQty = playersQty;
     }
 
     public LongFilter getTournamentId() {
-        return tournamentId;
-    }
-
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
         return tournamentId;
     }
 
@@ -166,16 +124,17 @@ public class FormatCriteria implements Serializable, Criteria {
         return Objects.hash(id, name, description, coeficient, playersQty, tournamentId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "FormatCriteria{" +
+        return (
+            "FormatCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (coeficient != null ? "coeficient=" + coeficient + ", " : "") +
             (playersQty != null ? "playersQty=" + playersQty + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

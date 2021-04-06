@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.TeamPoint;
 import com.pbpoints.repository.TeamPointRepository;
-import com.pbpoints.service.criteria.TeamPointCriteria;
+import com.pbpoints.service.dto.TeamPointCriteria;
 import com.pbpoints.service.dto.TeamPointDTO;
 import com.pbpoints.service.mapper.TeamPointMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class TeamPointQueryService extends QueryService<TeamPoint> {
         Specification<TeamPoint> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), TeamPoint_.id));
+                specification = specification.and(buildSpecification(criteria.getId(), TeamPoint_.id));
             }
             if (criteria.getPoints() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPoints(), TeamPoint_.points));

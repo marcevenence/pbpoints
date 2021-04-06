@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.Status;
 import java.io.Serializable;
@@ -101,25 +101,11 @@ public class GameCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public IntegerFilter getPointsA() {
-        return pointsA;
-    }
-
-    public IntegerFilter pointsA() {
-        if (pointsA == null) {
-            pointsA = new IntegerFilter();
-        }
         return pointsA;
     }
 
@@ -131,25 +117,11 @@ public class GameCriteria implements Serializable, Criteria {
         return pointsB;
     }
 
-    public IntegerFilter pointsB() {
-        if (pointsB == null) {
-            pointsB = new IntegerFilter();
-        }
-        return pointsB;
-    }
-
     public void setPointsB(IntegerFilter pointsB) {
         this.pointsB = pointsB;
     }
 
     public IntegerFilter getSplitDeckNum() {
-        return splitDeckNum;
-    }
-
-    public IntegerFilter splitDeckNum() {
-        if (splitDeckNum == null) {
-            splitDeckNum = new IntegerFilter();
-        }
         return splitDeckNum;
     }
 
@@ -161,25 +133,11 @@ public class GameCriteria implements Serializable, Criteria {
         return timeLeft;
     }
 
-    public IntegerFilter timeLeft() {
-        if (timeLeft == null) {
-            timeLeft = new IntegerFilter();
-        }
-        return timeLeft;
-    }
-
     public void setTimeLeft(IntegerFilter timeLeft) {
         this.timeLeft = timeLeft;
     }
 
     public StatusFilter getStatus() {
-        return status;
-    }
-
-    public StatusFilter status() {
-        if (status == null) {
-            status = new StatusFilter();
-        }
         return status;
     }
 
@@ -191,25 +149,11 @@ public class GameCriteria implements Serializable, Criteria {
         return overtimeA;
     }
 
-    public IntegerFilter overtimeA() {
-        if (overtimeA == null) {
-            overtimeA = new IntegerFilter();
-        }
-        return overtimeA;
-    }
-
     public void setOvertimeA(IntegerFilter overtimeA) {
         this.overtimeA = overtimeA;
     }
 
     public IntegerFilter getOvertimeB() {
-        return overtimeB;
-    }
-
-    public IntegerFilter overtimeB() {
-        if (overtimeB == null) {
-            overtimeB = new IntegerFilter();
-        }
         return overtimeB;
     }
 
@@ -221,25 +165,11 @@ public class GameCriteria implements Serializable, Criteria {
         return uvuA;
     }
 
-    public IntegerFilter uvuA() {
-        if (uvuA == null) {
-            uvuA = new IntegerFilter();
-        }
-        return uvuA;
-    }
-
     public void setUvuA(IntegerFilter uvuA) {
         this.uvuA = uvuA;
     }
 
     public IntegerFilter getUvuB() {
-        return uvuB;
-    }
-
-    public IntegerFilter uvuB() {
-        if (uvuB == null) {
-            uvuB = new IntegerFilter();
-        }
         return uvuB;
     }
 
@@ -251,25 +181,11 @@ public class GameCriteria implements Serializable, Criteria {
         return group;
     }
 
-    public IntegerFilter group() {
-        if (group == null) {
-            group = new IntegerFilter();
-        }
-        return group;
-    }
-
     public void setGroup(IntegerFilter group) {
         this.group = group;
     }
 
     public StringFilter getClasif() {
-        return clasif;
-    }
-
-    public StringFilter clasif() {
-        if (clasif == null) {
-            clasif = new StringFilter();
-        }
         return clasif;
     }
 
@@ -281,13 +197,6 @@ public class GameCriteria implements Serializable, Criteria {
         return teamAId;
     }
 
-    public LongFilter teamAId() {
-        if (teamAId == null) {
-            teamAId = new LongFilter();
-        }
-        return teamAId;
-    }
-
     public void setTeamAId(LongFilter teamAId) {
         this.teamAId = teamAId;
     }
@@ -296,25 +205,11 @@ public class GameCriteria implements Serializable, Criteria {
         return teamBId;
     }
 
-    public LongFilter teamBId() {
-        if (teamBId == null) {
-            teamBId = new LongFilter();
-        }
-        return teamBId;
-    }
-
     public void setTeamBId(LongFilter teamBId) {
         this.teamBId = teamBId;
     }
 
     public LongFilter getEventCategoryId() {
-        return eventCategoryId;
-    }
-
-    public LongFilter eventCategoryId() {
-        if (eventCategoryId == null) {
-            eventCategoryId = new LongFilter();
-        }
         return eventCategoryId;
     }
 
@@ -371,10 +266,10 @@ public class GameCriteria implements Serializable, Criteria {
         );
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "GameCriteria{" +
+        return (
+            "GameCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (pointsA != null ? "pointsA=" + pointsA + ", " : "") +
             (pointsB != null ? "pointsB=" + pointsB + ", " : "") +
@@ -390,6 +285,7 @@ public class GameCriteria implements Serializable, Criteria {
             (teamAId != null ? "teamAId=" + teamAId + ", " : "") +
             (teamBId != null ? "teamBId=" + teamBId + ", " : "") +
             (eventCategoryId != null ? "eventCategoryId=" + eventCategoryId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

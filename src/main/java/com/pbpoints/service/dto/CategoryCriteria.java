@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.TimeType;
 import com.pbpoints.domain.enumeration.TimeType;
@@ -90,25 +90,11 @@ public class CategoryCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -120,25 +106,11 @@ public class CategoryCriteria implements Serializable, Criteria {
         return description;
     }
 
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
-        return description;
-    }
-
     public void setDescription(StringFilter description) {
         this.description = description;
     }
 
     public TimeTypeFilter getGameTimeType() {
-        return gameTimeType;
-    }
-
-    public TimeTypeFilter gameTimeType() {
-        if (gameTimeType == null) {
-            gameTimeType = new TimeTypeFilter();
-        }
         return gameTimeType;
     }
 
@@ -150,25 +122,11 @@ public class CategoryCriteria implements Serializable, Criteria {
         return gameTime;
     }
 
-    public IntegerFilter gameTime() {
-        if (gameTime == null) {
-            gameTime = new IntegerFilter();
-        }
-        return gameTime;
-    }
-
     public void setGameTime(IntegerFilter gameTime) {
         this.gameTime = gameTime;
     }
 
     public TimeTypeFilter getStopTimeType() {
-        return stopTimeType;
-    }
-
-    public TimeTypeFilter stopTimeType() {
-        if (stopTimeType == null) {
-            stopTimeType = new TimeTypeFilter();
-        }
         return stopTimeType;
     }
 
@@ -180,25 +138,11 @@ public class CategoryCriteria implements Serializable, Criteria {
         return stopTime;
     }
 
-    public IntegerFilter stopTime() {
-        if (stopTime == null) {
-            stopTime = new IntegerFilter();
-        }
-        return stopTime;
-    }
-
     public void setStopTime(IntegerFilter stopTime) {
         this.stopTime = stopTime;
     }
 
     public IntegerFilter getTotalPoints() {
-        return totalPoints;
-    }
-
-    public IntegerFilter totalPoints() {
-        if (totalPoints == null) {
-            totalPoints = new IntegerFilter();
-        }
         return totalPoints;
     }
 
@@ -210,13 +154,6 @@ public class CategoryCriteria implements Serializable, Criteria {
         return difPoints;
     }
 
-    public IntegerFilter difPoints() {
-        if (difPoints == null) {
-            difPoints = new IntegerFilter();
-        }
-        return difPoints;
-    }
-
     public void setDifPoints(IntegerFilter difPoints) {
         this.difPoints = difPoints;
     }
@@ -225,25 +162,11 @@ public class CategoryCriteria implements Serializable, Criteria {
         return order;
     }
 
-    public IntegerFilter order() {
-        if (order == null) {
-            order = new IntegerFilter();
-        }
-        return order;
-    }
-
     public void setOrder(IntegerFilter order) {
         this.order = order;
     }
 
     public LongFilter getTournamentId() {
-        return tournamentId;
-    }
-
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
         return tournamentId;
     }
 
@@ -292,10 +215,10 @@ public class CategoryCriteria implements Serializable, Criteria {
         );
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "CategoryCriteria{" +
+        return (
+            "CategoryCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
@@ -307,6 +230,7 @@ public class CategoryCriteria implements Serializable, Criteria {
             (difPoints != null ? "difPoints=" + difPoints + ", " : "") +
             (order != null ? "order=" + order + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

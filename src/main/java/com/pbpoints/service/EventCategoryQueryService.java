@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.EventCategory;
 import com.pbpoints.repository.EventCategoryRepository;
-import com.pbpoints.service.criteria.EventCategoryCriteria;
+import com.pbpoints.service.dto.EventCategoryCriteria;
 import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.service.mapper.EventCategoryMapper;
 import java.util.List;
@@ -84,22 +84,10 @@ public class EventCategoryQueryService extends QueryService<EventCategory> {
         Specification<EventCategory> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), EventCategory_.id));
+                specification = specification.and(buildSpecification(criteria.getId(), EventCategory_.id));
             }
             if (criteria.getSplitDeck() != null) {
                 specification = specification.and(buildSpecification(criteria.getSplitDeck(), EventCategory_.splitDeck));
-            }
-            if (criteria.getGameId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getGameId(), root -> root.join(EventCategory_.games, JoinType.LEFT).get(Game_.id))
-                    );
-            }
-            if (criteria.getRosterId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getRosterId(), root -> root.join(EventCategory_.rosters, JoinType.LEFT).get(Roster_.id))
-                    );
             }
             if (criteria.getEventId() != null) {
                 specification =
@@ -120,6 +108,12 @@ public class EventCategoryQueryService extends QueryService<EventCategory> {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getFormatId(), root -> root.join(EventCategory_.format, JoinType.LEFT).get(Format_.id))
+                    );
+            }
+            if (criteria.getGameId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getGameId(), root -> root.join(EventCategory_.games, JoinType.LEFT).get(Game_.id))
                     );
             }
         }

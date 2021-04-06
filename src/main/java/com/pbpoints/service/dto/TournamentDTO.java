@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Lob;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.Tournament} entity.
@@ -31,7 +30,9 @@ public class TournamentDTO implements Serializable {
 
     private Integer qtyTeamGroups;
 
-    private UserDTO owner;
+    private Long ownerId;
+
+    private String ownerLogin;
 
     public Long getId() {
         return id;
@@ -65,7 +66,7 @@ public class TournamentDTO implements Serializable {
         this.status = status;
     }
 
-    public Boolean getCategorize() {
+    public Boolean isCategorize() {
         return categorize;
     }
 
@@ -105,12 +106,20 @@ public class TournamentDTO implements Serializable {
         this.qtyTeamGroups = qtyTeamGroups;
     }
 
-    public UserDTO getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(Long userId) {
+        this.ownerId = userId;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String userLogin) {
+        this.ownerLogin = userLogin;
     }
 
     @Override
@@ -118,35 +127,52 @@ public class TournamentDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TournamentDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         TournamentDTO tournamentDTO = (TournamentDTO) o;
-        if (this.id == null) {
+        if (tournamentDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, tournamentDTO.id);
+        return Objects.equals(getId(), tournamentDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TournamentDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", closeInscrDays=" + getCloseInscrDays() +
-            ", status='" + getStatus() + "'" +
-            ", categorize='" + getCategorize() + "'" +
-            ", logo='" + getLogo() + "'" +
-            ", cantPlayersNextCategory=" + getCantPlayersNextCategory() +
-            ", qtyTeamGroups=" + getQtyTeamGroups() +
-            ", owner=" + getOwner() +
-            "}";
+        return (
+            "TournamentDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", closeInscrDays=" +
+            getCloseInscrDays() +
+            ", status='" +
+            getStatus() +
+            "'" +
+            ", categorize='" +
+            isCategorize() +
+            "'" +
+            ", logo='" +
+            getLogo() +
+            "'" +
+            ", cantPlayersNextCategory=" +
+            getCantPlayersNextCategory() +
+            ", qtyTeamGroups=" +
+            getQtyTeamGroups() +
+            ", owner=" +
+            getOwnerId() +
+            ", owner='" +
+            getOwnerLogin() +
+            "'" +
+            "}"
+        );
     }
 }

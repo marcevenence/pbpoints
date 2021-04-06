@@ -3,13 +3,17 @@ package com.pbpoints.service;
 import com.pbpoints.config.Constants;
 import com.pbpoints.domain.Authority;
 import com.pbpoints.domain.User;
+import com.pbpoints.domain.UserExtra;
 import com.pbpoints.repository.AuthorityRepository;
+import com.pbpoints.repository.UserExtraRepository;
 import com.pbpoints.repository.UserRepository;
 import com.pbpoints.security.AuthoritiesConstants;
 import com.pbpoints.security.SecurityUtils;
 import com.pbpoints.service.dto.AdminUserDTO;
 import com.pbpoints.service.dto.UserDTO;
+import com.pbpoints.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +26,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import tech.jhipster.security.RandomUtil;
 
 /**
@@ -41,16 +46,20 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
+    private final UserExtraRepository userExtraRepository;
+
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        CacheManager cacheManager,
+        UserExtraRepository userExtraRepository
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.userExtraRepository = userExtraRepository;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -88,7 +97,7 @@ public class UserService {
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository
             .findOneByEmailIgnoreCase(mail)
-            .filter(User::isActivated)
+            .filter(User::getActivated)
             .map(
                 user -> {
                     user.setResetKey(RandomUtil.generateResetKey());
@@ -146,7 +155,7 @@ public class UserService {
     }
 
     private boolean removeNonActivatedUser(User existingUser) {
-        if (existingUser.isActivated()) {
+        if (existingUser.getActivated()) {
             return false;
         }
         userRepository.delete(existingUser);
@@ -188,6 +197,53 @@ public class UserService {
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
+    }
+
+    public User createUser(
+        String login,
+        String password,
+        String firstName,
+        String lastName,
+        String email,
+        String langKey,
+        String phone,
+        String numDoc,
+        LocalDate bornDate,
+        byte[] picture,
+        String pictureContentType
+    ) {
+        User newUser = new User();
+        Authority authority = authorityRepository.findByName(AuthoritiesConstants.USER);
+        Set<Authority> authorities = new HashSet<>();
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setLogin(login);
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setLangKey(langKey);
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+        authorities.add(authority);
+        newUser.setAuthorities(authorities);
+        userRepository.save(newUser);
+        log.debug("Created Information for User: {}", newUser);
+
+        // Create and save the UserExtra entity
+        UserExtra newUserExtra = new UserExtra();
+        newUserExtra.setUser(newUser);
+        newUserExtra.setPhone(phone);
+        newUserExtra.setNumDoc(numDoc);
+        newUserExtra.setBornDate(bornDate);
+        newUserExtra.setPicture(picture);
+        newUserExtra.setPictureContentType(pictureContentType);
+        userExtraRepository.save(newUserExtra);
+        log.debug("Created Information for UserExtra: {}", newUserExtra);
+
+        return newUser;
     }
 
     /**
@@ -243,31 +299,60 @@ public class UserService {
     }
 
     /**
-     * Update basic information (first name, last name, email, language) for the current user.
+     * Update all information for a specific user, and return the modified user.
      *
-     * @param firstName first name of user.
-     * @param lastName  last name of user.
-     * @param email     email id of user.
-     * @param langKey   language key.
-     * @param imageUrl  image URL of user.
+     * @param managedUserVM user to update.
+     * @return updated user.
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils
-            .getCurrentUserLogin()
-            .flatMap(userRepository::findOneByLogin)
-            .ifPresent(
-                user -> {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+    public Optional<UserDTO> updateUser(ManagedUserVM managedUserVM) {
+        Optional<UserExtra> userExtra = userExtraRepository.findById(managedUserVM.getId());
+        if (!userExtra.isPresent()) {
+            User user = userRepository.getOne(managedUserVM.getId());
+            userExtra = Optional.of(new UserExtra(user));
+        }
+        return userExtra
+            .map(
+                u -> {
+                    if (!ObjectUtils.isEmpty(managedUserVM.getNumDoc())) {
+                        u.setNumDoc(managedUserVM.getNumDoc());
                     }
-                    user.setLangKey(langKey);
-                    user.setImageUrl(imageUrl);
+                    if (!ObjectUtils.isEmpty(managedUserVM.getPhone())) {
+                        u.setPhone(managedUserVM.getPhone());
+                    }
+                    if (!ObjectUtils.isEmpty(managedUserVM.getBornDate())) {
+                        u.setBornDate(managedUserVM.getBornDate());
+                    }
+                    if (!ObjectUtils.isEmpty(managedUserVM.getPicture())) {
+                        u.setPicture(managedUserVM.getPicture());
+                    }
+                    if (!ObjectUtils.isEmpty(managedUserVM.getPictureContentType())) {
+                        u.setPictureContentType(managedUserVM.getPictureContentType());
+                    }
+                    User user = u.getUser();
                     this.clearUserCaches(user);
-                    log.debug("Changed Information for User: {}", user);
+                    user.setLogin(managedUserVM.getLogin().toLowerCase());
+                    user.setFirstName(managedUserVM.getFirstName());
+                    user.setLastName(managedUserVM.getLastName());
+                    user.setEmail(managedUserVM.getEmail().toLowerCase());
+                    user.setImageUrl(managedUserVM.getImageUrl());
+                    user.setActivated(managedUserVM.isActivated());
+                    user.setLangKey(managedUserVM.getLangKey());
+                    Set<Authority> managedAuthorities = user.getAuthorities();
+                    managedAuthorities.clear();
+                    managedUserVM
+                        .getAuthorities()
+                        .stream()
+                        .map(authorityRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .forEach(managedAuthorities::add);
+                    this.clearUserCaches(user);
+                    userExtraRepository.save(u);
+                    log.debug("Changed Information for User: {}", u);
+                    return u.getUser();
                 }
-            );
+            )
+            .map(UserDTO::new);
     }
 
     @Transactional

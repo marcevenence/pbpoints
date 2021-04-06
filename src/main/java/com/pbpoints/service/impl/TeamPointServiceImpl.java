@@ -31,6 +31,12 @@ public class TeamPointServiceImpl implements TeamPointService {
         this.teamPointMapper = teamPointMapper;
     }
 
+    /**
+     * Save a teamPoint.
+     *
+     * @param teamPointDTO the entity to save.
+     * @return the persisted entity.
+     */
     @Override
     public TeamPointDTO save(TeamPointDTO teamPointDTO) {
         log.debug("Request to save TeamPoint : {}", teamPointDTO);
@@ -39,22 +45,12 @@ public class TeamPointServiceImpl implements TeamPointService {
         return teamPointMapper.toDto(teamPoint);
     }
 
-    @Override
-    public Optional<TeamPointDTO> partialUpdate(TeamPointDTO teamPointDTO) {
-        log.debug("Request to partially update TeamPoint : {}", teamPointDTO);
-
-        return teamPointRepository
-            .findById(teamPointDTO.getId())
-            .map(
-                existingTeamPoint -> {
-                    teamPointMapper.partialUpdate(existingTeamPoint, teamPointDTO);
-                    return existingTeamPoint;
-                }
-            )
-            .map(teamPointRepository::save)
-            .map(teamPointMapper::toDto);
-    }
-
+    /**
+     * Get all the teamPoints.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<TeamPointDTO> findAll(Pageable pageable) {
@@ -62,6 +58,12 @@ public class TeamPointServiceImpl implements TeamPointService {
         return teamPointRepository.findAll(pageable).map(teamPointMapper::toDto);
     }
 
+    /**
+     * Get one teamPoint by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<TeamPointDTO> findOne(Long id) {
@@ -69,6 +71,11 @@ public class TeamPointServiceImpl implements TeamPointService {
         return teamPointRepository.findById(id).map(teamPointMapper::toDto);
     }
 
+    /**
+     * Delete the teamPoint by id.
+     *
+     * @param id the id of the entity.
+     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete TeamPoint : {}", id);

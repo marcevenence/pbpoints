@@ -14,9 +14,11 @@ public class TeamDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private TeamPointDTO teamPoint;
+    private Long teamPointId;
 
-    private EventDTO event;
+    private Long eventId;
+
+    private String eventName;
 
     public Long getId() {
         return id;
@@ -34,20 +36,28 @@ public class TeamDetailPointDTO implements Serializable {
         this.points = points;
     }
 
-    public TeamPointDTO getTeamPoint() {
-        return teamPoint;
+    public Long getTeamPointId() {
+        return teamPointId;
     }
 
-    public void setTeamPoint(TeamPointDTO teamPoint) {
-        this.teamPoint = teamPoint;
+    public void setTeamPointId(Long teamPointId) {
+        this.teamPointId = teamPointId;
     }
 
-    public EventDTO getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setEvent(EventDTO event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     @Override
@@ -55,30 +65,38 @@ public class TeamDetailPointDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TeamDetailPointDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         TeamDetailPointDTO teamDetailPointDTO = (TeamDetailPointDTO) o;
-        if (this.id == null) {
+        if (teamDetailPointDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, teamDetailPointDTO.id);
+        return Objects.equals(getId(), teamDetailPointDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TeamDetailPointDTO{" +
-            "id=" + getId() +
-            ", points=" + getPoints() +
-            ", teamPoint=" + getTeamPoint() +
-            ", event=" + getEvent() +
-            "}";
+        return (
+            "TeamDetailPointDTO{" +
+            "id=" +
+            getId() +
+            ", points=" +
+            getPoints() +
+            ", teamPoint=" +
+            getTeamPointId() +
+            ", event=" +
+            getEventId() +
+            ", event='" +
+            getEventName() +
+            "'" +
+            "}"
+        );
     }
 }

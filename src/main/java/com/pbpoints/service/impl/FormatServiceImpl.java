@@ -31,6 +31,12 @@ public class FormatServiceImpl implements FormatService {
         this.formatMapper = formatMapper;
     }
 
+    /**
+     * Save a format.
+     *
+     * @param formatDTO the entity to save.
+     * @return the persisted entity.
+     */
     @Override
     public FormatDTO save(FormatDTO formatDTO) {
         log.debug("Request to save Format : {}", formatDTO);
@@ -39,22 +45,12 @@ public class FormatServiceImpl implements FormatService {
         return formatMapper.toDto(format);
     }
 
-    @Override
-    public Optional<FormatDTO> partialUpdate(FormatDTO formatDTO) {
-        log.debug("Request to partially update Format : {}", formatDTO);
-
-        return formatRepository
-            .findById(formatDTO.getId())
-            .map(
-                existingFormat -> {
-                    formatMapper.partialUpdate(existingFormat, formatDTO);
-                    return existingFormat;
-                }
-            )
-            .map(formatRepository::save)
-            .map(formatMapper::toDto);
-    }
-
+    /**
+     * Get all the formats.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<FormatDTO> findAll(Pageable pageable) {
@@ -62,6 +58,12 @@ public class FormatServiceImpl implements FormatService {
         return formatRepository.findAll(pageable).map(formatMapper::toDto);
     }
 
+    /**
+     * Get one format by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<FormatDTO> findOne(Long id) {
@@ -69,6 +71,11 @@ public class FormatServiceImpl implements FormatService {
         return formatRepository.findById(id).map(formatMapper::toDto);
     }
 
+    /**
+     * Delete the format by id.
+     *
+     * @param id the id of the entity.
+     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete Format : {}", id);

@@ -1,25 +1,30 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.EventRepository;
+import com.pbpoints.domain.Event;
 import com.pbpoints.service.EventQueryService;
 import com.pbpoints.service.EventService;
-import com.pbpoints.service.criteria.EventCriteria;
+import com.pbpoints.service.dto.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
+import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import javax.persistence.NoResultException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
@@ -41,14 +46,14 @@ public class EventResource {
 
     private final EventService eventService;
 
-    private final EventRepository eventRepository;
-
     private final EventQueryService eventQueryService;
 
-    public EventResource(EventService eventService, EventRepository eventRepository, EventQueryService eventQueryService) {
+    private final EventMapper eventMapper;
+
+    public EventResource(EventService eventService, EventQueryService eventQueryService, EventMapper eventMapper) {
         this.eventService = eventService;
-        this.eventRepository = eventRepository;
         this.eventQueryService = eventQueryService;
+        this.eventMapper = eventMapper;
     }
 
     /**
@@ -67,84 +72,40 @@ public class EventResource {
         EventDTO result = eventService.save(eventDTO);
         return ResponseEntity
             .created(new URI("/api/events/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            //.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /events/:id} : Updates an existing event.
+     * {@code PUT  /events} : Updates an existing event.
      *
-     * @param id the id of the eventDTO to save.
      * @param eventDTO the eventDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventDTO,
      * or with status {@code 400 (Bad Request)} if the eventDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the eventDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/events/{id}")
-    public ResponseEntity<EventDTO> updateEvent(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody EventDTO eventDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Event : {}, {}", id, eventDTO);
+    @PutMapping("/events")
+    public ResponseEntity<EventDTO> updateEvent(@RequestBody EventDTO eventDTO) throws URISyntaxException {
+        log.debug("REST request to update Event : {}", eventDTO);
         if (eventDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, eventDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!eventRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         EventDTO result = eventService.save(eventDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventDTO.getId().toString()))
+            //.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventDTO.getName()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /events/:id} : Partial updates given fields of an existing event, field will ignore if it is null
-     *
-     * @param id the id of the eventDTO to save.
-     * @param eventDTO the eventDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventDTO,
-     * or with status {@code 400 (Bad Request)} if the eventDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the eventDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the eventDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/events/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<EventDTO> partialUpdateEvent(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody EventDTO eventDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Event partially : {}, {}", id, eventDTO);
-        if (eventDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, eventDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!eventRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<EventDTO> result = eventService.partialUpdate(eventDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventDTO.getId().toString())
-        );
     }
 
     /**
      * {@code GET  /events} : get all the events.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
      */
@@ -195,5 +156,70 @@ public class EventResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/events/generateXML/{id}")
+    public ResponseEntity<String> createEventXML(@PathVariable Long id)
+        throws URISyntaxException, ParserConfigurationException, TransformerConfigurationException, IOException {
+        log.debug("REST request to generar a fixture from: {}", id);
+        if (id == null) {
+            throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");
+        }
+        try {
+            Optional<EventDTO> eventDTO = eventService.findOne(id);
+            if (eventDTO.isPresent()) {
+                Event event = eventMapper.toEntity(eventDTO.get());
+                log.debug("Event: {}" + event);
+                if (event.getEndInscriptionDate().isAfter(LocalDate.now())) throw new BadRequestAlertException(
+                    "Subscription Date no End",
+                    ENTITY_NAME,
+                    "inscrNotFinish"
+                );
+                if (!eventService.hasCategories(event)) throw new BadRequestAlertException(
+                    "No EventCategories Found",
+                    ENTITY_NAME,
+                    "noEventCategoriesFound"
+                );
+                if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
+                eventService.generarXML(event);
+                return ResponseEntity.ok().body("Archivo generado con éxito");
+            } else {
+                throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
+            }
+        } catch (NoResultException e) {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PostMapping(value = "/events/importXML", consumes = { "multipart/form-data" })
+    public ResponseEntity<?> write(@RequestParam(value = "file") MultipartFile multipartFile) throws Exception {
+        log.debug("REST request to Import file: {}", multipartFile);
+        return ResponseEntity.ok(eventService.submitXML(multipartFile));
+    }
+
+    @GetMapping("/events/generatepdf/{id}")
+    public ResponseEntity<Void> generatePdf(@PathVariable Long id) {
+        log.debug("REST request to Generate a Pdf File from: {}", id);
+        if (id == null) {
+            throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");
+        }
+        Optional<EventDTO> eventDTO = eventService.findOne(id);
+        if (eventDTO.isPresent()) {
+            Event event = eventMapper.toEntity(eventDTO.get());
+            log.debug("Event: {}" + event);
+            if (event.getEndInscriptionDate().isAfter(LocalDate.now())) throw new BadRequestAlertException(
+                "Subscription Date no End",
+                ENTITY_NAME,
+                "inscrNotFinish"
+            );
+            if (!eventService.hasCategories(event)) throw new BadRequestAlertException(
+                "No EventCategories Found",
+                ENTITY_NAME,
+                "noEventCategoriesFound"
+            );
+            if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
+            eventService.generatePdf(event);
+            return ResponseEntity.noContent().build();
+        } else throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
     }
 }

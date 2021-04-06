@@ -18,14 +18,6 @@ public interface TeamPointService {
     TeamPointDTO save(TeamPointDTO teamPointDTO);
 
     /**
-     * Partially updates a teamPoint.
-     *
-     * @param teamPointDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    Optional<TeamPointDTO> partialUpdate(TeamPointDTO teamPointDTO);
-
-    /**
      * Get all the teamPoints.
      *
      * @param pageable the pagination information.

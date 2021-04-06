@@ -3,7 +3,6 @@ package com.pbpoints.service.dto;
 import com.pbpoints.domain.enumeration.ProfileUser;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.Player} entity.
@@ -14,9 +13,11 @@ public class PlayerDTO implements Serializable {
 
     private ProfileUser profile;
 
-    private UserDTO user;
+    private Long userId;
 
-    private RosterDTO roster;
+    private String userLogin;
+
+    private Long rosterId;
 
     public Long getId() {
         return id;
@@ -34,20 +35,28 @@ public class PlayerDTO implements Serializable {
         this.profile = profile;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public RosterDTO getRoster() {
-        return roster;
+    public String getUserLogin() {
+        return userLogin;
     }
 
-    public void setRoster(RosterDTO roster) {
-        this.roster = roster;
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public Long getRosterId() {
+        return rosterId;
+    }
+
+    public void setRosterId(Long rosterId) {
+        this.rosterId = rosterId;
     }
 
     @Override
@@ -55,30 +64,39 @@ public class PlayerDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PlayerDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         PlayerDTO playerDTO = (PlayerDTO) o;
-        if (this.id == null) {
+        if (playerDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, playerDTO.id);
+        return Objects.equals(getId(), playerDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "PlayerDTO{" +
-            "id=" + getId() +
-            ", profile='" + getProfile() + "'" +
-            ", user=" + getUser() +
-            ", roster=" + getRoster() +
-            "}";
+        return (
+            "PlayerDTO{" +
+            "id=" +
+            getId() +
+            ", profile='" +
+            getProfile() +
+            "'" +
+            ", user=" +
+            getUserId() +
+            ", user='" +
+            getUserLogin() +
+            "'" +
+            ", roster=" +
+            getRosterId() +
+            "}"
+        );
     }
 }

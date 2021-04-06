@@ -2,7 +2,6 @@ package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.EventCategory} entity.
@@ -13,11 +12,17 @@ public class EventCategoryDTO implements Serializable {
 
     private Boolean splitDeck;
 
-    private EventDTO event;
+    private Long eventId;
 
-    private CategoryDTO category;
+    private String eventName;
 
-    private FormatDTO format;
+    private Long categoryId;
+
+    private String categoryName;
+
+    private Long formatId;
+
+    private String formatName;
 
     public Long getId() {
         return id;
@@ -27,7 +32,7 @@ public class EventCategoryDTO implements Serializable {
         this.id = id;
     }
 
-    public Boolean getSplitDeck() {
+    public Boolean isSplitDeck() {
         return splitDeck;
     }
 
@@ -35,28 +40,52 @@ public class EventCategoryDTO implements Serializable {
         this.splitDeck = splitDeck;
     }
 
-    public EventDTO getEvent() {
-        return event;
+    public Long getEventId() {
+        return eventId;
     }
 
-    public void setEvent(EventDTO event) {
-        this.event = event;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
-    public CategoryDTO getCategory() {
-        return category;
+    public String getEventName() {
+        return eventName;
     }
 
-    public void setCategory(CategoryDTO category) {
-        this.category = category;
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
-    public FormatDTO getFormat() {
-        return format;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setFormat(FormatDTO format) {
-        this.format = format;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public Long getFormatId() {
+        return formatId;
+    }
+
+    public void setFormatId(Long formatId) {
+        this.formatId = formatId;
+    }
+
+    public String getFormatName() {
+        return formatName;
+    }
+
+    public void setFormatName(String formatName) {
+        this.formatName = formatName;
     }
 
     @Override
@@ -64,31 +93,47 @@ public class EventCategoryDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof EventCategoryDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         EventCategoryDTO eventCategoryDTO = (EventCategoryDTO) o;
-        if (this.id == null) {
+        if (eventCategoryDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, eventCategoryDTO.id);
+        return Objects.equals(getId(), eventCategoryDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "EventCategoryDTO{" +
-            "id=" + getId() +
-            ", splitDeck='" + getSplitDeck() + "'" +
-            ", event=" + getEvent() +
-            ", category=" + getCategory() +
-            ", format=" + getFormat() +
-            "}";
+        return (
+            "EventCategoryDTO{" +
+            "id=" +
+            getId() +
+            ", splitDeck='" +
+            isSplitDeck() +
+            "'" +
+            ", event=" +
+            getEventId() +
+            ", event='" +
+            getEventName() +
+            "'" +
+            ", category=" +
+            getCategoryId() +
+            ", category='" +
+            getCategoryName() +
+            "'" +
+            ", format=" +
+            getFormatId() +
+            ", format='" +
+            getFormatName() +
+            "'" +
+            "}"
+        );
     }
 }

@@ -31,6 +31,12 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         this.playerPointMapper = playerPointMapper;
     }
 
+    /**
+     * Save a playerPoint.
+     *
+     * @param playerPointDTO the entity to save.
+     * @return the persisted entity.
+     */
     @Override
     public PlayerPointDTO save(PlayerPointDTO playerPointDTO) {
         log.debug("Request to save PlayerPoint : {}", playerPointDTO);
@@ -39,22 +45,12 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         return playerPointMapper.toDto(playerPoint);
     }
 
-    @Override
-    public Optional<PlayerPointDTO> partialUpdate(PlayerPointDTO playerPointDTO) {
-        log.debug("Request to partially update PlayerPoint : {}", playerPointDTO);
-
-        return playerPointRepository
-            .findById(playerPointDTO.getId())
-            .map(
-                existingPlayerPoint -> {
-                    playerPointMapper.partialUpdate(existingPlayerPoint, playerPointDTO);
-                    return existingPlayerPoint;
-                }
-            )
-            .map(playerPointRepository::save)
-            .map(playerPointMapper::toDto);
-    }
-
+    /**
+     * Get all the playerPoints.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<PlayerPointDTO> findAll(Pageable pageable) {
@@ -62,6 +58,12 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         return playerPointRepository.findAll(pageable).map(playerPointMapper::toDto);
     }
 
+    /**
+     * Get one playerPoint by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<PlayerPointDTO> findOne(Long id) {
@@ -69,6 +71,11 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         return playerPointRepository.findById(id).map(playerPointMapper::toDto);
     }
 
+    /**
+     * Delete the playerPoint by id.
+     *
+     * @param id the id of the entity.
+     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete PlayerPoint : {}", id);

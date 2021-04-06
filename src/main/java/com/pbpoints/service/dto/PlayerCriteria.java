@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.ProfileUser;
 import java.io.Serializable;
@@ -68,25 +68,11 @@ public class PlayerCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public ProfileUserFilter getProfile() {
-        return profile;
-    }
-
-    public ProfileUserFilter profile() {
-        if (profile == null) {
-            profile = new ProfileUserFilter();
-        }
         return profile;
     }
 
@@ -98,25 +84,11 @@ public class PlayerCriteria implements Serializable, Criteria {
         return userId;
     }
 
-    public LongFilter userId() {
-        if (userId == null) {
-            userId = new LongFilter();
-        }
-        return userId;
-    }
-
     public void setUserId(LongFilter userId) {
         this.userId = userId;
     }
 
     public LongFilter getRosterId() {
-        return rosterId;
-    }
-
-    public LongFilter rosterId() {
-        if (rosterId == null) {
-            rosterId = new LongFilter();
-        }
         return rosterId;
     }
 
@@ -146,14 +118,15 @@ public class PlayerCriteria implements Serializable, Criteria {
         return Objects.hash(id, profile, userId, rosterId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "PlayerCriteria{" +
+        return (
+            "PlayerCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (profile != null ? "profile=" + profile + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (rosterId != null ? "rosterId=" + rosterId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

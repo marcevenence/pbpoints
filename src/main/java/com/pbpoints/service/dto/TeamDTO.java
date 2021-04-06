@@ -16,7 +16,9 @@ public class TeamDTO implements Serializable {
 
     private Boolean active;
 
-    private UserDTO owner;
+    private Long ownerId;
+
+    private String ownerLogin;
 
     public Long getId() {
         return id;
@@ -34,7 +36,7 @@ public class TeamDTO implements Serializable {
         this.name = name;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 
@@ -42,12 +44,20 @@ public class TeamDTO implements Serializable {
         this.active = active;
     }
 
-    public UserDTO getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(UserDTO owner) {
-        this.owner = owner;
+    public void setOwnerId(Long userId) {
+        this.ownerId = userId;
+    }
+
+    public String getOwnerLogin() {
+        return ownerLogin;
+    }
+
+    public void setOwnerLogin(String userLogin) {
+        this.ownerLogin = userLogin;
     }
 
     @Override
@@ -55,30 +65,40 @@ public class TeamDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TeamDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         TeamDTO teamDTO = (TeamDTO) o;
-        if (this.id == null) {
+        if (teamDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, teamDTO.id);
+        return Objects.equals(getId(), teamDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TeamDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", active='" + getActive() + "'" +
-            ", owner=" + getOwner() +
-            "}";
+        return (
+            "TeamDTO{" +
+            "id=" +
+            getId() +
+            ", name='" +
+            getName() +
+            "'" +
+            ", active='" +
+            isActive() +
+            "'" +
+            ", owner=" +
+            getOwnerId() +
+            ", owner='" +
+            getOwnerLogin() +
+            "'" +
+            "}"
+        );
     }
 }

@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -62,25 +62,11 @@ public class FormulaCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getFormula() {
-        return formula;
-    }
-
-    public StringFilter formula() {
-        if (formula == null) {
-            formula = new StringFilter();
-        }
         return formula;
     }
 
@@ -92,25 +78,11 @@ public class FormulaCriteria implements Serializable, Criteria {
         return var1;
     }
 
-    public StringFilter var1() {
-        if (var1 == null) {
-            var1 = new StringFilter();
-        }
-        return var1;
-    }
-
     public void setVar1(StringFilter var1) {
         this.var1 = var1;
     }
 
     public StringFilter getVar2() {
-        return var2;
-    }
-
-    public StringFilter var2() {
-        if (var2 == null) {
-            var2 = new StringFilter();
-        }
         return var2;
     }
 
@@ -122,25 +94,11 @@ public class FormulaCriteria implements Serializable, Criteria {
         return var3;
     }
 
-    public StringFilter var3() {
-        if (var3 == null) {
-            var3 = new StringFilter();
-        }
-        return var3;
-    }
-
     public void setVar3(StringFilter var3) {
         this.var3 = var3;
     }
 
     public StringFilter getDescription() {
-        return description;
-    }
-
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
         return description;
     }
 
@@ -152,25 +110,11 @@ public class FormulaCriteria implements Serializable, Criteria {
         return example;
     }
 
-    public StringFilter example() {
-        if (example == null) {
-            example = new StringFilter();
-        }
-        return example;
-    }
-
     public void setExample(StringFilter example) {
         this.example = example;
     }
 
     public LongFilter getTournamentId() {
-        return tournamentId;
-    }
-
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
         return tournamentId;
     }
 
@@ -204,10 +148,10 @@ public class FormulaCriteria implements Serializable, Criteria {
         return Objects.hash(id, formula, var1, var2, var3, description, example, tournamentId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "FormulaCriteria{" +
+        return (
+            "FormulaCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (formula != null ? "formula=" + formula + ", " : "") +
             (var1 != null ? "var1=" + var1 + ", " : "") +
@@ -216,6 +160,7 @@ public class FormulaCriteria implements Serializable, Criteria {
             (description != null ? "description=" + description + ", " : "") +
             (example != null ? "example=" + example + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
-            "}";
+            "}"
+        );
     }
 }

@@ -1,4 +1,4 @@
-package com.pbpoints.service.criteria;
+package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.Status;
 import java.io.Serializable;
@@ -60,9 +60,9 @@ public class EventCriteria implements Serializable, Criteria {
 
     private InstantFilter updatedDate;
 
-    private LongFilter cityId;
-
     private LongFilter tournamentId;
+
+    private LongFilter cityId;
 
     public EventCriteria() {}
 
@@ -75,8 +75,8 @@ public class EventCriteria implements Serializable, Criteria {
         this.status = other.status == null ? null : other.status.copy();
         this.createDate = other.createDate == null ? null : other.createDate.copy();
         this.updatedDate = other.updatedDate == null ? null : other.updatedDate.copy();
-        this.cityId = other.cityId == null ? null : other.cityId.copy();
         this.tournamentId = other.tournamentId == null ? null : other.tournamentId.copy();
+        this.cityId = other.cityId == null ? null : other.cityId.copy();
     }
 
     @Override
@@ -88,25 +88,11 @@ public class EventCriteria implements Serializable, Criteria {
         return id;
     }
 
-    public LongFilter id() {
-        if (id == null) {
-            id = new LongFilter();
-        }
-        return id;
-    }
-
     public void setId(LongFilter id) {
         this.id = id;
     }
 
     public StringFilter getName() {
-        return name;
-    }
-
-    public StringFilter name() {
-        if (name == null) {
-            name = new StringFilter();
-        }
         return name;
     }
 
@@ -118,25 +104,11 @@ public class EventCriteria implements Serializable, Criteria {
         return fromDate;
     }
 
-    public LocalDateFilter fromDate() {
-        if (fromDate == null) {
-            fromDate = new LocalDateFilter();
-        }
-        return fromDate;
-    }
-
     public void setFromDate(LocalDateFilter fromDate) {
         this.fromDate = fromDate;
     }
 
     public LocalDateFilter getEndDate() {
-        return endDate;
-    }
-
-    public LocalDateFilter endDate() {
-        if (endDate == null) {
-            endDate = new LocalDateFilter();
-        }
         return endDate;
     }
 
@@ -148,25 +120,11 @@ public class EventCriteria implements Serializable, Criteria {
         return endInscriptionDate;
     }
 
-    public LocalDateFilter endInscriptionDate() {
-        if (endInscriptionDate == null) {
-            endInscriptionDate = new LocalDateFilter();
-        }
-        return endInscriptionDate;
-    }
-
     public void setEndInscriptionDate(LocalDateFilter endInscriptionDate) {
         this.endInscriptionDate = endInscriptionDate;
     }
 
     public StatusFilter getStatus() {
-        return status;
-    }
-
-    public StatusFilter status() {
-        if (status == null) {
-            status = new StatusFilter();
-        }
         return status;
     }
 
@@ -178,13 +136,6 @@ public class EventCriteria implements Serializable, Criteria {
         return createDate;
     }
 
-    public InstantFilter createDate() {
-        if (createDate == null) {
-            createDate = new InstantFilter();
-        }
-        return createDate;
-    }
-
     public void setCreateDate(InstantFilter createDate) {
         this.createDate = createDate;
     }
@@ -193,45 +144,24 @@ public class EventCriteria implements Serializable, Criteria {
         return updatedDate;
     }
 
-    public InstantFilter updatedDate() {
-        if (updatedDate == null) {
-            updatedDate = new InstantFilter();
-        }
-        return updatedDate;
-    }
-
     public void setUpdatedDate(InstantFilter updatedDate) {
         this.updatedDate = updatedDate;
-    }
-
-    public LongFilter getCityId() {
-        return cityId;
-    }
-
-    public LongFilter cityId() {
-        if (cityId == null) {
-            cityId = new LongFilter();
-        }
-        return cityId;
-    }
-
-    public void setCityId(LongFilter cityId) {
-        this.cityId = cityId;
     }
 
     public LongFilter getTournamentId() {
         return tournamentId;
     }
 
-    public LongFilter tournamentId() {
-        if (tournamentId == null) {
-            tournamentId = new LongFilter();
-        }
-        return tournamentId;
-    }
-
     public void setTournamentId(LongFilter tournamentId) {
         this.tournamentId = tournamentId;
+    }
+
+    public LongFilter getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(LongFilter cityId) {
+        this.cityId = cityId;
     }
 
     @Override
@@ -252,20 +182,20 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(status, that.status) &&
             Objects.equals(createDate, that.createDate) &&
             Objects.equals(updatedDate, that.updatedDate) &&
-            Objects.equals(cityId, that.cityId) &&
-            Objects.equals(tournamentId, that.tournamentId)
+            Objects.equals(tournamentId, that.tournamentId) &&
+            Objects.equals(cityId, that.cityId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, fromDate, endDate, endInscriptionDate, status, createDate, updatedDate, cityId, tournamentId);
+        return Objects.hash(id, name, fromDate, endDate, endInscriptionDate, status, createDate, updatedDate, tournamentId, cityId);
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "EventCriteria{" +
+        return (
+            "EventCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (fromDate != null ? "fromDate=" + fromDate + ", " : "") +
@@ -274,8 +204,9 @@ public class EventCriteria implements Serializable, Criteria {
             (status != null ? "status=" + status + ", " : "") +
             (createDate != null ? "createDate=" + createDate + ", " : "") +
             (updatedDate != null ? "updatedDate=" + updatedDate + ", " : "") +
-            (cityId != null ? "cityId=" + cityId + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
-            "}";
+            (cityId != null ? "cityId=" + cityId + ", " : "") +
+            "}"
+        );
     }
 }

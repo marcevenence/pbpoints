@@ -44,27 +44,6 @@ public class CountryService {
     }
 
     /**
-     * Partially update a country.
-     *
-     * @param countryDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<CountryDTO> partialUpdate(CountryDTO countryDTO) {
-        log.debug("Request to partially update Country : {}", countryDTO);
-
-        return countryRepository
-            .findById(countryDTO.getId())
-            .map(
-                existingCountry -> {
-                    countryMapper.partialUpdate(existingCountry, countryDTO);
-                    return existingCountry;
-                }
-            )
-            .map(countryRepository::save)
-            .map(countryMapper::toDto);
-    }
-
-    /**
      * Get all the countries.
      *
      * @param pageable the pagination information.

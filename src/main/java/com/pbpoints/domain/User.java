@@ -149,7 +149,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isActivated() {
+    public boolean getActivated() {
         return activated;
     }
 

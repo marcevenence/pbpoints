@@ -1,18 +1,15 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.FormulaRepository;
 import com.pbpoints.service.FormulaQueryService;
 import com.pbpoints.service.FormulaService;
-import com.pbpoints.service.criteria.FormulaCriteria;
+import com.pbpoints.service.dto.FormulaCriteria;
 import com.pbpoints.service.dto.FormulaDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,13 +34,10 @@ public class FormulaResource {
 
     private final FormulaService formulaService;
 
-    private final FormulaRepository formulaRepository;
-
     private final FormulaQueryService formulaQueryService;
 
-    public FormulaResource(FormulaService formulaService, FormulaRepository formulaRepository, FormulaQueryService formulaQueryService) {
+    public FormulaResource(FormulaService formulaService, FormulaQueryService formulaQueryService) {
         this.formulaService = formulaService;
-        this.formulaRepository = formulaRepository;
         this.formulaQueryService = formulaQueryService;
     }
 
@@ -68,32 +62,20 @@ public class FormulaResource {
     }
 
     /**
-     * {@code PUT  /formulas/:id} : Updates an existing formula.
+     * {@code PUT  /formulas} : Updates an existing formula.
      *
-     * @param id the id of the formulaDTO to save.
      * @param formulaDTO the formulaDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated formulaDTO,
      * or with status {@code 400 (Bad Request)} if the formulaDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the formulaDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/formulas/{id}")
-    public ResponseEntity<FormulaDTO> updateFormula(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody FormulaDTO formulaDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Formula : {}, {}", id, formulaDTO);
+    @PutMapping("/formulas")
+    public ResponseEntity<FormulaDTO> updateFormula(@Valid @RequestBody FormulaDTO formulaDTO) throws URISyntaxException {
+        log.debug("REST request to update Formula : {}", formulaDTO);
         if (formulaDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, formulaDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!formulaRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         FormulaDTO result = formulaService.save(formulaDTO);
         return ResponseEntity
             .ok()
@@ -102,44 +84,9 @@ public class FormulaResource {
     }
 
     /**
-     * {@code PATCH  /formulas/:id} : Partial updates given fields of an existing formula, field will ignore if it is null
-     *
-     * @param id the id of the formulaDTO to save.
-     * @param formulaDTO the formulaDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated formulaDTO,
-     * or with status {@code 400 (Bad Request)} if the formulaDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the formulaDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the formulaDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/formulas/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<FormulaDTO> partialUpdateFormula(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody FormulaDTO formulaDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Formula partially : {}, {}", id, formulaDTO);
-        if (formulaDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, formulaDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!formulaRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<FormulaDTO> result = formulaService.partialUpdate(formulaDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, formulaDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /formulas} : get all the formulas.
      *
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of formulas in body.
      */

@@ -23,11 +23,14 @@ public class TournamentService {
 
     private final TournamentRepository tournamentRepository;
 
+    private final UserService userService;
+
     private final TournamentMapper tournamentMapper;
 
-    public TournamentService(TournamentRepository tournamentRepository, TournamentMapper tournamentMapper) {
+    public TournamentService(TournamentRepository tournamentRepository, TournamentMapper tournamentMapper, UserService userService) {
         this.tournamentRepository = tournamentRepository;
         this.tournamentMapper = tournamentMapper;
+        this.userService = userService;
     }
 
     /**
@@ -38,30 +41,13 @@ public class TournamentService {
      */
     public TournamentDTO save(TournamentDTO tournamentDTO) {
         log.debug("Request to save Tournament : {}", tournamentDTO);
+        if (tournamentDTO.getOwnerId() == 0) {
+            tournamentDTO.setOwnerId(userService.getUserWithAuthorities().get().getId());
+            log.debug("Request to save Tournament 2: {}", tournamentDTO);
+        }
         Tournament tournament = tournamentMapper.toEntity(tournamentDTO);
         tournament = tournamentRepository.save(tournament);
         return tournamentMapper.toDto(tournament);
-    }
-
-    /**
-     * Partially update a tournament.
-     *
-     * @param tournamentDTO the entity to update partially.
-     * @return the persisted entity.
-     */
-    public Optional<TournamentDTO> partialUpdate(TournamentDTO tournamentDTO) {
-        log.debug("Request to partially update Tournament : {}", tournamentDTO);
-
-        return tournamentRepository
-            .findById(tournamentDTO.getId())
-            .map(
-                existingTournament -> {
-                    tournamentMapper.partialUpdate(existingTournament, tournamentDTO);
-                    return existingTournament;
-                }
-            )
-            .map(tournamentRepository::save)
-            .map(tournamentMapper::toDto);
     }
 
     /**

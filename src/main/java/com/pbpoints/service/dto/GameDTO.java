@@ -35,11 +35,15 @@ public class GameDTO implements Serializable {
 
     private String clasif;
 
-    private TeamDTO teamA;
+    private Long teamAId;
 
-    private TeamDTO teamB;
+    private String teamAName;
 
-    private EventCategoryDTO eventCategory;
+    private Long teamBId;
+
+    private String teamBName;
+
+    private Long eventCategoryId;
 
     public Long getId() {
         return id;
@@ -137,28 +141,44 @@ public class GameDTO implements Serializable {
         this.clasif = clasif;
     }
 
-    public TeamDTO getTeamA() {
-        return teamA;
+    public Long getTeamAId() {
+        return teamAId;
     }
 
-    public void setTeamA(TeamDTO teamA) {
-        this.teamA = teamA;
+    public void setTeamAId(Long teamId) {
+        this.teamAId = teamId;
     }
 
-    public TeamDTO getTeamB() {
-        return teamB;
+    public String getTeamAName() {
+        return teamAName;
     }
 
-    public void setTeamB(TeamDTO teamB) {
-        this.teamB = teamB;
+    public void setTeamAName(String teamName) {
+        this.teamAName = teamName;
     }
 
-    public EventCategoryDTO getEventCategory() {
-        return eventCategory;
+    public Long getTeamBId() {
+        return teamBId;
     }
 
-    public void setEventCategory(EventCategoryDTO eventCategory) {
-        this.eventCategory = eventCategory;
+    public void setTeamBId(Long teamId) {
+        this.teamBId = teamId;
+    }
+
+    public String getTeamBName() {
+        return teamBName;
+    }
+
+    public void setTeamBName(String teamName) {
+        this.teamBName = teamName;
+    }
+
+    public Long getEventCategoryId() {
+        return eventCategoryId;
+    }
+
+    public void setEventCategoryId(Long eventCategoryId) {
+        this.eventCategoryId = eventCategoryId;
     }
 
     @Override
@@ -166,41 +186,65 @@ public class GameDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof GameDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         GameDTO gameDTO = (GameDTO) o;
-        if (this.id == null) {
+        if (gameDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, gameDTO.id);
+        return Objects.equals(getId(), gameDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "GameDTO{" +
-            "id=" + getId() +
-            ", pointsA=" + getPointsA() +
-            ", pointsB=" + getPointsB() +
-            ", splitDeckNum=" + getSplitDeckNum() +
-            ", timeLeft=" + getTimeLeft() +
-            ", status='" + getStatus() + "'" +
-            ", overtimeA=" + getOvertimeA() +
-            ", overtimeB=" + getOvertimeB() +
-            ", uvuA=" + getUvuA() +
-            ", uvuB=" + getUvuB() +
-            ", group=" + getGroup() +
-            ", clasif='" + getClasif() + "'" +
-            ", teamA=" + getTeamA() +
-            ", teamB=" + getTeamB() +
-            ", eventCategory=" + getEventCategory() +
-            "}";
+        return (
+            "GameDTO{" +
+            "id=" +
+            getId() +
+            ", pointsA=" +
+            getPointsA() +
+            ", pointsB=" +
+            getPointsB() +
+            ", splitDeckNum=" +
+            getSplitDeckNum() +
+            ", timeLeft=" +
+            getTimeLeft() +
+            ", status='" +
+            getStatus() +
+            "'" +
+            ", overtimeA=" +
+            getOvertimeA() +
+            ", overtimeB=" +
+            getOvertimeB() +
+            ", uvuA=" +
+            getUvuA() +
+            ", uvuB=" +
+            getUvuB() +
+            ", group=" +
+            getGroup() +
+            ", clasif='" +
+            getClasif() +
+            "'" +
+            ", teamA=" +
+            getTeamAId() +
+            ", teamA='" +
+            getTeamAName() +
+            "'" +
+            ", teamB=" +
+            getTeamBId() +
+            ", teamB='" +
+            getTeamBName() +
+            "'" +
+            ", eventCategory=" +
+            getEventCategoryId() +
+            "}"
+        );
     }
 }

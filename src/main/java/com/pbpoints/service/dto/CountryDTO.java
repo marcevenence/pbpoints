@@ -35,28 +35,24 @@ public class CountryDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof CountryDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CountryDTO countryDTO = (CountryDTO) o;
-        if (this.id == null) {
+        if (countryDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, countryDTO.id);
+        return Objects.equals(getId(), countryDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "CountryDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            "}";
+        return "CountryDTO{" + "id=" + getId() + ", name='" + getName() + "'" + "}";
     }
 }

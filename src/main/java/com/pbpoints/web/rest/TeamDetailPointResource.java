@@ -1,25 +1,21 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.TeamDetailPointRepository;
 import com.pbpoints.service.TeamDetailPointQueryService;
 import com.pbpoints.service.TeamDetailPointService;
-import com.pbpoints.service.criteria.TeamDetailPointCriteria;
+import com.pbpoints.service.dto.TeamDetailPointCriteria;
 import com.pbpoints.service.dto.TeamDetailPointDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,17 +39,10 @@ public class TeamDetailPointResource {
 
     private final TeamDetailPointService teamDetailPointService;
 
-    private final TeamDetailPointRepository teamDetailPointRepository;
-
     private final TeamDetailPointQueryService teamDetailPointQueryService;
 
-    public TeamDetailPointResource(
-        TeamDetailPointService teamDetailPointService,
-        TeamDetailPointRepository teamDetailPointRepository,
-        TeamDetailPointQueryService teamDetailPointQueryService
-    ) {
+    public TeamDetailPointResource(TeamDetailPointService teamDetailPointService, TeamDetailPointQueryService teamDetailPointQueryService) {
         this.teamDetailPointService = teamDetailPointService;
-        this.teamDetailPointRepository = teamDetailPointRepository;
         this.teamDetailPointQueryService = teamDetailPointQueryService;
     }
 
@@ -79,32 +68,21 @@ public class TeamDetailPointResource {
     }
 
     /**
-     * {@code PUT  /team-detail-points/:id} : Updates an existing teamDetailPoint.
+     * {@code PUT  /team-detail-points} : Updates an existing teamDetailPoint.
      *
-     * @param id the id of the teamDetailPointDTO to save.
      * @param teamDetailPointDTO the teamDetailPointDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamDetailPointDTO,
      * or with status {@code 400 (Bad Request)} if the teamDetailPointDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the teamDetailPointDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/team-detail-points/{id}")
-    public ResponseEntity<TeamDetailPointDTO> updateTeamDetailPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody TeamDetailPointDTO teamDetailPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update TeamDetailPoint : {}, {}", id, teamDetailPointDTO);
+    @PutMapping("/team-detail-points")
+    public ResponseEntity<TeamDetailPointDTO> updateTeamDetailPoint(@Valid @RequestBody TeamDetailPointDTO teamDetailPointDTO)
+        throws URISyntaxException {
+        log.debug("REST request to update TeamDetailPoint : {}", teamDetailPointDTO);
         if (teamDetailPointDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, teamDetailPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!teamDetailPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         TeamDetailPointDTO result = teamDetailPointService.save(teamDetailPointDTO);
         return ResponseEntity
             .ok()
@@ -113,45 +91,11 @@ public class TeamDetailPointResource {
     }
 
     /**
-     * {@code PATCH  /team-detail-points/:id} : Partial updates given fields of an existing teamDetailPoint, field will ignore if it is null
-     *
-     * @param id the id of the teamDetailPointDTO to save.
-     * @param teamDetailPointDTO the teamDetailPointDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamDetailPointDTO,
-     * or with status {@code 400 (Bad Request)} if the teamDetailPointDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the teamDetailPointDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the teamDetailPointDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/team-detail-points/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<TeamDetailPointDTO> partialUpdateTeamDetailPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody TeamDetailPointDTO teamDetailPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update TeamDetailPoint partially : {}, {}", id, teamDetailPointDTO);
-        if (teamDetailPointDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, teamDetailPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!teamDetailPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<TeamDetailPointDTO> result = teamDetailPointService.partialUpdate(teamDetailPointDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamDetailPointDTO.getId().toString())
-        );
-    }
-
-    /**
      * {@code GET  /team-detail-points} : get all the teamDetailPoints.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of teamDetailPoints in body.
      */

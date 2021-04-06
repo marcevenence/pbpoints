@@ -14,7 +14,7 @@ public class ProvinceDTO implements Serializable {
 
     private String name;
 
-    private CountryDTO country;
+    private Long countryId;
 
     public Long getId() {
         return id;
@@ -32,12 +32,12 @@ public class ProvinceDTO implements Serializable {
         this.name = name;
     }
 
-    public CountryDTO getCountry() {
-        return country;
+    public Long getCountryId() {
+        return countryId;
     }
 
-    public void setCountry(CountryDTO country) {
-        this.country = country;
+    public void setCountryId(Long countryId) {
+        this.countryId = countryId;
     }
 
     @Override
@@ -45,29 +45,24 @@ public class ProvinceDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProvinceDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         ProvinceDTO provinceDTO = (ProvinceDTO) o;
-        if (this.id == null) {
+        if (provinceDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, provinceDTO.id);
+        return Objects.equals(getId(), provinceDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "ProvinceDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", country=" + getCountry() +
-            "}";
+        return "ProvinceDTO{" + "id=" + getId() + ", name='" + getName() + "'" + ", country=" + getCountryId() + "}";
     }
 }

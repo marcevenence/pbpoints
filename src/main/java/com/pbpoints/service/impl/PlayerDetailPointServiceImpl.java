@@ -34,6 +34,12 @@ public class PlayerDetailPointServiceImpl implements PlayerDetailPointService {
         this.playerDetailPointMapper = playerDetailPointMapper;
     }
 
+    /**
+     * Save a playerDetailPoint.
+     *
+     * @param playerDetailPointDTO the entity to save.
+     * @return the persisted entity.
+     */
     @Override
     public PlayerDetailPointDTO save(PlayerDetailPointDTO playerDetailPointDTO) {
         log.debug("Request to save PlayerDetailPoint : {}", playerDetailPointDTO);
@@ -42,22 +48,12 @@ public class PlayerDetailPointServiceImpl implements PlayerDetailPointService {
         return playerDetailPointMapper.toDto(playerDetailPoint);
     }
 
-    @Override
-    public Optional<PlayerDetailPointDTO> partialUpdate(PlayerDetailPointDTO playerDetailPointDTO) {
-        log.debug("Request to partially update PlayerDetailPoint : {}", playerDetailPointDTO);
-
-        return playerDetailPointRepository
-            .findById(playerDetailPointDTO.getId())
-            .map(
-                existingPlayerDetailPoint -> {
-                    playerDetailPointMapper.partialUpdate(existingPlayerDetailPoint, playerDetailPointDTO);
-                    return existingPlayerDetailPoint;
-                }
-            )
-            .map(playerDetailPointRepository::save)
-            .map(playerDetailPointMapper::toDto);
-    }
-
+    /**
+     * Get all the playerDetailPoints.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
     @Override
     @Transactional(readOnly = true)
     public Page<PlayerDetailPointDTO> findAll(Pageable pageable) {
@@ -65,6 +61,12 @@ public class PlayerDetailPointServiceImpl implements PlayerDetailPointService {
         return playerDetailPointRepository.findAll(pageable).map(playerDetailPointMapper::toDto);
     }
 
+    /**
+     * Get one playerDetailPoint by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<PlayerDetailPointDTO> findOne(Long id) {
@@ -72,6 +74,11 @@ public class PlayerDetailPointServiceImpl implements PlayerDetailPointService {
         return playerDetailPointRepository.findById(id).map(playerDetailPointMapper::toDto);
     }
 
+    /**
+     * Delete the playerDetailPoint by id.
+     *
+     * @param id the id of the entity.
+     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete PlayerDetailPoint : {}", id);

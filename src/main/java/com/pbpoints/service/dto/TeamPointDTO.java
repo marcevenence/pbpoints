@@ -14,9 +14,13 @@ public class TeamPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private TeamDTO team;
+    private Long teamId;
 
-    private TournamentDTO tournament;
+    private String teamName;
+
+    private Long tournamentId;
+
+    private String tournamentName;
 
     public Long getId() {
         return id;
@@ -34,20 +38,36 @@ public class TeamPointDTO implements Serializable {
         this.points = points;
     }
 
-    public TeamDTO getTeam() {
-        return team;
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public void setTeam(TeamDTO team) {
-        this.team = team;
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
-    public TournamentDTO getTournament() {
-        return tournament;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setTournament(TournamentDTO tournament) {
-        this.tournament = tournament;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public Long getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
+    public String getTournamentName() {
+        return tournamentName;
+    }
+
+    public void setTournamentName(String tournamentName) {
+        this.tournamentName = tournamentName;
     }
 
     @Override
@@ -55,30 +75,41 @@ public class TeamPointDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TeamPointDTO)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         TeamPointDTO teamPointDTO = (TeamPointDTO) o;
-        if (this.id == null) {
+        if (teamPointDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(this.id, teamPointDTO.id);
+        return Objects.equals(getId(), teamPointDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id);
+        return Objects.hashCode(getId());
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "TeamPointDTO{" +
-            "id=" + getId() +
-            ", points=" + getPoints() +
-            ", team=" + getTeam() +
-            ", tournament=" + getTournament() +
-            "}";
+        return (
+            "TeamPointDTO{" +
+            "id=" +
+            getId() +
+            ", points=" +
+            getPoints() +
+            ", team=" +
+            getTeamId() +
+            ", team='" +
+            getTeamName() +
+            "'" +
+            ", tournament=" +
+            getTournamentId() +
+            ", tournament='" +
+            getTournamentName() +
+            "'" +
+            "}"
+        );
     }
 }

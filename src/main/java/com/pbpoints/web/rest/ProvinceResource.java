@@ -1,15 +1,13 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.repository.ProvinceRepository;
 import com.pbpoints.service.ProvinceQueryService;
 import com.pbpoints.service.ProvinceService;
-import com.pbpoints.service.criteria.ProvinceCriteria;
+import com.pbpoints.service.dto.ProvinceCriteria;
 import com.pbpoints.service.dto.ProvinceDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,17 +38,10 @@ public class ProvinceResource {
 
     private final ProvinceService provinceService;
 
-    private final ProvinceRepository provinceRepository;
-
     private final ProvinceQueryService provinceQueryService;
 
-    public ProvinceResource(
-        ProvinceService provinceService,
-        ProvinceRepository provinceRepository,
-        ProvinceQueryService provinceQueryService
-    ) {
+    public ProvinceResource(ProvinceService provinceService, ProvinceQueryService provinceQueryService) {
         this.provinceService = provinceService;
-        this.provinceRepository = provinceRepository;
         this.provinceQueryService = provinceQueryService;
     }
 
@@ -71,84 +61,38 @@ public class ProvinceResource {
         ProvinceDTO result = provinceService.save(provinceDTO);
         return ResponseEntity
             .created(new URI("/api/provinces/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
             .body(result);
     }
 
     /**
-     * {@code PUT  /provinces/:id} : Updates an existing province.
+     * {@code PUT  /provinces} : Updates an existing province.
      *
-     * @param id the id of the provinceDTO to save.
      * @param provinceDTO the provinceDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated provinceDTO,
      * or with status {@code 400 (Bad Request)} if the provinceDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the provinceDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/provinces/{id}")
-    public ResponseEntity<ProvinceDTO> updateProvince(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody ProvinceDTO provinceDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update Province : {}, {}", id, provinceDTO);
+    @PutMapping("/provinces")
+    public ResponseEntity<ProvinceDTO> updateProvince(@RequestBody ProvinceDTO provinceDTO) throws URISyntaxException {
+        log.debug("REST request to update Province : {}", provinceDTO);
         if (provinceDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, provinceDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!provinceRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         ProvinceDTO result = provinceService.save(provinceDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, provinceDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, provinceDTO.getName().toString()))
             .body(result);
-    }
-
-    /**
-     * {@code PATCH  /provinces/:id} : Partial updates given fields of an existing province, field will ignore if it is null
-     *
-     * @param id the id of the provinceDTO to save.
-     * @param provinceDTO the provinceDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated provinceDTO,
-     * or with status {@code 400 (Bad Request)} if the provinceDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the provinceDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the provinceDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
-    @PatchMapping(value = "/provinces/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<ProvinceDTO> partialUpdateProvince(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody ProvinceDTO provinceDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update Province partially : {}, {}", id, provinceDTO);
-        if (provinceDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, provinceDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!provinceRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
-        Optional<ProvinceDTO> result = provinceService.partialUpdate(provinceDTO);
-
-        return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, provinceDTO.getId().toString())
-        );
     }
 
     /**
      * {@code GET  /provinces} : get all the provinces.
      *
+
      * @param pageable the pagination information.
+
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of provinces in body.
      */
