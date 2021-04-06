@@ -8,9 +8,9 @@
         "createOrEditLabel": "Create or edit a Team Detail Point",
         "notFound": "No Team Detail Points found"
       },
-      "created": "A new Team Detail Point is created with identifier {{ param }}",
-      "updated": "A Team Detail Point is updated with identifier {{ param }}",
-      "deleted": "A Team Detail Point is deleted with identifier {{ param }}",
+      "created": "The Team Detail Point is created with identifier {{ param }}",
+      "updated": "The Team Detail Point is updated with identifier {{ param }}",
+      "deleted": "The Team Detail Point is deleted with identifier {{ param }}",
       "delete": {
         "question": "Are you sure you want to delete Team Detail Point {{ id }}?"
       },

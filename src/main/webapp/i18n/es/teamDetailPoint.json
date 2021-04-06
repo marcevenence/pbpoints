@@ -2,25 +2,26 @@
   "pbpointsApp": {
     "teamDetailPoint": {
       "home": {
-        "title": "Team Detail Points",
+        "title": "Detalle Puntos por Equipo",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Team Detail Point",
-        "createOrEditLabel": "Crear o editar Team Detail Point",
-        "notFound": "Ningún Team Detail Points encontrado"
+        "createLabel": "Crear nuevo Detalle Puntos por Equipo",
+        "createOrEditLabel": "Detalle Puntos por Equipo",
+        "notFound": "No hay Detalle de Puntos cargados"
       },
-      "created": "Un nuevo Team Detail Point ha sido creado con el identificador {{ param }}",
-      "updated": "Un Team Detail Point ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Team Detail Point ha sido eliminado con el identificador {{ param }}",
+      "created": "El nuevo Detalle Puntos por Equipo {{ param }} ha sido creado",
+      "updated": "El Detalle Puntos por Equipo {{ param }} ha sido actualizado",
+      "deleted": "El Detalle Puntos por Equipo {{ param }} ha sido eliminado",
       "delete": {
         "question": "¿Seguro que quiere eliminar Team Detail Point {{ id }}?"
       },
       "detail": {
-        "title": "Team Detail Point"
+        "title": "Detalle Puntos por Equipo"
       },
       "id": "ID",
-      "points": "Points",
-      "teamPoint": "Team Point",
-      "event": "Event"
+      "points": "Puntos",
+      "teamPoint": "Puntos Equipo",
+      "event": "Evento",
+      "tournament": "Torneo"
     }
   }
 }

@@ -1,0 +1,3 @@
+id;login;password_hash;first_name;last_name;email;image_url;activated;lang_key;created_by;last_modified_by
+3;admin;$2a$10$8u6xy/aiofZhJTbAsHTcnuzKXjgKRtxJKKyDaGt02kYCK5oVySAIq;Administrator;Administrator;admin@localhost;;true;es;system;system
+4;user;$2a$10$/Q2louLubdFtY1qMzy1Q1eHIZi7OFOAIQO/LOafAK9kZcm7Pmay7y;User;User;user@localhost;;true;es;system;system

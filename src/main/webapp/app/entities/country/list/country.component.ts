@@ -3,6 +3,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ICountry } from '../country.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { CountryService } from '../service/country.service';
@@ -16,6 +17,7 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 export class CountryComponent implements OnInit {
   countries: ICountry[];
   isLoading = false;
+  currentAccount: any;
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
@@ -66,6 +68,10 @@ export class CountryComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAll();
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
+    this.registerChangeInCountries();
   }
 
   trackId(index: number, item: ICountry): number {
@@ -83,6 +89,10 @@ export class CountryComponent implements OnInit {
     });
   }
 
+  registerChangeInCountries(): any {
+    this.eventSubscriber = this.eventManager.subscribe('countryListModification', response => this.reset());
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -98,5 +108,9 @@ export class CountryComponent implements OnInit {
         this.countries.push(d);
       }
     }
+  }
+
+  Cancel(): void {
+    window.history.back();
   }
 }

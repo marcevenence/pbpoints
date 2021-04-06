@@ -8,9 +8,9 @@
         "createOrEditLabel": "Create or edit a Province",
         "notFound": "No Provinces found"
       },
-      "created": "A new Province is created with identifier {{ param }}",
-      "updated": "A Province is updated with identifier {{ param }}",
-      "deleted": "A Province is deleted with identifier {{ param }}",
+      "created": "The Province {{ param }} has been created",
+      "updated": "The Province {{ param }} has been updated",
+      "deleted": "The Province {{ param }} has been deleted",
       "delete": {
         "question": "Are you sure you want to delete Province {{ id }}?"
       },
@@ -19,8 +19,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "city": "City",
-      "country": "Country"
+      "country": "Country",
+      "city": "City"
     }
   }
 }

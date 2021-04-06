@@ -2,20 +2,20 @@
   "pbpointsApp": {
     "game": {
       "home": {
-        "title": "Games",
+        "title": "Matches",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Game",
-        "createOrEditLabel": "Create or edit a Game",
-        "notFound": "No Games found"
+        "createLabel": "Create a new Match",
+        "createOrEditLabel": "Create or edit a Match",
+        "notFound": "No Matches found"
       },
-      "created": "A new Game is created with identifier {{ param }}",
-      "updated": "A Game is updated with identifier {{ param }}",
-      "deleted": "A Game is deleted with identifier {{ param }}",
+      "created": "The Match {{ param }} has been created",
+      "updated": "The Match {{ param }} has been updated",
+      "deleted": "The Match {{ param }} has been deleted",
       "delete": {
-        "question": "Are you sure you want to delete Game {{ id }}?"
+        "question": "Are you sure you want to delete this Match?"
       },
       "detail": {
-        "title": "Game"
+        "title": "Match"
       },
       "id": "ID",
       "pointsA": "Points A",
@@ -31,7 +31,7 @@
       "clasif": "Clasif",
       "teamA": "Team A",
       "teamB": "Team B",
-      "eventCategory": "Event Category"
+      "eventCategory": "Category"
     }
   }
 }

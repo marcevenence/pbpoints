@@ -37,6 +37,17 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+         <loadData
+                  file="config/liquibase/data/user_extra.csv"
+                  separator=";"
+                  tableName="user_extra">
+            <column name="id" type="numeric"/>
+            <column name="num_doc" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="born_date" type="date"/>
+            <column name="picture" type="blob"/>
+            <column name="picture_content_type" type="string"/>
+         </loadData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

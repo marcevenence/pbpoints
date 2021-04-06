@@ -2,25 +2,25 @@
   "pbpointsApp": {
     "province": {
       "home": {
-        "title": "Provinces",
+        "title": "Provincias",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Province",
-        "createOrEditLabel": "Crear o editar Province",
-        "notFound": "Ningún Provinces encontrado"
+        "createLabel": "Agregar Provincia",
+        "createOrEditLabel": "Crear o editar provincia",
+        "notFound": "No se encontraron provincias"
       },
-      "created": "Un nuevo Province ha sido creado con el identificador {{ param }}",
-      "updated": "Un Province ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Province ha sido eliminado con el identificador {{ param }}",
+      "created": "La provincia {{ param }} ha sido creada",
+      "updated": "La provincia {{ param }} ha sido actualizada",
+      "deleted": "La provincia {{ param }} ha sido eliminada",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Province {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Provincia {{ id }}?"
       },
       "detail": {
-        "title": "Province"
+        "title": "Provincia"
       },
       "id": "ID",
-      "name": "Name",
-      "city": "City",
-      "country": "Country"
+      "name": "Nombre",
+      "country": "Pais",
+      "city": "Ciudad"
     }
   }
 }

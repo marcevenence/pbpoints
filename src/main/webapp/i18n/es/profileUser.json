@@ -2,8 +2,8 @@
   "pbpointsApp": {
     "ProfileUser": {
       "null": "",
-      "PLAYER": "PLAYER",
-      "STAFF": "STAFF"
+      "PLAYER": "Jugador",
+      "STAFF": "Staff"
     }
   }
 }

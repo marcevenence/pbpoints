@@ -2,36 +2,36 @@
   "pbpointsApp": {
     "game": {
       "home": {
-        "title": "Games",
+        "title": "Partidos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Game",
-        "createOrEditLabel": "Crear o editar Game",
-        "notFound": "Ningún Games encontrado"
+        "createLabel": "Crear nuevo Partido",
+        "createOrEditLabel": "Partidos",
+        "notFound": "No hay Partidos"
       },
-      "created": "Un nuevo Game ha sido creado con el identificador {{ param }}",
-      "updated": "Un Game ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Game ha sido eliminado con el identificador {{ param }}",
+      "created": "El Partido {{ param }} ha sido creado",
+      "updated": "El Partido {{ param }} ha sido actualizado",
+      "deleted": "El Partido {{ param }} ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Game {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el Partido?"
       },
       "detail": {
-        "title": "Game"
+        "title": "Partidos"
       },
       "id": "ID",
-      "pointsA": "Points A",
-      "pointsB": "Points B",
-      "splitDeckNum": "Split Deck Num",
-      "timeLeft": "Time Left",
-      "status": "Status",
+      "pointsA": "Puntos A",
+      "pointsB": "Puntos B",
+      "splitDeckNum": "Nro Serie",
+      "timeLeft": "Tiempo Restante",
+      "status": "Estado",
       "overtimeA": "Overtime A",
       "overtimeB": "Overtime B",
       "uvuA": "Uvu A",
       "uvuB": "Uvu B",
-      "group": "Group",
-      "clasif": "Clasif",
-      "teamA": "Team A",
-      "teamB": "Team B",
-      "eventCategory": "Event Category"
+      "group": "Grupo",
+      "clasif": "Ronda",
+      "teamA": "Equipo A",
+      "teamB": "Equipo B",
+      "eventCategory": "Categoria"
     }
   }
 }

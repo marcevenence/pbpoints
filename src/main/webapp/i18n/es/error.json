@@ -3,12 +3,21 @@
     "title": "¡Página de error!",
     "http": {
       "400": "Solicitud incorrecta.",
+      "401": "",
       "403": "No tiene permisos para acceder a la página.",
       "404": "La página no existe.",
       "405": "El verbo HTTP utilizado no tiene soporte para este URL.",
       "500": "Error interno del servidor."
     },
     "concurrencyFailure": "Otro usuario ha modificado estos datos al mismo tiempo que tú. Tus cambios fueron rechazados.",
-    "validation": "Error de validación en el servidor."
+    "validation": "Error de validación en el servidor.",
+    "teamexists": "El Equipo ya existe",
+    "alreadyInRoster": "El Jugador ya esta inscripto",
+    "alreadyInOtherRoster": "El Jugador ya esta Inscripto en otro Equipo",
+    "nullProfile": "Debe indicar un Perfil de Jugador",
+    "invalidCategoryPlayer": "No se puede agregar un jugador con esta categoria",
+    "InvalidPlayer": "Error al agregar el jugador",
+    "noGamesFound": "No se encontraron partidos a disputar",
+    "noEventCategoriesFound": "No hay categorias asignadas"
   }
 }

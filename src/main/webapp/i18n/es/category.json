@@ -2,32 +2,32 @@
   "pbpointsApp": {
     "category": {
       "home": {
-        "title": "Categories",
+        "title": "Categorias",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Category",
-        "createOrEditLabel": "Crear o editar Category",
-        "notFound": "Ningún Categories encontrado"
+        "createLabel": "Crear nueva Categoria",
+        "createOrEditLabel": "Categorias",
+        "notFound": "No hay Categorias"
       },
-      "created": "Un nuevo Category ha sido creado con el identificador {{ param }}",
-      "updated": "Un Category ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Category ha sido eliminado con el identificador {{ param }}",
+      "created": "La Categoria {{ param }} ha sido creada ",
+      "updated": "La Categoria {{ param }} ha sido actualizada",
+      "deleted": "La Categoria {{ param }} ha sido eliminada",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Category {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Categoria {{ id }}?"
       },
       "detail": {
-        "title": "Category"
+        "title": "Categoria"
       },
       "id": "ID",
-      "name": "Name",
-      "description": "Description",
-      "gameTimeType": "Game Time Type",
-      "gameTime": "Game Time",
-      "stopTimeType": "Stop Time Type",
-      "stopTime": "Stop Time",
-      "totalPoints": "Total Points",
-      "difPoints": "Dif Points",
-      "order": "Order",
-      "tournament": "Tournament"
+      "name": "Nombre",
+      "description": "Descripcion",
+      "gameTimeType": "Tipo Duracion Partido",
+      "gameTime": "Duracion Partido",
+      "stopTimeType": "Tipo Duracion Entretiempo",
+      "stopTime": "Duracion Entretiempo",
+      "totalPoints": "Total Puntos",
+      "difPoints": "Diferencia Puntos",
+      "order": "Orden",
+      "tournament": "Torneo"
     }
   }
 }

@@ -22,8 +22,8 @@
       "phone": "Phone",
       "bornDate": "Born Date",
       "picture": "Picture",
-      "user": "User",
-      "docType": "Doc Type"
+      "docType": "Doc Type",
+      "user": "User"
     }
   }
 }

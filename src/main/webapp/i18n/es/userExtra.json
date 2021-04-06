@@ -6,7 +6,7 @@
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo User Extra",
         "createOrEditLabel": "Crear o editar User Extra",
-        "notFound": "Ningún User Extras encontrado"
+        "notFound": "No User Extras encontrado"
       },
       "created": "Un nuevo User Extra ha sido creado con el identificador {{ param }}",
       "updated": "Un User Extra ha sido actualizado con el identificador {{ param }}",
@@ -22,8 +22,8 @@
       "phone": "Phone",
       "bornDate": "Born Date",
       "picture": "Picture",
-      "user": "User",
-      "docType": "Doc Type"
+      "docType": "Doc Type",
+      "user": "User"
     }
   }
 }

@@ -2,8 +2,8 @@
   "pbpointsApp": {
     "TimeType": {
       "null": "",
-      "MINUTES": "MINUTES",
-      "SECONDS": "SECONDS"
+      "MINUTES": "Minutes",
+      "SECONDS": "Seconds"
     }
   }
 }

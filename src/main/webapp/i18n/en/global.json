@@ -4,30 +4,80 @@
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
+      "back": "Back",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "custom": {
+        "add": {
+          "event": "Add Event",
+          "tournament": "Add Tournament",
+          "Country": "Add Country",
+          "province": "Add Province",
+          "team": "Add Team",
+          "player": "Add Player",
+          "add": "Add",
+          "xml": "Generate File"
+        },
+        "view": {
+          "view": "View All",
+          "event": "Events",
+          "tournament": "Tournaments",
+          "team": "Teams",
+          "format": "Formats",
+          "roster": "Rosters",
+          "province": "Provinces",
+          "doctype": "Document Types",
+          "country": "Countries",
+          "city": "Cities",
+          "category": "Categories",
+          "playerPoints": "View Detail",
+          "playerDetailPoints": "View Detail",
+          "teamPoints": "Points",
+          "teamDetailPoints": "Detail",
+          "games": "Matches",
+          "player": "Players"
+        },
+        "subscribe": {
+          "roster": "Subscribe mi equipo"
+        },
+        "admin": {
+          "admin": "Admin",
+          "event": "Events",
+          "tournament": "Tournaments",
+          "team": "Teams",
+          "myteam": "My Teams",
+          "mytournament": "Mi Tournaments",
+          "roster": "Players",
+          "province": "Provinces",
+          "doctype": "Document Types",
+          "country": "Countries",
+          "city": "Cities"
+        },
+        "next": {
+          "event": "Next Events"
+        }
+      },
       "entities": {
         "main": "Entities",
-        "bracket": "Bracket",
-        "category": "Category",
-        "city": "City",
         "country": "Country",
-        "docType": "Doc Type",
-        "event": "Event",
-        "eventCategory": "Event Category",
-        "format": "Format",
-        "formula": "Formula",
-        "game": "Game",
-        "location": "Location",
-        "player": "Player",
-        "playerDetailPoint": "Player Detail Point",
-        "playerPoint": "Player Point",
         "province": "Province",
-        "roster": "Roster",
-        "team": "Team",
-        "teamDetailPoint": "Team Detail Point",
-        "teamPoint": "Team Point",
+        "city": "City",
+        "docType": "Doc Type",
         "tournament": "Tournament",
+        "event": "Event",
+        "team": "Team",
+        "category": "Category",
+        "roster": "Roster",
+        "player": "Player",
         "userExtra": "User Extra",
+        "format": "Format",
+        "playerPoint": "Player Points",
+        "playerDetailPoint": "Player Detail Points",
+        "teamPoint": "Team Points",
+        "teamDetailPoint": "Team Detail Points",
+        "eventCategory": "Categories",
+        "game": "Matches",
+        "bracket": "Bracket",
+        "formula": "Formula",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -37,7 +87,8 @@
         "sessions": "Sessions",
         "login": "Sign in",
         "logout": "Sign out",
-        "register": "Register"
+        "register": "Register",
+        "playerPoint": "My Profile"
       },
       "admin": {
         "main": "Administration",
@@ -54,8 +105,22 @@
       "language": "Language"
     },
     "form": {
+      "id.label": "PBPoint ID",
       "username.label": "Username",
       "username.placeholder": "Your username",
+      "phone.label": "Phone",
+      "phone.placeholder": "Your Phone",
+      "lastName.label": "Last Name",
+      "lastName.placeholder": "Your Last Name",
+      "lastFirstName.label": "Name",
+      "firstName.label": "Name",
+      "firstName.placeholder": "Your Name",
+      "docType.label": "Document Type",
+      "docType.placeholder": "Document Type",
+      "numDoc.label": "Document Number",
+      "numDoc.placeholder": "Document Number",
+      "bornDate.label": "Born Date",
+      "bornDate.placeholder": "Born Date",
       "currentpassword.label": "Current password",
       "currentpassword.placeholder": "Current password",
       "newpassword.label": "New password",
@@ -63,7 +128,9 @@
       "confirmpassword.label": "New password confirmation",
       "confirmpassword.placeholder": "Confirm the new password",
       "email.label": "Email",
-      "email.placeholder": "Your email"
+      "email.placeholder": "Your email",
+      "picture.label": "Picture",
+      "picture.placeholder": "Your Picture"
     },
     "messages": {
       "info": {
@@ -97,6 +164,12 @@
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
           "maxlength": "Your email cannot be longer than 50 characters."
+        },
+        "phone": {
+          "required": "Your phone is required.",
+          "invalid": "Your phone is invalid.",
+          "minlength": "Your phone is required to be at least 10 characters.",
+          "maxlength": "Your phone cannot be longer than 10 characters."
         }
       }
     },
@@ -150,13 +223,16 @@
     "userexists": "Login name already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
+    "category": "No puede inscribir al jugador en esta categoria",
     "idnull": "Invalid ID",
     "idinvalid": "Invalid ID",
+    "duplicateError": "There is already a {{entityName}} with the entered values",
     "idnotfound": "ID cannot be found",
+    "genericError": "Error processing the data. Try again later",
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "This is your footer"
+  "footer": "PBPoints 2021, Argentina. Trademark Registered"
 }

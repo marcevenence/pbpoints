@@ -4,13 +4,13 @@
       "home": {
         "title": "Countries",
         "refreshListLabel": "Refresh list",
-        "createLabel": "Create a new Country",
+        "createLabel": "Add Country",
         "createOrEditLabel": "Create or edit a Country",
         "notFound": "No Countries found"
       },
-      "created": "A new Country is created with identifier {{ param }}",
-      "updated": "A Country is updated with identifier {{ param }}",
-      "deleted": "A Country is deleted with identifier {{ param }}",
+      "created": "The Country {{ param }} has been created",
+      "updated": "The Country {{ param }} has been updated",
+      "deleted": "The Country {{ param }} has been deleted",
       "delete": {
         "question": "Are you sure you want to delete Country {{ id }}?"
       },

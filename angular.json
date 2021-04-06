@@ -95,6 +95,7 @@
   },
   "defaultProject": "pbpoints",
   "cli": {
+    "analytics": false,
     "packageManager": "npm"
   }
 }

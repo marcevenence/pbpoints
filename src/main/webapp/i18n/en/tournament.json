@@ -8,23 +8,23 @@
         "createOrEditLabel": "Create or edit a Tournament",
         "notFound": "No Tournaments found"
       },
-      "created": "A new Tournament is created with identifier {{ param }}",
-      "updated": "A Tournament is updated with identifier {{ param }}",
-      "deleted": "A Tournament is deleted with identifier {{ param }}",
+      "created": "The Tournament {{ param }} has been created",
+      "updated": "The Tournament {{ param }} has been updated",
+      "deleted": "The Tournament {{ param }} has been deleted",
       "delete": {
-        "question": "Are you sure you want to delete Tournament {{ id }}?"
+        "question": "Are you sure you want to delete Tournament?"
       },
       "detail": {
         "title": "Tournament"
       },
       "id": "ID",
       "name": "Name",
-      "closeInscrDays": "Close Inscr Days",
+      "closeInscrDays": "Close Inscription Days",
       "status": "Status",
       "categorize": "Categorize",
       "logo": "Logo",
-      "cantPlayersNextCategory": "Cant Players Next Category",
-      "qtyTeamGroups": "Qty Team Groups",
+      "cantPlayersNextCategory": "Qty Players Next Category Allowed",
+      "qtyTeamGroups": "Qty Teams By Group",
       "event": "Event",
       "owner": "Owner"
     }

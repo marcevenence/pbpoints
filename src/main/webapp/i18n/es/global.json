@@ -4,30 +4,96 @@
     "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=es\">actualice su navegador</a> para mejorar su experiencia.",
     "menu": {
       "home": "Inicio",
+      "software": "Descargar Software",
+      "back": "Volver",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "custom": {
+        "add": {
+          "event": "Agregar Evento",
+          "tournament": "Agregar Torneo",
+          "Country": "Agregar Pais",
+          "province": "Agregar Provincia",
+          "team": "Agregar Equipo",
+          "player": "Agregar Jugador",
+          "add": "Agregar"
+        },
+        "view": {
+          "view": "Ver Todo",
+          "event": "Eventos",
+          "tournament": "Torneos",
+          "team": "Equipos",
+          "format": "Formatos",
+          "roster": "Equipos Anotados",
+          "province": "Provincias",
+          "doctype": "Tipos de Documento",
+          "country": "Paises",
+          "city": "Ciudades",
+          "category": "Categorias",
+          "playerPoints": "Ver Detalle",
+          "playerDetailPoints": "Ver Detalle",
+          "teamPoints": "Puntaje",
+          "teamDetailPoints": "Detalle",
+          "games": "Partidos",
+          "player": "Jugadores"
+        },
+        "subscribe": {
+          "roster": "Anotar mi equipo"
+        },
+        "admin": {
+          "admin": "Administrar",
+          "event": "Eventos",
+          "tournament": "Torneos",
+          "team": "Equipos",
+          "myteam": "Mis Equipos",
+          "mytournament": "Mis Torneos",
+          "roster": "Jugadores",
+          "province": "Provincias",
+          "doctype": "Tipos de Documento",
+          "country": "Paises",
+          "city": "Ciudades"
+        },
+        "xml": {
+          "export": "Descargar Archivo",
+          "import": "Importar Resultados"
+        }
+      },
+      "reports": {
+        "main": "Eventos",
+        "event": {
+          "player": "Jugadores Inscriptos",
+          "roster": "Ver Rosters"
+        },
+        "fixture": {
+          "print": "Imprimir Fixture"
+        }
+      },
+      "player": {
+        "main": "Jugadores",
+        "find": "Buscar Jugador",
+        "suspend": "Suspender Jugador"
+      },
       "entities": {
         "main": "Entidades",
-        "bracket": "Bracket",
-        "category": "Category",
-        "city": "City",
-        "country": "Country",
-        "docType": "Doc Type",
-        "event": "Event",
-        "eventCategory": "Event Category",
-        "format": "Format",
-        "formula": "Formula",
-        "game": "Game",
-        "location": "Location",
-        "player": "Player",
-        "playerDetailPoint": "Player Detail Point",
-        "playerPoint": "Player Point",
-        "province": "Province",
+        "country": "Paises",
+        "province": "Provincias",
+        "city": "Ciudades",
+        "docType": "Tipos de Documentos",
+        "tournament": "Torneos",
+        "event": "Eventos",
+        "team": "Equipos",
+        "category": "Categorias",
         "roster": "Roster",
-        "team": "Team",
-        "teamDetailPoint": "Team Detail Point",
-        "teamPoint": "Team Point",
-        "tournament": "Tournament",
+        "player": "Jugadores",
         "userExtra": "User Extra",
+        "format": "Formatos",
+        "playerPoint": "Puntos",
+        "playerDetailPoint": "Detalle Puntos",
+        "teamPoint": "Puntos",
+        "teamDetailPoint": "Detalle Puntos",
+        "eventCategory": "Categorias asignadas",
+        "game": "Partidos",
+        "bracket": "Bracket",
+        "formula": "Formula",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -37,7 +103,8 @@
         "sessions": "Sesiones",
         "login": "Iniciar sesión",
         "logout": "Cerrar la sesión",
-        "register": "Crear una cuenta"
+        "register": "Crear una cuenta",
+        "playerPoint": "Mi Perfil"
       },
       "admin": {
         "main": "Administración",
@@ -54,8 +121,22 @@
       "language": "Idioma"
     },
     "form": {
+      "id.label": "PBPoint ID",
       "username.label": "Usuario",
       "username.placeholder": "Nombre de usuario",
+      "phone.label": "Telefono",
+      "phone.placeholder": "Telefono",
+      "lastName.label": "Apellido",
+      "lastName.placeholder": "Apellido",
+      "lastFirstName.label": "Apellido y Nombre",
+      "firstName.label": "Nombre",
+      "firstName.placeholder": "Nombre",
+      "docType.label": "Tipo de Documento",
+      "docType.placeholder": "Tipo de Documento",
+      "numDoc.label": "Nro de Documento",
+      "numDoc.placeholder": "Nro de Documento",
+      "bornDate.label": "Fecha de Nacimiento",
+      "bornDate.placeholder": "Fecha de Nacimiento",
       "currentpassword.label": "Contraseña actual",
       "currentpassword.placeholder": "Contraseña actual",
       "newpassword.label": "Nueva contraseña",
@@ -63,7 +144,9 @@
       "confirmpassword.label": "Confirmación de la nueva contraseña",
       "confirmpassword.placeholder": "Confirmación de la nueva contraseña",
       "email.label": "Correo electrónico",
-      "email.placeholder": "Su correo electrónico"
+      "email.placeholder": "Su correo electrónico",
+      "picture.label": "Foto",
+      "picture.placeholder": "Su Foto"
     },
     "messages": {
       "info": {
@@ -97,6 +180,12 @@
           "invalid": "Su correo electrónico no es válido.",
           "minlength": "Se requiere que su correo electrónico tenga por lo menos 5 caracteres",
           "maxlength": "Su correo electrónico no puede tener más de 50 caracteres"
+        },
+        "phone": {
+          "required": "Se requiere un teléfono.",
+          "invalid": "Su teléfono no es válido.",
+          "minlength": "Se requiere que su teléfono tenga por lo menos 10 caracteres",
+          "maxlength": "Su teléfono no puede tener más de 10 caracteres"
         }
       }
     },
@@ -149,13 +238,16 @@
     "userexists": "¡El nombre de usuario ya existe!",
     "emailexists": "¡La cuenta de correo ya está en uso!",
     "idexists": "Un/a nuevo/a {{entityName}} no puede tener ID",
+    "category": "No puede inscribir al jugador en esta categoria",
     "idnull": "ID inválido",
     "idinvalid": "Invalid Id",
     "idnotfound": "ID cannot be found",
+    "genericError": "Error al procesar los datos. Intente más tarde",
+    "duplicateError": "Ya existe un/a {{entityName}} con los valores ingresados",
     "file": {
       "could.not.extract": "No se pudo extraer el fichero",
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
-  "footer": "Pie de página"
+  "footer": "PBPoints 2021, Argentina. Es una marca registrada"
 }

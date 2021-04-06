@@ -33,6 +33,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AccountResource {
 
+    private static class AccountResourceException extends RuntimeException {
+
+        private AccountResourceException(String message) {
+            super(message);
+        }
+    }
+
     private final Logger log = LoggerFactory.getLogger(AccountResource.class);
     private final UserRepository userRepository;
     private final UserService userService;
@@ -52,14 +59,6 @@ public class AccountResource {
         this.mailService = mailService;
         this.userExtraService = userExtraService;
         this.userExtraMapper = userExtraMapper;
-    }
-
-    private static boolean checkPasswordLength(String password) {
-        return (
-            !StringUtils.isEmpty(password) &&
-            password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
-            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH
-        );
     }
 
     /**
@@ -235,10 +234,11 @@ public class AccountResource {
         }
     }
 
-    private static class AccountResourceException extends RuntimeException {
-
-        private AccountResourceException(String message) {
-            super(message);
-        }
+    private static boolean checkPasswordLength(String password) {
+        return (
+            !StringUtils.isEmpty(password) &&
+            password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
+            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH
+        );
     }
 }

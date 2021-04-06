@@ -2,11 +2,11 @@
   "pbpointsApp": {
     "Status": {
       "null": "",
-      "CREATED": "CREATED",
-      "PENDING": "PENDING",
-      "IN_PROGRESS": "IN_PROGRESS",
-      "DONE": "DONE",
-      "CANCEL": "CANCEL"
+      "CREATED": "New",
+      "PENDING": "Pending",
+      "IN_PROGRESS": "In Progress",
+      "DONE": "Done",
+      "CANCEL": "Cancelled"
     }
   }
 }

@@ -28,6 +28,17 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <loadData
+            file="config/liquibase/data/player_point.csv"
+            separator=";"
+            tableName="player_point">
+            <column name="id" type="numeric"/>
+            <column name="points" type="numeric"/>
+            <column name="tournament_id" type="numeric"/>
+            <column name="user_id" type="numeric"/>
+            <column name="category_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+        </loadData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

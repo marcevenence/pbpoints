@@ -48,10 +48,10 @@ spring:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
   mail:
-    host: localhost
-    port: 25
-    username:
-    password:
+    host: smtp.titan.email
+    port: 465
+    username: info@pbpoints.net
+    password: PSARanking
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:
@@ -107,3 +107,4 @@ jhipster:
 # ===================================================================
 
 # application:
+#   cronFixture: 0 0/2 * 1/1 * ?

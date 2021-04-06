@@ -2,24 +2,24 @@
   "pbpointsApp": {
     "country": {
       "home": {
-        "title": "Countries",
+        "title": "Paises",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Country",
-        "createOrEditLabel": "Crear o editar Country",
-        "notFound": "Ningún Countries encontrado"
+        "createLabel": "Agregar Pais",
+        "createOrEditLabel": "Crear o editar pais",
+        "notFound": "No se encontraron paises"
       },
-      "created": "Un nuevo Country ha sido creado con el identificador {{ param }}",
-      "updated": "Un Country ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Country ha sido eliminado con el identificador {{ param }}",
+      "created": "El Pais {{ param }} ha sido creado",
+      "updated": "El Pais {{ param }} ha sido actualizado",
+      "deleted": "El Pais {{ param }} ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Country {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el pais {{ id }}?"
       },
       "detail": {
-        "title": "Country"
+        "title": "Pais"
       },
       "id": "ID",
-      "name": "Name",
-      "province": "Province"
+      "name": "Nombre",
+      "province": "Provincia"
     }
   }
 }

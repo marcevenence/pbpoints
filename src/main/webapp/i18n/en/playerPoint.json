@@ -8,11 +8,11 @@
         "createOrEditLabel": "Create or edit a Player Point",
         "notFound": "No Player Points found"
       },
-      "created": "A new Player Point is created with identifier {{ param }}",
-      "updated": "A Player Point is updated with identifier {{ param }}",
-      "deleted": "A Player Point is deleted with identifier {{ param }}",
+      "created": "A new Player Point is created with identifier",
+      "updated": "A Player Point is updated with identifier",
+      "deleted": "A Player Point is deleted with identifier",
       "delete": {
-        "question": "Are you sure you want to delete Player Point {{ id }}?"
+        "question": "Are you sure you want to delete Player Point?"
       },
       "detail": {
         "title": "Player Point"

@@ -2,26 +2,30 @@
   "pbpointsApp": {
     "roster": {
       "home": {
-        "title": "Rosters",
+        "title": "Equipos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Roster",
-        "createOrEditLabel": "Crear o editar Roster",
-        "notFound": "Ningún Rosters encontrado"
+        "createLabel": "Anotar Equipo",
+        "createOrEditLabel": "Equipos",
+        "notFound": "No hay Equipos Anotados"
       },
       "created": "Un nuevo Roster ha sido creado con el identificador {{ param }}",
       "updated": "Un Roster ha sido actualizado con el identificador {{ param }}",
       "deleted": "Un Roster ha sido eliminado con el identificador {{ param }}",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Roster {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el equipo {{ id }}?"
       },
       "detail": {
-        "title": "Roster"
+        "title": "Equipos"
       },
       "id": "ID",
       "active": "Active",
-      "player": "Player",
-      "team": "Team",
-      "eventCategory": "Event Category"
+      "team": "Equipo",
+      "eventCategory": "Evento",
+      "event": "Evento",
+      "category": "Categoria",
+      "tournament": "Torneo",
+      "tournamentEvent": "Torneo/Evento",
+      "player": "Jugador"
     }
   }
 }

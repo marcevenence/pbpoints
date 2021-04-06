@@ -7,6 +7,16 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.country.home.refreshListLabel">Refresh List</span>
       </button>
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-country"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
 
       <button
         id="jh-create-entity"
@@ -32,27 +42,26 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.country.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let country of countries; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/country', country.id, 'view']">{{ country.id }}</a>
-          </td>
+          <!--<td><a [routerLink]="['/country', country.id, 'view']">{{ country.id }}</a></td>-->
           <td>{{ country.name }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/country', country.id, 'view']"
-                class="btn btn-info btn-sm"
+                [routerLink]="['/province']"
+                [queryParams]="{ coId: country.id }"
+                class="btn btn-primary btn-sm"
                 data-cy="entityDetailsButton"
               >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <fa-icon icon="pencil"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.province">Provinces</span>
               </button>
 
               <button

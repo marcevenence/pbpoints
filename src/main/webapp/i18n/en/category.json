@@ -25,7 +25,7 @@
       "stopTimeType": "Stop Time Type",
       "stopTime": "Stop Time",
       "totalPoints": "Total Points",
-      "difPoints": "Dif Points",
+      "difPoints": "Diference Points",
       "order": "Order",
       "tournament": "Tournament"
     }

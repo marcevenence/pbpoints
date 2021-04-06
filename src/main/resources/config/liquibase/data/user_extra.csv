@@ -1,0 +1,9 @@
+id;num_doc;phone;born_date;picture;picture_content_type
+1;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+2;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+3;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+4;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+5;33561304;1123991408;1988-06-02;../fake-data/blob/hipster.png;image/png
+6;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+7;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png
+8;11111111;1122223333;1900-01-01;../fake-data/blob/hipster.png;image/png

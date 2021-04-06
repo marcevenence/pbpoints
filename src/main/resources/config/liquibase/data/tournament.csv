@@ -1,0 +1,5 @@
+id;name;close_inscr_days;status;categorize;owner_id
+1;Torneo Argentino de Paintball (TAP);7;CREATED;true;7
+2;Torneo Metropolitano de Paintball (TMR);7;CREATED;false;7
+3;Torneo El Cazador;7;CREATED;false;5
+4;Asociacion Cordobesa de Paintball (ACP);7;PENDING;true;1

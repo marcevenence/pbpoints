@@ -2,26 +2,26 @@
   "pbpointsApp": {
     "city": {
       "home": {
-        "title": "Cities",
+        "title": "Ciudades",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo City",
-        "createOrEditLabel": "Crear o editar City",
-        "notFound": "Ningún Cities encontrado"
+        "createLabel": "Crear nueva Ciudad",
+        "createOrEditLabel": "Ciudades",
+        "notFound": "No hay ciudades"
       },
-      "created": "Un nuevo City ha sido creado con el identificador {{ param }}",
-      "updated": "Un City ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un City ha sido eliminado con el identificador {{ param }}",
+      "created": "La Ciudad {{ param }} ha sido creada",
+      "updated": "La Ciudad {{ param }} ha sido actualizada",
+      "deleted": "La Ciudad {{ param }} ha sido eliminada",
       "delete": {
-        "question": "¿Seguro que quiere eliminar City {{ id }}?"
+        "question": "¿Seguro que quiere eliminar la Ciudad {{ id }}?"
       },
       "detail": {
-        "title": "City"
+        "title": "Ciudad"
       },
       "id": "ID",
-      "name": "Name",
-      "latitude": "Latitude",
-      "longitude": "Longitude",
-      "province": "Province"
+      "name": "Nombre",
+      "latitude": "Latitud",
+      "longitude": "Longitud",
+      "province": "Provincia"
     }
   }
 }

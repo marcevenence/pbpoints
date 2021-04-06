@@ -22,6 +22,15 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <loadData
+                  file="config/liquibase/data/province.csv"
+                  separator=";"
+                  tableName="province">
+            <column name="id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="country_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
+        </loadData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

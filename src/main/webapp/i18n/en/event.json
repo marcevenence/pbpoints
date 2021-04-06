@@ -8,9 +8,9 @@
         "createOrEditLabel": "Create or edit a Event",
         "notFound": "No Events found"
       },
-      "created": "A new Event is created with identifier {{ param }}",
-      "updated": "A Event is updated with identifier {{ param }}",
-      "deleted": "A Event is deleted with identifier {{ param }}",
+      "created": "The Event {{ param }} has been created",
+      "updated": "The Event {{ param }} has been updated",
+      "deleted": "The Event {{ param }} has been deleted",
       "delete": {
         "question": "Are you sure you want to delete Event {{ id }}?"
       },
@@ -25,8 +25,8 @@
       "status": "Status",
       "createDate": "Create Date",
       "updatedDate": "Updated Date",
-      "city": "City",
-      "tournament": "Tournament"
+      "tournament": "Tournament",
+      "city": "City"
     }
   }
 }

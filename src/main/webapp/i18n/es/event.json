@@ -2,31 +2,39 @@
   "pbpointsApp": {
     "event": {
       "home": {
-        "title": "Events",
+        "title": "Eventos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Event",
-        "createOrEditLabel": "Crear o editar Event",
-        "notFound": "Ningún Events encontrado"
+        "createLabel": "Agregar Evento",
+        "createOrEditLabel": "Eventos",
+        "notFound": "No hay Eventos"
       },
-      "created": "Un nuevo Event ha sido creado con el identificador {{ param }}",
-      "updated": "Un Event ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Event ha sido eliminado con el identificador {{ param }}",
+      "created": "El evento {{param}} ha sido creado",
+      "updated": "El evento {{param}} ha sido actualizado",
+      "deleted": "El evento {{param}} ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Event {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el evento {{ id }}?"
       },
       "detail": {
-        "title": "Event"
+        "title": "Evento"
       },
       "id": "ID",
-      "name": "Name",
-      "fromDate": "From Date",
-      "endDate": "End Date",
-      "endInscriptionDate": "End Inscription Date",
-      "status": "Status",
-      "createDate": "Create Date",
-      "updatedDate": "Updated Date",
-      "city": "City",
-      "tournament": "Tournament"
+      "name": "Nombre",
+      "fromDate": "Fecha Inicio",
+      "endDate": "Fecha Fin",
+      "endInscriptionDate": "Fecha Cierre Inscripcion",
+      "status": "Estado",
+      "createDate": "Fecha Creado",
+      "updatedDate": "Fecha Actualizado",
+      "tournament": "Torneo",
+      "city": "Ciudad",
+      "xml": {
+        "title": "Importar Archivo",
+        "accept": "Importar",
+        "import": {
+          "label": "Seleccionar Archivo",
+          "placeholder": "Archivo"
+        }
+      }
     }
   }
 }

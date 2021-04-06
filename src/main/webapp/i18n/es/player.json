@@ -2,25 +2,29 @@
   "pbpointsApp": {
     "player": {
       "home": {
-        "title": "Players",
+        "title": "Jugadores",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Player",
-        "createOrEditLabel": "Crear o editar Player",
-        "notFound": "Ningún Players encontrado"
+        "createLabel": "Agregar Jugador",
+        "createOrEditLabel": "Jugadores",
+        "notFound": "No hay Jugadores Cargados"
       },
-      "created": "Un nuevo Player ha sido creado con el identificador {{ param }}",
-      "updated": "Un Player ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Player ha sido eliminado con el identificador {{ param }}",
+      "created": "El Jugador {{ param }} ha sido agregado",
+      "updated": "El Jugador {{ param }} ha sido actualizado",
+      "deleted": "El Jugador {{ param }} ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Player {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el Jugador?"
       },
       "detail": {
-        "title": "Player"
+        "title": "Jugador",
+        "player": "Jugador",
+        "staff": "Staff"
       },
       "id": "ID",
-      "profile": "Profile",
-      "user": "User",
-      "roster": "Roster"
+      "profile": "Perfil",
+      "user": "Usuario",
+      "userId": "PBPoint ID",
+      "roster": "Roster",
+      "category": "Categoria"
     }
   }
 }

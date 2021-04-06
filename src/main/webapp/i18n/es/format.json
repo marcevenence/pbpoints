@@ -2,27 +2,27 @@
   "pbpointsApp": {
     "format": {
       "home": {
-        "title": "Formats",
+        "title": "Formatos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Format",
-        "createOrEditLabel": "Crear o editar Format",
-        "notFound": "Ningún Formats encontrado"
+        "createLabel": "Crear nuevo Formato",
+        "createOrEditLabel": "Formatos",
+        "notFound": "No Hay Formatos"
       },
-      "created": "Un nuevo Format ha sido creado con el identificador {{ param }}",
-      "updated": "Un Format ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Format ha sido eliminado con el identificador {{ param }}",
+      "created": "El Formato {{ param }} ha sido creado",
+      "updated": "El Formato {{ param }} ha sido actualizado",
+      "deleted": "El Formato {{ param }} ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar Format {{ id }}?"
+        "question": "¿Seguro que quiere eliminar Format?"
       },
       "detail": {
-        "title": "Format"
+        "title": "Formato"
       },
       "id": "ID",
-      "name": "Name",
-      "description": "Description",
-      "coeficient": "Coeficient",
-      "playersQty": "Players Qty",
-      "tournament": "Tournament"
+      "name": "Nombre",
+      "description": "Descripcion",
+      "coeficient": "Coeficiente",
+      "playersQty": "Cantidad Total Jugadores",
+      "tournament": "Torneo"
     }
   }
 }

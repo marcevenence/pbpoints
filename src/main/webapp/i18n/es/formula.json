@@ -6,7 +6,7 @@
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Formula",
         "createOrEditLabel": "Crear o editar Formula",
-        "notFound": "Ningún Formulas encontrado"
+        "notFound": "Ninguna Formula encontrada"
       },
       "created": "Un nuevo Formula ha sido creado con el identificador {{ param }}",
       "updated": "Un Formula ha sido actualizado con el identificador {{ param }}",

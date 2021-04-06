@@ -1,0 +1,6 @@
+id;name;description;coeficient;players_qty;tournament_id
+1;5vs5;5vs5;1;8;1
+2;3vs3;3vs3;0.66;5;1
+3;Master - 8 Jugadores;Master TMR 8 Jugadores;0;15;2
+4;Combat - 6 Jugadores;Combat TMR 8 Jugadores;0;12;2
+5;Unica; Unica 4vs4;0;5;3

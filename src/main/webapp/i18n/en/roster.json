@@ -8,9 +8,9 @@
         "createOrEditLabel": "Create or edit a Roster",
         "notFound": "No Rosters found"
       },
-      "created": "A new Roster is created with identifier {{ param }}",
-      "updated": "A Roster is updated with identifier {{ param }}",
-      "deleted": "A Roster is deleted with identifier {{ param }}",
+      "created": "The Roster {{ param }} has been created with identifier",
+      "updated": "The Roster {{ param }} has been updated with identifier",
+      "deleted": "The Roster {{ param }} has been deleted with identifier",
       "delete": {
         "question": "Are you sure you want to delete Roster {{ id }}?"
       },
@@ -19,9 +19,12 @@
       },
       "id": "ID",
       "active": "Active",
-      "player": "Player",
       "team": "Team",
-      "eventCategory": "Event Category"
+      "eventCategory": "Event",
+      "event": "Event",
+      "category": "Category",
+      "tournament": "Tournament",
+      "player": "Player"
     }
   }
 }
