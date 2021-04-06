@@ -1,0 +1,203 @@
+
+entity Bracket {
+  teams Integer required unique
+  teams5A Integer required
+  teams5B Integer required
+  teams6A Integer required
+  teams6B Integer required
+}
+entity Category {
+  name String
+  description String
+  gameTimeType TimeType required
+  gameTime Integer required
+  stopTimeType TimeType required
+  stopTime Integer required
+  totalPoints Integer required
+  difPoints Integer required
+  order Integer required
+}
+/**
+ * City entity.\n@author Marcelo Miño\nDatos traidos desde https:
+ */
+entity City {
+  name String
+  latitude String
+  longitude String
+}
+/**
+ * Country entity.\n@author Marcelo Miño
+ */
+entity Country {
+  name String
+}
+/**
+ * Address entity.\n@author The JHipster team.
+ */
+entity DocType {
+  name String
+  description String
+}
+/**
+ * Event entity.\n@author Marcelo Miño
+ */
+entity Event {
+  name String
+  fromDate LocalDate
+  endDate LocalDate
+  endInscriptionDate LocalDate
+  status Status
+  createDate Instant
+  updatedDate Instant
+}
+entity EventCategory {
+  splitDeck Boolean
+}
+entity Format {
+  name String required
+  description String
+  coeficient Float required
+  playersQty Integer
+}
+entity Formula {
+  formula String required
+  var1 String required
+  var2 String
+  var3 String
+  description String required
+  example String
+}
+entity Game {
+  pointsA Integer
+  pointsB Integer
+  splitDeckNum Integer
+  timeLeft Integer
+  status Status required
+  overtimeA Integer
+  overtimeB Integer
+  uvuA Integer
+  uvuB Integer
+  group Integer
+  clasif String
+}
+/**
+ * Location entity.\n@author Marcelo Miño\nDatos traidos desde https:
+ */
+entity Location {
+  name String
+}
+entity Player {
+  profile ProfileUser
+}
+entity PlayerDetailPoint {
+  points Float required
+}
+entity PlayerPoint {
+  points Float required
+}
+/**
+ * Province entity.\n@author Marcelo Miño\nDatos traidos desde https:
+ */
+entity Province {
+  name String
+}
+/**
+ * Roster entity.\n@author Marcelo Miño
+ */
+entity Roster {
+  active Boolean
+}
+/**
+ * Team entity.\n@author Marcelo Miño
+ */
+entity Team {
+  name String
+  active Boolean
+}
+entity TeamDetailPoint {
+  points Float required
+}
+entity TeamPoint {
+  points Float required
+}
+/**
+ * Tournament entity.\n@author Marcelo Miño
+ */
+entity Tournament {
+  name String
+  closeInscrDays Integer
+  status Status
+  categorize Boolean
+  logo ImageBlob
+  cantPlayersNextCategory Integer
+  qtyTeamGroups Integer
+}
+/**
+ * UserExtra entity.\n@author Marcelo Miño
+ */
+entity UserExtra {
+  numDoc String
+  phone String
+  bornDate LocalDate
+  picture ImageBlob required
+}
+enum TimeType {
+  MINUTES,
+  SECONDS
+}
+enum Status {
+  CREATED,
+  PENDING,
+  IN_PROGRESS,
+  DONE,
+  CANCEL
+}
+enum ProfileUser {
+  PLAYER,
+  STAFF
+}
+
+relationship OneToOne {
+  UserExtra{user(login) required} to User
+}
+relationship OneToMany {
+  Province{city} to City{province}
+  Tournament{event} to Event{tournament}
+  EventCategory{game} to Game{eventCategory required}
+  Roster{player} to Player{roster required}
+  Country{province} to Province{country}
+  EventCategory{roster} to Roster{eventCategory required}
+}
+relationship ManyToOne {
+  Category{tournament(name) required} to Tournament
+  Event{city} to City
+  EventCategory{event(name) required} to Event
+  EventCategory{category(name) required} to Category
+  EventCategory{format(name) required} to Format
+  Format{tournament(name) required} to Tournament
+  Formula{tournament(name)} to Tournament
+  Game{teamA(name) required} to Team
+  Game{teamB(name) required} to Team
+  Location{province} to Province
+  Player{user(login)} to User
+  PlayerDetailPoint{event(name) required} to Event
+  PlayerDetailPoint{playerPoint required} to PlayerPoint
+  PlayerPoint{tournament(name) required} to Tournament
+  PlayerPoint{user(login) required} to User
+  PlayerPoint{category(name)} to Category
+  Roster{team(name) required} to Team
+  Team{owner(login)} to User
+  TeamDetailPoint{teamPoint required} to TeamPoint
+  TeamDetailPoint{event(name) required} to Event
+  TeamPoint{team(name) required} to Team
+  TeamPoint{tournament(name) required} to Tournament
+  Tournament{owner(login) required} to User
+  UserExtra{docType} to DocType
+}
+
+dto Category, City, Country, DocType, Event, EventCategory, Format, Formula, Game, Location, Player, PlayerDetailPoint, PlayerPoint, Province, Roster, Team, TeamDetailPoint, TeamPoint, Tournament, UserExtra with mapstruct
+paginate Category, City, Country, DocType, Event, Format, PlayerPoint, Province, Tournament with infinite-scroll
+paginate EventCategory, Game, Location, Player, PlayerDetailPoint, Roster, Team, TeamDetailPoint, TeamPoint, UserExtra with pagination
+service Category, City, Country, DocType, Event, EventCategory, Formula, Game, Location, Player, Province, Roster, Team, Tournament, UserExtra with serviceClass
+service Format, PlayerDetailPoint, PlayerPoint, TeamDetailPoint, TeamPoint with serviceImpl
+filter Category, City, Event, EventCategory, Format, Formula, Game, Player, PlayerDetailPoint, PlayerPoint, Province, Roster, Team, TeamDetailPoint, TeamPoint, Tournament
