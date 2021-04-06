@@ -1,0 +1,158 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-tournament-heading" data-cy="TournamentCreateUpdateHeading" jhiTranslate="pbpointsApp.tournament.home.createOrEditLabel">
+        Create or edit a Tournament
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.closeInscrDays" for="field_closeInscrDays"
+            >Close Inscr Days</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="closeInscrDays"
+            id="field_closeInscrDays"
+            data-cy="closeInscrDays"
+            formControlName="closeInscrDays"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.status" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'pbpointsApp.Status.null' | translate }}</option>
+            <option value="CREATED">{{ 'pbpointsApp.Status.CREATED' | translate }}</option>
+            <option value="PENDING">{{ 'pbpointsApp.Status.PENDING' | translate }}</option>
+            <option value="IN_PROGRESS">{{ 'pbpointsApp.Status.IN_PROGRESS' | translate }}</option>
+            <option value="DONE">{{ 'pbpointsApp.Status.DONE' | translate }}</option>
+            <option value="CANCEL">{{ 'pbpointsApp.Status.CANCEL' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.categorize" for="field_categorize">Categorize</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="categorize"
+            id="field_categorize"
+            data-cy="categorize"
+            formControlName="categorize"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.logo" for="field_logo">Logo</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('logoContentType')!.value + ';base64,' + editForm.get('logo')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('logo')!.value"
+              alt="tournament image"
+            />
+            <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
+              <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
+              <button
+                type="button"
+                (click)="clearInputImage('logo', 'logoContentType', 'file_logo')"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_logo"
+              data-cy="logo"
+              (change)="setFileData($event, 'logo', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
+          <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType" formControlName="logoContentType" />
+        </div>
+
+        <div class="form-group">
+          <label
+            class="form-control-label"
+            jhiTranslate="pbpointsApp.tournament.cantPlayersNextCategory"
+            for="field_cantPlayersNextCategory"
+            >Cant Players Next Category</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="cantPlayersNextCategory"
+            id="field_cantPlayersNextCategory"
+            data-cy="cantPlayersNextCategory"
+            formControlName="cantPlayersNextCategory"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.qtyTeamGroups" for="field_qtyTeamGroups"
+            >Qty Team Groups</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="qtyTeamGroups"
+            id="field_qtyTeamGroups"
+            data-cy="qtyTeamGroups"
+            formControlName="qtyTeamGroups"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.owner" for="field_owner">Owner</label>
+          <select class="form-control" id="field_owner" data-cy="owner" name="owner" formControlName="owner">
+            <option *ngIf="!editForm.get('owner')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.login }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['owner'])!.invalid && (editForm.get(['owner'])!.dirty || editForm.get(['owner'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['owner'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

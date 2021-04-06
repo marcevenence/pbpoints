@@ -1,0 +1,29 @@
+{
+  "pbpointsApp": {
+    "userExtra": {
+      "home": {
+        "title": "User Extras",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo User Extra",
+        "createOrEditLabel": "Criar ou editar User Extra",
+        "notFound": "Nenhum User Extra encontrado"
+      },
+      "created": "Um novo User Extra foi criado com o identificador {{ param }}",
+      "updated": "Um User Extra foi atualizado com o identificador {{ param }}",
+      "deleted": "Um User Extra foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir User Extra {{ id }}?"
+      },
+      "detail": {
+        "title": "User Extra"
+      },
+      "id": "ID",
+      "numDoc": "Num Doc",
+      "phone": "Phone",
+      "bornDate": "Born Date",
+      "picture": "Picture",
+      "user": "User",
+      "docType": "Doc Type"
+    }
+  }
+}

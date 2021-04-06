@@ -1,0 +1,37 @@
+{
+  "name": "TeamDetailPoint",
+  "fields": [
+    {
+      "fieldName": "points",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "teamPoint",
+      "otherEntityRelationshipName": "teamDetailPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "teamPoint"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "teamDetailPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "event",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "team_detail_point",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023744"
+}

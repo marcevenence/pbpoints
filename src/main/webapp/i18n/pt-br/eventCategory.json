@@ -1,0 +1,29 @@
+{
+  "pbpointsApp": {
+    "eventCategory": {
+      "home": {
+        "title": "Event Categories",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Event Category",
+        "createOrEditLabel": "Criar ou editar Event Category",
+        "notFound": "Nenhum Event Category encontrado"
+      },
+      "created": "Um novo Event Category foi criado com o identificador {{ param }}",
+      "updated": "Um Event Category foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Event Category foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Event Category {{ id }}?"
+      },
+      "detail": {
+        "title": "Event Category"
+      },
+      "id": "ID",
+      "splitDeck": "Split Deck",
+      "game": "Game",
+      "roster": "Roster",
+      "event": "Event",
+      "category": "Category",
+      "format": "Format"
+    }
+  }
+}

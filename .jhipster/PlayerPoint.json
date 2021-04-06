@@ -1,0 +1,45 @@
+{
+  "name": "PlayerPoint",
+  "fields": [
+    {
+      "fieldName": "points",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tournament",
+      "otherEntityRelationshipName": "playerPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "tournament",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "playerPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "playerPoint",
+      "relationshipName": "category",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "player_point",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023740"
+}

@@ -1,0 +1,32 @@
+{
+  "pbpointsApp": {
+    "event": {
+      "home": {
+        "title": "Events",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Event",
+        "createOrEditLabel": "Criar ou editar Event",
+        "notFound": "Nenhum Event encontrado"
+      },
+      "created": "Um novo Event foi criado com o identificador {{ param }}",
+      "updated": "Um Event foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Event foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Event {{ id }}?"
+      },
+      "detail": {
+        "title": "Event"
+      },
+      "id": "ID",
+      "name": "Name",
+      "fromDate": "From Date",
+      "endDate": "End Date",
+      "endInscriptionDate": "End Inscription Date",
+      "status": "Status",
+      "createDate": "Create Date",
+      "updatedDate": "Updated Date",
+      "city": "City",
+      "tournament": "Tournament"
+    }
+  }
+}

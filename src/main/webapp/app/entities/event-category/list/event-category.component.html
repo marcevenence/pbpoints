@@ -1,0 +1,122 @@
+<div>
+  <h2 id="page-heading" data-cy="EventCategoryHeading">
+    <span jhiTranslate="pbpointsApp.eventCategory.home.title">Event Categories</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.eventCategory.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-event-category"
+        [routerLink]="['/event-category/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.eventCategory.home.createLabel"> Create a new Event Category </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="eventCategories?.length === 0">
+    <span jhiTranslate="pbpointsApp.eventCategory.home.notFound">No eventCategories found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="eventCategories && eventCategories.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="splitDeck">
+            <span jhiTranslate="pbpointsApp.eventCategory.splitDeck">Split Deck</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="event.name">
+            <span jhiTranslate="pbpointsApp.eventCategory.event">Event</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="category.name">
+            <span jhiTranslate="pbpointsApp.eventCategory.category">Category</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="format.name">
+            <span jhiTranslate="pbpointsApp.eventCategory.format">Format</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let eventCategory of eventCategories; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/event-category', eventCategory.id, 'view']">{{ eventCategory.id }}</a>
+          </td>
+          <td>{{ eventCategory.splitDeck }}</td>
+          <td>
+            <div *ngIf="eventCategory.event">
+              <a [routerLink]="['/event', eventCategory.event?.id, 'view']">{{ eventCategory.event?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="eventCategory.category">
+              <a [routerLink]="['/category', eventCategory.category?.id, 'view']">{{ eventCategory.category?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="eventCategory.format">
+              <a [routerLink]="['/format', eventCategory.format?.id, 'view']">{{ eventCategory.format?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/event-category', eventCategory.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/event-category', eventCategory.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(eventCategory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="eventCategories && eventCategories.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

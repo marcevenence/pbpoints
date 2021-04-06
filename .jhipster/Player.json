@@ -1,0 +1,36 @@
+{
+  "name": "Player",
+  "fields": [
+    {
+      "fieldName": "profile",
+      "fieldType": "ProfileUser",
+      "fieldValues": "PLAYER,STAFF"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "player",
+      "relationshipName": "user",
+      "otherEntityField": "login"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "roster",
+      "otherEntityRelationshipName": "player",
+      "relationshipValidateRules": "required",
+      "relationshipName": "roster"
+    }
+  ],
+  "entityTableName": "player",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023738"
+}

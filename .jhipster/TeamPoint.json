@@ -1,0 +1,38 @@
+{
+  "name": "TeamPoint",
+  "fields": [
+    {
+      "fieldName": "points",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "team",
+      "otherEntityRelationshipName": "teamPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "team",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tournament",
+      "otherEntityRelationshipName": "teamPoint",
+      "relationshipValidateRules": "required",
+      "relationshipName": "tournament",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "team_point",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023745"
+}

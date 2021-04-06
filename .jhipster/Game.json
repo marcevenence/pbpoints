@@ -1,0 +1,86 @@
+{
+  "name": "Game",
+  "fields": [
+    {
+      "fieldName": "pointsA",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "pointsB",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "splitDeckNum",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "timeLeft",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValues": "CREATED,PENDING,IN_PROGRESS,DONE,CANCEL",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "overtimeA",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "overtimeB",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "uvuA",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "uvuB",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "group",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "clasif",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "team",
+      "otherEntityRelationshipName": "game",
+      "relationshipValidateRules": "required",
+      "relationshipName": "teamA",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "team",
+      "otherEntityRelationshipName": "game",
+      "relationshipValidateRules": "required",
+      "relationshipName": "teamB",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "eventCategory",
+      "otherEntityRelationshipName": "game",
+      "relationshipValidateRules": "required",
+      "relationshipName": "eventCategory"
+    }
+  ],
+  "entityTableName": "game",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023736"
+}

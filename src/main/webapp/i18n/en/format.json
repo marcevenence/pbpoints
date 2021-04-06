@@ -1,0 +1,28 @@
+{
+  "pbpointsApp": {
+    "format": {
+      "home": {
+        "title": "Formats",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Format",
+        "createOrEditLabel": "Create or edit a Format",
+        "notFound": "No Formats found"
+      },
+      "created": "A new Format is created with identifier {{ param }}",
+      "updated": "A Format is updated with identifier {{ param }}",
+      "deleted": "A Format is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Format {{ id }}?"
+      },
+      "detail": {
+        "title": "Format"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "coeficient": "Coeficient",
+      "playersQty": "Players Qty",
+      "tournament": "Tournament"
+    }
+  }
+}

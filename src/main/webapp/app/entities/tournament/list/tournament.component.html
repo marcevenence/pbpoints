@@ -1,0 +1,116 @@
+<div>
+  <h2 id="page-heading" data-cy="TournamentHeading">
+    <span jhiTranslate="pbpointsApp.tournament.home.title">Tournaments</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.tournament.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tournament"
+        [routerLink]="['/tournament/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.tournament.home.createLabel"> Create a new Tournament </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tournaments?.length === 0">
+    <span jhiTranslate="pbpointsApp.tournament.home.notFound">No tournaments found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="tournaments && tournaments.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.tournament.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="closeInscrDays">
+            <span jhiTranslate="pbpointsApp.tournament.closeInscrDays">Close Inscr Days</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <span jhiTranslate="pbpointsApp.tournament.status">Status</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="categorize">
+            <span jhiTranslate="pbpointsApp.tournament.categorize">Categorize</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="logo"><span jhiTranslate="pbpointsApp.tournament.logo">Logo</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="cantPlayersNextCategory">
+            <span jhiTranslate="pbpointsApp.tournament.cantPlayersNextCategory">Cant Players Next Category</span>
+            <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="qtyTeamGroups">
+            <span jhiTranslate="pbpointsApp.tournament.qtyTeamGroups">Qty Team Groups</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="owner.login">
+            <span jhiTranslate="pbpointsApp.tournament.owner">Owner</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let tournament of tournaments; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/tournament', tournament.id, 'view']">{{ tournament.id }}</a>
+          </td>
+          <td>{{ tournament.name }}</td>
+          <td>{{ tournament.closeInscrDays }}</td>
+          <td jhiTranslate="{{ 'pbpointsApp.Status.' + tournament.status }}">{{ tournament.status }}</td>
+          <td>{{ tournament.categorize }}</td>
+          <td>
+            <a *ngIf="tournament.logo" (click)="openFile(tournament.logo, tournament.logoContentType)">
+              <img
+                [src]="'data:' + tournament.logoContentType + ';base64,' + tournament.logo"
+                style="max-height: 30px"
+                alt="tournament image"
+              />
+            </a>
+            <span *ngIf="tournament.logo">{{ tournament.logoContentType }}, {{ byteSize(tournament.logo) }}</span>
+          </td>
+          <td>{{ tournament.cantPlayersNextCategory }}</td>
+          <td>{{ tournament.qtyTeamGroups }}</td>
+          <td>
+            {{ tournament.owner?.login }}
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/tournament', tournament.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/tournament', tournament.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(tournament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

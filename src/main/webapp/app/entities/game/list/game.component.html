@@ -1,0 +1,142 @@
+<div>
+  <h2 id="page-heading" data-cy="GameHeading">
+    <span jhiTranslate="pbpointsApp.game.home.title">Games</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.game.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-game"
+        [routerLink]="['/game/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.game.home.createLabel"> Create a new Game </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="games?.length === 0">
+    <span jhiTranslate="pbpointsApp.game.home.notFound">No games found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="games && games.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="pointsA">
+            <span jhiTranslate="pbpointsApp.game.pointsA">Points A</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="pointsB">
+            <span jhiTranslate="pbpointsApp.game.pointsB">Points B</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="splitDeckNum">
+            <span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="timeLeft">
+            <span jhiTranslate="pbpointsApp.game.timeLeft">Time Left</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="status"><span jhiTranslate="pbpointsApp.game.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="overtimeA">
+            <span jhiTranslate="pbpointsApp.game.overtimeA">Overtime A</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="overtimeB">
+            <span jhiTranslate="pbpointsApp.game.overtimeB">Overtime B</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="uvuA"><span jhiTranslate="pbpointsApp.game.uvuA">Uvu A</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="uvuB"><span jhiTranslate="pbpointsApp.game.uvuB">Uvu B</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="group"><span jhiTranslate="pbpointsApp.game.group">Group</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="clasif"><span jhiTranslate="pbpointsApp.game.clasif">Clasif</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="teamA.name">
+            <span jhiTranslate="pbpointsApp.game.teamA">Team A</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="teamB.name">
+            <span jhiTranslate="pbpointsApp.game.teamB">Team B</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="eventCategory.id">
+            <span jhiTranslate="pbpointsApp.game.eventCategory">Event Category</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let game of games; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/game', game.id, 'view']">{{ game.id }}</a>
+          </td>
+          <td>{{ game.pointsA }}</td>
+          <td>{{ game.pointsB }}</td>
+          <td>{{ game.splitDeckNum }}</td>
+          <td>{{ game.timeLeft }}</td>
+          <td jhiTranslate="{{ 'pbpointsApp.Status.' + game.status }}">{{ game.status }}</td>
+          <td>{{ game.overtimeA }}</td>
+          <td>{{ game.overtimeB }}</td>
+          <td>{{ game.uvuA }}</td>
+          <td>{{ game.uvuB }}</td>
+          <td>{{ game.group }}</td>
+          <td>{{ game.clasif }}</td>
+          <td>
+            <div *ngIf="game.teamA">
+              <a [routerLink]="['/team', game.teamA?.id, 'view']">{{ game.teamA?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="game.teamB">
+              <a [routerLink]="['/team', game.teamB?.id, 'view']">{{ game.teamB?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="game.eventCategory">
+              <a [routerLink]="['/event-category', game.eventCategory?.id, 'view']">{{ game.eventCategory?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/game', game.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/game', game.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(game)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="games && games.length > 0">
+    <div class="row justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="row justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

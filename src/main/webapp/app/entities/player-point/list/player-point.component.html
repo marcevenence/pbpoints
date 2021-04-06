@@ -1,0 +1,102 @@
+<div>
+  <h2 id="page-heading" data-cy="PlayerPointHeading">
+    <span jhiTranslate="pbpointsApp.playerPoint.home.title">Player Points</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.playerPoint.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-player-point"
+        [routerLink]="['/player-point/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.playerPoint.home.createLabel"> Create a new Player Point </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="playerPoints?.length === 0">
+    <span jhiTranslate="pbpointsApp.playerPoint.home.notFound">No playerPoints found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="playerPoints && playerPoints.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" jhiSortBy="points">
+            <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="tournament.name">
+            <span jhiTranslate="pbpointsApp.playerPoint.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="user.login">
+            <span jhiTranslate="pbpointsApp.playerPoint.user">User</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" jhiSortBy="category.name">
+            <span jhiTranslate="pbpointsApp.playerPoint.category">Category</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+        <tr *ngFor="let playerPoint of playerPoints; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/player-point', playerPoint.id, 'view']">{{ playerPoint.id }}</a>
+          </td>
+          <td>{{ playerPoint.points }}</td>
+          <td>
+            <div *ngIf="playerPoint.tournament">
+              <a [routerLink]="['/tournament', playerPoint.tournament?.id, 'view']">{{ playerPoint.tournament?.name }}</a>
+            </div>
+          </td>
+          <td>
+            {{ playerPoint.user?.login }}
+          </td>
+          <td>
+            <div *ngIf="playerPoint.category">
+              <a [routerLink]="['/category', playerPoint.category?.id, 'view']">{{ playerPoint.category?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/player-point', playerPoint.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/player-point', playerPoint.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(playerPoint)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

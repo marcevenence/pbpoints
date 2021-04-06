@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "playerDetailPoint": {
+      "home": {
+        "title": "Player Detail Points",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Player Detail Point",
+        "createOrEditLabel": "Criar ou editar Player Detail Point",
+        "notFound": "Nenhum Player Detail Point encontrado"
+      },
+      "created": "Um novo Player Detail Point foi criado com o identificador {{ param }}",
+      "updated": "Um Player Detail Point foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Player Detail Point foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Player Detail Point {{ id }}?"
+      },
+      "detail": {
+        "title": "Player Detail Point"
+      },
+      "id": "ID",
+      "points": "Points",
+      "event": "Event",
+      "playerPoint": "Player Point"
+    }
+  }
+}

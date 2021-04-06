@@ -48,6 +48,33 @@ public class CacheConfiguration {
             createCache(cm, com.pbpoints.domain.User.class.getName());
             createCache(cm, com.pbpoints.domain.Authority.class.getName());
             createCache(cm, com.pbpoints.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.pbpoints.domain.Bracket.class.getName());
+            createCache(cm, com.pbpoints.domain.Category.class.getName());
+            createCache(cm, com.pbpoints.domain.City.class.getName());
+            createCache(cm, com.pbpoints.domain.Country.class.getName());
+            createCache(cm, com.pbpoints.domain.Country.class.getName() + ".provinces");
+            createCache(cm, com.pbpoints.domain.DocType.class.getName());
+            createCache(cm, com.pbpoints.domain.Event.class.getName());
+            createCache(cm, com.pbpoints.domain.EventCategory.class.getName());
+            createCache(cm, com.pbpoints.domain.EventCategory.class.getName() + ".games");
+            createCache(cm, com.pbpoints.domain.EventCategory.class.getName() + ".rosters");
+            createCache(cm, com.pbpoints.domain.Format.class.getName());
+            createCache(cm, com.pbpoints.domain.Formula.class.getName());
+            createCache(cm, com.pbpoints.domain.Game.class.getName());
+            createCache(cm, com.pbpoints.domain.Location.class.getName());
+            createCache(cm, com.pbpoints.domain.Player.class.getName());
+            createCache(cm, com.pbpoints.domain.PlayerDetailPoint.class.getName());
+            createCache(cm, com.pbpoints.domain.PlayerPoint.class.getName());
+            createCache(cm, com.pbpoints.domain.Province.class.getName());
+            createCache(cm, com.pbpoints.domain.Province.class.getName() + ".cities");
+            createCache(cm, com.pbpoints.domain.Roster.class.getName());
+            createCache(cm, com.pbpoints.domain.Roster.class.getName() + ".players");
+            createCache(cm, com.pbpoints.domain.Team.class.getName());
+            createCache(cm, com.pbpoints.domain.TeamDetailPoint.class.getName());
+            createCache(cm, com.pbpoints.domain.TeamPoint.class.getName());
+            createCache(cm, com.pbpoints.domain.Tournament.class.getName());
+            createCache(cm, com.pbpoints.domain.Tournament.class.getName() + ".events");
+            createCache(cm, com.pbpoints.domain.UserExtra.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

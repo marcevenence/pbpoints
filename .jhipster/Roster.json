@@ -1,0 +1,43 @@
+{
+  "name": "Roster",
+  "fields": [
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "player",
+      "otherEntityRelationshipName": "roster",
+      "relationshipName": "player"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "team",
+      "otherEntityRelationshipName": "roster",
+      "relationshipValidateRules": "required",
+      "relationshipName": "team",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "eventCategory",
+      "otherEntityRelationshipName": "roster",
+      "relationshipValidateRules": "required",
+      "relationshipName": "eventCategory"
+    }
+  ],
+  "javadoc": "Roster entity.\\n@author Marcelo Miño",
+  "entityTableName": "roster",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023742"
+}

@@ -1,0 +1,180 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-game-heading" data-cy="GameCreateUpdateHeading" jhiTranslate="pbpointsApp.game.home.createOrEditLabel">
+        Create or edit a Game
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsA" for="field_pointsA">Points A</label>
+          <input type="number" class="form-control" name="pointsA" id="field_pointsA" data-cy="pointsA" formControlName="pointsA" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsB" for="field_pointsB">Points B</label>
+          <input type="number" class="form-control" name="pointsB" id="field_pointsB" data-cy="pointsB" formControlName="pointsB" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.splitDeckNum" for="field_splitDeckNum">Split Deck Num</label>
+          <input
+            type="number"
+            class="form-control"
+            name="splitDeckNum"
+            id="field_splitDeckNum"
+            data-cy="splitDeckNum"
+            formControlName="splitDeckNum"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.timeLeft" for="field_timeLeft">Time Left</label>
+          <input type="number" class="form-control" name="timeLeft" id="field_timeLeft" data-cy="timeLeft" formControlName="timeLeft" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.status" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'pbpointsApp.Status.null' | translate }}</option>
+            <option value="CREATED">{{ 'pbpointsApp.Status.CREATED' | translate }}</option>
+            <option value="PENDING">{{ 'pbpointsApp.Status.PENDING' | translate }}</option>
+            <option value="IN_PROGRESS">{{ 'pbpointsApp.Status.IN_PROGRESS' | translate }}</option>
+            <option value="DONE">{{ 'pbpointsApp.Status.DONE' | translate }}</option>
+            <option value="CANCEL">{{ 'pbpointsApp.Status.CANCEL' | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeA" for="field_overtimeA">Overtime A</label>
+          <input type="number" class="form-control" name="overtimeA" id="field_overtimeA" data-cy="overtimeA" formControlName="overtimeA" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeB" for="field_overtimeB">Overtime B</label>
+          <input type="number" class="form-control" name="overtimeB" id="field_overtimeB" data-cy="overtimeB" formControlName="overtimeB" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuA" for="field_uvuA">Uvu A</label>
+          <input type="number" class="form-control" name="uvuA" id="field_uvuA" data-cy="uvuA" formControlName="uvuA" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuB" for="field_uvuB">Uvu B</label>
+          <input type="number" class="form-control" name="uvuB" id="field_uvuB" data-cy="uvuB" formControlName="uvuB" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.group" for="field_group">Group</label>
+          <input type="number" class="form-control" name="group" id="field_group" data-cy="group" formControlName="group" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.clasif" for="field_clasif">Clasif</label>
+          <input type="text" class="form-control" name="clasif" id="field_clasif" data-cy="clasif" formControlName="clasif" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamA" for="field_teamA">Team A</label>
+          <select class="form-control" id="field_teamA" data-cy="teamA" name="teamA" formControlName="teamA">
+            <option *ngIf="!editForm.get('teamA')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="teamOption.id === editForm.get('teamA')!.value?.id ? editForm.get('teamA')!.value : teamOption"
+              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+            >
+              {{ teamOption.name }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['teamA'])!.invalid && (editForm.get(['teamA'])!.dirty || editForm.get(['teamA'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['teamA'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamB" for="field_teamB">Team B</label>
+          <select class="form-control" id="field_teamB" data-cy="teamB" name="teamB" formControlName="teamB">
+            <option *ngIf="!editForm.get('teamB')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="teamOption.id === editForm.get('teamB')!.value?.id ? editForm.get('teamB')!.value : teamOption"
+              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+            >
+              {{ teamOption.name }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['teamB'])!.invalid && (editForm.get(['teamB'])!.dirty || editForm.get(['teamB'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['teamB'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.game.eventCategory" for="field_eventCategory">Event Category</label>
+          <select
+            class="form-control"
+            id="field_eventCategory"
+            data-cy="eventCategory"
+            name="eventCategory"
+            formControlName="eventCategory"
+          >
+            <option *ngIf="!editForm.get('eventCategory')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                eventCategoryOption.id === editForm.get('eventCategory')!.value?.id
+                  ? editForm.get('eventCategory')!.value
+                  : eventCategoryOption
+              "
+              *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
+            >
+              {{ eventCategoryOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            editForm.get(['eventCategory'])!.invalid && (editForm.get(['eventCategory'])!.dirty || editForm.get(['eventCategory'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['eventCategory'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

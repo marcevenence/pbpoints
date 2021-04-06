@@ -1,0 +1,69 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="tournament">
+      <h2 data-cy="tournamentDetailsHeading"><span jhiTranslate="pbpointsApp.tournament.detail.title">Tournament</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ tournament.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.name">Name</span></dt>
+        <dd>
+          <span>{{ tournament.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.closeInscrDays">Close Inscr Days</span></dt>
+        <dd>
+          <span>{{ tournament.closeInscrDays }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'pbpointsApp.Status.' + tournament.status }}">{{ tournament.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.categorize">Categorize</span></dt>
+        <dd>
+          <span>{{ tournament.categorize }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.logo">Logo</span></dt>
+        <dd>
+          <div *ngIf="tournament.logo">
+            <a (click)="openFile(tournament.logo, tournament.logoContentType)">
+              <img
+                [src]="'data:' + tournament.logoContentType + ';base64,' + tournament.logo"
+                style="max-width: 100%"
+                alt="tournament image"
+              />
+            </a>
+            {{ tournament.logoContentType }}, {{ byteSize(tournament.logo) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.cantPlayersNextCategory">Cant Players Next Category</span></dt>
+        <dd>
+          <span>{{ tournament.cantPlayersNextCategory }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.qtyTeamGroups">Qty Team Groups</span></dt>
+        <dd>
+          <span>{{ tournament.qtyTeamGroups }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.owner">Owner</span></dt>
+        <dd>
+          <span>{{ tournament.owner?.login }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/tournament', tournament.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{
+  "pbpointsApp": {
+    "playerPoint": {
+      "home": {
+        "title": "Player Points",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Player Point",
+        "createOrEditLabel": "Create or edit a Player Point",
+        "notFound": "No Player Points found"
+      },
+      "created": "A new Player Point is created with identifier {{ param }}",
+      "updated": "A Player Point is updated with identifier {{ param }}",
+      "deleted": "A Player Point is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Player Point {{ id }}?"
+      },
+      "detail": {
+        "title": "Player Point"
+      },
+      "id": "ID",
+      "points": "Points",
+      "tournament": "Tournament",
+      "user": "User",
+      "category": "Category"
+    }
+  }
+}

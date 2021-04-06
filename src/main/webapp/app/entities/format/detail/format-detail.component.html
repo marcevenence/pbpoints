@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="format">
+      <h2 data-cy="formatDetailsHeading"><span jhiTranslate="pbpointsApp.format.detail.title">Format</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ format.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.format.name">Name</span></dt>
+        <dd>
+          <span>{{ format.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.format.description">Description</span></dt>
+        <dd>
+          <span>{{ format.description }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.format.coeficient">Coeficient</span></dt>
+        <dd>
+          <span>{{ format.coeficient }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.format.playersQty">Players Qty</span></dt>
+        <dd>
+          <span>{{ format.playersQty }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.format.tournament">Tournament</span></dt>
+        <dd>
+          <div *ngIf="format.tournament">
+            <a [routerLink]="['/tournament', format.tournament?.id, 'view']">{{ format.tournament?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/format', format.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+{
+  "pbpointsApp": {
+    "bracket": {
+      "home": {
+        "title": "Brackets",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Bracket",
+        "createOrEditLabel": "Create or edit a Bracket",
+        "notFound": "No Brackets found"
+      },
+      "created": "A new Bracket is created with identifier {{ param }}",
+      "updated": "A Bracket is updated with identifier {{ param }}",
+      "deleted": "A Bracket is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Bracket {{ id }}?"
+      },
+      "detail": {
+        "title": "Bracket"
+      },
+      "id": "ID",
+      "teams": "Teams",
+      "teams5A": "Teams 5 A",
+      "teams5B": "Teams 5 B",
+      "teams6A": "Teams 6 A",
+      "teams6B": "Teams 6 B"
+    }
+  }
+}

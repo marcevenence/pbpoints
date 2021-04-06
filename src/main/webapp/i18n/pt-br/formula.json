@@ -1,0 +1,30 @@
+{
+  "pbpointsApp": {
+    "formula": {
+      "home": {
+        "title": "Formulas",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Formula",
+        "createOrEditLabel": "Criar ou editar Formula",
+        "notFound": "Nenhum Formula encontrado"
+      },
+      "created": "Um novo Formula foi criado com o identificador {{ param }}",
+      "updated": "Um Formula foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Formula foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Formula {{ id }}?"
+      },
+      "detail": {
+        "title": "Formula"
+      },
+      "id": "ID",
+      "formula": "Formula",
+      "var1": "Var 1",
+      "var2": "Var 2",
+      "var3": "Var 3",
+      "description": "Description",
+      "example": "Example",
+      "tournament": "Tournament"
+    }
+  }
+}

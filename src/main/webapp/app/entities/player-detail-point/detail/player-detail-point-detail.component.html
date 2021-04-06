@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="playerDetailPoint">
+      <h2 data-cy="playerDetailPointDetailsHeading">
+        <span jhiTranslate="pbpointsApp.playerDetailPoint.detail.title">Player Detail Point</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ playerDetailPoint.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.points">Points</span></dt>
+        <dd>
+          <span>{{ playerDetailPoint.points }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.event">Event</span></dt>
+        <dd>
+          <div *ngIf="playerDetailPoint.event">
+            <a [routerLink]="['/event', playerDetailPoint.event?.id, 'view']">{{ playerDetailPoint.event?.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.playerPoint">Player Point</span></dt>
+        <dd>
+          <div *ngIf="playerDetailPoint.playerPoint">
+            <a [routerLink]="['/player-point', playerDetailPoint.playerPoint?.id, 'view']">{{ playerDetailPoint.playerPoint?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/player-detail-point', playerDetailPoint.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

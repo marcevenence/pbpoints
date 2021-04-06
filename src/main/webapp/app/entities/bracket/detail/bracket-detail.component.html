@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="bracket">
+      <h2 data-cy="bracketDetailsHeading"><span jhiTranslate="pbpointsApp.bracket.detail.title">Bracket</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ bracket.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.bracket.teams">Teams</span></dt>
+        <dd>
+          <span>{{ bracket.teams }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.bracket.teams5A">Teams 5 A</span></dt>
+        <dd>
+          <span>{{ bracket.teams5A }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.bracket.teams5B">Teams 5 B</span></dt>
+        <dd>
+          <span>{{ bracket.teams5B }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.bracket.teams6A">Teams 6 A</span></dt>
+        <dd>
+          <span>{{ bracket.teams6A }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.bracket.teams6B">Teams 6 B</span></dt>
+        <dd>
+          <span>{{ bracket.teams6B }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/bracket', bracket.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

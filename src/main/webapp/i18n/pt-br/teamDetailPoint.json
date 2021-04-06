@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "teamDetailPoint": {
+      "home": {
+        "title": "Team Detail Points",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Team Detail Point",
+        "createOrEditLabel": "Criar ou editar Team Detail Point",
+        "notFound": "Nenhum Team Detail Point encontrado"
+      },
+      "created": "Um novo Team Detail Point foi criado com o identificador {{ param }}",
+      "updated": "Um Team Detail Point foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Team Detail Point foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Team Detail Point {{ id }}?"
+      },
+      "detail": {
+        "title": "Team Detail Point"
+      },
+      "id": "ID",
+      "points": "Points",
+      "teamPoint": "Team Point",
+      "event": "Event"
+    }
+  }
+}

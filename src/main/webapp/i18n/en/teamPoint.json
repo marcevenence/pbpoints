@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "teamPoint": {
+      "home": {
+        "title": "Team Points",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Team Point",
+        "createOrEditLabel": "Create or edit a Team Point",
+        "notFound": "No Team Points found"
+      },
+      "created": "A new Team Point is created with identifier {{ param }}",
+      "updated": "A Team Point is updated with identifier {{ param }}",
+      "deleted": "A Team Point is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Team Point {{ id }}?"
+      },
+      "detail": {
+        "title": "Team Point"
+      },
+      "id": "ID",
+      "points": "Points",
+      "team": "Team",
+      "tournament": "Tournament"
+    }
+  }
+}

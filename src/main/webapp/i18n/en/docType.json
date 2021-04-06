@@ -1,0 +1,25 @@
+{
+  "pbpointsApp": {
+    "docType": {
+      "home": {
+        "title": "Doc Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Doc Type",
+        "createOrEditLabel": "Create or edit a Doc Type",
+        "notFound": "No Doc Types found"
+      },
+      "created": "A new Doc Type is created with identifier {{ param }}",
+      "updated": "A Doc Type is updated with identifier {{ param }}",
+      "deleted": "A Doc Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Doc Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Doc Type"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

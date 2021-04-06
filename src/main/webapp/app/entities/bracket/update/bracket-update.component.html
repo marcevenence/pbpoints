@@ -1,0 +1,131 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-bracket-heading" data-cy="BracketCreateUpdateHeading" jhiTranslate="pbpointsApp.bracket.home.createOrEditLabel">
+        Create or edit a Bracket
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.bracket.teams" for="field_teams">Teams</label>
+          <input type="number" class="form-control" name="teams" id="field_teams" data-cy="teams" formControlName="teams" />
+          <div *ngIf="editForm.get('teams')!.invalid && (editForm.get('teams')!.dirty || editForm.get('teams')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('teams')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('teams')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.bracket.teams5A" for="field_teams5A">Teams 5 A</label>
+          <input type="number" class="form-control" name="teams5A" id="field_teams5A" data-cy="teams5A" formControlName="teams5A" />
+          <div *ngIf="editForm.get('teams5A')!.invalid && (editForm.get('teams5A')!.dirty || editForm.get('teams5A')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('teams5A')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('teams5A')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.bracket.teams5B" for="field_teams5B">Teams 5 B</label>
+          <input type="number" class="form-control" name="teams5B" id="field_teams5B" data-cy="teams5B" formControlName="teams5B" />
+          <div *ngIf="editForm.get('teams5B')!.invalid && (editForm.get('teams5B')!.dirty || editForm.get('teams5B')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('teams5B')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('teams5B')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.bracket.teams6A" for="field_teams6A">Teams 6 A</label>
+          <input type="number" class="form-control" name="teams6A" id="field_teams6A" data-cy="teams6A" formControlName="teams6A" />
+          <div *ngIf="editForm.get('teams6A')!.invalid && (editForm.get('teams6A')!.dirty || editForm.get('teams6A')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('teams6A')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('teams6A')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.bracket.teams6B" for="field_teams6B">Teams 6 B</label>
+          <input type="number" class="form-control" name="teams6B" id="field_teams6B" data-cy="teams6B" formControlName="teams6B" />
+          <div *ngIf="editForm.get('teams6B')!.invalid && (editForm.get('teams6B')!.dirty || editForm.get('teams6B')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('teams6B')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('teams6B')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

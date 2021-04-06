@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-player-heading" data-cy="PlayerCreateUpdateHeading" jhiTranslate="pbpointsApp.player.home.createOrEditLabel">
+        Create or edit a Player
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.player.profile" for="field_profile">Profile</label>
+          <select class="form-control" name="profile" formControlName="profile" id="field_profile" data-cy="profile">
+            <option [ngValue]="null">{{ 'pbpointsApp.ProfileUser.null' | translate }}</option>
+            <option value="PLAYER">{{ 'pbpointsApp.ProfileUser.PLAYER' | translate }}</option>
+            <option value="STAFF">{{ 'pbpointsApp.ProfileUser.STAFF' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.player.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.login }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.player.roster" for="field_roster">Roster</label>
+          <select class="form-control" id="field_roster" data-cy="roster" name="roster" formControlName="roster">
+            <option *ngIf="!editForm.get('roster')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="rosterOption.id === editForm.get('roster')!.value?.id ? editForm.get('roster')!.value : rosterOption"
+              *ngFor="let rosterOption of rostersSharedCollection; trackBy: trackRosterById"
+            >
+              {{ rosterOption.id }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['roster'])!.invalid && (editForm.get(['roster'])!.dirty || editForm.get(['roster'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['roster'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

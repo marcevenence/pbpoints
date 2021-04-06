@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="roster">
+      <h2 data-cy="rosterDetailsHeading"><span jhiTranslate="pbpointsApp.roster.detail.title">Roster</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ roster.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.roster.active">Active</span></dt>
+        <dd>
+          <span>{{ roster.active }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.roster.team">Team</span></dt>
+        <dd>
+          <div *ngIf="roster.team">
+            <a [routerLink]="['/team', roster.team?.id, 'view']">{{ roster.team?.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.roster.eventCategory">Event Category</span></dt>
+        <dd>
+          <div *ngIf="roster.eventCategory">
+            <a [routerLink]="['/event-category', roster.eventCategory?.id, 'view']">{{ roster.eventCategory?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/roster', roster.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

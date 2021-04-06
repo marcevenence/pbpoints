@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity PlayerDetailPoint.
+    -->
+    <changeSet id="20210406023739-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="event_id"
+                                 baseTableName="player_detail_point"
+                                 constraintName="fk_player_detail_point__event_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event"/>
+
+        <addForeignKeyConstraint baseColumnNames="player_point_id"
+                                 baseTableName="player_detail_point"
+                                 constraintName="fk_player_detail_point__player_point_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="player_point"/>
+    </changeSet>
+</databaseChangeLog>

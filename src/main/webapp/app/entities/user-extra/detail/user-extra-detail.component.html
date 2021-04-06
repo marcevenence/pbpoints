@@ -1,0 +1,63 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="userExtra">
+      <h2 data-cy="userExtraDetailsHeading"><span jhiTranslate="pbpointsApp.userExtra.detail.title">User Extra</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ userExtra.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.numDoc">Num Doc</span></dt>
+        <dd>
+          <span>{{ userExtra.numDoc }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.phone">Phone</span></dt>
+        <dd>
+          <span>{{ userExtra.phone }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.bornDate">Born Date</span></dt>
+        <dd>
+          <span>{{ userExtra.bornDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span></dt>
+        <dd>
+          <div *ngIf="userExtra.picture">
+            <a (click)="openFile(userExtra.picture, userExtra.pictureContentType)">
+              <img
+                [src]="'data:' + userExtra.pictureContentType + ';base64,' + userExtra.picture"
+                style="max-width: 100%"
+                alt="userExtra image"
+              />
+            </a>
+            {{ userExtra.pictureContentType }}, {{ byteSize(userExtra.picture) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.user">User</span></dt>
+        <dd>
+          <span>{{ userExtra.user?.login }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.userExtra.docType">Doc Type</span></dt>
+        <dd>
+          <div *ngIf="userExtra.docType">
+            <a [routerLink]="['/doc-type', userExtra.docType?.id, 'view']">{{ userExtra.docType?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/user-extra', userExtra.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

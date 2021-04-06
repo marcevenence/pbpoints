@@ -1,0 +1,97 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-player-detail-point-heading"
+        data-cy="PlayerDetailPointCreateUpdateHeading"
+        jhiTranslate="pbpointsApp.playerDetailPoint.home.createOrEditLabel"
+      >
+        Create or edit a Player Detail Point
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.points" for="field_points">Points</label>
+          <input type="number" class="form-control" name="points" id="field_points" data-cy="points" formControlName="points" />
+          <div *ngIf="editForm.get('points')!.invalid && (editForm.get('points')!.dirty || editForm.get('points')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('points')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('points')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.event" for="field_event">Event</label>
+          <select class="form-control" id="field_event" data-cy="event" name="event" formControlName="event">
+            <option *ngIf="!editForm.get('event')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="eventOption.id === editForm.get('event')!.value?.id ? editForm.get('event')!.value : eventOption"
+              *ngFor="let eventOption of eventsSharedCollection; trackBy: trackEventById"
+            >
+              {{ eventOption.name }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['event'])!.invalid && (editForm.get(['event'])!.dirty || editForm.get(['event'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['event'])?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.playerPoint" for="field_playerPoint"
+            >Player Point</label
+          >
+          <select class="form-control" id="field_playerPoint" data-cy="playerPoint" name="playerPoint" formControlName="playerPoint">
+            <option *ngIf="!editForm.get('playerPoint')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                playerPointOption.id === editForm.get('playerPoint')!.value?.id ? editForm.get('playerPoint')!.value : playerPointOption
+              "
+              *ngFor="let playerPointOption of playerPointsSharedCollection; trackBy: trackPlayerPointById"
+            >
+              {{ playerPointOption.id }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="editForm.get(['playerPoint'])!.invalid && (editForm.get(['playerPoint'])!.dirty || editForm.get(['playerPoint'])!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['playerPoint'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

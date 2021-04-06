@@ -1,0 +1,32 @@
+{
+  "pbpointsApp": {
+    "tournament": {
+      "home": {
+        "title": "Tournaments",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tournament",
+        "createOrEditLabel": "Create or edit a Tournament",
+        "notFound": "No Tournaments found"
+      },
+      "created": "A new Tournament is created with identifier {{ param }}",
+      "updated": "A Tournament is updated with identifier {{ param }}",
+      "deleted": "A Tournament is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tournament {{ id }}?"
+      },
+      "detail": {
+        "title": "Tournament"
+      },
+      "id": "ID",
+      "name": "Name",
+      "closeInscrDays": "Close Inscr Days",
+      "status": "Status",
+      "categorize": "Categorize",
+      "logo": "Logo",
+      "cantPlayersNextCategory": "Cant Players Next Category",
+      "qtyTeamGroups": "Qty Team Groups",
+      "event": "Event",
+      "owner": "Owner"
+    }
+  }
+}

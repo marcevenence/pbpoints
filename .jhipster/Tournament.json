@@ -1,0 +1,62 @@
+{
+  "name": "Tournament",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "closeInscrDays",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "Status",
+      "fieldValues": "CREATED,PENDING,IN_PROGRESS,DONE,CANCEL"
+    },
+    {
+      "fieldName": "categorize",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "logo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
+    },
+    {
+      "fieldName": "cantPlayersNextCategory",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "qtyTeamGroups",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "tournament",
+      "relationshipName": "event"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "user",
+      "otherEntityRelationshipName": "tournament",
+      "relationshipValidateRules": "required",
+      "relationshipName": "owner",
+      "otherEntityField": "login"
+    }
+  ],
+  "javadoc": "Tournament entity.\\n@author Marcelo Miño",
+  "entityTableName": "tournament",
+  "dto": "mapstruct",
+  "pagination": "infinite-scroll",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023746"
+}

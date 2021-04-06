@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "player": {
+      "home": {
+        "title": "Players",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Player",
+        "createOrEditLabel": "Criar ou editar Player",
+        "notFound": "Nenhum Player encontrado"
+      },
+      "created": "Um novo Player foi criado com o identificador {{ param }}",
+      "updated": "Um Player foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Player foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Player {{ id }}?"
+      },
+      "detail": {
+        "title": "Player"
+      },
+      "id": "ID",
+      "profile": "Profile",
+      "user": "User",
+      "roster": "Roster"
+    }
+  }
+}

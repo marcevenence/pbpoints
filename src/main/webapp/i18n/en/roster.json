@@ -1,0 +1,27 @@
+{
+  "pbpointsApp": {
+    "roster": {
+      "home": {
+        "title": "Rosters",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Roster",
+        "createOrEditLabel": "Create or edit a Roster",
+        "notFound": "No Rosters found"
+      },
+      "created": "A new Roster is created with identifier {{ param }}",
+      "updated": "A Roster is updated with identifier {{ param }}",
+      "deleted": "A Roster is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Roster {{ id }}?"
+      },
+      "detail": {
+        "title": "Roster"
+      },
+      "id": "ID",
+      "active": "Active",
+      "player": "Player",
+      "team": "Team",
+      "eventCategory": "Event Category"
+    }
+  }
+}

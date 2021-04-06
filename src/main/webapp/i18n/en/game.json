@@ -1,0 +1,37 @@
+{
+  "pbpointsApp": {
+    "game": {
+      "home": {
+        "title": "Games",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Game",
+        "createOrEditLabel": "Create or edit a Game",
+        "notFound": "No Games found"
+      },
+      "created": "A new Game is created with identifier {{ param }}",
+      "updated": "A Game is updated with identifier {{ param }}",
+      "deleted": "A Game is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Game {{ id }}?"
+      },
+      "detail": {
+        "title": "Game"
+      },
+      "id": "ID",
+      "pointsA": "Points A",
+      "pointsB": "Points B",
+      "splitDeckNum": "Split Deck Num",
+      "timeLeft": "Time Left",
+      "status": "Status",
+      "overtimeA": "Overtime A",
+      "overtimeB": "Overtime B",
+      "uvuA": "Uvu A",
+      "uvuB": "Uvu B",
+      "group": "Group",
+      "clasif": "Clasif",
+      "teamA": "Team A",
+      "teamB": "Team B",
+      "eventCategory": "Event Category"
+    }
+  }
+}

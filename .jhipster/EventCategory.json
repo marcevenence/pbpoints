@@ -1,0 +1,57 @@
+{
+  "name": "EventCategory",
+  "fields": [
+    {
+      "fieldName": "splitDeck",
+      "fieldType": "Boolean"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "game",
+      "otherEntityRelationshipName": "eventCategory",
+      "relationshipName": "game"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "roster",
+      "otherEntityRelationshipName": "eventCategory",
+      "relationshipName": "roster"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "event",
+      "otherEntityRelationshipName": "eventCategory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "event",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "category",
+      "otherEntityRelationshipName": "eventCategory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "category",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "format",
+      "otherEntityRelationshipName": "eventCategory",
+      "relationshipValidateRules": "required",
+      "relationshipName": "format",
+      "otherEntityField": "name"
+    }
+  ],
+  "entityTableName": "event_category",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "applications": "*",
+  "changelogDate": "20210406023733"
+}
