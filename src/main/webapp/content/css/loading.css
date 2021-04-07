@@ -150,3 +150,16 @@
   -webkit-animation-delay: 0s;
   animation-delay: 0s;
 }
+
+.backgr {
+  background: url('../../content/images/Argentina.jpg');
+  width: 100%;
+  height: auto;
+  background-size: cover;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
