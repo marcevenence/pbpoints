@@ -27,7 +27,7 @@
       "otherEntityRelationshipName": "userExtra",
       "relationshipValidateRules": "required",
       "relationshipName": "user",
-      "otherEntityField": "login",
+      "otherEntityField": "id",
       "ownerSide": true
     },
     {

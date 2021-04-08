@@ -36,23 +36,16 @@
         </thead>
         <tbody>
           <tr *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
-            <!--<td>
-                      <img [src]="'data:' + event.tournament.logoContentType + ';base64,' + event.tournament.logo" style="max-height: 30px;" alt="tournament image"/>
-                    </td>-->
-            <td>{{ event.tournament }}</td>
-            <!--<div *ngFor="let item of tournaments">
-                          <div *ngIf="(item.id == event.tournamentId)" >{{item.name}}</div>
-                            </div>
-                  </div>-->
-            <td>{{ event.name }}</td>
             <td>
-              <div *ngIf="event.city">
-                <div *ngFor="let item of cities">
-                  <div *ngIf="item.id == event.city.id">{{ item.name }}</div>
-                </div>
-              </div>
+              <img
+                [src]="'data:' + event.tournament?.logoContentType + ';base64,' + event.tournament?.logo"
+                style="max-height: 30px"
+                alt="tournament image"
+              />
             </td>
-            <td>{{ event.city }}</td>
+            <td>{{ event.tournament?.name }}</td>
+            <td>{{ event.name }}</td>
+            <td>{{ event.city?.name }}</td>
             <td>{{ event.fromDate | formatMediumDate }}</td>
             <td>{{ event.endDate | formatMediumDate }}</td>
             <td>{{ event.endInscriptionDate | formatMediumDate }}</td>
@@ -101,31 +94,15 @@
         <tbody>
           <tr *ngFor="let event of eventsOld; trackBy: trackId">
             <td>
-              <!--<div *ngIf="event.tournamentId">
-					                <div *ngFor="let tournament of tournaments">
-		                             <div *ngIf="(tournament.id == event.tournamentId)" >
-						                    <div *ngIf="tournament.logo">
-						                        <img [src]="'data:' + tournament.logoContentType + ';base64,' + tournament.logo" style="max-height: 30px;" alt="tournament image"/>
-						                    </div>
-					                 </div>
-			                        </div>
-								          </div>-->
+              <img
+                [src]="'data:' + event.tournament?.logoContentType + ';base64,' + event.tournament?.logo"
+                style="max-height: 30px"
+                alt="tournament image"
+              />
             </td>
-            <!--<td>
-			                    <div *ngIf="event.tournamentId">
-					                <div *ngFor="let item of tournaments">
-					                	<div *ngIf="(item.id == event.tournamentId)" >{{item.name}}</div>
-			                        </div>
-								          </div>
-			                </td>-->
+            <td>{{ event.tournament?.name }}</td>
             <td>{{ event.name }}</td>
-            <!--<td>
-			                    <div *ngIf="event.cityId">
-			                        <div *ngFor="let item of cities">
-			                            <div *ngIf="(item.id == event.cityId)" >{{item.name}}</div>
-			                        </div>
-			                    </div>
-			                </td>-->
+            <td>{{ event.city?.name }}</td>
             <td>{{ event.fromDate | formatMediumDate }}</td>
             <td>{{ event.endDate | formatMediumDate }}</td>
             <td class="text-right">

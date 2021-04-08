@@ -7,8 +7,18 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.tournament.home.refreshListLabel">Refresh List</span>
       </button>
-
       <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-tournament"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
+      <button
+        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-tournament"
@@ -32,40 +42,28 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.tournament.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="closeInscrDays">
-            <span jhiTranslate="pbpointsApp.tournament.closeInscrDays">Close Inscr Days</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col"><span jhiTranslate="PbPointsApp.tournament.logo">Logo</span></th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.tournament.name">Name</span></th>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+            <span jhiTranslate="pbpointsApp.tournament.closeInscrDays">Close Inscr Days</span>
           </th>
-          <th scope="col" jhiSortBy="status">
-            <span jhiTranslate="pbpointsApp.tournament.status">Status</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+            <span jhiTranslate="pbpointsApp.tournament.status">Status</span>
           </th>
-          <th scope="col" jhiSortBy="categorize">
-            <span jhiTranslate="pbpointsApp.tournament.categorize">Categorize</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="logo"><span jhiTranslate="pbpointsApp.tournament.logo">Logo</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="cantPlayersNextCategory">
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
             <span jhiTranslate="pbpointsApp.tournament.cantPlayersNextCategory">Cant Players Next Category</span>
-            <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="qtyTeamGroups">
-            <span jhiTranslate="pbpointsApp.tournament.qtyTeamGroups">Qty Team Groups</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+            <span jhiTranslate="pbpointsApp.tournament.categorize">Categorize</span>
           </th>
-          <th scope="col" jhiSortBy="owner.login">
-            <span jhiTranslate="pbpointsApp.tournament.owner">Owner</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"><span jhiTranslate="pbpointsApp.tournament.owner">Owner</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let tournament of tournaments; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/tournament', tournament.id, 'view']">{{ tournament.id }}</a>
-          </td>
-          <td>{{ tournament.name }}</td>
-          <td>{{ tournament.closeInscrDays }}</td>
-          <td jhiTranslate="{{ 'pbpointsApp.Status.' + tournament.status }}">{{ tournament.status }}</td>
-          <td>{{ tournament.categorize }}</td>
+          <!-- <td><a [routerLink]="['/tournament', tournament.id, 'view' ]">{{tournament.id}}</a></td>-->
           <td>
             <a *ngIf="tournament.logo" (click)="openFile(tournament.logo, tournament.logoContentType)">
               <img
@@ -74,13 +72,16 @@
                 alt="tournament image"
               />
             </a>
-            <span *ngIf="tournament.logo">{{ tournament.logoContentType }}, {{ byteSize(tournament.logo) }}</span>
+            <!--<span *ngIf="tournament.logo">{{ tournament.logoContentType }}, {{ byteSize(tournament.logo) }}</span>-->
           </td>
-          <td>{{ tournament.cantPlayersNextCategory }}</td>
-          <td>{{ tournament.qtyTeamGroups }}</td>
-          <td>
-            {{ tournament.owner?.login }}
+          <td>{{ tournament.name }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.closeInscrDays }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" jhiTranslate="{{ 'pbpointsApp.Status.' + tournament.status }}">
+            {{ tournament.status }}
           </td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.cantPlayersNextCategory }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.categorize }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.owner?.login }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

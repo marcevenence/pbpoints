@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 import { ITournament } from '../tournament.model';
-
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { TournamentService } from '../service/tournament.service';
+import { AccountService } from 'app/core/auth/account.service';
 import { TournamentDeleteDialogComponent } from '../delete/tournament-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
@@ -15,7 +15,9 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
   templateUrl: './tournament.component.html',
 })
 export class TournamentComponent implements OnInit {
+  currentAccount: any;
   tournaments: ITournament[];
+  authSubscription?: Subscription;
   isLoading = false;
   itemsPerPage: number;
   links: { [key: string]: number };
@@ -25,6 +27,7 @@ export class TournamentComponent implements OnInit {
 
   constructor(
     protected tournamentService: TournamentService,
+    protected accountService: AccountService,
     protected dataUtils: DataUtils,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks
@@ -41,22 +44,71 @@ export class TournamentComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.tournamentService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ITournament[]>) => {
-          this.isLoading = false;
-          this.paginateTournaments(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      this.tournamentService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITournament[]>) => {
+            this.isLoading = false;
+            this.paginateTournaments(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      if (this.currentAccount.authorities.includes('ROLE_OWNER_TOURNAMENT')) {
+        this.tournamentService
+          .query({
+            'ownerId.equals': this.currentAccount.id,
+            page: this.page,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+          })
+          .subscribe(
+            (res: HttpResponse<ITournament[]>) => {
+              this.isLoading = false;
+              this.paginateTournaments(res.body, res.headers);
+            },
+            () => {
+              this.isLoading = false;
+            }
+          );
+      } else {
+        if (this.currentAccount.authorities.includes('ROLE_USER')) {
+          this.tournamentService
+            .query({
+              'status.in': ['CREATED', 'IN_PROGRESS'],
+              page: this.page,
+              size: this.itemsPerPage,
+              sort: this.sort(),
+            })
+            .subscribe(
+              (res: HttpResponse<ITournament[]>) => {
+                this.isLoading = false;
+                this.paginateTournaments(res.body, res.headers);
+              },
+              () => {
+                this.isLoading = false;
+              }
+            );
+        } else {
+          this.tournamentService.query({ page: this.page, size: this.itemsPerPage, sort: this.sort() }).subscribe(
+            (res: HttpResponse<ITournament[]>) => {
+              this.isLoading = false;
+              this.paginateTournaments(res.body, res.headers);
+            },
+            () => {
+              this.isLoading = false;
+            }
+          );
         }
-      );
+      }
+    }
   }
 
   reset(): void {
@@ -71,6 +123,8 @@ export class TournamentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.currentAccount = account));
+    localStorage.setItem('TOURNAMENTID', '');
     this.loadAll();
   }
 
@@ -95,6 +149,10 @@ export class TournamentComponent implements OnInit {
         this.reset();
       }
     });
+  }
+
+  Cancel(): void {
+    window.history.back();
   }
 
   protected sort(): string[] {
