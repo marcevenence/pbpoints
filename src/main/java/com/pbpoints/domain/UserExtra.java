@@ -37,9 +37,8 @@ public class UserExtra implements Serializable {
     @Column(name = "picture_content_type", nullable = false)
     private String pictureContentType;
 
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(unique = true)
+    @OneToOne
+    @MapsId
     private User user;
 
     @ManyToOne

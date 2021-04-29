@@ -7,53 +7,9 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
-
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.name" for="field_name">Name</label>
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.closeInscrDays" for="field_closeInscrDays"
-            >Close Inscr Days</label
-          >
-          <input
-            type="number"
-            class="form-control"
-            name="closeInscrDays"
-            id="field_closeInscrDays"
-            data-cy="closeInscrDays"
-            formControlName="closeInscrDays"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.status" for="field_status">Status</label>
-          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
-            <option [ngValue]="null">{{ 'pbpointsApp.Status.null' | translate }}</option>
-            <option value="CREATED">{{ 'pbpointsApp.Status.CREATED' | translate }}</option>
-            <option value="PENDING">{{ 'pbpointsApp.Status.PENDING' | translate }}</option>
-            <option value="IN_PROGRESS">{{ 'pbpointsApp.Status.IN_PROGRESS' | translate }}</option>
-            <option value="DONE">{{ 'pbpointsApp.Status.DONE' | translate }}</option>
-            <option value="CANCEL">{{ 'pbpointsApp.Status.CANCEL' | translate }}</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.categorize" for="field_categorize">Categorize</label>
-          <input
-            type="checkbox"
-            class="form-check"
-            name="categorize"
-            id="field_categorize"
-            data-cy="categorize"
-            formControlName="categorize"
-          />
         </div>
 
         <div class="form-group">
@@ -87,8 +43,48 @@
           <input type="hidden" class="form-control" name="logo" id="field_logo" data-cy="logo" formControlName="logo" />
           <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType" formControlName="logoContentType" />
         </div>
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+        </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.closeInscrDays" for="field_closeInscrDays"
+            >Close Inscr Days</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="closeInscrDays"
+            id="field_closeInscrDays"
+            data-cy="closeInscrDays"
+            formControlName="closeInscrDays"
+          />
+        </div>
+        <div class="form-group" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.status" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option value="CREATED">{{ 'pbpointsApp.Status.CREATED' | translate }}</option>
+            <option value="PENDING">{{ 'pbpointsApp.Status.PENDING' | translate }}</option>
+            <option value="IN_PROGRESS">{{ 'pbpointsApp.Status.IN_PROGRESS' | translate }}</option>
+            <option value="DONE">{{ 'pbpointsApp.Status.DONE' | translate }}</option>
+            <option value="CANCEL">{{ 'pbpointsApp.Status.CANCEL' | translate }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.categorize" for="field_categorize">Categorize</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="categorize"
+            id="field_categorize"
+            data-cy="categorize"
+            formControlName="categorize"
+          />
+        </div>
+
+        <div *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" class="form-group">
           <label
             class="form-control-label"
             jhiTranslate="pbpointsApp.tournament.cantPlayersNextCategory"
@@ -105,7 +101,7 @@
           />
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
           <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.qtyTeamGroups" for="field_qtyTeamGroups"
             >Qty Team Groups</label
           >
@@ -139,10 +135,6 @@
       </div>
 
       <div>
-        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-
         <button
           type="submit"
           id="save-entity"
@@ -151,6 +143,9 @@
           class="btn btn-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
       </div>
     </form>

@@ -2,31 +2,31 @@
   "pbpointsApp": {
     "tournament": {
       "home": {
-        "title": "Tournaments",
+        "title": "Torneio",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Tournament",
-        "createOrEditLabel": "Criar ou editar Tournament",
-        "notFound": "Nenhum Tournament encontrado"
+        "createLabel": "Criar novo Torneio",
+        "createOrEditLabel": "Criar ou editar Torneio",
+        "notFound": "Nenhum Torneio encontrado"
       },
-      "created": "Um novo Tournament foi criado com o identificador {{ param }}",
-      "updated": "Um Tournament foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Tournament foi excluído com o identificador {{ param }}",
+      "created": "Um novo Torneio foi criado com o identificador {{ param }}",
+      "updated": "Um Torneio foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Torneio foi excluído com o identificador {{ param }}",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Tournament {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Torneio {{ id }}?"
       },
       "detail": {
-        "title": "Tournament"
+        "title": "Torneio"
       },
       "id": "ID",
-      "name": "Name",
-      "closeInscrDays": "Close Inscr Days",
-      "status": "Status",
-      "categorize": "Categorize",
+      "name": "Nome",
+      "closeInscrDays": "Data de Fechamento do Registro",
+      "status": "doença",
+      "categorize": "Categorizar",
       "logo": "Logo",
-      "cantPlayersNextCategory": "Cant Players Next Category",
-      "qtyTeamGroups": "Qty Team Groups",
-      "event": "Event",
-      "owner": "Owner"
+      "cantPlayersNextCategory": "Número de jogadores na próxima categoria",
+      "qtyTeamGroups": "Número de equipes por grupo",
+      "event": "Evento",
+      "owner": "Proprietário"
     }
   }
 }

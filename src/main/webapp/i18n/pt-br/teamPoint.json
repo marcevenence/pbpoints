@@ -2,25 +2,25 @@
   "pbpointsApp": {
     "teamPoint": {
       "home": {
-        "title": "Team Points",
+        "title": "Pontos da equipe",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Team Point",
-        "createOrEditLabel": "Criar ou editar Team Point",
-        "notFound": "Nenhum Team Point encontrado"
+        "createLabel": "Criar novo Pontos da equipe",
+        "createOrEditLabel": "Criar ou editar Pontos da equipe",
+        "notFound": "Nenhum Pontos da equipe encontrado"
       },
-      "created": "Um novo Team Point foi criado com o identificador {{ param }}",
-      "updated": "Um Team Point foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Team Point foi excluído com o identificador {{ param }}",
+      "created": "Um novo Pontos da equipe foi criado com o identificador {{ param }}",
+      "updated": "Um Pontos da equipe foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Pontos da equipe foi excluído com o identificador {{ param }}",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Team Point {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Pontos da equipe {{ id }}?"
       },
       "detail": {
-        "title": "Team Point"
+        "title": "Pontos da equipe"
       },
       "id": "ID",
-      "points": "Points",
-      "team": "Team",
-      "tournament": "Tournament"
+      "points": "Pontos",
+      "team": "Equipe",
+      "tournament": "Torneio"
     }
   }
 }

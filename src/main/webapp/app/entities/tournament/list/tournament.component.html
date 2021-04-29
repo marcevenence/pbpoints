@@ -84,7 +84,7 @@
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.owner?.login }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button
+              <!--<button
                 type="submit"
                 [routerLink]="['/tournament', tournament.id, 'view']"
                 class="btn btn-info btn-sm"
@@ -92,9 +92,44 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
+              </button>-->
               <button
+                type="submit"
+                [routerLink]="['/event']"
+                [queryParams]="{ tourId: tournament.id }"
+                class="btn btn-primary btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.event' | translate"
+              >
+                <fa-icon icon="calendar"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.event">Events</span>
+              </button>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                [routerLink]="['/category']"
+                [queryParams]="{ tourId: tournament.id }"
+                class="btn btn-primary btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.category' | translate"
+              >
+                <fa-icon icon="th-list"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.category">Categories</span>
+              </button>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                [routerLink]="['/format']"
+                [queryParams]="{ tourId: tournament.id }"
+                class="btn btn-primary btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.format' | translate"
+              >
+                <fa-icon icon="list"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.format">Formats</span>
+              </button>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 type="submit"
                 [routerLink]="['/tournament', tournament.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -104,8 +139,14 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(tournament)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                (click)="delete(tournament)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
+                <fa-icon icon="trash"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>

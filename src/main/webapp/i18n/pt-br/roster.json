@@ -18,10 +18,10 @@
         "title": "Roster"
       },
       "id": "ID",
-      "active": "Active",
-      "player": "Player",
-      "team": "Team",
-      "eventCategory": "Event Category"
+      "active": "Ativo",
+      "player": "Jogador",
+      "team": "Equipe",
+      "eventCategory": "Categoria"
     }
   }
 }

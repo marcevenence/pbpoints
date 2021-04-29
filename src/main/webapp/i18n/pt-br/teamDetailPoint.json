@@ -2,25 +2,25 @@
   "pbpointsApp": {
     "teamDetailPoint": {
       "home": {
-        "title": "Team Detail Points",
+        "title": "Divisão de pontos por equipe",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Team Detail Point",
-        "createOrEditLabel": "Criar ou editar Team Detail Point",
-        "notFound": "Nenhum Team Detail Point encontrado"
+        "createLabel": "Criar novo Divisão de pontos por equipe",
+        "createOrEditLabel": "Criar ou editar Divisão de pontos por equipe",
+        "notFound": "Nenhum Divisão de pontos por equipe encontrado"
       },
-      "created": "Um novo Team Detail Point foi criado com o identificador {{ param }}",
-      "updated": "Um Team Detail Point foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Team Detail Point foi excluído com o identificador {{ param }}",
+      "created": "Um novo Divisão de pontos por equipe foi criado com o identificador {{ param }}",
+      "updated": "Um Divisão de pontos por equipe foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Divisão de pontos por equipe foi excluído com o identificador {{ param }}",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Team Detail Point {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Divisão de pontos por equipe {{ id }}?"
       },
       "detail": {
-        "title": "Team Detail Point"
+        "title": "Divisão de pontos por equipe"
       },
       "id": "ID",
-      "points": "Points",
-      "teamPoint": "Team Point",
-      "event": "Event"
+      "points": "Pontos",
+      "teamPoint": "Pontos por equipe",
+      "event": "Evento"
     }
   }
 }
