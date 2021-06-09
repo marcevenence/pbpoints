@@ -88,6 +88,8 @@ spring:
   jpa:
     open-in-view: false
     properties:
+      hibernate.show_sql: false
+      hibernate.format_sql: true
       hibernate.jdbc.time_zone: UTC
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: true
