@@ -47,6 +47,7 @@
             <column name="born_date" type="date"/>
             <column name="picture" type="blob"/>
             <column name="picture_content_type" type="string"/>
+            <column name="user_id" type="numeric"/>
          </loadData>
     </changeSet>
 
