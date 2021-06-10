@@ -31,18 +31,33 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./build/h2db/db/pbpoints;DB_CLOSE_DELAY=-1
+    url: jdbc:mysql://localhost:3306/pbpoints?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: pbpoints
-    password:
+    password: qazwsx1234
     hikari:
       poolName: Hikari
       auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  #    type: com.zaxxer.hikari.HikariDataSource
+  #    url: jdbc:h2:file:./build/h2db/db/pbpoints;DB_CLOSE_DELAY=-1
+  #    username: pbpoints
+  #    password:
+  #    hikari:
+  #      poolName: Hikari
+  #      auto-commit: false
   h2:
     console:
       # disable spring boot built-in h2-console since we start it manually with correct configuration
       enabled: false
+  #  jpa:
+  #    database-platform: tech.jhipster.domain.util.FixedH2Dialect
   jpa:
-    database-platform: tech.jhipster.domain.util.FixedH2Dialect
+    #    database-platform: org.hibernate.dialect.MySQL8InnoDBDialect
+    database: MYSQL
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev

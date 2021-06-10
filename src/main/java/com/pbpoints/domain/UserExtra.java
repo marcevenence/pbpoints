@@ -1,5 +1,6 @@
 package com.pbpoints.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
@@ -12,13 +13,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "user_extra")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserExtra implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "num_doc")
@@ -37,12 +37,15 @@ public class UserExtra implements Serializable {
     @Column(name = "picture_content_type", nullable = false)
     private String pictureContentType;
 
-    @OneToOne
-    @MapsId
-    private User user;
-
     @ManyToOne
+    @JsonIgnoreProperties("userExtras")
     private DocType docType;
+
+    @OneToOne(optional = false)
+    @NotNull
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
 
     public UserExtra() {
         super();
@@ -53,7 +56,7 @@ public class UserExtra implements Serializable {
         this.user = user;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -62,13 +65,8 @@ public class UserExtra implements Serializable {
         this.id = id;
     }
 
-    public UserExtra id(Long id) {
-        this.id = id;
-        return this;
-    }
-
     public String getNumDoc() {
-        return this.numDoc;
+        return numDoc;
     }
 
     public UserExtra numDoc(String numDoc) {
@@ -81,7 +79,7 @@ public class UserExtra implements Serializable {
     }
 
     public String getPhone() {
-        return this.phone;
+        return phone;
     }
 
     public UserExtra phone(String phone) {
@@ -94,7 +92,7 @@ public class UserExtra implements Serializable {
     }
 
     public LocalDate getBornDate() {
-        return this.bornDate;
+        return bornDate;
     }
 
     public UserExtra bornDate(LocalDate bornDate) {
@@ -107,7 +105,7 @@ public class UserExtra implements Serializable {
     }
 
     public byte[] getPicture() {
-        return this.picture;
+        return picture;
     }
 
     public UserExtra picture(byte[] picture) {
@@ -120,7 +118,7 @@ public class UserExtra implements Serializable {
     }
 
     public String getPictureContentType() {
-        return this.pictureContentType;
+        return pictureContentType;
     }
 
     public UserExtra pictureContentType(String pictureContentType) {
@@ -132,25 +130,12 @@ public class UserExtra implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public User getUser() {
-        return this.user;
-    }
-
-    public UserExtra user(User user) {
-        this.setUser(user);
-        return this;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public DocType getDocType() {
-        return this.docType;
+        return docType;
     }
 
     public UserExtra docType(DocType docType) {
-        this.setDocType(docType);
+        this.docType = docType;
         return this;
     }
 
@@ -158,7 +143,20 @@ public class UserExtra implements Serializable {
         this.docType = docType;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public User getUser() {
+        return user;
+    }
+
+    public UserExtra user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -173,20 +171,31 @@ public class UserExtra implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
-        return getClass().hashCode();
+        return 31;
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "UserExtra{" +
-            "id=" + getId() +
-            ", numDoc='" + getNumDoc() + "'" +
-            ", phone='" + getPhone() + "'" +
-            ", bornDate='" + getBornDate() + "'" +
-            ", picture='" + getPicture() + "'" +
-            ", pictureContentType='" + getPictureContentType() + "'" +
-            "}";
+        return (
+            "UserExtra{" +
+            "id=" +
+            getId() +
+            ", numDoc='" +
+            getNumDoc() +
+            "'" +
+            ", phone='" +
+            getPhone() +
+            "'" +
+            ", bornDate='" +
+            getBornDate() +
+            "'" +
+            ", picture='" +
+            getPicture() +
+            "'" +
+            ", pictureContentType='" +
+            getPictureContentType() +
+            "'" +
+            "}"
+        );
     }
 }
