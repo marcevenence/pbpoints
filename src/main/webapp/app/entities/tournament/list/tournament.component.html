@@ -3,10 +3,10 @@
     <span jhiTranslate="pbpointsApp.tournament.home.title">Tournaments</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.tournament.home.refreshListLabel">Refresh List</span>
-      </button>
+      </button>-->
       <button
         id="jh-create-entity-back"
         class="btn btn-primary float-right jh-create-entity create-tournament"
@@ -42,7 +42,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col"><span jhiTranslate="PbPointsApp.tournament.logo">Logo</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.tournament.logo">Logo</span></th>
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.tournament.name">Name</span></th>
           <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">

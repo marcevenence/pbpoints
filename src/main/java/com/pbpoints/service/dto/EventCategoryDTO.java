@@ -118,19 +118,19 @@ public class EventCategoryDTO implements Serializable {
             ", splitDeck='" +
             isSplitDeck() +
             "'" +
-            ", event=" +
+            ", eventId=" +
             getEventId() +
-            ", event='" +
+            ", eventName='" +
             getEventName() +
             "'" +
-            ", category=" +
+            ", categoryId" +
             getCategoryId() +
-            ", category='" +
+            ", categoryName='" +
             getCategoryName() +
             "'" +
-            ", format=" +
+            ", formatId=" +
             getFormatId() +
-            ", format='" +
+            ", formatName='" +
             getFormatName() +
             "'" +
             "}"

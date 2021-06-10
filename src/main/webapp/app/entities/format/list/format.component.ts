@@ -83,6 +83,10 @@ export class FormatComponent implements OnInit {
     });
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {

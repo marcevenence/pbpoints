@@ -1,4 +1,63 @@
 <div>
+  <!-- Inicio User -->
+  <h2>
+    <span jhiTranslate="global.menu.account.playerPoint">Player Point</span>
+    <button id="jh-create-entity-back" class="btn btn-primary float-right jh-create-entity create-player-point" (click)="Cancel()">
+      <span jhiTranslate="global.menu.back">Back</span>
+    </button>
+  </h2>
+  <table class="table table-striped" aria-describedby="page-heading">
+    <thead>
+      <tr>
+        <th jhiTranslate="global.form.picture.label">Picture</th>
+        <th colspan="2">Mis Datos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="6">
+          <img [src]="currentImage" width="200" height="250" />
+        </td>
+        <td><span jhiTranslate="global.form.id.label">PBPointID</span></td>
+        <td>
+          <span>{{ currentAccount.id }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.lastFirstName.label">Nombre</span></td>
+        <td>
+          <span>{{ currentAccount.lastName }}, {{ currentAccount.firstName }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.numDoc.label">numDoc</span></td>
+        <td>
+          <span>{{ currentAccount.numDoc }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.bornDate.label">bornDate</span></td>
+        <td>
+          <span>{{ currentAccount.bornDate }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.email.label">email</span></td>
+        <td>
+          <span>{{ currentAccount.email }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.phone.label">phone</span></td>
+        <td>
+          <span>{{ currentAccount.phone }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Fin User -->
+  <br />
+  <!-- Inicio Player-Point -->
   <h2 id="page-heading" data-cy="PlayerPointHeading">
     <span jhiTranslate="pbpointsApp.playerPoint.home.title">Player Points</span>
 
@@ -9,6 +68,7 @@
       </button>
 
       <button
+        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-player-point"
@@ -23,7 +83,7 @@
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
-
+  <br />
   <div class="alert alert-warning" id="no-result" *ngIf="playerPoints?.length === 0">
     <span jhiTranslate="pbpointsApp.playerPoint.home.notFound">No playerPoints found</span>
   </div>
@@ -32,10 +92,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="points">
-            <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="tournament.name">
             <span jhiTranslate="pbpointsApp.playerPoint.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -45,41 +102,34 @@
           <th scope="col" jhiSortBy="category.name">
             <span jhiTranslate="pbpointsApp.playerPoint.category">Category</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="points">
+            <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let playerPoint of playerPoints; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/player-point', playerPoint.id, 'view']">{{ playerPoint.id }}</a>
-          </td>
+          <!-- <td><a [routerLink]="['/player-point', playerPoint.id, 'view']">{{ playerPoint.id }}</a></td>-->
+          <td>{{ playerPoint.tournament?.name }}</td>
+          <td>{{ playerPoint.user?.login }}</td>
+          <td>{{ playerPoint.category?.name }}</td>
           <td>{{ playerPoint.points }}</td>
-          <td>
-            <div *ngIf="playerPoint.tournament">
-              <a [routerLink]="['/tournament', playerPoint.tournament?.id, 'view']">{{ playerPoint.tournament?.name }}</a>
-            </div>
-          </td>
-          <td>
-            {{ playerPoint.user?.login }}
-          </td>
-          <td>
-            <div *ngIf="playerPoint.category">
-              <a [routerLink]="['/category', playerPoint.category?.id, 'view']">{{ playerPoint.category?.name }}</a>
-            </div>
-          </td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/player-point', playerPoint.id, 'view']"
+                [routerLink]="['/player-detail-point']"
+                [queryParams]="{ ppId: playerPoint.id }"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.playerDetailPoints">View Details</span>
               </button>
 
               <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"
                 [routerLink]="['/player-point', playerPoint.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -89,7 +139,13 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(playerPoint)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                type="submit"
+                (click)="delete(playerPoint)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>

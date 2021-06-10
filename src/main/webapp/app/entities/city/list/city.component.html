@@ -3,11 +3,20 @@
     <span jhiTranslate="pbpointsApp.city.home.title">Cities</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.city.home.refreshListLabel">Refresh List</span>
+      </button>-->
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -32,7 +41,10 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col" jhiSortBy="province.id">
+            <span jhiTranslate="pbpointsApp.city.province">Province</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.city.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="latitude">
             <span jhiTranslate="pbpointsApp.city.latitude">Latitude</span> <fa-icon icon="sort"></fa-icon>
@@ -40,31 +52,30 @@
           <th scope="col" jhiSortBy="longitude">
             <span jhiTranslate="pbpointsApp.city.longitude">Longitude</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="province.id">
+          <!--<th scope="col" jhiSortBy="province.id">
             <span jhiTranslate="pbpointsApp.city.province">Province</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let city of cities; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/city', city.id, 'view']">{{ city.id }}</a>
+            <div *ngIf="city.province">
+              <div>{{ city.province?.name }}</div>
+            </div>
           </td>
+
           <td>{{ city.name }}</td>
           <td>{{ city.latitude }}</td>
           <td>{{ city.longitude }}</td>
-          <td>
-            <div *ngIf="city.province">
-              <a [routerLink]="['/province', city.province?.id, 'view']">{{ city.province?.id }}</a>
-            </div>
-          </td>
+
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/city', city.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <!--              <button type="submit" [routerLink]="['/city', city.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+              </button>-->
 
               <button type="submit" [routerLink]="['/city', city.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>

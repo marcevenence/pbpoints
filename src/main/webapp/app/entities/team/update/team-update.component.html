@@ -8,7 +8,7 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
@@ -18,14 +18,23 @@
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.team.active" for="field_active">Active</label>
           <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
-        </div>
+        </div>-->
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.team.owner" for="field_owner">Owner</label>
-          <select class="form-control" id="field_owner" data-cy="owner" name="owner" formControlName="owner">
+          <label *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-control-label" jhiTranslate="pbpointsApp.team.owner" for="field_owner"
+            >Owner</label
+          >
+          <select
+            *jhiHasAnyAuthority="'ROLE_ADMIN'"
+            class="form-control"
+            id="field_owner"
+            data-cy="owner"
+            name="owner"
+            formControlName="owner"
+          >
             <option [ngValue]="null"></option>
             <option
               [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption"

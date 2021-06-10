@@ -45,6 +45,11 @@ export class EventCategoryService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  enableUpdate(id: number): Observable<HttpResponse<number>> {
+    const options = createRequestOption(id);
+    return this.http.get<number>(`${this.resourceUrl}/upd/${id}`, { params: options, observe: 'response' });
+  }
+
   addEventCategoryToCollectionIfMissing(
     eventCategoryCollection: IEventCategory[],
     ...eventCategoriesToCheck: (IEventCategory | null | undefined)[]

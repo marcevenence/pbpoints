@@ -167,9 +167,9 @@ public class TournamentDTO implements Serializable {
             getCantPlayersNextCategory() +
             ", qtyTeamGroups=" +
             getQtyTeamGroups() +
-            ", owner=" +
+            ", ownerId=" +
             getOwnerId() +
-            ", owner='" +
+            ", ownerLogin='" +
             getOwnerLogin() +
             "'" +
             "}"

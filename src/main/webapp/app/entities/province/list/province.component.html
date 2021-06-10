@@ -3,11 +3,20 @@
     <span jhiTranslate="pbpointsApp.province.home.title">Provinces</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.province.home.refreshListLabel">Refresh List</span>
+      </button>-->
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-province"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -32,19 +41,17 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.province.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="country.id">
-            <span jhiTranslate="pbpointsApp.province.country">Country</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <!--<th scope="col" jhiSortBy="country.id"><span jhiTranslate="pbpointsApp.province.country">Country</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let province of provinces; trackBy: trackId" data-cy="entityTable">
-          <td>
+          <!--<td>
             <a [routerLink]="['/province', province.id, 'view']">{{ province.id }}</a>
-          </td>
+          </td>-->
           <td>{{ province.name }}</td>
           <td>
             <div *ngIf="province.country">
@@ -55,14 +62,15 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/province', province.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
+                [routerLink]="['/city']"
+                [queryParams]="{ pId: province.id }"
+                class="btn btn-primary btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.city' | translate"
               >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <fa-icon [icon]="'building'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.city">Cities</span>
               </button>
-
               <button
                 type="submit"
                 [routerLink]="['/province', province.id, 'edit']"

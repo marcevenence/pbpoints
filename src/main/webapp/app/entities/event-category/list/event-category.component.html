@@ -3,12 +3,22 @@
     <span jhiTranslate="pbpointsApp.eventCategory.home.title">Event Categories</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.eventCategory.home.refreshListLabel">Refresh List</span>
-      </button>
-
+      </button>-->
       <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-event-category"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
+      <button
+        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-event-category"
@@ -23,7 +33,7 @@
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
-
+  <br />
   <div class="alert alert-warning" id="no-result" *ngIf="eventCategories?.length === 0">
     <span jhiTranslate="pbpointsApp.eventCategory.home.notFound">No eventCategories found</span>
   </div>
@@ -32,10 +42,7 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="splitDeck">
-            <span jhiTranslate="pbpointsApp.eventCategory.splitDeck">Split Deck</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="event.name">
             <span jhiTranslate="pbpointsApp.eventCategory.event">Event</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -45,43 +52,70 @@
           <th scope="col" jhiSortBy="format.name">
             <span jhiTranslate="pbpointsApp.eventCategory.format">Format</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="splitDeck">
+            <span jhiTranslate="pbpointsApp.eventCategory.splitDeck">Split Deck</span> <fa-icon icon="sort"></fa-icon>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let eventCategory of eventCategories; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/event-category', eventCategory.id, 'view']">{{ eventCategory.id }}</a>
-          </td>
-          <td>{{ eventCategory.splitDeck }}</td>
+          <!--<td><a [routerLink]="['/event-category', eventCategory.id, 'view']">{{ eventCategory.id }}</a></td>-->
+
           <td>
             <div *ngIf="eventCategory.event">
-              <a [routerLink]="['/event', eventCategory.event?.id, 'view']">{{ eventCategory.event?.name }}</a>
+              <div>{{ eventCategory.event?.name }}</div>
             </div>
           </td>
           <td>
             <div *ngIf="eventCategory.category">
-              <a [routerLink]="['/category', eventCategory.category?.id, 'view']">{{ eventCategory.category?.name }}</a>
+              <div>{{ eventCategory.category?.name }}</div>
             </div>
           </td>
           <td>
             <div *ngIf="eventCategory.format">
-              <a [routerLink]="['/format', eventCategory.format?.id, 'view']">{{ eventCategory.format?.name }}</a>
+              <div>{{ eventCategory.format?.name }}</div>
             </div>
           </td>
+          <td>{{ eventCategory.splitDeck }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/event-category', eventCategory.id, 'view']"
+                [routerLink]="['/game']"
+                [queryParams]="{ ecatId: eventCategory.id }"
                 class="btn btn-info btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.games' | translate"
+              >
+                <fa-icon [icon]="'calendar'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.games">View Games</span>
+              </button>
+              <button
+                type="submit"
+                [routerLink]="['/roster']"
+                [queryParams]="{ evCatId: eventCategory.id }"
+                class="btn btn-info btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.view.roster' | translate"
+              >
+                <fa-icon [icon]="'users'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.roster">View Equipos</span>
+              </button>
+              <button
+                *ngIf="enableUpdate()"
+                type="submit"
+                [routerLink]="['/roster/new']"
+                [queryParams]="{ evCatId: eventCategory.id }"
+                class="btn btn-primary btn-sm"
                 data-cy="entityDetailsButton"
               >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <fa-icon [icon]="'plus-circle'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.subscribe.roster">Subs Team</span>
               </button>
 
               <button
+                *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"
                 [routerLink]="['/event-category', eventCategory.id, 'edit']"
                 class="btn btn-primary btn-sm"

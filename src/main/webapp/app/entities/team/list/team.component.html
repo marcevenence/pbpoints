@@ -3,11 +3,13 @@
     <span jhiTranslate="pbpointsApp.team.home.title">Teams</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.team.home.refreshListLabel">Refresh List</span>
+      </button>-->
+      <button id="jh-create-entity-back" class="btn btn-primary float-right jh-create-entity create-team" (click)="Cancel()">
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -32,10 +34,12 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.team.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="active"><span jhiTranslate="pbpointsApp.team.active">Active</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="owner.login">
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="active">
+            <span jhiTranslate="pbpointsApp.team.active">Active</span> <fa-icon icon="sort"></fa-icon>
+          </th>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="owner.login">
             <span jhiTranslate="pbpointsApp.team.owner">Owner</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
@@ -43,20 +47,22 @@
       </thead>
       <tbody>
         <tr *ngFor="let team of teams; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/team', team.id, 'view']">{{ team.id }}</a>
-          </td>
+          <!--<td><a [routerLink]="['/team', team.id, 'view']">{{ team.id }}</a></td>-->
           <td>{{ team.name }}</td>
-          <td>{{ team.active }}</td>
-          <td>
-            {{ team.owner?.login }}
-          </td>
+          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ team.active }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ team.owner?.login }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/team', team.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button type="submit" [routerLink]="['/roster']" [queryParams]="{ teId: team.id }" class="btn btn-info btn-sm">
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.roster">Subs Team</span>
+              </button>
+              <button type="submit" [routerLink]="['/team-point']" [queryParams]="{ teId: team.id }" class="btn btn-info btn-sm">
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.teamPoints">Subs Team</span>
+              </button>
+              <!--<button type="submit" [routerLink]="['/team', team.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+              </button>-->
 
               <button type="submit" [routerLink]="['/team', team.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>

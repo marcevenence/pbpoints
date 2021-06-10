@@ -3,12 +3,22 @@
     <span jhiTranslate="pbpointsApp.event.home.title">Events</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.event.home.refreshListLabel">Refresh List</span>
-      </button>
-
+      </button>-->
       <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-event"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
+      <button
+        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-event"
@@ -32,69 +42,88 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.event.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="fromDate">
-            <span jhiTranslate="pbpointsApp.event.fromDate">From Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="endDate">
-            <span jhiTranslate="pbpointsApp.event.endDate">End Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="endInscriptionDate">
-            <span jhiTranslate="pbpointsApp.event.endInscriptionDate">End Inscription Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="status">
-            <span jhiTranslate="pbpointsApp.event.status">Status</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="createDate">
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <!--<th scope="col" jhiSortBy="tournament.id"> <span jhiTranslate="pbpointsApp.event.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.city">City</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.fromDate">From Date</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.endDate">End Date</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.endInscriptionDate">End Inscription Date</span></th>
+          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col"><span jhiTranslate="pbpointsApp.event.status">Status</span></th>
+          <!--<th scope="col">
             <span jhiTranslate="pbpointsApp.event.createDate">Create Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="updatedDate">
+          <th scope="col">
             <span jhiTranslate="pbpointsApp.event.updatedDate">Updated Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="city.id"><span jhiTranslate="pbpointsApp.event.city">City</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="tournament.id">
-            <span jhiTranslate="pbpointsApp.event.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          </th>-->
+
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/event', event.id, 'view']">{{ event.id }}</a>
-          </td>
+          <!--<td><a [routerLink]="['/event', event.id, 'view']">{{ event.id }}</a></td>-->
           <td>{{ event.name }}</td>
+          <td>
+            <div *ngIf="event.city">
+              <a [routerLink]="['/city', event.city?.id, 'view']">{{ event.city?.name }}</a>
+            </div>
+          </td>
           <td>{{ event.fromDate | formatMediumDate }}</td>
           <td>{{ event.endDate | formatMediumDate }}</td>
           <td>{{ event.endInscriptionDate | formatMediumDate }}</td>
-          <td jhiTranslate="{{ 'pbpointsApp.Status.' + event.status }}">{{ event.status }}</td>
-          <td>{{ event.createDate | formatMediumDatetime }}</td>
-          <td>{{ event.updatedDate | formatMediumDatetime }}</td>
-          <td>
-            <div *ngIf="event.city">
-              <a [routerLink]="['/city', event.city?.id, 'view']">{{ event.city?.id }}</a>
-            </div>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" jhiTranslate="{{ 'pbpointsApp.Status.' + event.status }}">
+            {{ event.status }}
           </td>
-          <td>
+          <!--<td>{{ event.createDate | formatMediumDatetime }}</td>-->
+          <!--<td>{{ event.updatedDate | formatMediumDatetime }}</td>-->
+
+          <!--<td>
             <div *ngIf="event.tournament">
               <a [routerLink]="['/tournament', event.tournament?.id, 'view']">{{ event.tournament?.id }}</a>
             </div>
-          </td>
+          </td>-->
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/event', event.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <!--<button type="submit" [routerLink]="['/event', event.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>-->
+              <!--<button *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                               (click)="generateXML(event.id)"
+                                class="btn btn-primary btn-sm"
+                                data-toggle="tooltip" [title]="'global.menu.custom.xml.export'| translate">
+                            <fa-icon [icon]="'download'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
+                        </button>-->
+              <button
+                type="submit"
+                [routerLink]="['/event-category']"
+                [queryParams]="{ evId: event.id }"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEventCategoryButton"
+              >
+                <fa-icon [icon]="'th-list'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.category">Categories</span>
               </button>
-
-              <button type="submit" [routerLink]="['/event', event.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
-                <fa-icon icon="pencil-alt"></fa-icon>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                [routerLink]="['/event', event.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
-
-              <button type="submit" (click)="delete(event)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                (click)="delete(event)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
+                <fa-icon [icon]="'times'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>

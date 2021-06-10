@@ -3,17 +3,20 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IPlayerPoint } from '../player-point.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { PlayerPointService } from '../service/player-point.service';
 import { PlayerPointDeleteDialogComponent } from '../delete/player-point-delete-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'jhi-player-point',
   templateUrl: './player-point.component.html',
 })
 export class PlayerPointComponent implements OnInit {
+  currentAccount: any;
   playerPoints: IPlayerPoint[];
   isLoading = false;
   itemsPerPage: number;
@@ -21,8 +24,16 @@ export class PlayerPointComponent implements OnInit {
   page: number;
   predicate: string;
   ascending: boolean;
+  currentImage: any;
+  currentImageURL: any;
 
-  constructor(protected playerPointService: PlayerPointService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected playerPointService: PlayerPointService,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks,
+    protected accountService: AccountService,
+    private sanitizer: DomSanitizer
+  ) {
     this.playerPoints = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -35,22 +46,40 @@ export class PlayerPointComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.playerPointService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IPlayerPoint[]>) => {
-          this.isLoading = false;
-          this.paginatePlayerPoints(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      this.playerPointService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IPlayerPoint[]>) => {
+            this.isLoading = false;
+            this.paginatePlayerPoints(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.playerPointService
+        .query({
+          'userId.equals': this.currentAccount.id,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IPlayerPoint[]>) => {
+            this.isLoading = false;
+            this.paginatePlayerPoints(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -65,7 +94,15 @@ export class PlayerPointComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.loadAll();
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
+    this.currentImageURL = 'data:' + String(this.currentAccount.pictureContentType) + ';base64,' + String(this.currentAccount.picture);
+    this.currentImage = this.sanitizer.bypassSecurityTrustUrl(this.currentImageURL);
   }
 
   trackId(index: number, item: IPlayerPoint): number {
@@ -81,6 +118,9 @@ export class PlayerPointComponent implements OnInit {
         this.reset();
       }
     });
+  }
+  Cancel(): void {
+    window.history.back();
   }
 
   protected sort(): string[] {

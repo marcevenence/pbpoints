@@ -21,7 +21,7 @@ export class TournamentService {
   }
 
   update(tournament: ITournament): Observable<EntityResponseType> {
-    return this.http.put<ITournament>(`${this.resourceUrl}/${getTournamentIdentifier(tournament) as number}`, tournament, {
+    return this.http.put<ITournament>(`${this.resourceUrl}`, tournament, {
       observe: 'response',
     });
   }
