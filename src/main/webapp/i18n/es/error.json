@@ -18,6 +18,9 @@
     "invalidCategoryPlayer": "No se puede agregar un jugador con esta categoria",
     "InvalidPlayer": "Error al agregar el jugador",
     "noGamesFound": "No se encontraron partidos a disputar",
-    "noEventCategoriesFound": "No hay categorias asignadas"
+    "noEventCategoriesFound": "No hay categorias asignadas",
+    "idexists": "Este ID no existe",
+    "EventCancelled": "Evento Cancelado",
+    "inscrNotFinish": "Inscripcion no finalizada"
   }
 }

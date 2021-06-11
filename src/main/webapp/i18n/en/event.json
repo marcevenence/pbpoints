@@ -26,7 +26,16 @@
       "createDate": "Create Date",
       "updatedDate": "Updated Date",
       "tournament": "Tournament",
-      "city": "City"
+      "city": "City",
+      "pdf": "Fixture",
+      "xml": {
+        "title": "Import File",
+        "accept": "Import",
+        "import": {
+          "label": "Select File",
+          "placeholder": "File"
+        }
+      }
     }
   }
 }

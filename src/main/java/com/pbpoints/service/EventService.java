@@ -1,14 +1,16 @@
 package com.pbpoints.service;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.pbpoints.domain.*;
 import com.pbpoints.repository.*;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.xml.GameResultDTO;
 import com.pbpoints.service.mapper.EventMapper;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -389,7 +391,69 @@ public class EventService {
         return Boolean.TRUE;
     }
 
-    public void generatePdf(Event event) {
+    public void generatePdf(Event event) throws DocumentException, FileNotFoundException {
         log.debug("*** Generando PDF ***");
+
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter.getInstance(document, new FileOutputStream(event.getTournament().getId() + "-" + event.getId() + ".pdf"));
+        document.open();
+
+        Paragraph parrafo = new Paragraph(event.getName());
+        document.add(parrafo);
+
+        PdfPTable table = new PdfPTable(11);
+
+        PdfPCell celda;
+
+        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
+        for (EventCategory eventCategory : eventCategories) {
+            celda = new PdfPCell(new Paragraph("Categoria: " + eventCategory.getCategory().getName()));
+            celda.setBorder(0);
+            celda.setColspan(11);
+            table.addCell(celda);
+            celda = new PdfPCell(new Paragraph(""));
+            celda.setBorder(0);
+            celda.setColspan(11);
+            table.addCell(celda);
+            List<Game> games = gameRepository.findByEventCategory(eventCategory);
+            for (Game game : games) {
+                celda = new PdfPCell(new Paragraph("Local"));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(game.getTeamA().getName()));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph("-"));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(""));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph(game.getTeamB().getName()));
+                celda.setBorder(1);
+                table.addCell(celda);
+                celda = new PdfPCell(new Paragraph("Visitante"));
+                celda.setBorder(1);
+                table.addCell(celda);
+            }
+        }
+
+        document.add(table);
+        document.close();
     }
 }

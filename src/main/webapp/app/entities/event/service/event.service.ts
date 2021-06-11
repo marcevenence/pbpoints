@@ -46,6 +46,12 @@ export class EventService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  generatePDF(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IEvent>(`${this.resourceUrl}/generatePDF/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
   find(id: number): Observable<EntityResponseType> {
     return this.http
       .get<IEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' })

@@ -1,12 +1,16 @@
 package com.pbpoints.web.rest;
 
+import com.itextpdf.text.DocumentException;
 import com.pbpoints.domain.Event;
+import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.service.EventQueryService;
 import com.pbpoints.service.EventService;
 import com.pbpoints.service.dto.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
+import com.pbpoints.service.dto.xml.FixtureDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -170,6 +174,11 @@ public class EventResource {
             if (eventDTO.isPresent()) {
                 Event event = eventMapper.toEntity(eventDTO.get());
                 log.debug("Event: {}" + event);
+                if (event.getStatus() == Status.valueOf("CANCEL")) throw new BadRequestAlertException(
+                    "Event Cancelled",
+                    ENTITY_NAME,
+                    "EventCancelled"
+                );
                 if (event.getEndInscriptionDate().isAfter(LocalDate.now())) throw new BadRequestAlertException(
                     "Subscription Date no End",
                     ENTITY_NAME,
@@ -197,8 +206,8 @@ public class EventResource {
         return ResponseEntity.ok(eventService.submitXML(multipartFile));
     }
 
-    @GetMapping("/events/generatepdf/{id}")
-    public ResponseEntity<Void> generatePdf(@PathVariable Long id) {
+    @GetMapping("/events/generatePDF/{id}")
+    public ResponseEntity<Void> generatePdf(@PathVariable Long id) throws DocumentException, FileNotFoundException {
         log.debug("REST request to Generate a Pdf File from: {}", id);
         if (id == null) {
             throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");
@@ -207,6 +216,11 @@ public class EventResource {
         if (eventDTO.isPresent()) {
             Event event = eventMapper.toEntity(eventDTO.get());
             log.debug("Event: {}" + event);
+            if (event.getStatus() == Status.valueOf("CANCEL")) throw new BadRequestAlertException(
+                "Event Cancelled",
+                ENTITY_NAME,
+                "EventCancelled"
+            );
             if (event.getEndInscriptionDate().isAfter(LocalDate.now())) throw new BadRequestAlertException(
                 "Subscription Date no End",
                 ENTITY_NAME,

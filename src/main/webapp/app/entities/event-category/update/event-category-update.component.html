@@ -12,14 +12,9 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.splitDeck" for="field_splitDeck">Split Deck</label>
-          <input type="checkbox" class="form-check" name="splitDeck" id="field_splitDeck" data-cy="splitDeck" formControlName="splitDeck" />
         </div>
 
         <div class="form-group">
@@ -39,46 +34,79 @@
             This field is required.
           </small>
         </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.category" for="field_category">Category</label>
-          <select class="form-control" id="field_category" data-cy="category" name="category" formControlName="category">
-            <option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>
-            <option
-              [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
-              *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
-            >
-              {{ categoryOption.name }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['category'])!.invalid && (editForm.get(['category'])!.dirty || editForm.get(['category'])!.touched)">
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get(['category'])?.errors?.required"
-            jhiTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.format" for="field_format">Format</label>
-          <select class="form-control" id="field_format" data-cy="format" name="format" formControlName="format">
-            <option *ngIf="!editForm.get('format')!.value" [ngValue]="null" selected></option>
-            <option
-              [ngValue]="formatOption.id === editForm.get('format')!.value?.id ? editForm.get('format')!.value : formatOption"
-              *ngFor="let formatOption of formatsSharedCollection; trackBy: trackFormatById"
-            >
-              {{ formatOption.name }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['format'])!.invalid && (editForm.get(['format'])!.dirty || editForm.get(['format'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['format'])?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
-        </div>
+        <table>
+          <tr>
+            <th scope="col" width="45%">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.category" for="field_category">Category</label>
+            </th>
+            <th scope="col" width="45%">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.format" for="field_format">Format</label>
+            </th>
+            <th scope="col" width="10%">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.splitDeck" for="field_splitDeck">Split Deck</label>
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <div class="form-group">
+                <select class="form-control" id="field_category" data-cy="category" name="category" formControlName="category">
+                  <option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>
+                  <option
+                    [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
+                    *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
+                  >
+                    {{ categoryOption.name }}
+                  </option>
+                </select>
+              </div>
+              <div
+                *ngIf="editForm.get(['category'])!.invalid && (editForm.get(['category'])!.dirty || editForm.get(['category'])!.touched)"
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get(['category'])?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <select class="form-control" id="field_format" data-cy="format" name="format" formControlName="format">
+                  <option *ngIf="!editForm.get('format')!.value" [ngValue]="null" selected></option>
+                  <option
+                    [ngValue]="formatOption.id === editForm.get('format')!.value?.id ? editForm.get('format')!.value : formatOption"
+                    *ngFor="let formatOption of formatsSharedCollection; trackBy: trackFormatById"
+                  >
+                    {{ formatOption.name }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="editForm.get(['format'])!.invalid && (editForm.get(['format'])!.dirty || editForm.get(['format'])!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get(['format'])?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </td>
+            <td>
+              <div class="form-group">
+                <input
+                  type="checkbox"
+                  class="form-check"
+                  name="splitDeck"
+                  id="field_splitDeck"
+                  data-cy="splitDeck"
+                  formControlName="splitDeck"
+                />
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
 
       <div>

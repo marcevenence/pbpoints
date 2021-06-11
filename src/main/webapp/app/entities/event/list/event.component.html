@@ -96,6 +96,20 @@
                             <fa-icon [icon]="'download'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
                         </button>-->
+              <button type="submit" (click)="generatePDF(event.id!)" class="btn btn-primary btn-sm" data-cy="entityPDFButton">
+                <fa-icon [icon]="'file-alt'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
+              </button>
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                (click)="generateXML(event.id!)"
+                class="btn btn-primary btn-sm"
+                data-toggle="tooltip"
+                [title]="'global.menu.custom.xml.export' | translate"
+              >
+                <fa-icon [icon]="'download'"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
+              </button>
               <button
                 type="submit"
                 [routerLink]="['/event-category']"

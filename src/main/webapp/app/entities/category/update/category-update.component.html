@@ -8,176 +8,15 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <!--<div class="form-group" [hidden]="editForm.get('id')!.value == null">
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.name" for="field_name">Name</label>
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.description" for="field_description">Description</label>
-          <input
-            type="text"
-            class="form-control"
-            name="description"
-            id="field_description"
-            data-cy="description"
-            formControlName="description"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.gameTimeType" for="field_gameTimeType">Game Time Type</label>
-          <select class="form-control" name="gameTimeType" formControlName="gameTimeType" id="field_gameTimeType" data-cy="gameTimeType">
-            <option [ngValue]="null">{{ 'pbpointsApp.TimeType.null' | translate }}</option>
-            <option value="MINUTES">{{ 'pbpointsApp.TimeType.MINUTES' | translate }}</option>
-            <option value="SECONDS">{{ 'pbpointsApp.TimeType.SECONDS' | translate }}</option>
-          </select>
-          <div
-            *ngIf="editForm.get('gameTimeType')!.invalid && (editForm.get('gameTimeType')!.dirty || editForm.get('gameTimeType')!.touched)"
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('gameTimeType')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.gameTime" for="field_gameTime">Game Time</label>
-          <input type="number" class="form-control" name="gameTime" id="field_gameTime" data-cy="gameTime" formControlName="gameTime" />
-          <div *ngIf="editForm.get('gameTime')!.invalid && (editForm.get('gameTime')!.dirty || editForm.get('gameTime')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('gameTime')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('gameTime')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.stopTimeType" for="field_stopTimeType">Stop Time Type</label>
-          <select class="form-control" name="stopTimeType" formControlName="stopTimeType" id="field_stopTimeType" data-cy="stopTimeType">
-            <option [ngValue]="null">{{ 'pbpointsApp.TimeType.null' | translate }}</option>
-            <option value="MINUTES">{{ 'pbpointsApp.TimeType.MINUTES' | translate }}</option>
-            <option value="SECONDS">{{ 'pbpointsApp.TimeType.SECONDS' | translate }}</option>
-          </select>
-          <div
-            *ngIf="editForm.get('stopTimeType')!.invalid && (editForm.get('stopTimeType')!.dirty || editForm.get('stopTimeType')!.touched)"
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('stopTimeType')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.stopTime" for="field_stopTime">Stop Time</label>
-          <input type="number" class="form-control" name="stopTime" id="field_stopTime" data-cy="stopTime" formControlName="stopTime" />
-          <div *ngIf="editForm.get('stopTime')!.invalid && (editForm.get('stopTime')!.dirty || editForm.get('stopTime')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('stopTime')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('stopTime')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.totalPoints" for="field_totalPoints">Total Points</label>
-          <input
-            type="number"
-            class="form-control"
-            name="totalPoints"
-            id="field_totalPoints"
-            data-cy="totalPoints"
-            formControlName="totalPoints"
-          />
-          <div *ngIf="editForm.get('totalPoints')!.invalid && (editForm.get('totalPoints')!.dirty || editForm.get('totalPoints')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('totalPoints')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('totalPoints')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.difPoints" for="field_difPoints">Dif Points</label>
-          <input type="number" class="form-control" name="difPoints" id="field_difPoints" data-cy="difPoints" formControlName="difPoints" />
-          <div *ngIf="editForm.get('difPoints')!.invalid && (editForm.get('difPoints')!.dirty || editForm.get('difPoints')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('difPoints')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('difPoints')?.errors?.number"
-              jhiTranslate="entity.validation.number"
-            >
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.category.order" for="field_order">Order</label>
-          <input type="number" class="form-control" name="order" id="field_order" data-cy="order" formControlName="order" />
-          <div *ngIf="editForm.get('order')!.invalid && (editForm.get('order')!.dirty || editForm.get('order')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('order')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('order')?.errors?.number" jhiTranslate="entity.validation.number">
-              This field should be a number.
-            </small>
-          </div>
-        </div>
-
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" 
+		     [readonly]="true" />
+        </div>-->
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.category.tournament" for="field_tournament">Tournament</label>
           <select class="form-control" id="field_tournament" data-cy="tournament" name="tournament" formControlName="tournament">
-            <option *ngIf="!editForm.get('tournament')!.value" [ngValue]="null" selected></option>
+            <!--<option *ngIf="!editForm.get('tournament')!.value" [ngValue]="null" selected></option>-->
             <option
               [ngValue]="
                 tournamentOption.id === editForm.get('tournament')!.value?.id ? editForm.get('tournament')!.value : tournamentOption
@@ -197,6 +36,193 @@
             jhiTranslate="entity.validation.required"
           >
             This field is required.
+          </small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.category.name" for="field_name">Name</label>
+        <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.category.description" for="field_description">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          name="description"
+          id="field_description"
+          data-cy="description"
+          formControlName="description"
+        />
+      </div>
+      <div>
+        <table>
+          <td width="20%">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.category.gameTimeType" for="field_gameTimeType"
+                >Game Time Type</label
+              >
+              <select
+                class="form-control"
+                name="gameTimeType"
+                formControlName="gameTimeType"
+                id="field_gameTimeType"
+                data-cy="gameTimeType"
+              >
+                <option [ngValue]="null">{{ 'pbpointsApp.TimeType.null' | translate }}</option>
+                <option value="MINUTES">{{ 'pbpointsApp.TimeType.MINUTES' | translate }}</option>
+                <option value="SECONDS">{{ 'pbpointsApp.TimeType.SECONDS' | translate }}</option>
+              </select>
+              <div
+                *ngIf="
+                  editForm.get('gameTimeType')!.invalid && (editForm.get('gameTimeType')!.dirty || editForm.get('gameTimeType')!.touched)
+                "
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('gameTimeType')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </div>
+          </td>
+          <td width="30%">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.category.gameTime" for="field_gameTime">Game Time</label>
+              <input type="number" class="form-control" name="gameTime" id="field_gameTime" data-cy="gameTime" formControlName="gameTime" />
+              <div *ngIf="editForm.get('gameTime')!.invalid && (editForm.get('gameTime')!.dirty || editForm.get('gameTime')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('gameTime')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+                <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('gameTime')?.errors?.number"
+                  jhiTranslate="entity.validation.number"
+                >
+                  This field should be a number.
+                </small>
+              </div>
+            </div>
+          </td>
+          <td width="20%">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.category.stopTimeType" for="field_stopTimeType"
+                >Stop Time Type</label
+              >
+              <select
+                class="form-control"
+                name="stopTimeType"
+                formControlName="stopTimeType"
+                id="field_stopTimeType"
+                data-cy="stopTimeType"
+              >
+                <option [ngValue]="null">{{ 'pbpointsApp.TimeType.null' | translate }}</option>
+                <option value="MINUTES">{{ 'pbpointsApp.TimeType.MINUTES' | translate }}</option>
+                <option value="SECONDS">{{ 'pbpointsApp.TimeType.SECONDS' | translate }}</option>
+              </select>
+              <div
+                *ngIf="
+                  editForm.get('stopTimeType')!.invalid && (editForm.get('stopTimeType')!.dirty || editForm.get('stopTimeType')!.touched)
+                "
+              >
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('stopTimeType')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+              </div>
+            </div>
+          </td>
+          <td width="30%">
+            <div class="form-group">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.category.stopTime" for="field_stopTime">Stop Time</label>
+              <input type="number" class="form-control" name="stopTime" id="field_stopTime" data-cy="stopTime" formControlName="stopTime" />
+              <div *ngIf="editForm.get('stopTime')!.invalid && (editForm.get('stopTime')!.dirty || editForm.get('stopTime')!.touched)">
+                <small
+                  class="form-text text-danger"
+                  *ngIf="editForm.get('stopTime')?.errors?.required"
+                  jhiTranslate="entity.validation.required"
+                >
+                  This field is required.
+                </small>
+                <small
+                  class="form-text text-danger"
+                  [hidden]="!editForm.get('stopTime')?.errors?.number"
+                  jhiTranslate="entity.validation.number"
+                >
+                  This field should be a number.
+                </small>
+              </div>
+            </div>
+          </td>
+        </table>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.category.totalPoints" for="field_totalPoints">Total Points</label>
+        <input
+          type="number"
+          class="form-control"
+          name="totalPoints"
+          id="field_totalPoints"
+          data-cy="totalPoints"
+          formControlName="totalPoints"
+        />
+        <div *ngIf="editForm.get('totalPoints')!.invalid && (editForm.get('totalPoints')!.dirty || editForm.get('totalPoints')!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('totalPoints')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+          <small
+            class="form-text text-danger"
+            [hidden]="!editForm.get('totalPoints')?.errors?.number"
+            jhiTranslate="entity.validation.number"
+          >
+            This field should be a number.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.category.difPoints" for="field_difPoints">Dif Points</label>
+        <input type="number" class="form-control" name="difPoints" id="field_difPoints" data-cy="difPoints" formControlName="difPoints" />
+        <div *ngIf="editForm.get('difPoints')!.invalid && (editForm.get('difPoints')!.dirty || editForm.get('difPoints')!.touched)">
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('difPoints')?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+          <small
+            class="form-text text-danger"
+            [hidden]="!editForm.get('difPoints')?.errors?.number"
+            jhiTranslate="entity.validation.number"
+          >
+            This field should be a number.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.category.order" for="field_order">Order</label>
+        <input type="number" class="form-control" name="order" id="field_order" data-cy="order" formControlName="order" />
+        <div *ngIf="editForm.get('order')!.invalid && (editForm.get('order')!.dirty || editForm.get('order')!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get('order')?.errors?.required" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+          <small class="form-text text-danger" [hidden]="!editForm.get('order')?.errors?.number" jhiTranslate="entity.validation.number">
+            This field should be a number.
           </small>
         </div>
       </div>

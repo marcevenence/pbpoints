@@ -27,6 +27,7 @@
       "updatedDate": "Fecha Actualizado",
       "tournament": "Torneo",
       "city": "Ciudad",
+      "pdf": "Fixture",
       "xml": {
         "title": "Importar Archivo",
         "accept": "Importar",

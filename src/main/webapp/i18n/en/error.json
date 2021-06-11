@@ -11,6 +11,16 @@
     },
     "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
     "validation": "Validation error on the server.",
-    "teamexists": "The Team exists already"
+    "teamexists": "The Team exists already",
+    "alreadyInRoster": "The Player is already in Roster",
+    "alreadyInOtherRoster": "The Player is in other Roster",
+    "nullProfile": "The profile is not complete",
+    "invalidCategoryPlayer": "No se puede agregar un jugador con esta categoria",
+    "InvalidPlayer": "Invalid Player",
+    "noGamesFound": "No Games Found",
+    "noEventCategoriesFound": "No Categories Found",
+    "idexists": "The ID does not exists",
+    "EventCancelled": "Event Cancelled",
+    "inscrNotFinish": "Subscription not Finish"
   }
 }
