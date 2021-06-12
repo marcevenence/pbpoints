@@ -10,13 +10,12 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { EventMapper.class, PlayerPointMapper.class })
 public interface PlayerDetailPointMapper extends com.pbpoints.service.mapper.EntityMapper<PlayerDetailPointDTO, PlayerDetailPoint> {
-    @Mapping(source = "event.id", target = "eventId")
-    @Mapping(source = "event.name", target = "eventName")
-    @Mapping(source = "playerPoint.id", target = "playerPointId")
+    @Mapping(source = "event", target = "event")
+    @Mapping(source = "playerPoint", target = "playerPoint")
     PlayerDetailPointDTO toDto(PlayerDetailPoint playerDetailPoint);
 
-    @Mapping(source = "eventId", target = "event")
-    @Mapping(source = "playerPointId", target = "playerPoint")
+    @Mapping(source = "event", target = "event")
+    @Mapping(source = "playerPoint", target = "playerPoint")
     PlayerDetailPoint toEntity(PlayerDetailPointDTO playerDetailPointDTO);
 
     default PlayerDetailPoint fromId(Long id) {

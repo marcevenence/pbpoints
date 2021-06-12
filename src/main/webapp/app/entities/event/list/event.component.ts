@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { IEvent } from '../event.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { EventService } from '../service/event.service';
 import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.component';
@@ -162,13 +162,13 @@ export class EventComponent implements OnInit {
 
   generatePDF(id: number): void {
     this.eventService.generatePDF(id).subscribe((res: HttpResponse<IEvent>) => {
-      alert('PDF Generado con exito para id: ' + id.toString());
+      alert('PDF Generado con exito');
     });
   }
 
   generateXML(id: number): void {
     this.eventService.generateXML(id).subscribe((res: HttpResponse<IEvent>) => {
-      alert('XML Generado con exito para id: ' + id.toString());
+      alert('XML Generado con exito');
     });
   }
 

@@ -10,11 +10,10 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TournamentMapper.class })
 public interface FormulaMapper extends com.pbpoints.service.mapper.EntityMapper<FormulaDTO, Formula> {
-    @Mapping(source = "tournament.id", target = "tournamentId")
-    @Mapping(source = "tournament.name", target = "tournamentName")
+    @Mapping(source = "tournament", target = "tournament")
     FormulaDTO toDto(Formula formula);
 
-    @Mapping(source = "tournamentId", target = "tournament")
+    @Mapping(source = "tournament", target = "tournament")
     Formula toEntity(FormulaDTO formulaDTO);
 
     default Formula fromId(Long id) {

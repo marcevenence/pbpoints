@@ -12,10 +12,10 @@ import org.mapstruct.Named;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.CountryMapper.class })
 public interface ProvinceMapper extends com.pbpoints.service.mapper.EntityMapper<ProvinceDTO, Province> {
-    @Mapping(source = "country.id", target = "countryId")
+    @Mapping(source = "country", target = "country")
     ProvinceDTO toDto(Province province);
 
-    @Mapping(source = "countryId", target = "country")
+    @Mapping(source = "country", target = "country")
     @Mapping(target = "cities", ignore = true)
     @Mapping(target = "removeCity", ignore = true)
     Province toEntity(ProvinceDTO provinceDTO);

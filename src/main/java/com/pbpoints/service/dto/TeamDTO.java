@@ -16,9 +16,7 @@ public class TeamDTO implements Serializable {
 
     private Boolean active;
 
-    private Long ownerId;
-
-    private String ownerLogin;
+    private UserDTO owner;
 
     public Long getId() {
         return id;
@@ -44,20 +42,12 @@ public class TeamDTO implements Serializable {
         this.active = active;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserDTO getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
-    }
-
-    public String getOwnerLogin() {
-        return ownerLogin;
-    }
-
-    public void setOwnerLogin(String userLogin) {
-        this.ownerLogin = userLogin;
+    public void setOwner(UserDTO user) {
+        this.owner = user;
     }
 
     @Override
@@ -94,9 +84,7 @@ public class TeamDTO implements Serializable {
             isActive() +
             "'" +
             ", owner=" +
-            getOwnerId() +
-            ", owner='" +
-            getOwnerLogin() +
+            getOwner() +
             "'" +
             "}"
         );

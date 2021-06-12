@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.EventCategory;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,11 +15,9 @@ public class RosterDTO implements Serializable {
 
     private Boolean active;
 
-    private Long teamId;
+    private TeamDTO team;
 
-    private String teamName;
-
-    private Long eventCategoryId;
+    private EventCategoryDTO eventCategory;
 
     public Long getId() {
         return id;
@@ -36,28 +35,20 @@ public class RosterDTO implements Serializable {
         this.active = active;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public TeamDTO getTeam() {
+        return team;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setTeam(TeamDTO team) {
+        this.team = team;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public EventCategoryDTO getEventCategory() {
+        return eventCategory;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public Long getEventCategoryId() {
-        return eventCategoryId;
-    }
-
-    public void setEventCategoryId(Long eventCategoryId) {
-        this.eventCategoryId = eventCategoryId;
+    public void setEventCategory(EventCategoryDTO eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     @Override
@@ -91,12 +82,10 @@ public class RosterDTO implements Serializable {
             isActive() +
             "'" +
             ", team=" +
-            getTeamId() +
-            ", team='" +
-            getTeamName() +
+            getTeam() +
             "'" +
             ", eventCategory=" +
-            getEventCategoryId() +
+            getEventCategory() +
             "}"
         );
     }

@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.Team;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.*;
@@ -14,13 +15,9 @@ public class TeamPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private Long teamId;
+    private TeamDTO team;
 
-    private String teamName;
-
-    private Long tournamentId;
-
-    private String tournamentName;
+    private TournamentDTO tournament;
 
     public Long getId() {
         return id;
@@ -38,36 +35,20 @@ public class TeamPointDTO implements Serializable {
         this.points = points;
     }
 
-    public Long getTeamId() {
-        return teamId;
+    public TeamDTO getTeam() {
+        return team;
     }
 
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setTeam(TeamDTO team) {
+        this.team = team;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public Long getTournamentId() {
-        return tournamentId;
-    }
-
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
-    }
-
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
     @Override
@@ -100,14 +81,10 @@ public class TeamPointDTO implements Serializable {
             ", points=" +
             getPoints() +
             ", team=" +
-            getTeamId() +
-            ", team='" +
-            getTeamName() +
+            getTeam() +
             "'" +
             ", tournament=" +
-            getTournamentId() +
-            ", tournament='" +
-            getTournamentName() +
+            getTournament() +
             "'" +
             "}"
         );

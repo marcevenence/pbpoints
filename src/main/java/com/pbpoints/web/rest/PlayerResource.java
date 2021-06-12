@@ -81,7 +81,7 @@ public class PlayerResource {
             if (result.getId() == null) {
                 throw new BadRequestAlertException("No se puede agregar al jugador", ENTITY_NAME, "InvalidPlayer");
             } else {
-                User user = userRepository.findOneById(result.getUserId());
+                User user = userRepository.findOneById(result.getUser().getId());
                 return ResponseEntity
                     .created(new URI("/api/players/" + result.getId()))
                     .headers(
@@ -119,7 +119,7 @@ public class PlayerResource {
             throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
         }
         PlayerDTO result = playerService.save(playerDTO);
-        User user = userRepository.findOneById(result.getUserId());
+        User user = userRepository.findOneById(result.getUser().getId());
         return ResponseEntity
             .ok()
             .headers(

@@ -21,7 +21,7 @@ export class CountryService {
   }
 
   update(country: ICountry): Observable<EntityResponseType> {
-    return this.http.put<ICountry>(`${this.resourceUrl}/${getCountryIdentifier(country) as number}`, country, { observe: 'response' });
+    return this.http.put<ICountry>(`${this.resourceUrl}`, country, { observe: 'response' });
   }
 
   partialUpdate(country: ICountry): Observable<EntityResponseType> {

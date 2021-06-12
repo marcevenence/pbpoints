@@ -21,7 +21,7 @@ export class PlayerPointService {
   }
 
   update(playerPoint: IPlayerPoint): Observable<EntityResponseType> {
-    return this.http.put<IPlayerPoint>(`${this.resourceUrl}/${getPlayerPointIdentifier(playerPoint) as number}`, playerPoint, {
+    return this.http.put<IPlayerPoint>(`${this.resourceUrl}`, playerPoint, {
       observe: 'response',
     });
   }

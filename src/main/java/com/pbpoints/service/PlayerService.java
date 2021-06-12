@@ -75,7 +75,7 @@ public class PlayerService {
     public Boolean validExists(PlayerDTO playerDTO) {
         log.debug("Request to valid if Player exists in roster : {}", playerDTO);
         try {
-            Optional<Player> validPlayer = findByUserAndRoster(playerDTO.getUserId(), playerDTO.getRosterId());
+            Optional<Player> validPlayer = findByUserAndRoster(playerDTO.getUser().getId(), playerDTO.getRoster().getId());
             if (validPlayer.isPresent()) {
                 log.debug("Error: Jugador Ya registrado en el Roster");
                 return true;
@@ -92,9 +92,9 @@ public class PlayerService {
             log.debug("No valida si se agrega como Staff");
             return false;
         }
-        Roster roster = rosterRepository.getOne(playerDTO.getRosterId());
+        Roster roster = rosterRepository.getOne(playerDTO.getRoster().getId());
         try {
-            Optional<Player> validPlayer = findByUserAndEventCategory(playerDTO.getUserId(), roster.getEventCategory());
+            Optional<Player> validPlayer = findByUserAndEventCategory(playerDTO.getUser().getId(), roster.getEventCategory());
             if (validPlayer.isPresent()) {
                 log.debug("Error: Jugador Ya registrado en otro Roster");
                 return true;

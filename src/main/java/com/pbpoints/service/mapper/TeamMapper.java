@@ -10,11 +10,10 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TeamMapper extends com.pbpoints.service.mapper.EntityMapper<TeamDTO, Team> {
-    @Mapping(source = "owner.id", target = "ownerId")
-    @Mapping(source = "owner.login", target = "ownerLogin")
+    @Mapping(source = "owner", target = "owner")
     TeamDTO toDto(Team team);
 
-    @Mapping(source = "ownerId", target = "owner")
+    @Mapping(source = "owner", target = "owner")
     Team toEntity(TeamDTO teamDTO);
 
     default Team fromId(Long id) {

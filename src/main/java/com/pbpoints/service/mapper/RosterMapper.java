@@ -10,13 +10,12 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TeamMapper.class, EventCategoryMapper.class })
 public interface RosterMapper extends com.pbpoints.service.mapper.EntityMapper<RosterDTO, Roster> {
-    @Mapping(source = "team.id", target = "teamId")
-    @Mapping(source = "team.name", target = "teamName")
-    @Mapping(source = "eventCategory.id", target = "eventCategoryId")
+    @Mapping(source = "team", target = "team")
+    @Mapping(source = "eventCategory", target = "eventCategory")
     RosterDTO toDto(Roster roster);
 
-    @Mapping(source = "teamId", target = "team")
-    @Mapping(source = "eventCategoryId", target = "eventCategory")
+    @Mapping(source = "team", target = "team")
+    @Mapping(source = "eventCategory", target = "eventCategory")
     @Mapping(target = "players", ignore = true)
     @Mapping(target = "removePlayer", ignore = true)
     Roster toEntity(RosterDTO rosterDTO);

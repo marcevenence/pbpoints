@@ -10,10 +10,10 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.ProvinceMapper.class })
 public interface CityMapper extends com.pbpoints.service.mapper.EntityMapper<CityDTO, City> {
-    @Mapping(source = "province.id", target = "provinceId")
+    @Mapping(source = "province", target = "province")
     CityDTO toDto(City city);
 
-    @Mapping(source = "provinceId", target = "province")
+    @Mapping(source = "province", target = "province")
     City toEntity(CityDTO cityDTO);
 
     default City fromId(Long id) {

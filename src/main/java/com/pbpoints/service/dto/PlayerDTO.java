@@ -13,11 +13,9 @@ public class PlayerDTO implements Serializable {
 
     private ProfileUser profile;
 
-    private Long userId;
+    private UserDTO user;
 
-    private String userLogin;
-
-    private Long rosterId;
+    private RosterDTO roster;
 
     public Long getId() {
         return id;
@@ -35,28 +33,20 @@ public class PlayerDTO implements Serializable {
         this.profile = profile;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public RosterDTO getRoster() {
+        return roster;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
-
-    public Long getRosterId() {
-        return rosterId;
-    }
-
-    public void setRosterId(Long rosterId) {
-        this.rosterId = rosterId;
+    public void setRoster(RosterDTO roster) {
+        this.roster = roster;
     }
 
     @Override
@@ -90,12 +80,10 @@ public class PlayerDTO implements Serializable {
             getProfile() +
             "'" +
             ", user=" +
-            getUserId() +
-            ", user='" +
-            getUserLogin() +
+            getUser() +
             "'" +
             ", roster=" +
-            getRosterId() +
+            getRoster() +
             "}"
         );
     }

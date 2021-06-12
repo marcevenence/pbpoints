@@ -65,11 +65,7 @@
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let category of categories; trackBy: trackId" data-cy="entityTable">
           <!--<td><a [routerLink]="['/category', category.id, 'view']">{{ category.id }}</a></td>-->
-          <td>
-            <div *ngIf="category.tournament">
-              <a [routerLink]="['/tournament', category.tournament?.id, 'view']">{{ category.tournament?.name }}</a>
-            </div>
-          </td>
+          <td>{{ category.tournament?.name }}</td>
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
           <!--<td jhiTranslate="{{ 'pbpointsApp.TimeType.' + category.gameTimeType }}">{{ category.gameTimeType }}</td>

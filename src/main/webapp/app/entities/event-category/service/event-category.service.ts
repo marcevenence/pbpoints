@@ -21,7 +21,7 @@ export class EventCategoryService {
   }
 
   update(eventCategory: IEventCategory): Observable<EntityResponseType> {
-    return this.http.put<IEventCategory>(`${this.resourceUrl}/${getEventCategoryIdentifier(eventCategory) as number}`, eventCategory, {
+    return this.http.put<IEventCategory>(`${this.resourceUrl}`, eventCategory, {
       observe: 'response',
     });
   }

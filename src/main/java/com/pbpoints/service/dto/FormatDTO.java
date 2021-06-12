@@ -21,9 +21,7 @@ public class FormatDTO implements Serializable {
 
     private Integer playersQty;
 
-    private Long tournamentId;
-
-    private String tournamentName;
+    private TournamentDTO tournament;
 
     public Long getId() {
         return id;
@@ -65,20 +63,12 @@ public class FormatDTO implements Serializable {
         this.playersQty = playersQty;
     }
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
-    }
-
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
     @Override
@@ -119,9 +109,7 @@ public class FormatDTO implements Serializable {
             ", playersQty=" +
             getPlayersQty() +
             ", tournament=" +
-            getTournamentId() +
-            ", tournament='" +
-            getTournamentName() +
+            getTournament() +
             "'" +
             "}"
         );

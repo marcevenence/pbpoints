@@ -21,7 +21,7 @@ export class CityService {
   }
 
   update(city: ICity): Observable<EntityResponseType> {
-    return this.http.put<ICity>(`${this.resourceUrl}/${getCityIdentifier(city) as number}`, city, { observe: 'response' });
+    return this.http.put<ICity>(`${this.resourceUrl}`, city, { observe: 'response' });
   }
 
   partialUpdate(city: ICity): Observable<EntityResponseType> {

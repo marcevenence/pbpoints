@@ -21,7 +21,7 @@ export class CategoryService {
   }
 
   update(category: ICategory): Observable<EntityResponseType> {
-    return this.http.put<ICategory>(`${this.resourceUrl}/${getCategoryIdentifier(category) as number}`, category, { observe: 'response' });
+    return this.http.put<ICategory>(`${this.resourceUrl}`, category, { observe: 'response' });
   }
 
   partialUpdate(category: ICategory): Observable<EntityResponseType> {

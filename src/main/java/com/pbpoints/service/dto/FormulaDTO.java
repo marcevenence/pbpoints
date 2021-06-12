@@ -26,9 +26,7 @@ public class FormulaDTO implements Serializable {
 
     private String example;
 
-    private Long tournamentId;
-
-    private String tournamentName;
+    private TournamentDTO tournament;
 
     public Long getId() {
         return id;
@@ -86,20 +84,12 @@ public class FormulaDTO implements Serializable {
         this.example = example;
     }
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
-    }
-
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
     @Override
@@ -148,9 +138,7 @@ public class FormulaDTO implements Serializable {
             getExample() +
             "'" +
             ", tournament=" +
-            getTournamentId() +
-            ", tournament='" +
-            getTournamentName() +
+            getTournament() +
             "'" +
             "}"
         );

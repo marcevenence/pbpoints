@@ -14,17 +14,11 @@ public class PlayerPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private Long tournamentId;
+    private TournamentDTO tournament;
 
-    private String tournamentName;
+    private UserDTO user;
 
-    private Long userId;
-
-    private String userLogin;
-
-    private Long categoryId;
-
-    private String categoryName;
+    private CategoryDTO category;
 
     public Long getId() {
         return id;
@@ -42,52 +36,28 @@ public class PlayerPointDTO implements Serializable {
         this.points = points;
     }
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
-    public String getTournamentName() {
-        return tournamentName;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public Long getUserId() {
-        return userId;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
     @Override
@@ -120,19 +90,13 @@ public class PlayerPointDTO implements Serializable {
             ", points=" +
             getPoints() +
             ", tournament=" +
-            getTournamentId() +
-            ", tournament='" +
-            getTournamentName() +
+            getTournament() +
             "'" +
             ", user=" +
-            getUserId() +
-            ", user='" +
-            getUserLogin() +
+            getUser() +
             "'" +
             ", category=" +
-            getCategoryId() +
-            ", category='" +
-            getCategoryName() +
+            getCategory() +
             "'" +
             "}"
         );

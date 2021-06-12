@@ -29,7 +29,7 @@ export class EventService {
   update(event: IEvent): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(event);
     return this.http
-      .put<IEvent>(`${this.resourceUrl}/${getEventIdentifier(event) as number}`, copy, { observe: 'response' })
+      .put<IEvent>(`${this.resourceUrl}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

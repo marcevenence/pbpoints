@@ -21,7 +21,7 @@ export class FormatService {
   }
 
   update(format: IFormat): Observable<EntityResponseType> {
-    return this.http.put<IFormat>(`${this.resourceUrl}/${getFormatIdentifier(format) as number}`, format, { observe: 'response' });
+    return this.http.put<IFormat>(`${this.resourceUrl}`, format, { observe: 'response' });
   }
 
   partialUpdate(format: IFormat): Observable<EntityResponseType> {

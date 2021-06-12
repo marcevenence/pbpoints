@@ -37,9 +37,7 @@ public class CategoryDTO implements Serializable {
     @NotNull
     private Integer order;
 
-    private Long tournamentId;
-
-    private String tournamentName;
+    private TournamentDTO tournament;
 
     public Long getId() {
         return id;
@@ -121,20 +119,12 @@ public class CategoryDTO implements Serializable {
         this.order = order;
     }
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
-    }
-
-    public String getTournamentName() {
-        return tournamentName;
-    }
-
-    public void setTournamentName(String tournamentName) {
-        this.tournamentName = tournamentName;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
     @Override
@@ -187,9 +177,7 @@ public class CategoryDTO implements Serializable {
             ", order=" +
             getOrder() +
             ", tournament=" +
-            getTournamentId() +
-            ", tournament='" +
-            getTournamentName() +
+            getTournament() +
             "'" +
             "}"
         );

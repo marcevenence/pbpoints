@@ -21,7 +21,7 @@ export class TeamPointService {
   }
 
   update(teamPoint: ITeamPoint): Observable<EntityResponseType> {
-    return this.http.put<ITeamPoint>(`${this.resourceUrl}/${getTeamPointIdentifier(teamPoint) as number}`, teamPoint, {
+    return this.http.put<ITeamPoint>(`${this.resourceUrl}`, teamPoint, {
       observe: 'response',
     });
   }

@@ -21,7 +21,7 @@ export class ProvinceService {
   }
 
   update(province: IProvince): Observable<EntityResponseType> {
-    return this.http.put<IProvince>(`${this.resourceUrl}/${getProvinceIdentifier(province) as number}`, province, { observe: 'response' });
+    return this.http.put<IProvince>(`${this.resourceUrl}`, province, { observe: 'response' });
   }
 
   partialUpdate(province: IProvince): Observable<EntityResponseType> {

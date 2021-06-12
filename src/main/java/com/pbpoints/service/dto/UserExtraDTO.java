@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.DocType;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,11 +26,9 @@ public class UserExtraDTO implements Serializable {
 
     private String pictureContentType;
 
-    private Long docTypeId;
+    private DocTypeDTO docType;
 
-    private Long userId;
-
-    private String userLogin;
+    private UserDTO user;
 
     public Long getId() {
         return id;
@@ -79,28 +78,20 @@ public class UserExtraDTO implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public Long getDocTypeId() {
-        return docTypeId;
+    public DocTypeDTO getDocType() {
+        return docType;
     }
 
-    public void setDocTypeId(Long docTypeId) {
-        this.docTypeId = docTypeId;
+    public void setDocType(DocTypeDTO docType) {
+        this.docType = docType;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     @Override
@@ -143,11 +134,9 @@ public class UserExtraDTO implements Serializable {
             getPicture() +
             "'" +
             ", docType=" +
-            getDocTypeId() +
+            getDocType() +
             ", user=" +
-            getUserId() +
-            ", user='" +
-            getUserLogin() +
+            getUser() +
             "'" +
             "}"
         );

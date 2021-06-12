@@ -21,7 +21,7 @@ export class GameService {
   }
 
   update(game: IGame): Observable<EntityResponseType> {
-    return this.http.put<IGame>(`${this.resourceUrl}/${getGameIdentifier(game) as number}`, game, { observe: 'response' });
+    return this.http.put<IGame>(`${this.resourceUrl}`, game, { observe: 'response' });
   }
 
   partialUpdate(game: IGame): Observable<EntityResponseType> {

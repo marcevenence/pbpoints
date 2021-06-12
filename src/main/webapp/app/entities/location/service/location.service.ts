@@ -21,7 +21,7 @@ export class LocationService {
   }
 
   update(location: ILocation): Observable<EntityResponseType> {
-    return this.http.put<ILocation>(`${this.resourceUrl}/${getLocationIdentifier(location) as number}`, location, { observe: 'response' });
+    return this.http.put<ILocation>(`${this.resourceUrl}`, location, { observe: 'response' });
   }
 
   partialUpdate(location: ILocation): Observable<EntityResponseType> {

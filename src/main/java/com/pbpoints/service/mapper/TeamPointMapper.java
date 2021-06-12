@@ -13,14 +13,12 @@ import org.mapstruct.Mapping;
     uses = { com.pbpoints.service.mapper.TeamMapper.class, com.pbpoints.service.mapper.TournamentMapper.class }
 )
 public interface TeamPointMapper extends com.pbpoints.service.mapper.EntityMapper<TeamPointDTO, TeamPoint> {
-    @Mapping(source = "team.id", target = "teamId")
-    @Mapping(source = "team.name", target = "teamName")
-    @Mapping(source = "tournament.id", target = "tournamentId")
-    @Mapping(source = "tournament.name", target = "tournamentName")
+    @Mapping(source = "team", target = "team")
+    @Mapping(source = "tournament", target = "tournament")
     TeamPointDTO toDto(TeamPoint teamPoint);
 
-    @Mapping(source = "teamId", target = "team")
-    @Mapping(source = "tournamentId", target = "tournament")
+    @Mapping(source = "team", target = "team")
+    @Mapping(source = "tournament", target = "tournament")
     TeamPoint toEntity(TeamPointDTO teamPointDTO);
 
     default TeamPoint fromId(Long id) {

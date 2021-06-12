@@ -14,7 +14,7 @@ public class ProvinceDTO implements Serializable {
 
     private String name;
 
-    private Long countryId;
+    private CountryDTO country;
 
     public Long getId() {
         return id;
@@ -32,12 +32,12 @@ public class ProvinceDTO implements Serializable {
         this.name = name;
     }
 
-    public Long getCountryId() {
-        return countryId;
+    public CountryDTO getCountry() {
+        return country;
     }
 
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
+    public void setCountry(CountryDTO country) {
+        this.country = country;
     }
 
     @Override
@@ -63,6 +63,6 @@ public class ProvinceDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ProvinceDTO{" + "id=" + getId() + ", name='" + getName() + "'" + ", country=" + getCountryId() + "}";
+        return "ProvinceDTO{" + "id=" + getId() + ", name='" + getName() + "'" + ", country=" + getCountry() + "}";
     }
 }

@@ -10,13 +10,12 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TournamentMapper extends com.pbpoints.service.mapper.EntityMapper<TournamentDTO, Tournament> {
-    @Mapping(source = "owner.id", target = "ownerId")
-    @Mapping(source = "owner.login", target = "ownerLogin")
+    @Mapping(source = "owner", target = "owner")
     TournamentDTO toDto(Tournament tournament);
 
     @Mapping(target = "events", ignore = true)
     @Mapping(target = "removeEvent", ignore = true)
-    @Mapping(source = "ownerId", target = "owner")
+    @Mapping(source = "owner", target = "owner")
     Tournament toEntity(TournamentDTO tournamentDTO);
 
     default Tournament fromId(Long id) {

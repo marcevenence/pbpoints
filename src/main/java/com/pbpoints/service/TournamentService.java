@@ -4,6 +4,7 @@ import com.pbpoints.domain.Tournament;
 import com.pbpoints.repository.TournamentRepository;
 import com.pbpoints.service.dto.TournamentDTO;
 import com.pbpoints.service.mapper.TournamentMapper;
+import com.pbpoints.service.mapper.UserMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,18 @@ public class TournamentService {
 
     private final TournamentMapper tournamentMapper;
 
-    public TournamentService(TournamentRepository tournamentRepository, TournamentMapper tournamentMapper, UserService userService) {
+    private final UserMapper userMapper;
+
+    public TournamentService(
+        TournamentRepository tournamentRepository,
+        TournamentMapper tournamentMapper,
+        UserService userService,
+        UserMapper userMapper
+    ) {
         this.tournamentRepository = tournamentRepository;
         this.tournamentMapper = tournamentMapper;
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -41,8 +50,8 @@ public class TournamentService {
      */
     public TournamentDTO save(TournamentDTO tournamentDTO) {
         log.debug("Request to save Tournament : {}", tournamentDTO);
-        if (tournamentDTO.getOwnerId() == 0) {
-            tournamentDTO.setOwnerId(userService.getUserWithAuthorities().get().getId());
+        if (tournamentDTO.getOwner().getId() == 0) {
+            tournamentDTO.setOwner(userMapper.userToUserDTO(userService.getUserWithAuthorities().get()));
             log.debug("Request to save Tournament 2: {}", tournamentDTO);
         }
         Tournament tournament = tournamentMapper.toEntity(tournamentDTO);

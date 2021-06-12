@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.enumeration.Status;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
@@ -29,9 +30,9 @@ public class EventDTO implements Serializable {
 
     private Instant updatedDate;
 
-    private Long tournamentId;
+    private TournamentDTO tournament;
 
-    private Long cityId;
+    private CityDTO city;
 
     public Long getId() {
         return id;
@@ -97,20 +98,20 @@ public class EventDTO implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public TournamentDTO getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setTournament(TournamentDTO tournament) {
+        this.tournament = tournament;
     }
 
-    public Long getCityId() {
-        return cityId;
+    public CityDTO getCity() {
+        return city;
     }
 
-    public void setCityId(Long cityId) {
-        this.cityId = cityId;
+    public void setCity(CityDTO city) {
+        this.city = city;
     }
 
     @Override
@@ -162,9 +163,9 @@ public class EventDTO implements Serializable {
             getUpdatedDate() +
             "'" +
             ", tournament=" +
-            getTournamentId() +
+            getTournament() +
             ", city=" +
-            getCityId() +
+            getCity() +
             "}"
         );
     }

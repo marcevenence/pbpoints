@@ -21,11 +21,7 @@ export class PlayerDetailPointService {
   }
 
   update(playerDetailPoint: IPlayerDetailPoint): Observable<EntityResponseType> {
-    return this.http.put<IPlayerDetailPoint>(
-      `${this.resourceUrl}/${getPlayerDetailPointIdentifier(playerDetailPoint) as number}`,
-      playerDetailPoint,
-      { observe: 'response' }
-    );
+    return this.http.put<IPlayerDetailPoint>(`${this.resourceUrl}`, playerDetailPoint, { observe: 'response' });
   }
 
   partialUpdate(playerDetailPoint: IPlayerDetailPoint): Observable<EntityResponseType> {

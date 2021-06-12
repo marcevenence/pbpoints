@@ -63,7 +63,7 @@ public class EventCategoryResource {
             EventCategoryDTO result = eventCategoryService.save(eventCategoryDTO);
             return ResponseEntity
                 .created(new URI("/api/event-categories/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getCategoryName()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getCategory().getName()))
                 .body(result);
         } catch (DuplicateKeyException e) {
             throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "duplicateError");

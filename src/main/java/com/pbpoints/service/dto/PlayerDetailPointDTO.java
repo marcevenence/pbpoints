@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.PlayerPoint;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.*;
@@ -14,11 +15,9 @@ public class PlayerDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private Long eventId;
+    private EventDTO event;
 
-    private String eventName;
-
-    private Long playerPointId;
+    private PlayerPointDTO playerPoint;
 
     public Long getId() {
         return id;
@@ -36,28 +35,20 @@ public class PlayerDetailPointDTO implements Serializable {
         this.points = points;
     }
 
-    public Long getEventId() {
-        return eventId;
+    public EventDTO getEvent() {
+        return event;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
+    public void setEvent(EventDTO event) {
+        this.event = event;
     }
 
-    public String getEventName() {
-        return eventName;
+    public PlayerPointDTO getPlayerPoint() {
+        return playerPoint;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
-    }
-
-    public Long getPlayerPointId() {
-        return playerPointId;
-    }
-
-    public void setPlayerPointId(Long playerPointId) {
-        this.playerPointId = playerPointId;
+    public void setPlayerPoint(PlayerPointDTO playerPoint) {
+        this.playerPoint = playerPoint;
     }
 
     @Override
@@ -90,12 +81,10 @@ public class PlayerDetailPointDTO implements Serializable {
             ", points=" +
             getPoints() +
             ", event=" +
-            getEventId() +
-            ", event='" +
-            getEventName() +
+            getEvent() +
             "'" +
             ", playerPoint=" +
-            getPlayerPointId() +
+            getPlayerPoint() +
             "}"
         );
     }

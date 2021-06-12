@@ -17,17 +17,14 @@ import org.mapstruct.Mapping;
     }
 )
 public interface EventCategoryMapper extends com.pbpoints.service.mapper.EntityMapper<EventCategoryDTO, EventCategory> {
-    @Mapping(source = "event.id", target = "eventId")
-    @Mapping(source = "event.name", target = "eventName")
-    @Mapping(source = "category.id", target = "categoryId")
-    @Mapping(source = "category.name", target = "categoryName")
-    @Mapping(source = "format.id", target = "formatId")
-    @Mapping(source = "format.name", target = "formatName")
+    @Mapping(source = "event", target = "event")
+    @Mapping(source = "category", target = "category")
+    @Mapping(source = "format", target = "format")
     EventCategoryDTO toDto(EventCategory eventCategory);
 
-    @Mapping(source = "eventId", target = "event")
-    @Mapping(source = "categoryId", target = "category")
-    @Mapping(source = "formatId", target = "format")
+    @Mapping(source = "event", target = "event")
+    @Mapping(source = "category", target = "category")
+    @Mapping(source = "format", target = "format")
     @Mapping(target = "games", ignore = true)
     @Mapping(target = "removeGame", ignore = true)
     @Mapping(target = "rosters", ignore = true)

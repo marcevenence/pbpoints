@@ -10,16 +10,14 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TeamMapper.class, EventCategoryMapper.class })
 public interface GameMapper extends com.pbpoints.service.mapper.EntityMapper<GameDTO, Game> {
-    @Mapping(source = "teamA.id", target = "teamAId")
-    @Mapping(source = "teamA.name", target = "teamAName")
-    @Mapping(source = "teamB.id", target = "teamBId")
-    @Mapping(source = "teamB.name", target = "teamBName")
-    @Mapping(source = "eventCategory.id", target = "eventCategoryId")
+    @Mapping(source = "teamA", target = "teamA")
+    @Mapping(source = "teamB", target = "teamB")
+    @Mapping(source = "eventCategory", target = "eventCategory")
     GameDTO toDto(Game game);
 
-    @Mapping(source = "teamAId", target = "teamA")
-    @Mapping(source = "teamBId", target = "teamB")
-    @Mapping(source = "eventCategoryId", target = "eventCategory")
+    @Mapping(source = "teamA", target = "teamA")
+    @Mapping(source = "teamB", target = "teamB")
+    @Mapping(source = "eventCategory", target = "eventCategory")
     Game toEntity(GameDTO gameDTO);
 
     default Game fromId(Long id) {

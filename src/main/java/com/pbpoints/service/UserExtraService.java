@@ -69,7 +69,7 @@ public class UserExtraService {
     public UserExtraDTO save(UserExtraDTO userExtraDTO) {
         log.debug("Request to save UserExtra : {}", userExtraDTO);
         UserExtra userExtra = userExtraMapper.toEntity(userExtraDTO);
-        long userId = userExtraDTO.getUserId();
+        long userId = userExtraDTO.getUser().getId();
         userRepository.findById(userId).ifPresent(userExtra::user);
         userExtra = userExtraRepository.save(userExtra);
         return userExtraMapper.toDto(userExtra);

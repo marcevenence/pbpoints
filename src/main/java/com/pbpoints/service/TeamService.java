@@ -4,6 +4,7 @@ import com.pbpoints.domain.Team;
 import com.pbpoints.repository.TeamRepository;
 import com.pbpoints.service.dto.TeamDTO;
 import com.pbpoints.service.mapper.TeamMapper;
+import com.pbpoints.service.mapper.UserMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +28,13 @@ public class TeamService {
 
     private final UserService userService;
 
-    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper, UserService userService) {
+    private final UserMapper userMapper;
+
+    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper, UserService userService, UserMapper userMapper) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -41,8 +45,8 @@ public class TeamService {
      */
     public TeamDTO save(TeamDTO teamDTO) {
         log.debug("Request to save Team : {}", teamDTO);
-        if (teamDTO.getOwnerId() == null) {
-            teamDTO.setOwnerId(userService.getUserWithAuthorities().get().getId());
+        if (teamDTO.getOwner() == null) {
+            teamDTO.setOwner(userMapper.userToUserDTO(userService.getUserWithAuthorities().get()));
         }
         Team team = teamMapper.toEntity(teamDTO);
         team = teamRepository.save(team);

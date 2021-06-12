@@ -21,7 +21,7 @@ export class RosterService {
   }
 
   update(roster: IRoster): Observable<EntityResponseType> {
-    return this.http.put<IRoster>(`${this.resourceUrl}/${getRosterIdentifier(roster) as number}`, roster, { observe: 'response' });
+    return this.http.put<IRoster>(`${this.resourceUrl}`, roster, { observe: 'response' });
   }
 
   partialUpdate(roster: IRoster): Observable<EntityResponseType> {

@@ -60,7 +60,7 @@ public class TeamResource {
             throw new BadRequestAlertException("A new team cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        if (teamService.findByNameAndIdOwner(teamDTO.getName(), teamDTO.getOwnerId()).isPresent()) {
+        if (teamService.findByNameAndIdOwner(teamDTO.getName(), teamDTO.getOwner().getId()).isPresent()) {
             throw new BadRequestAlertException("The Team has already exists", ENTITY_NAME, "teamexists");
         }
         teamDTO.setActive(true);

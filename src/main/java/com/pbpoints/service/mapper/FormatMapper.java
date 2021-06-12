@@ -10,11 +10,10 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TournamentMapper.class })
 public interface FormatMapper extends com.pbpoints.service.mapper.EntityMapper<FormatDTO, Format> {
-    @Mapping(source = "tournament.id", target = "tournamentId")
-    @Mapping(source = "tournament.name", target = "tournamentName")
+    @Mapping(source = "tournament", target = "tournament")
     FormatDTO toDto(Format format);
 
-    @Mapping(source = "tournamentId", target = "tournament")
+    @Mapping(source = "tournament", target = "tournament")
     Format toEntity(FormatDTO formatDTO);
 
     default Format fromId(Long id) {

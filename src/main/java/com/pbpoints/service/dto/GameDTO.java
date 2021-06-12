@@ -35,15 +35,11 @@ public class GameDTO implements Serializable {
 
     private String clasif;
 
-    private Long teamAId;
+    private TeamDTO teamA;
 
-    private String teamAName;
+    private TeamDTO teamB;
 
-    private Long teamBId;
-
-    private String teamBName;
-
-    private Long eventCategoryId;
+    private EventCategoryDTO eventCategory;
 
     public Long getId() {
         return id;
@@ -141,44 +137,28 @@ public class GameDTO implements Serializable {
         this.clasif = clasif;
     }
 
-    public Long getTeamAId() {
-        return teamAId;
+    public TeamDTO getTeamA() {
+        return teamA;
     }
 
-    public void setTeamAId(Long teamId) {
-        this.teamAId = teamId;
+    public void setTeamA(TeamDTO teamA) {
+        this.teamA = teamA;
     }
 
-    public String getTeamAName() {
-        return teamAName;
+    public TeamDTO getTeamB() {
+        return teamB;
     }
 
-    public void setTeamAName(String teamName) {
-        this.teamAName = teamName;
+    public void setTeamB(TeamDTO teamB) {
+        this.teamB = teamB;
     }
 
-    public Long getTeamBId() {
-        return teamBId;
+    public EventCategoryDTO getEventCategory() {
+        return eventCategory;
     }
 
-    public void setTeamBId(Long teamId) {
-        this.teamBId = teamId;
-    }
-
-    public String getTeamBName() {
-        return teamBName;
-    }
-
-    public void setTeamBName(String teamName) {
-        this.teamBName = teamName;
-    }
-
-    public Long getEventCategoryId() {
-        return eventCategoryId;
-    }
-
-    public void setEventCategoryId(Long eventCategoryId) {
-        this.eventCategoryId = eventCategoryId;
+    public void setEventCategory(EventCategoryDTO eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     @Override
@@ -233,17 +213,13 @@ public class GameDTO implements Serializable {
             getClasif() +
             "'" +
             ", teamA=" +
-            getTeamAId() +
-            ", teamA='" +
-            getTeamAName() +
+            getTeamA() +
             "'" +
             ", teamB=" +
-            getTeamBId() +
-            ", teamB='" +
-            getTeamBName() +
+            getTeamB() +
             "'" +
             ", eventCategory=" +
-            getEventCategoryId() +
+            getEventCategory() +
             "}"
         );
     }

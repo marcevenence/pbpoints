@@ -1,5 +1,7 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.Event;
+import com.pbpoints.domain.Format;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,17 +14,11 @@ public class EventCategoryDTO implements Serializable {
 
     private Boolean splitDeck;
 
-    private Long eventId;
+    private EventDTO event;
 
-    private String eventName;
+    private CategoryDTO category;
 
-    private Long categoryId;
-
-    private String categoryName;
-
-    private Long formatId;
-
-    private String formatName;
+    private FormatDTO format;
 
     public Long getId() {
         return id;
@@ -40,52 +36,28 @@ public class EventCategoryDTO implements Serializable {
         this.splitDeck = splitDeck;
     }
 
-    public Long getEventId() {
-        return eventId;
+    public EventDTO getEvent() {
+        return event;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
+    public void setEvent(EventDTO event) {
+        this.event = event;
     }
 
-    public String getEventName() {
-        return eventName;
+    public CategoryDTO getCategory() {
+        return category;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public FormatDTO getFormat() {
+        return format;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Long getFormatId() {
-        return formatId;
-    }
-
-    public void setFormatId(Long formatId) {
-        this.formatId = formatId;
-    }
-
-    public String getFormatName() {
-        return formatName;
-    }
-
-    public void setFormatName(String formatName) {
-        this.formatName = formatName;
+    public void setFormat(FormatDTO format) {
+        this.format = format;
     }
 
     @Override
@@ -119,19 +91,13 @@ public class EventCategoryDTO implements Serializable {
             isSplitDeck() +
             "'" +
             ", eventId=" +
-            getEventId() +
-            ", eventName='" +
-            getEventName() +
+            getEvent() +
             "'" +
             ", categoryId" +
-            getCategoryId() +
-            ", categoryName='" +
-            getCategoryName() +
+            getCategory() +
             "'" +
             ", formatId=" +
-            getFormatId() +
-            ", formatName='" +
-            getFormatName() +
+            getFormat() +
             "'" +
             "}"
         );

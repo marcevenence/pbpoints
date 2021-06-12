@@ -1,5 +1,6 @@
 package com.pbpoints.service.dto;
 
+import com.pbpoints.domain.User;
 import com.pbpoints.domain.enumeration.Status;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
@@ -30,9 +31,7 @@ public class TournamentDTO implements Serializable {
 
     private Integer qtyTeamGroups;
 
-    private Long ownerId;
-
-    private String ownerLogin;
+    private UserDTO owner;
 
     public Long getId() {
         return id;
@@ -106,20 +105,12 @@ public class TournamentDTO implements Serializable {
         this.qtyTeamGroups = qtyTeamGroups;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserDTO getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long userId) {
-        this.ownerId = userId;
-    }
-
-    public String getOwnerLogin() {
-        return ownerLogin;
-    }
-
-    public void setOwnerLogin(String userLogin) {
-        this.ownerLogin = userLogin;
+    public void setOwner(UserDTO owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -167,10 +158,8 @@ public class TournamentDTO implements Serializable {
             getCantPlayersNextCategory() +
             ", qtyTeamGroups=" +
             getQtyTeamGroups() +
-            ", ownerId=" +
-            getOwnerId() +
-            ", ownerLogin='" +
-            getOwnerLogin() +
+            ", owner=" +
+            getOwner() +
             "'" +
             "}"
         );

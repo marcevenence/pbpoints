@@ -21,11 +21,7 @@ export class TeamDetailPointService {
   }
 
   update(teamDetailPoint: ITeamDetailPoint): Observable<EntityResponseType> {
-    return this.http.put<ITeamDetailPoint>(
-      `${this.resourceUrl}/${getTeamDetailPointIdentifier(teamDetailPoint) as number}`,
-      teamDetailPoint,
-      { observe: 'response' }
-    );
+    return this.http.put<ITeamDetailPoint>(`${this.resourceUrl}`, teamDetailPoint, { observe: 'response' });
   }
 
   partialUpdate(teamDetailPoint: ITeamDetailPoint): Observable<EntityResponseType> {

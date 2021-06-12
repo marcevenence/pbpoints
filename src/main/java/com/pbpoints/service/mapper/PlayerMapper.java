@@ -10,13 +10,12 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { UserMapper.class, com.pbpoints.service.mapper.RosterMapper.class })
 public interface PlayerMapper extends com.pbpoints.service.mapper.EntityMapper<PlayerDTO, Player> {
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "user.login", target = "userLogin")
-    @Mapping(source = "roster.id", target = "rosterId")
+    @Mapping(source = "user", target = "user")
+    @Mapping(source = "roster", target = "roster")
     PlayerDTO toDto(Player player);
 
-    @Mapping(source = "userId", target = "user")
-    @Mapping(source = "rosterId", target = "roster")
+    @Mapping(source = "user", target = "user")
+    @Mapping(source = "roster", target = "roster")
     Player toEntity(PlayerDTO playerDTO);
 
     default Player fromId(Long id) {

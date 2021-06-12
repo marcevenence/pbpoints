@@ -21,7 +21,7 @@ export class PlayerService {
   }
 
   update(player: IPlayer): Observable<EntityResponseType> {
-    return this.http.put<IPlayer>(`${this.resourceUrl}/${getPlayerIdentifier(player) as number}`, player, { observe: 'response' });
+    return this.http.put<IPlayer>(`${this.resourceUrl}`, player, { observe: 'response' });
   }
 
   partialUpdate(player: IPlayer): Observable<EntityResponseType> {

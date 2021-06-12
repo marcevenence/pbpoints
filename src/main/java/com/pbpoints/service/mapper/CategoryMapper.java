@@ -10,11 +10,10 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", uses = { com.pbpoints.service.mapper.TournamentMapper.class })
 public interface CategoryMapper extends com.pbpoints.service.mapper.EntityMapper<CategoryDTO, Category> {
-    @Mapping(source = "tournament.id", target = "tournamentId")
-    @Mapping(source = "tournament.name", target = "tournamentName")
+    @Mapping(source = "tournament", target = "tournament")
     CategoryDTO toDto(Category category);
 
-    @Mapping(source = "tournamentId", target = "tournament")
+    @Mapping(source = "tournament", target = "tournament")
     Category toEntity(CategoryDTO categoryDTO);
 
     default Category fromId(Long id) {

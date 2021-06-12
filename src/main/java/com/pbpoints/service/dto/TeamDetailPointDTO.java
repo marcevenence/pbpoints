@@ -14,11 +14,9 @@ public class TeamDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private Long teamPointId;
+    private TeamPointDTO teamPoint;
 
-    private Long eventId;
-
-    private String eventName;
+    private EventDTO event;
 
     public Long getId() {
         return id;
@@ -36,28 +34,20 @@ public class TeamDetailPointDTO implements Serializable {
         this.points = points;
     }
 
-    public Long getTeamPointId() {
-        return teamPointId;
+    public TeamPointDTO getTeamPoint() {
+        return teamPoint;
     }
 
-    public void setTeamPointId(Long teamPointId) {
-        this.teamPointId = teamPointId;
+    public void setTeamPoint(TeamPointDTO teamPoint) {
+        this.teamPoint = teamPoint;
     }
 
-    public Long getEventId() {
-        return eventId;
+    public EventDTO getEvent() {
+        return event;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getEventName() {
-        return eventName;
-    }
-
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public void setEvent(EventDTO event) {
+        this.event = event;
     }
 
     @Override
@@ -90,11 +80,9 @@ public class TeamDetailPointDTO implements Serializable {
             ", points=" +
             getPoints() +
             ", teamPoint=" +
-            getTeamPointId() +
+            getTeamPoint() +
             ", event=" +
-            getEventId() +
-            ", event='" +
-            getEventName() +
+            getEvent() +
             "'" +
             "}"
         );

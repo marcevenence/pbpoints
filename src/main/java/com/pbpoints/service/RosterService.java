@@ -134,8 +134,8 @@ public class RosterService {
 
     public long validRoster(Long rosterId) {
         Optional<RosterDTO> roster = findOne(rosterId);
-        Optional<EventCategoryDTO> evCat = eventCategoryService.findOne(roster.get().getEventCategoryId());
-        Optional<EventDTO> event = eventService.findOne(evCat.get().getEventId());
+        Optional<EventCategoryDTO> evCat = eventCategoryService.findOne(roster.get().getEventCategory().getId());
+        Optional<EventDTO> event = eventService.findOne(evCat.get().getEvent().getId());
         Long result;
         if (event.isPresent()) {
             Date date = new Date();

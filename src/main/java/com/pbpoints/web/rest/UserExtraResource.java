@@ -55,7 +55,7 @@ public class UserExtraResource {
         if (userExtraDTO.getId() != null) {
             throw new BadRequestAlertException("A new userExtra cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (Objects.isNull(userExtraDTO.getUserId())) {
+        if (Objects.isNull(userExtraDTO.getUser().getId())) {
             throw new BadRequestAlertException("Invalid association value provided", ENTITY_NAME, "idnull");
         }
         UserExtraDTO result = userExtraService.save(userExtraDTO);
