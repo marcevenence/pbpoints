@@ -2,28 +2,15 @@ package com.pbpoints.service.mapper;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.service.dto.PlayerDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Player} and its DTO {@link PlayerDTO}.
  */
-@Mapper(componentModel = "spring", uses = { UserMapper.class, com.pbpoints.service.mapper.RosterMapper.class })
-public interface PlayerMapper extends com.pbpoints.service.mapper.EntityMapper<PlayerDTO, Player> {
-    @Mapping(source = "user", target = "user")
-    @Mapping(source = "roster", target = "roster")
-    PlayerDTO toDto(Player player);
-
-    @Mapping(source = "user", target = "user")
-    @Mapping(source = "roster", target = "roster")
-    Player toEntity(PlayerDTO playerDTO);
-
-    default Player fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Player player = new Player();
-        player.setId(id);
-        return player;
-    }
+@Mapper(componentModel = "spring", uses = { UserMapper.class, RosterMapper.class, CategoryMapper.class })
+public interface PlayerMapper extends EntityMapper<PlayerDTO, Player> {
+    @Mapping(target = "user", source = "user", qualifiedByName = "login")
+    @Mapping(target = "roster", source = "roster", qualifiedByName = "id")
+    @Mapping(target = "category", source = "category", qualifiedByName = "name")
+    PlayerDTO toDto(Player s);
 }

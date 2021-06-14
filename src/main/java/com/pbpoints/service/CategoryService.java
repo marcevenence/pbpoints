@@ -44,6 +44,27 @@ public class CategoryService {
     }
 
     /**
+     * Partially update a category.
+     *
+     * @param categoryDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<CategoryDTO> partialUpdate(CategoryDTO categoryDTO) {
+        log.debug("Request to partially update Category : {}", categoryDTO);
+
+        return categoryRepository
+            .findById(categoryDTO.getId())
+            .map(
+                existingCategory -> {
+                    categoryMapper.partialUpdate(existingCategory, categoryDTO);
+                    return existingCategory;
+                }
+            )
+            .map(categoryRepository::save)
+            .map(categoryMapper::toDto);
+    }
+
+    /**
      * Get all the categories.
      *
      * @param pageable the pagination information.

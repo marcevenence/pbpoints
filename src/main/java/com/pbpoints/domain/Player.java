@@ -34,6 +34,10 @@ public class Player implements Serializable {
     @JsonIgnoreProperties(value = { "players", "team", "eventCategory" }, allowSetters = true)
     private Roster roster;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "tournament" }, allowSetters = true)
+    private Category category;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -85,6 +89,19 @@ public class Player implements Serializable {
 
     public void setRoster(Roster roster) {
         this.roster = roster;
+    }
+
+    public Category getCategory() {
+        return this.category;
+    }
+
+    public Player category(Category category) {
+        this.setCategory(category);
+        return this;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

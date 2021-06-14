@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.Player;
 import com.pbpoints.repository.PlayerRepository;
-import com.pbpoints.service.dto.PlayerCriteria;
+import com.pbpoints.service.criteria.PlayerCriteria;
 import com.pbpoints.service.dto.PlayerDTO;
 import com.pbpoints.service.mapper.PlayerMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class PlayerQueryService extends QueryService<Player> {
         Specification<Player> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), Player_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Player_.id));
             }
             if (criteria.getProfile() != null) {
                 specification = specification.and(buildSpecification(criteria.getProfile(), Player_.profile));
@@ -99,6 +99,12 @@ public class PlayerQueryService extends QueryService<Player> {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getRosterId(), root -> root.join(Player_.roster, JoinType.LEFT).get(Roster_.id))
+                    );
+            }
+            if (criteria.getCategoryId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getCategoryId(), root -> root.join(Player_.category, JoinType.LEFT).get(Category_.id))
                     );
             }
         }

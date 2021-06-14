@@ -11,9 +11,6 @@ const playerRoute: Routes = [
   {
     path: '',
     component: PlayerComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

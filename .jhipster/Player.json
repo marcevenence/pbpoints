@@ -21,11 +21,17 @@
       "otherEntityRelationshipName": "player",
       "relationshipValidateRules": "required",
       "relationshipName": "roster"
+    },
+    {
+      "relationshipName": "category",
+      "otherEntityName": "category",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
     }
   ],
   "entityTableName": "player",
   "dto": "mapstruct",
-  "pagination": "pagination",
+  "pagination": "infinite-scroll",
   "service": "serviceClass",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

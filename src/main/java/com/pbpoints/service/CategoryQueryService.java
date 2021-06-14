@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.Category;
 import com.pbpoints.repository.CategoryRepository;
-import com.pbpoints.service.dto.CategoryCriteria;
+import com.pbpoints.service.criteria.CategoryCriteria;
 import com.pbpoints.service.dto.CategoryDTO;
 import com.pbpoints.service.mapper.CategoryMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class CategoryQueryService extends QueryService<Category> {
         Specification<Category> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), Category_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Category_.id));
             }
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Category_.name));

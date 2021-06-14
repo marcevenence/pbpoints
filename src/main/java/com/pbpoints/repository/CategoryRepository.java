@@ -2,13 +2,12 @@ package com.pbpoints.repository;
 
 import com.pbpoints.domain.Category;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data  repository for the Category entity.
+ * Spring Data SQL repository for the Category entity.
  */
 @SuppressWarnings("unused")
 @Repository

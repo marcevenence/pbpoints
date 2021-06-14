@@ -8,9 +8,9 @@
         "createOrEditLabel": "Categorias",
         "notFound": "No hay Categorias"
       },
-      "created": "La Categoria {{ param }} ha sido creada ",
-      "updated": "La Categoria {{ param }} ha sido actualizada",
-      "deleted": "La Categoria {{ param }} ha sido eliminada",
+      "created": "La Categoria ha sido creada",
+      "updated": "La Categoria ha sido actualizada",
+      "deleted": "La Categoria ha sido eliminada",
       "delete": {
         "question": "¿Seguro que quiere eliminar la Categoria {{ id }}?"
       },

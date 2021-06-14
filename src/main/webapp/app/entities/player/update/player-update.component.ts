@@ -11,6 +11,8 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { IRoster } from 'app/entities/roster/roster.model';
 import { RosterService } from 'app/entities/roster/service/roster.service';
+import { ICategory } from 'app/entities/category/category.model';
+import { CategoryService } from 'app/entities/category/service/category.service';
 
 @Component({
   selector: 'jhi-player-update',
@@ -21,18 +23,21 @@ export class PlayerUpdateComponent implements OnInit {
 
   usersSharedCollection: IUser[] = [];
   rostersSharedCollection: IRoster[] = [];
+  categoriesSharedCollection: ICategory[] = [];
 
   editForm = this.fb.group({
     id: [],
     profile: [],
     user: [],
     roster: [null, Validators.required],
+    category: [],
   });
 
   constructor(
     protected playerService: PlayerService,
     protected userService: UserService,
     protected rosterService: RosterService,
+    protected categoryService: CategoryService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -67,6 +72,10 @@ export class PlayerUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  trackCategoryById(index: number, item: ICategory): number {
+    return item.id!;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IPlayer>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -92,10 +101,15 @@ export class PlayerUpdateComponent implements OnInit {
       profile: player.profile,
       user: player.user,
       roster: player.roster,
+      category: player.category,
     });
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, player.user);
     this.rostersSharedCollection = this.rosterService.addRosterToCollectionIfMissing(this.rostersSharedCollection, player.roster);
+    this.categoriesSharedCollection = this.categoryService.addCategoryToCollectionIfMissing(
+      this.categoriesSharedCollection,
+      player.category
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -110,6 +124,16 @@ export class PlayerUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IRoster[]>) => res.body ?? []))
       .pipe(map((rosters: IRoster[]) => this.rosterService.addRosterToCollectionIfMissing(rosters, this.editForm.get('roster')!.value)))
       .subscribe((rosters: IRoster[]) => (this.rostersSharedCollection = rosters));
+
+    this.categoryService
+      .query()
+      .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
+      .pipe(
+        map((categories: ICategory[]) =>
+          this.categoryService.addCategoryToCollectionIfMissing(categories, this.editForm.get('category')!.value)
+        )
+      )
+      .subscribe((categories: ICategory[]) => (this.categoriesSharedCollection = categories));
   }
 
   protected createFromForm(): IPlayer {
@@ -119,6 +143,7 @@ export class PlayerUpdateComponent implements OnInit {
       profile: this.editForm.get(['profile'])!.value,
       user: this.editForm.get(['user'])!.value,
       roster: this.editForm.get(['roster'])!.value,
+      category: this.editForm.get(['category'])!.value,
     };
   }
 }

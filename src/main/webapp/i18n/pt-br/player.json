@@ -20,7 +20,8 @@
       "id": "ID",
       "profile": "Profile",
       "user": "User",
-      "roster": "Roster"
+      "roster": "Roster",
+      "category": "Category"
     }
   }
 }

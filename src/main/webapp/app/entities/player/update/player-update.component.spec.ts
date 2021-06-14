@@ -14,6 +14,8 @@ import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { IRoster } from 'app/entities/roster/roster.model';
 import { RosterService } from 'app/entities/roster/service/roster.service';
+import { ICategory } from 'app/entities/category/category.model';
+import { CategoryService } from 'app/entities/category/service/category.service';
 
 import { PlayerUpdateComponent } from './player-update.component';
 
@@ -25,6 +27,7 @@ describe('Component Tests', () => {
     let playerService: PlayerService;
     let userService: UserService;
     let rosterService: RosterService;
+    let categoryService: CategoryService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -40,6 +43,7 @@ describe('Component Tests', () => {
       playerService = TestBed.inject(PlayerService);
       userService = TestBed.inject(UserService);
       rosterService = TestBed.inject(RosterService);
+      categoryService = TestBed.inject(CategoryService);
 
       comp = fixture.componentInstance;
     });
@@ -83,12 +87,33 @@ describe('Component Tests', () => {
         expect(comp.rostersSharedCollection).toEqual(expectedCollection);
       });
 
+      it('Should call Category query and add missing value', () => {
+        const player: IPlayer = { id: 456 };
+        const category: ICategory = { id: 63062 };
+        player.category = category;
+
+        const categoryCollection: ICategory[] = [{ id: 32414 }];
+        spyOn(categoryService, 'query').and.returnValue(of(new HttpResponse({ body: categoryCollection })));
+        const additionalCategories = [category];
+        const expectedCollection: ICategory[] = [...additionalCategories, ...categoryCollection];
+        spyOn(categoryService, 'addCategoryToCollectionIfMissing').and.returnValue(expectedCollection);
+
+        activatedRoute.data = of({ player });
+        comp.ngOnInit();
+
+        expect(categoryService.query).toHaveBeenCalled();
+        expect(categoryService.addCategoryToCollectionIfMissing).toHaveBeenCalledWith(categoryCollection, ...additionalCategories);
+        expect(comp.categoriesSharedCollection).toEqual(expectedCollection);
+      });
+
       it('Should update editForm', () => {
         const player: IPlayer = { id: 456 };
         const user: IUser = { id: 47918 };
         player.user = user;
         const roster: IRoster = { id: 80108 };
         player.roster = roster;
+        const category: ICategory = { id: 36230 };
+        player.category = category;
 
         activatedRoute.data = of({ player });
         comp.ngOnInit();
@@ -96,6 +121,7 @@ describe('Component Tests', () => {
         expect(comp.editForm.value).toEqual(expect.objectContaining(player));
         expect(comp.usersSharedCollection).toContain(user);
         expect(comp.rostersSharedCollection).toContain(roster);
+        expect(comp.categoriesSharedCollection).toContain(category);
       });
     });
 
@@ -176,6 +202,14 @@ describe('Component Tests', () => {
         it('Should return tracked Roster primary key', () => {
           const entity = { id: 123 };
           const trackResult = comp.trackRosterById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
+      describe('trackCategoryById', () => {
+        it('Should return tracked Category primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackCategoryById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });
       });

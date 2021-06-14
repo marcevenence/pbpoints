@@ -28,6 +28,12 @@
             <a [routerLink]="['/roster', player.roster?.id, 'view']">{{ player.roster?.id }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="pbpointsApp.player.category">Category</span></dt>
+        <dd>
+          <div *ngIf="player.category">
+            <a [routerLink]="['/category', player.category?.id, 'view']">{{ player.category?.name }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

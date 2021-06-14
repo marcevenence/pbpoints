@@ -132,54 +132,37 @@ public class CategoryDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CategoryDTO)) {
             return false;
         }
 
         CategoryDTO categoryDTO = (CategoryDTO) o;
-        if (categoryDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), categoryDTO.getId());
+        return Objects.equals(this.id, categoryDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "CategoryDTO{" +
-            "id=" +
-            getId() +
-            ", name='" +
-            getName() +
-            "'" +
-            ", description='" +
-            getDescription() +
-            "'" +
-            ", gameTimeType='" +
-            getGameTimeType() +
-            "'" +
-            ", gameTime=" +
-            getGameTime() +
-            ", stopTimeType='" +
-            getStopTimeType() +
-            "'" +
-            ", stopTime=" +
-            getStopTime() +
-            ", totalPoints=" +
-            getTotalPoints() +
-            ", difPoints=" +
-            getDifPoints() +
-            ", order=" +
-            getOrder() +
-            ", tournament=" +
-            getTournament() +
-            "'" +
-            "}"
-        );
+        return "CategoryDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", gameTimeType='" + getGameTimeType() + "'" +
+            ", gameTime=" + getGameTime() +
+            ", stopTimeType='" + getStopTimeType() + "'" +
+            ", stopTime=" + getStopTime() +
+            ", totalPoints=" + getTotalPoints() +
+            ", difPoints=" + getDifPoints() +
+            ", order=" + getOrder() +
+            ", tournament=" + getTournament() +
+            "}";
     }
 }

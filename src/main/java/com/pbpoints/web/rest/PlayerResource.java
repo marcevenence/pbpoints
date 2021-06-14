@@ -1,21 +1,25 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.domain.User;
-import com.pbpoints.repository.UserRepository;
-import com.pbpoints.service.*;
-import com.pbpoints.service.dto.*;
+import com.pbpoints.repository.PlayerRepository;
+import com.pbpoints.service.PlayerQueryService;
+import com.pbpoints.service.PlayerService;
+import com.pbpoints.service.criteria.PlayerCriteria;
+import com.pbpoints.service.dto.PlayerDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,20 +42,15 @@ public class PlayerResource {
     private String applicationName;
 
     private final PlayerService playerService;
-    private final RosterService rosterService;
-    private final PlayerQueryService playerQueryService;
-    private final UserRepository userRepository;
 
-    public PlayerResource(
-        PlayerService playerService,
-        PlayerQueryService playerQueryService,
-        RosterService rosterService,
-        UserRepository userRepository
-    ) {
+    private final PlayerRepository playerRepository;
+
+    private final PlayerQueryService playerQueryService;
+
+    public PlayerResource(PlayerService playerService, PlayerRepository playerRepository, PlayerQueryService playerQueryService) {
         this.playerService = playerService;
+        this.playerRepository = playerRepository;
         this.playerQueryService = playerQueryService;
-        this.rosterService = rosterService;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -67,73 +66,87 @@ public class PlayerResource {
         if (playerDTO.getId() != null) {
             throw new BadRequestAlertException("A new player cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (playerDTO.getProfile() == null) {
-            throw new BadRequestAlertException("Profile cant be Null", ENTITY_NAME, "nullProfile");
-        }
-        if (playerService.validExists(playerDTO)) {
-            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInRoster");
-        }
-        if (playerService.validExistsOtherRoster(playerDTO)) {
-            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
-        }
-        if (playerService.validCategory(playerDTO)) {
-            PlayerDTO result = playerService.save(playerDTO);
-            if (result.getId() == null) {
-                throw new BadRequestAlertException("No se puede agregar al jugador", ENTITY_NAME, "InvalidPlayer");
-            } else {
-                User user = userRepository.findOneById(result.getUser().getId());
-                return ResponseEntity
-                    .created(new URI("/api/players/" + result.getId()))
-                    .headers(
-                        HeaderUtil.createEntityCreationAlert(
-                            applicationName,
-                            true,
-                            ENTITY_NAME,
-                            user.getLastName() + ", " + user.getFirstName()
-                        )
-                    )
-                    .body(result);
-            }
-        } else throw new BadRequestAlertException("La Categoria no es valida", ENTITY_NAME, "invalidCategoryPlayer");
+        PlayerDTO result = playerService.save(playerDTO);
+        return ResponseEntity
+            .created(new URI("/api/players/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
-     * {@code PUT  /players} : Updates an existing player.
+     * {@code PUT  /players/:id} : Updates an existing player.
      *
+     * @param id the id of the playerDTO to save.
      * @param playerDTO the playerDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDTO,
      * or with status {@code 400 (Bad Request)} if the playerDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the playerDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/players")
-    public ResponseEntity<PlayerDTO> updatePlayer(@Valid @RequestBody PlayerDTO playerDTO) throws URISyntaxException {
-        log.debug("REST request to update Player : {}", playerDTO);
+    @PutMapping("/players/{id}")
+    public ResponseEntity<PlayerDTO> updatePlayer(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody PlayerDTO playerDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Player : {}, {}", id, playerDTO);
         if (playerDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (playerDTO.getProfile() == null) {
-            throw new BadRequestAlertException("Profile cant be Null", ENTITY_NAME, "nullProfile");
+        if (!Objects.equals(id, playerDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
-        if (playerService.validExistsOtherRoster(playerDTO)) {
-            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
+
+        if (!playerRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
+
         PlayerDTO result = playerService.save(playerDTO);
-        User user = userRepository.findOneById(result.getUser().getId());
         return ResponseEntity
             .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, user.getLastName() + ", " + user.getFirstName())
-            )
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, playerDTO.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * {@code PATCH  /players/:id} : Partial updates given fields of an existing player, field will ignore if it is null
+     *
+     * @param id the id of the playerDTO to save.
+     * @param playerDTO the playerDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDTO,
+     * or with status {@code 400 (Bad Request)} if the playerDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the playerDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the playerDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/players/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<PlayerDTO> partialUpdatePlayer(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody PlayerDTO playerDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Player partially : {}, {}", id, playerDTO);
+        if (playerDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, playerDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!playerRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<PlayerDTO> result = playerService.partialUpdate(playerDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, playerDTO.getId().toString())
+        );
     }
 
     /**
      * {@code GET  /players} : get all the players.
      *
-
      * @param pageable the pagination information.
-
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of players in body.
      */
@@ -184,21 +197,5 @@ public class PlayerResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
-
-    @GetMapping("/players/own/{id}")
-    public ResponseEntity<Long> checkOwner(@PathVariable Long id) {
-        log.debug("REST request to get Owner : {}", id);
-        Long owner = rosterService.checkOwner(id);
-        ResponseEntity<Long> resp = ResponseEntity.ok().body(owner);
-        return resp;
-    }
-
-    @GetMapping("/players/upd/{id}")
-    public ResponseEntity<Long> enableUpdate(@PathVariable Long id) {
-        log.debug("REST request to check if event is Closed or Inscripcion is Closed: {}", id);
-        Long result = rosterService.validRoster(id);
-        ResponseEntity<Long> resp = ResponseEntity.ok().body(result);
-        return resp;
     }
 }

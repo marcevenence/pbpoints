@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IPlayer } from '../player.model';
@@ -9,52 +7,65 @@ import { IPlayer } from '../player.model';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { PlayerService } from '../service/player.service';
 import { PlayerDeleteDialogComponent } from '../delete/player-delete-dialog.component';
+import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
   selector: 'jhi-player',
   templateUrl: './player.component.html',
 })
 export class PlayerComponent implements OnInit {
-  players?: IPlayer[];
+  players: IPlayer[];
   isLoading = false;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+  itemsPerPage: number;
+  links: { [key: string]: number };
+  page: number;
+  predicate: string;
+  ascending: boolean;
 
-  constructor(
-    protected playerService: PlayerService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
+  constructor(protected playerService: PlayerService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+    this.players = [];
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.page = 0;
+    this.links = {
+      last: 0,
+    };
+    this.predicate = 'id';
+    this.ascending = true;
+  }
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
 
     this.playerService
       .query({
-        page: pageToLoad - 1,
+        page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IPlayer[]>) => {
           this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          this.paginatePlayers(res.body, res.headers);
         },
         () => {
           this.isLoading = false;
-          this.onError();
         }
       );
   }
 
+  reset(): void {
+    this.page = 0;
+    this.players = [];
+    this.loadAll();
+  }
+
+  loadPage(page: number): void {
+    this.page = page;
+    this.loadAll();
+  }
+
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadAll();
   }
 
   trackId(index: number, item: IPlayer): number {
@@ -67,7 +78,7 @@ export class PlayerComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.reset();
       }
     });
   }
@@ -80,38 +91,12 @@ export class PlayerComponent implements OnInit {
     return result;
   }
 
-  protected handleNavigation(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+  protected paginatePlayers(data: IPlayer[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.players.push(d);
       }
-    });
-  }
-
-  protected onSuccess(data: IPlayer[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate(['/player'], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
-        },
-      });
     }
-    this.players = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
   }
 }
