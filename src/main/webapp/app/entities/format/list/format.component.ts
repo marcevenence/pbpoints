@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivatedRoute } from '@angular/router';
 import { IFormat } from '../format.model';
-
+import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { FormatService } from '../service/format.service';
 import { FormatDeleteDialogComponent } from '../delete/format-delete-dialog.component';
@@ -20,9 +20,15 @@ export class FormatComponent implements OnInit {
   links: { [key: string]: number };
   page: number;
   predicate: string;
+  tourId = 0;
   ascending: boolean;
 
-  constructor(protected formatService: FormatService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected formatService: FormatService,
+    protected activatedRoute: ActivatedRoute,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks
+  ) {
     this.formats = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -35,22 +41,40 @@ export class FormatComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.formatService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IFormat[]>) => {
-          this.isLoading = false;
-          this.paginateFormats(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.tourId) {
+      this.formatService
+        .query({
+          'tournamentId.equals': this.tourId,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IFormat[]>) => {
+            this.isLoading = false;
+            this.paginateFormats(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.formatService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IFormat[]>) => {
+            this.isLoading = false;
+            this.paginateFormats(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -65,6 +89,9 @@ export class FormatComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+      this.tourId = +params.get('tourId')!;
+    });
     this.loadAll();
   }
 

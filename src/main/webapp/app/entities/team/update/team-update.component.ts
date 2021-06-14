@@ -9,6 +9,7 @@ import { ITeam, Team } from '../team.model';
 import { TeamService } from '../service/team.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-team-update',
@@ -16,7 +17,8 @@ import { UserService } from 'app/entities/user/user.service';
 })
 export class TeamUpdateComponent implements OnInit {
   isSaving = false;
-
+  currentAccount: any;
+  currentOwner: IUser = {};
   usersSharedCollection: IUser[] = [];
 
   editForm = this.fb.group({
@@ -30,6 +32,7 @@ export class TeamUpdateComponent implements OnInit {
     protected teamService: TeamService,
     protected userService: UserService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected fb: FormBuilder
   ) {}
 
@@ -38,6 +41,9 @@ export class TeamUpdateComponent implements OnInit {
       this.updateForm(team);
 
       this.loadRelationshipsOptions();
+    });
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
     });
   }
 
@@ -103,7 +109,7 @@ export class TeamUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       active: this.editForm.get(['active'])!.value,
-      owner: this.editForm.get(['owner'])!.value,
+      owner: this.editForm.get(['owner'])!.value || this.currentAccount,
     };
   }
 }

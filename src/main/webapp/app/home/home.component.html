@@ -4,15 +4,15 @@
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <h1 class="from-control-plaintext display-4" jhiTranslate="home.title">Welcome</h1>
-    <!--<div [ngSwitch]="isAuthenticated()">
+    <div [ngSwitch]="isAuthenticated()">
       <div *ngSwitchCase="true">
-        <h1 class="display-6">{{account.lastName}}, {{account.firstName}}</h1>
-         <div class="alert alert-success">
+        <h1 class="display-6">{{ account?.lastName }}, {{ account?.firstName }}</h1>
+        <!--<div class="alert alert-success">
                 <span id="home-logged-message" *ngIf="account" jhiTranslate="home.logged.message"
                     [translateValues]="{username: account.login}"> You are logged in as user "{{account.login}}". </span>
-              </div>
+              </div>-->
       </div>
-    </div>-->
+    </div>
     <div>
       <h1 class="form-control-plaintext display-8" jhiTranslate="home.event.next">Next Event</h1>
     </div>

@@ -59,12 +59,17 @@ public class TeamResource {
         if (teamDTO.getId() != null) {
             throw new BadRequestAlertException("A new team cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
+        log.debug("AAAAA");
+        log.debug("GetName: {}", teamDTO.getName());
+        log.debug("GetOwner: {}", teamDTO.getOwner());
         if (teamService.findByNameAndIdOwner(teamDTO.getName(), teamDTO.getOwner().getId()).isPresent()) {
             throw new BadRequestAlertException("The Team has already exists", ENTITY_NAME, "teamexists");
         }
+        log.debug("SET ACTIVE NEXT");
         teamDTO.setActive(true);
+        log.debug("SET ACTIVE DONE");
         TeamDTO result = teamService.save(teamDTO);
+        log.debug("REST save Team Result : {}", result);
         return ResponseEntity
             .created(new URI("/api/teams/" + result.getId()))
             //.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

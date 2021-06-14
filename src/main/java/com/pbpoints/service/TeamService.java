@@ -44,7 +44,7 @@ public class TeamService {
      * @return the persisted entity.
      */
     public TeamDTO save(TeamDTO teamDTO) {
-        log.debug("Request to save Team : {}", teamDTO);
+        log.debug("Request to save Team Service : {}", teamDTO);
         if (teamDTO.getOwner() == null) {
             teamDTO.setOwner(userMapper.userToUserDTO(userService.getUserWithAuthorities().get()));
         }

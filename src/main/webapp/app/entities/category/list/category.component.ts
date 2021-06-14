@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivatedRoute } from '@angular/router';
 import { ICategory } from '../category.model';
-
+import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { CategoryService } from '../service/category.service';
 import { CategoryDeleteDialogComponent } from '../delete/category-delete-dialog.component';
@@ -20,9 +20,15 @@ export class CategoryComponent implements OnInit {
   links: { [key: string]: number };
   page: number;
   predicate: string;
+  tourId = 0;
   ascending: boolean;
 
-  constructor(protected categoryService: CategoryService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected categoryService: CategoryService,
+    protected activatedRoute: ActivatedRoute,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks
+  ) {
     this.categories = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -35,22 +41,40 @@ export class CategoryComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.categoryService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ICategory[]>) => {
-          this.isLoading = false;
-          this.paginateCategories(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.tourId) {
+      this.categoryService
+        .query({
+          'tournamentId.equals': this.tourId,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ICategory[]>) => {
+            this.isLoading = false;
+            this.paginateCategories(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.categoryService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ICategory[]>) => {
+            this.isLoading = false;
+            this.paginateCategories(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -65,6 +89,9 @@ export class CategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+      this.tourId = +params.get('tourId')!;
+    });
     this.loadAll();
   }
 

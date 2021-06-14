@@ -64,11 +64,7 @@
         <tr *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
           <!--<td><a [routerLink]="['/event', event.id, 'view']">{{ event.id }}</a></td>-->
           <td>{{ event.name }}</td>
-          <td>
-            <div *ngIf="event.city">
-              <a [routerLink]="['/city', event.city?.id, 'view']">{{ event.city?.name }}</a>
-            </div>
-          </td>
+          <td>{{ event.city?.name }}</td>
           <td>{{ event.fromDate | formatMediumDate }}</td>
           <td>{{ event.endDate | formatMediumDate }}</td>
           <td>{{ event.endInscriptionDate | formatMediumDate }}</td>

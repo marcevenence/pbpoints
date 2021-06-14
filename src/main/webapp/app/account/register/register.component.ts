@@ -2,6 +2,10 @@ import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { ActivatedRoute } from '@angular/router';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
@@ -40,7 +44,14 @@ export class RegisterComponent implements AfterViewInit {
     pictureContentType: [],
   });
 
-  constructor(private translateService: TranslateService, private registerService: RegisterService, private fb: FormBuilder) {}
+  constructor(
+    protected eventManager: EventManager,
+    protected dataUtils: DataUtils,
+    protected elementRef: ElementRef,
+    private translateService: TranslateService,
+    private registerService: RegisterService,
+    private fb: FormBuilder
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.login) {
@@ -55,15 +66,49 @@ export class RegisterComponent implements AfterViewInit {
     this.errorUserExists = false;
 
     const password = this.registerForm.get(['password'])!.value;
+    const phone = this.registerForm.get(['phone'])!.value;
+    const numDoc = this.registerForm.get(['numDoc'])!.value;
+    const bornDate = this.registerForm.get(['bornDate'])!.value;
+    const picture = this.registerForm.get(['picture'])!.value;
+    const pictureContentType = this.registerForm.get(['pictureContentType'])!.value;
     if (password !== this.registerForm.get(['confirmPassword'])!.value) {
       this.doNotMatch = true;
     } else {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
-      this.registerService.save({ login, email, password, langKey: this.translateService.currentLang }).subscribe(
-        () => (this.success = true),
-        response => this.processError(response)
-      );
+      this.registerService
+        .save({ login, email, password, langKey: this.translateService.currentLang, phone, numDoc, bornDate, picture, pictureContentType })
+        .subscribe(
+          () => (this.success = true),
+          response => this.processError(response)
+        );
+    }
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.registerForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('pbpointsApp.error', { ...err, key: 'error.file.' + err.key })
+        ),
+    });
+  }
+
+  clearInputImage(field: string, fieldContentType: string, idInput: string): void {
+    this.registerForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null,
+    });
+    if (idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
     }
   }
 

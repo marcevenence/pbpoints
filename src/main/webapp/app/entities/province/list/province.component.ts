@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivatedRoute } from '@angular/router';
 import { IProvince } from '../province.model';
 
+import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ProvinceService } from '../service/province.service';
 import { ProvinceDeleteDialogComponent } from '../delete/province-delete-dialog.component';
@@ -20,37 +21,61 @@ export class ProvinceComponent implements OnInit {
   links: { [key: string]: number };
   page: number;
   predicate: string;
+  coId = 0;
   ascending: boolean;
 
-  constructor(protected provinceService: ProvinceService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected provinceService: ProvinceService,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks,
+    protected activatedRoute: ActivatedRoute
+  ) {
     this.provinces = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
       last: 0,
     };
-    this.predicate = 'id';
+    this.predicate = 'name';
     this.ascending = true;
   }
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.provinceService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IProvince[]>) => {
-          this.isLoading = false;
-          this.paginateProvinces(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.coId) {
+      this.provinceService
+        .query({
+          'countryId.equals': this.coId,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IProvince[]>) => {
+            this.isLoading = false;
+            this.paginateProvinces(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.provinceService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IProvince[]>) => {
+            this.isLoading = false;
+            this.paginateProvinces(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -65,6 +90,9 @@ export class ProvinceComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+      this.coId = +params.get('coId')!;
+    });
     this.loadAll();
   }
 
@@ -86,6 +114,7 @@ export class ProvinceComponent implements OnInit {
   Cancel(): void {
     window.history.back();
   }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {

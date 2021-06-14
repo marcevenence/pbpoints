@@ -1,3 +1,13 @@
 export class Registration {
-  constructor(public login: string, public email: string, public password: string, public langKey: string) {}
+  constructor(
+    public login: string,
+    public email: string,
+    public password: string,
+    public langKey: string,
+    public phone: string,
+    public numDoc: string,
+    public bornDate: any,
+    public picture: string,
+    public pictureContentType: string
+  ) {}
 }

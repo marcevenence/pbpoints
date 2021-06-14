@@ -29,6 +29,44 @@
     <div class="col-md-8">
       <form name="form" role="form" (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!success">
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="global.form.picture.label" for="picture">Picture</label>
+          <div>
+            <img
+              [src]="'data:' + registerForm.get('pictureContentType')!.value + ';base64,' + registerForm.get('picture')!.value"
+              style="max-height: 100px"
+              *ngIf="registerForm.get('picture')!.value"
+              alt="userextra image"
+            />
+            <div *ngIf="registerForm.get('picture')!.value" class="form-text text-danger clearfix">
+              <span class="pull-left"
+                >{{ registerForm.get('pictureContentType')!.value }}, {{ byteSize(registerForm.get('picture')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('picture', 'pictureContentType', 'fileImage')"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon [icon]="'times'"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_picture"
+              (change)="setFileData($event, 'picture', true)"
+              accept=".png, .jpg, .jpeg"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="picture" id="field_picture" formControlName="picture" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="pictureContentType"
+            id="field_pictureContentType"
+            formControlName="pictureContentType"
+          />
+        </div>
+        <div class="form-group">
           <label class="form-control-label" for="login" jhiTranslate="global.form.username.label">Username</label>
           <input
             type="text"
@@ -72,53 +110,6 @@
               jhiTranslate="register.messages.validate.login.pattern"
             >
               Your username can only contain letters and digits.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" for="email" jhiTranslate="global.form.email.label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            placeholder="{{ 'global.form.email.placeholder' | translate }}"
-            formControlName="email"
-            data-cy="email"
-          />
-
-          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.required"
-              jhiTranslate="global.messages.validate.email.required"
-            >
-              Your email is required.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.invalid"
-              jhiTranslate="global.messages.validate.email.invalid"
-            >
-              Your email is invalid.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.minlength"
-              jhiTranslate="global.messages.validate.email.minlength"
-            >
-              Your email is required to be at least 5 characters.
-            </small>
-
-            <small
-              class="form-text text-danger"
-              *ngIf="registerForm.get('email')?.errors?.maxlength"
-              jhiTranslate="global.messages.validate.email.maxlength"
-            >
-              Your email cannot be longer than 100 characters.
             </small>
           </div>
         </div>
@@ -212,6 +203,138 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label class="form-control-label" for="lastName" jhiTranslate="global.form.lastName.label">lastName</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            name="lastName"
+            placeholder="{{ 'global.form.lastName.placeholder' | translate }}"
+            formControlName="lastName"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="firstName" jhiTranslate="global.form.firstName.label">firstName</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            name="firstName"
+            placeholder="{{ 'global.form.firstName.placeholder' | translate }}"
+            formControlName="firstName"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="numDoc" jhiTranslate="global.form.numDoc.label">numDoc</label>
+          <input
+            class="form-control"
+            id="numDoc"
+            name="numDoc"
+            placeholder="{{ 'global.form.numDoc.placeholder' | translate }}"
+            formControlName="numDoc"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" for="bornDate" jhiTranslate="global.form.bornDate.label">bornDate</label>
+          <div class="input-group">
+            <input
+              id="bornDate"
+              type="text"
+              class="form-control"
+              name="bornDate"
+              ngbDatepicker
+              #bornDateDp="ngbDatepicker"
+              formControlName="bornDate"
+              placeholder="{{ 'global.form.bornDate.placeholder' | translate }}"
+            />
+            <button type="button" class="btn btn-secondary" (click)="bornDateDp.toggle()">
+              <fa-icon [icon]="'calendar-alt'"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="email" jhiTranslate="global.form.email.label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="{{ 'global.form.email.placeholder' | translate }}"
+            formControlName="email"
+            data-cy="email"
+          />
+
+          <div *ngIf="registerForm.get('email')!.invalid && (registerForm.get('email')!.dirty || registerForm.get('email')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('email')?.errors?.required"
+              jhiTranslate="global.messages.validate.email.required"
+            >
+              Your email is required.
+            </small>
+
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('email')?.errors?.invalid"
+              jhiTranslate="global.messages.validate.email.invalid"
+            >
+              Your email is invalid.
+            </small>
+
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('email')?.errors?.minlength"
+              jhiTranslate="global.messages.validate.email.minlength"
+            >
+              Your email is required to be at least 5 characters.
+            </small>
+
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('email')?.errors?.maxlength"
+              jhiTranslate="global.messages.validate.email.maxlength"
+            >
+              Your email cannot be longer than 100 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="phone" jhiTranslate="global.form.phone.label">Phone</label>
+          <input
+            class="form-control"
+            id="phone"
+            ng-model="phone"
+            placeholder="{{ 'global.form.phone.label' | translate }}"
+            formControlName="phone"
+          />
+          <div *ngIf="registerForm.get('phone')!.invalid && (registerForm.get('phone')!.dirty || registerForm.get('phone')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('phone')?.errors?.required"
+              jhiTranslate="global.messages.validate.phone.required"
+            >
+              Your phone is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('phone')?.errors?.minlength"
+              jhiTranslate="global.messages.validate.phone.minlength"
+            >
+              Your phone is required to be at least 10 characters.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('phone')?.errors?.maxlength"
+              jhiTranslate="global.messages.validate.phone.maxlength"
+            >
+              Your phone cannot be longer than 15 characters.
+            </small>
+          </div>
+        </div>
+
         <button
           type="submit"
           [disabled]="registerForm.invalid"
@@ -223,14 +346,14 @@
         </button>
       </form>
 
-      <div class="mt-3 alert alert-warning">
+      <!--<div class="mt-3 alert alert-warning">
         <span jhiTranslate="global.messages.info.authenticated.prefix">If you want to </span>
         <a class="alert-link" routerLink="/login" jhiTranslate="global.messages.info.authenticated.link">sign in</a
         ><span jhiTranslate="global.messages.info.authenticated.suffix"
           >, you can try the default accounts:<br />- Administrator (login="admin" and password="admin") <br />- User (login="user" and
           password="user").</span
         >
-      </div>
+      </div>-->
     </div>
   </div>
 </div>

@@ -3,9 +3,10 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 
 import { ITeam } from '../team.model';
-
+import { AccountService } from 'app/core/auth/account.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { TeamService } from '../service/team.service';
 import { TeamDeleteDialogComponent } from '../delete/team-delete-dialog.component';
@@ -15,7 +16,9 @@ import { TeamDeleteDialogComponent } from '../delete/team-delete-dialog.componen
   templateUrl: './team.component.html',
 })
 export class TeamComponent implements OnInit {
+  currentAccount: any;
   teams?: ITeam[];
+  authSubscription?: Subscription;
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -26,6 +29,7 @@ export class TeamComponent implements OnInit {
 
   constructor(
     protected teamService: TeamService,
+    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -35,25 +39,46 @@ export class TeamComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.teamService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ITeam[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      this.teamService
+        .query({
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITeam[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    } else {
+      this.teamService
+        .query({
+          'ownerId.equals': this.currentAccount.id,
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITeam[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    }
   }
 
   ngOnInit(): void {
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.currentAccount = account));
     this.handleNavigation();
   }
 

@@ -60,11 +60,7 @@
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let city of cities; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <div *ngIf="city.province">
-              <div>{{ city.province?.name }}</div>
-            </div>
-          </td>
+          <td>{{ city.province?.name }}</td>
 
           <td>{{ city.name }}</td>
           <td>{{ city.latitude }}</td>
