@@ -6,6 +6,7 @@ import { RosterComponent } from '../list/roster.component';
 import { RosterDetailComponent } from '../detail/roster-detail.component';
 import { RosterUpdateComponent } from '../update/roster-update.component';
 import { RosterRoutingResolveService } from './roster-routing-resolve.service';
+import { RosterSearchComponent } from '../search/roster-search.component';
 
 const rosterRoute: Routes = [
   {
@@ -35,6 +36,14 @@ const rosterRoute: Routes = [
   {
     path: ':id/edit',
     component: RosterUpdateComponent,
+    resolve: {
+      roster: RosterRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'search',
+    component: RosterSearchComponent,
     resolve: {
       roster: RosterRoutingResolveService,
     },

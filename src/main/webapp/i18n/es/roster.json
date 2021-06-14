@@ -25,7 +25,17 @@
       "category": "Categoria",
       "tournament": "Torneo",
       "tournamentEvent": "Torneo/Evento",
-      "player": "Jugador"
+      "player": "Jugador",
+      "search": {
+        "home": {
+          "title": "Rosters por evento"
+        },
+        "find": "Buscar",
+        "team": "Equipo",
+        "picture": "Foto",
+        "player": "Jugador",
+        "category": "Categoria"
+      }
     }
   }
 }

@@ -1,0 +1,95 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="findForm" role="form" novalidate [formGroup]="findForm">
+      <h2 id="jhi-roster-heading" data-cy="RosterCreateSearchHeading" jhiTranslate="pbpointsApp.roster.search.home.title">Title</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+        <br />
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.roster.eventCategory" for="field_eventCategory">Event Category</label>
+          <select
+            class="form-control"
+            id="field_eventCategory"
+            data-cy="eventCategory"
+            name="eventCategory"
+            formControlName="eventCategory"
+            (ngModelChange)="onChange()"
+          >
+            <option *ngIf="!findForm.get('eventCategory')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                eventCategoryOption.id === findForm.get('eventCategory')!.value?.id
+                  ? findForm.get('eventCategory')!.value
+                  : eventCategoryOption
+              "
+              *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
+            >
+              {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="
+            findForm.get(['eventCategory'])!.invalid && (findForm.get(['eventCategory'])!.dirty || findForm.get(['eventCategory'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="findForm.get(['eventCategory'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+      <div class="alert alert-warning" id="no-result" *ngIf="rosters?.length === 0">
+        <span jhiTranslate="pbpointsApp.roster.home.notFound">No rosters found</span>
+      </div>
+      <div class="table-responsive" id="entities" *ngIf="rosters && rosters.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+              <th scope="col" jhiSortBy="team.name">
+                <span jhiTranslate="pbpointsApp.roster.search.team">Team</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
+              <td>{{ roster.team?.name }}</td>
+              <td>
+                <div *ngFor="let player of players; trackBy: trackPlayerId">
+                  <div *ngIf="roster.id == player.roster?.id">
+                    <div *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
+                      <div *ngIf="player.user?.id == userextra.id">
+                        <div *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
+                          <img
+                            [src]="'data:' + userextra.pictureContentType + ';base64,' + userextra.picture"
+                            style="max-height: 30px"
+                            alt="userextra image"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div *ngFor="let player of players; trackBy: trackPlayerId">
+                  <div *ngIf="roster.id == player.roster?.id">{{ player.user?.lastName }}, {{ player.user?.firstName }}</div>
+                </div>
+              </td>
+              <td>{{ roster.eventCategory?.id }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+    <br />
+  </div>
+</div>

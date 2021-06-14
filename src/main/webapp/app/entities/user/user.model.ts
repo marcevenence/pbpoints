@@ -1,6 +1,8 @@
 export interface IUser {
   id?: number;
   login?: string;
+  lastName?: string;
+  firstName?: string;
 }
 
 export class User implements IUser {
