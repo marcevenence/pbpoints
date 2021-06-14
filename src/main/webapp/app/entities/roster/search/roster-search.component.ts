@@ -87,7 +87,7 @@ export class RosterSearchComponent implements OnInit {
   }
 
   loadPage(): void {
-    //null
+    // no hace nada pero necesario para mostrar datos
   }
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);

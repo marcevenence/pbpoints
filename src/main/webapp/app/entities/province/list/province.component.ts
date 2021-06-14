@@ -90,7 +90,7 @@ export class ProvinceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
       this.coId = +params.get('coId')!;
     });
     this.loadAll();

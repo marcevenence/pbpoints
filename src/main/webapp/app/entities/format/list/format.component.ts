@@ -89,7 +89,7 @@ export class FormatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
       this.tourId = +params.get('tourId')!;
     });
     this.loadAll();

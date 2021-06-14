@@ -131,7 +131,7 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
+    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
       this.tourId = +params.get('tourId')!;
     });
     localStorage.setItem('TOURNAMENTID', this.tourId.toString());
@@ -161,13 +161,13 @@ export class EventComponent implements OnInit {
   }
 
   generatePDF(id: number): void {
-    this.eventService.generatePDF(id).subscribe((res: HttpResponse<IEvent>) => {
+    this.eventService.generatePDF(id).subscribe(() => {
       alert('PDF Generado con exito');
     });
   }
 
   generateXML(id: number): void {
-    this.eventService.generateXML(id).subscribe((res: HttpResponse<IEvent>) => {
+    this.eventService.generateXML(id).subscribe(() => {
       alert('XML Generado con exito');
     });
   }

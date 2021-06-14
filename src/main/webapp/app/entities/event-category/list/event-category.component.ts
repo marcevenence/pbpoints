@@ -124,9 +124,7 @@ export class EventCategoryComponent implements OnInit {
         this.ascending = ascending;
         this.loadPage(pageNumber, true);
       }
-      this.eventCategoryService
-        .enableUpdate(this.evId)
-        .subscribe((res: HttpResponse<number>) => this.paginateUpdate(res.body, res.headers));
+      this.eventCategoryService.enableUpdate(this.evId).subscribe((res: HttpResponse<number>) => this.paginateUpdate(res.body));
     });
   }
 
@@ -150,7 +148,7 @@ export class EventCategoryComponent implements OnInit {
     this.ngbPaginationPage = this.page ?? 1;
   }
 
-  protected paginateUpdate(data: any, headers: HttpHeaders): void {
+  protected paginateUpdate(data: any): void {
     this.updAllowed = data;
     if (this.updAllowed.toString() !== '0') {
       this.updateAllow = true;
