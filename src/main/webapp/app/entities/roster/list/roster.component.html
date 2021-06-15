@@ -3,11 +3,13 @@
     <span jhiTranslate="pbpointsApp.roster.home.title">Rosters</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.roster.home.refreshListLabel">Refresh List</span>
+      </button>-->
+      <button id="jh-create-entity-back" class="btn btn-primary float-right jh-create-entity create-roster" (click)="Cancel()">
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -32,48 +34,44 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="active">
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+
+          <th scope="col"><span jhiTranslate="pbpointsApp.roster.eventCategory">Event Category</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.roster.team">Team</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
             <span jhiTranslate="pbpointsApp.roster.active">Active</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="team.name">
-            <span jhiTranslate="pbpointsApp.roster.team">Team</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="eventCategory.id">
-            <span jhiTranslate="pbpointsApp.roster.eventCategory">Event Category</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let roster of rosters; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/roster', roster.id, 'view']">{{ roster.id }}</a>
-          </td>
-          <td>{{ roster.active }}</td>
-          <td>
-            <div *ngIf="roster.team">
-              <a [routerLink]="['/team', roster.team?.id, 'view']">{{ roster.team?.name }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="roster.eventCategory">
-              <a [routerLink]="['/event-category', roster.eventCategory?.id, 'view']">{{ roster.eventCategory?.id }}</a>
-            </div>
-          </td>
+          <!--<td><a [routerLink]="['/roster', roster.id, 'view']">{{ roster.id }}</a></td>-->
+
+          <td>{{ roster.eventCategory?.event?.name }}</td>
+          <td>{{ roster.team?.name }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ roster.active }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/roster', roster.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
-              <button type="submit" [routerLink]="['/roster', roster.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                [routerLink]="['/roster', roster.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(roster)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                (click)="delete(roster)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>

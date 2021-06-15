@@ -9,7 +9,7 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { TournamentMapper.class })
 public interface CategoryMapper extends EntityMapper<CategoryDTO, Category> {
-    @Mapping(target = "tournament", source = "tournament", qualifiedByName = "name")
+    @Mapping(target = "tournament", source = "tournament")
     CategoryDTO toDto(Category s);
 
     @Named("name")

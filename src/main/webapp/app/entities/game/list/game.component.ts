@@ -23,6 +23,7 @@ export class GameComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  ecatId = 0;
 
   constructor(
     protected gameService: GameService,
@@ -35,22 +36,42 @@ export class GameComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.gameService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IGame[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    if (this.ecatId) {
+      this.gameService
+        .query({
+          'eventCategoryId.equals': this.ecatId,
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IGame[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    } else {
+      this.gameService
+        .query({
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IGame[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    }
   }
 
   ngOnInit(): void {
@@ -72,6 +93,15 @@ export class GameComponent implements OnInit {
     });
   }
 
+  convertToTimeFormat(time: any): string {
+    const val = String((time - (time % 60)) / 60).padStart(2, '0') + ':' + String(time % 60).padStart(2, '0');
+    return val;
+  }
+
+  Cancel(): void {
+    window.history.back();
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -87,6 +117,7 @@ export class GameComponent implements OnInit {
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
+      this.ecatId = +params.get('ecatId')!;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

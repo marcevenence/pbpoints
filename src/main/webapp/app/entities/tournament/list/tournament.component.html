@@ -7,16 +7,7 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.tournament.home.refreshListLabel">Refresh List</span>
       </button>-->
-      <button
-        id="jh-create-entity-back"
-        class="btn btn-primary float-right jh-create-entity create-tournament"
-        (click)="Cancel()"
-        data-toggle="tooltip"
-        [title]="'global.menu.back' | translate"
-      >
-        <fa-icon [icon]="'arrow-left'"></fa-icon>
-        <span jhiTranslate="global.menu.back">Back</span>
-      </button>
+
       <button
         *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
         id="jh-create-entity"
@@ -26,6 +17,16 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.tournament.home.createLabel"> Create a new Tournament </span>
+      </button>
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-tournament"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>

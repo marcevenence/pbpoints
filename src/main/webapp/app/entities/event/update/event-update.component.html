@@ -48,16 +48,15 @@
             <input
               id="field_fromDate"
               data-cy="fromDate"
-              type="text"
+              type="date"
               class="form-control"
               name="fromDate"
-              ngbDatepicker
-              #fromDateDp="ngbDatepicker"
               formControlName="fromDate"
+              placeholder="YYYY-MM-DD"
             />
-            <span class="input-group-append">
+            <!--<span class="input-group-append">
               <button type="button" class="btn btn-secondary" (click)="fromDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-            </span>
+            </span>-->
           </div>
         </div>
 
@@ -67,16 +66,15 @@
             <input
               id="field_endDate"
               data-cy="endDate"
-              type="text"
+              type="date"
               class="form-control"
               name="endDate"
-              ngbDatepicker
-              #endDateDp="ngbDatepicker"
               formControlName="endDate"
+              placeholder="YYYY-MM-DD"
             />
-            <span class="input-group-append">
+            <!--<span class="input-group-append">
               <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
-            </span>
+            </span>-->
           </div>
         </div>
         <div class="form-group">
@@ -87,18 +85,17 @@
             <input
               id="field_endInscriptionDate"
               data-cy="endInscriptionDate"
-              type="text"
+              type="date"
               class="form-control"
               name="endInscriptionDate"
-              ngbDatepicker
-              #endInscriptionDateDp="ngbDatepicker"
               formControlName="endInscriptionDate"
+              placeholder="YYYY-MM-DD"
             />
-            <span class="input-group-append">
+            <!--<span class="input-group-append">
               <button type="button" class="btn btn-secondary" (click)="endInscriptionDateDp.toggle()">
                 <fa-icon icon="calendar-alt"></fa-icon>
               </button>
-            </span>
+            </span>-->
           </div>
         </div>
 
@@ -134,11 +131,11 @@
             <input
               id="field_updatedDate"
               data-cy="updatedDate"
-              type="datetime-local"
+              type="date"
               class="form-control"
               name="updatedDate"
               formControlName="updatedDate"
-              placeholder="YYYY-MM-DD HH:mm"
+              placeholder="YYYY-MM-DD"
             />
           </div>
         </div>-->

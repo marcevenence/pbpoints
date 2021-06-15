@@ -25,7 +25,8 @@
               "
               *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
             >
-              {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }}
+              {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }} (
+              {{ eventCategoryOption.category?.name }} )
             </option>
           </select>
         </div>
@@ -84,7 +85,11 @@
                   <div *ngIf="roster.id == player.roster?.id">{{ player.user?.lastName }}, {{ player.user?.firstName }}</div>
                 </div>
               </td>
-              <td>{{ roster.eventCategory?.id }}</td>
+              <td>
+                <div *ngFor="let player of players; trackBy: trackPlayerId">
+                  <div *ngIf="roster.id == player.roster?.id">{{ player.category?.name }}</div>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DataUtils } from 'app/core/util/data-util.service';
-
+import { AccountService } from 'app/core/auth/account.service';
 import { IRoster } from '../roster.model';
 import { RosterService } from '../service/roster.service';
 import { IPlayer } from 'app/entities/player/player.model';
@@ -21,6 +21,7 @@ import { EventCategoryService } from 'app/entities/event-category/service/event-
 export class RosterSearchComponent implements OnInit {
   rosters?: IRoster[];
   players?: IPlayer[];
+  currentAccount: any;
   userExtras?: IUserExtra[];
   eventCategoriesSharedCollection: IEventCategory[] = [];
   predicate!: string;
@@ -37,6 +38,7 @@ export class RosterSearchComponent implements OnInit {
     protected eventCategoryService: EventCategoryService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
+    protected accountService: AccountService,
     protected router: Router,
     protected fb: FormBuilder
   ) {}
@@ -44,6 +46,9 @@ export class RosterSearchComponent implements OnInit {
   ngOnInit(): void {
     this.rosters = [];
     this.players = [];
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.activatedRoute.data.subscribe(() => {
       this.loadRelationshipsOptions();
     });

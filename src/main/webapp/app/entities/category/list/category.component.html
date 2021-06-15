@@ -7,6 +7,16 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.category.home.refreshListLabel">Refresh List</span>
       </button>-->
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-category"
+        [routerLink]="['/category/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.category.home.createLabel"> Create a new Category </span>
+      </button>
       <button
         id="jh-create-entity-back"
         class="btn btn-primary float-right jh-create-entity create-category"
@@ -16,15 +26,6 @@
       >
         <fa-icon [icon]="'arrow-left'"></fa-icon>
         <span jhiTranslate="global.menu.back">Back</span>
-      </button>
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-category"
-        [routerLink]="['/category/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="pbpointsApp.category.home.createLabel"> Create a new Category </span>
       </button>
     </div>
   </h2>

@@ -9,8 +9,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { UserMapper.class, RosterMapper.class, CategoryMapper.class })
 public interface PlayerMapper extends EntityMapper<PlayerDTO, Player> {
-    @Mapping(target = "user", source = "user", qualifiedByName = "login")
-    @Mapping(target = "roster", source = "roster", qualifiedByName = "id")
-    @Mapping(target = "category", source = "category", qualifiedByName = "name")
+    @Mapping(target = "user", source = "user")
+    @Mapping(target = "roster", source = "roster")
+    @Mapping(target = "category", source = "category")
     PlayerDTO toDto(Player s);
 }

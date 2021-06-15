@@ -5,6 +5,7 @@ import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IRoster } from '../roster.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { RosterService } from '../service/roster.service';
@@ -15,6 +16,7 @@ import { RosterDeleteDialogComponent } from '../delete/roster-delete-dialog.comp
   templateUrl: './roster.component.html',
 })
 export class RosterComponent implements OnInit {
+  currentAccount: any;
   rosters?: IRoster[];
   isLoading = false;
   totalItems = 0;
@@ -23,9 +25,12 @@ export class RosterComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  teId?: number;
+  evCatId?: number;
 
   constructor(
     protected rosterService: RosterService,
+    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -35,25 +40,68 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.rosterService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IRoster[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    if (this.evCatId) {
+      this.rosterService
+        .query({
+          'eventCategoryId.equals': this.evCatId,
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IRoster[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    } else {
+      if (this.teId) {
+        this.rosterService
+          .query({
+            'teamId.equals': this.teId,
+            page: pageToLoad - 1,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+          })
+          .subscribe(
+            (res: HttpResponse<IRoster[]>) => {
+              this.isLoading = false;
+              this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            },
+            () => {
+              this.isLoading = false;
+              this.onError();
+            }
+          );
+      } else {
+        this.rosterService
+          .query({
+            page: pageToLoad - 1,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+          })
+          .subscribe(
+            (res: HttpResponse<IRoster[]>) => {
+              this.isLoading = false;
+              this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            },
+            () => {
+              this.isLoading = false;
+              this.onError();
+            }
+          );
+      }
+    }
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.handleNavigation();
   }
 
@@ -72,6 +120,10 @@ export class RosterComponent implements OnInit {
     });
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -87,6 +139,9 @@ export class RosterComponent implements OnInit {
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
+      this.teId = +params.get('teId')!;
+      this.evCatId = +params.get('evCatId')!;
+
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

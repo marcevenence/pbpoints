@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
 import * as dayjs from 'dayjs';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+import { DATE_TIME_FORMAT, DATE_FORMAT } from 'app/config/input.constants';
 
 import { IEvent, Event } from '../event.model';
 import { EventService } from '../service/event.service';
@@ -105,9 +105,9 @@ export class EventUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: event.id,
       name: event.name,
-      fromDate: event.fromDate,
-      endDate: event.endDate,
-      endInscriptionDate: event.endInscriptionDate,
+      fromDate: event.fromDate ? event.fromDate.format(DATE_FORMAT) : null,
+      endDate: event.endDate ? event.endDate.format(DATE_FORMAT) : null,
+      endInscriptionDate: event.endInscriptionDate ? event.endInscriptionDate.format(DATE_FORMAT) : null,
       status: event.status,
       createDate: event.createDate ? event.createDate.format(DATE_TIME_FORMAT) : null,
       updatedDate: event.updatedDate ? event.updatedDate.format(DATE_TIME_FORMAT) : null,
@@ -145,11 +145,13 @@ export class EventUpdateComponent implements OnInit {
       ...new Event(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
-      fromDate: this.editForm.get(['fromDate'])!.value,
-      endDate: this.editForm.get(['endDate'])!.value,
-      endInscriptionDate: this.editForm.get(['endInscriptionDate'])!.value,
+      fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(this.editForm.get(['fromDate'])!.value, DATE_FORMAT) : undefined,
+      endDate: this.editForm.get(['endDate'])!.value ? dayjs(this.editForm.get(['endDate'])!.value, DATE_FORMAT) : undefined,
+      endInscriptionDate: this.editForm.get(['endInscriptionDate'])!.value
+        ? dayjs(this.editForm.get(['endInscriptionDate'])!.value, DATE_FORMAT)
+        : undefined,
       status: this.editForm.get(['status'])!.value,
-      createDate: this.editForm.get(['createDate'])!.value ? dayjs(this.editForm.get(['createDate'])!.value, DATE_TIME_FORMAT) : undefined,
+      createDate: this.editForm.get(['createDate'])!.value ? dayjs(this.editForm.get(['createDate'])!.value, DATE_FORMAT) : undefined,
       updatedDate: this.editForm.get(['updatedDate'])!.value
         ? dayjs(this.editForm.get(['updatedDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
