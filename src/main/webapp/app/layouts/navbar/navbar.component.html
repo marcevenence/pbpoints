@@ -365,6 +365,18 @@
               <span jhiTranslate="global.menu.entities.formula">Formula</span>
             </a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="player-point"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="id-card" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.playerPoint">Player Point</span>
+            </a>
+          </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
@@ -476,7 +488,7 @@
               <span jhiTranslate="global.menu.custom.admin.myteam">Mis Equipos</span>
             </a>
           </li>
-          <li *ngSwitchCase="true">
+          <li *ngSwitchCase="true" !jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
             <a
               class="dropdown-item"
               routerLink="player-point"

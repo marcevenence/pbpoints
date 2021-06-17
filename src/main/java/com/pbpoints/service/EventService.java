@@ -7,6 +7,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.pbpoints.domain.*;
 import com.pbpoints.repository.*;
+import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.xml.GameResultDTO;
 import com.pbpoints.service.mapper.EventMapper;
@@ -56,6 +57,8 @@ public class EventService {
 
     private final TeamDetailPointRepository teamPointDetailRepository;
 
+    private final RosterRepository rosterRepository;
+
     private final EventMapper eventMapper;
 
     public EventService(
@@ -63,10 +66,11 @@ public class EventService {
         EventCategoryRepository eventCategoryRepository,
         UserExtraRepository userExtraRepository,
         CategoryRepository categoryRepository,
-        com.pbpoints.service.GameService gameService,
+        GameService gameService,
         TeamPointRepository teamPointRepository,
         TeamDetailPointRepository teamPointDetailRepository,
         GameRepository gameRepository,
+        RosterRepository rosterRepository,
         EventMapper eventMapper
     ) {
         this.eventRepository = eventRepository;
@@ -77,6 +81,7 @@ public class EventService {
         this.teamPointDetailRepository = teamPointDetailRepository;
         this.userExtraRepository = userExtraRepository;
         this.categoryRepository = categoryRepository;
+        this.rosterRepository = rosterRepository;
         this.eventMapper = eventMapper;
     }
 
