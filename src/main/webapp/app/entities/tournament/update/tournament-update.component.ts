@@ -32,7 +32,7 @@ export class TournamentUpdateComponent implements OnInit {
     logoContentType: [],
     cantPlayersNextCategory: [],
     qtyTeamGroups: [],
-    owner: [null, Validators.required],
+    owner: [Validators.required],
   });
 
   constructor(

@@ -124,13 +124,17 @@ export class EventUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.cityService
-      .query()
+      .query({
+        sort: ['name,asc'],
+      })
       .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
       .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
       .subscribe((cities: ICity[]) => (this.citiesSharedCollection = cities));
 
     this.tournamentService
-      .query()
+      .query({
+        sort: ['name'],
+      })
       .pipe(map((res: HttpResponse<ITournament[]>) => res.body ?? []))
       .pipe(
         map((tournaments: ITournament[]) =>

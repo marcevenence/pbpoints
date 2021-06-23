@@ -85,15 +85,6 @@
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.owner?.login }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <!--<button
-                type="submit"
-                [routerLink]="['/tournament', tournament.id, 'view']"
-                class="btn btn-info btn-sm"
-                data-cy="entityDetailsButton"
-              >
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>-->
               <button
                 type="submit"
                 [routerLink]="['/event']"
@@ -102,7 +93,7 @@
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.event' | translate"
               >
-                <fa-icon icon="calendar"></fa-icon>
+                <!--<fa-icon [icon]="'calendar'"></fa-icon>-->
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.event">Events</span>
               </button>
               <button
@@ -114,7 +105,7 @@
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.category' | translate"
               >
-                <fa-icon icon="th-list"></fa-icon>
+                <fa-icon [icon]="'th-list'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.category">Categories</span>
               </button>
               <button
@@ -126,7 +117,7 @@
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.format' | translate"
               >
-                <fa-icon icon="list"></fa-icon>
+                <fa-icon [icon]="'list'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.format">Formats</span>
               </button>
               <button
@@ -136,7 +127,7 @@
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
-                <fa-icon icon="pencil-alt"></fa-icon>
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
@@ -147,7 +138,7 @@
                 class="btn btn-danger btn-sm"
                 data-cy="entityDeleteButton"
               >
-                <fa-icon icon="trash"></fa-icon>
+                <fa-icon [icon]="'trash'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>

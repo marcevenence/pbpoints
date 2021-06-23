@@ -1,6 +1,7 @@
 package com.pbpoints.web.rest;
 
 import com.pbpoints.domain.User;
+import com.pbpoints.repository.UserExtraRepository;
 import com.pbpoints.repository.UserRepository;
 import com.pbpoints.security.SecurityUtils;
 import com.pbpoints.service.MailService;
@@ -46,19 +47,22 @@ public class AccountResource {
     private final MailService mailService;
     private final UserExtraService userExtraService;
     private final UserExtraMapper userExtraMapper;
+    private final UserExtraRepository userExtraRepository;
 
     public AccountResource(
         UserRepository userRepository,
         UserService userService,
         MailService mailService,
         UserExtraService userExtraService,
-        UserExtraMapper userExtraMapper
+        UserExtraMapper userExtraMapper,
+        UserExtraRepository userExtraRepository
     ) {
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
         this.userExtraService = userExtraService;
         this.userExtraMapper = userExtraMapper;
+        this.userExtraRepository = userExtraRepository;
     }
 
     /**
@@ -88,28 +92,34 @@ public class AccountResource {
             .map(user -> new ResponseEntity<>("error.userexists", textPlainHeaders, HttpStatus.BAD_REQUEST))
             .orElseGet(
                 () ->
-                    userRepository
-                        .findOneWithAuthoritiesByEmailIgnoreCase(managedUserVM.getEmail())
-                        .map(user -> new ResponseEntity<>("error.emailexists", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                    userExtraRepository
+                        .findOneByNumDoc(managedUserVM.getNumDoc().toLowerCase())
+                        .map(user -> new ResponseEntity<>("error.dniexists", textPlainHeaders, HttpStatus.BAD_REQUEST))
                         .orElseGet(
-                            () -> {
-                                User user = userService.createUser(
-                                    managedUserVM.getLogin(),
-                                    managedUserVM.getPassword(),
-                                    managedUserVM.getFirstName(),
-                                    managedUserVM.getLastName(),
-                                    managedUserVM.getEmail().toLowerCase(),
-                                    managedUserVM.getLangKey(),
-                                    managedUserVM.getPhone(),
-                                    managedUserVM.getNumDoc(),
-                                    managedUserVM.getBornDate(),
-                                    managedUserVM.getPicture(),
-                                    managedUserVM.getPictureContentType()
-                                );
+                            () ->
+                                userRepository
+                                    .findOneWithAuthoritiesByEmailIgnoreCase(managedUserVM.getEmail())
+                                    .map(user -> new ResponseEntity<>("error.emailexists", textPlainHeaders, HttpStatus.BAD_REQUEST))
+                                    .orElseGet(
+                                        () -> {
+                                            User user = userService.createUser(
+                                                managedUserVM.getLogin(),
+                                                managedUserVM.getPassword(),
+                                                managedUserVM.getFirstName(),
+                                                managedUserVM.getLastName(),
+                                                managedUserVM.getEmail().toLowerCase(),
+                                                managedUserVM.getLangKey(),
+                                                managedUserVM.getPhone(),
+                                                managedUserVM.getNumDoc(),
+                                                managedUserVM.getBornDate(),
+                                                managedUserVM.getPicture(),
+                                                managedUserVM.getPictureContentType()
+                                            );
 
-                                mailService.sendActivationEmail(user);
-                                return new ResponseEntity<>(HttpStatus.CREATED);
-                            }
+                                            mailService.sendActivationEmail(user);
+                                            return new ResponseEntity<>(HttpStatus.CREATED);
+                                        }
+                                    )
                         )
             );
     }

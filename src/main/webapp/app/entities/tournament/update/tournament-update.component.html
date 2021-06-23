@@ -118,8 +118,10 @@
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.owner" for="field_owner">Owner</label>
           <select class="form-control" id="field_owner" data-cy="owner" name="owner" formControlName="owner">
-            <option *ngIf="!editForm.get('owner')!.value" [ngValue]="null" selected></option>
-            <option [ngValue]="userOption" *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById">
+            <option
+              [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
               {{ userOption.login }}
             </option>
           </select>

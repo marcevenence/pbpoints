@@ -23,7 +23,7 @@
         class="btn btn-primary jh-create-entity create-province"
         [routerLink]="['/province/new']"
       >
-        <fa-icon icon="plus"></fa-icon>
+        <fa-icon [icon]="'plus'"></fa-icon>
         <span jhiTranslate="pbpointsApp.province.home.createLabel"> Create a new Province </span>
       </button>
     </div>
@@ -66,7 +66,8 @@
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.city' | translate"
               >
-                <fa-icon [icon]="'building'"></fa-icon>
+                <!--<fa-icon [icon]="'building'"></fa-icon>-->
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.city">Cities</span>
               </button>
               <button
@@ -75,12 +76,12 @@
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
-                <fa-icon icon="pencil-alt"></fa-icon>
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(province)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
-                <fa-icon icon="times"></fa-icon>
+                <fa-icon [icon]="'times'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
             </div>

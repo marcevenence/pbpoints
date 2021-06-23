@@ -57,11 +57,7 @@
           <!--<td>
             <a [routerLink]="['/format', format.id, 'view']">{{ format.id }}</a>
           </td>-->
-          <td>
-            <div *ngIf="format.tournament">
-              <a [routerLink]="['/tournament', format.tournament?.id, 'view']">{{ format.tournament?.name }}</a>
-            </div>
-          </td>
+          <td>{{ format.tournament?.name }}</td>
           <td>{{ format.name }}</td>
           <td>{{ format.description }}</td>
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ format.coeficient }}</td>

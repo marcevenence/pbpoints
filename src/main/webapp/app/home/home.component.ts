@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         'status.in': ['CREATED', 'IN_PROGRESS'],
         page: 1 - 1,
         size: 200,
+        sort: ['fromDate,asc', 'endDate,asc', 'name,asc'],
       })
       .subscribe((res: HttpResponse<IEvent[]>) => this.paginateEvents(res.body, res.headers));
 
@@ -83,6 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         'status.in': ['DONE', 'CANCEL'],
         page: 1 - 1,
         size: 200,
+        sort: ['fromDate,desc', 'endDate,desc', 'name,asc'],
       })
       .subscribe((res: HttpResponse<IEvent[]>) => this.paginateEventsOld(res.body, res.headers));
 

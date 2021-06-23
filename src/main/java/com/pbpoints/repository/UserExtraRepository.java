@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserExtraRepository extends JpaRepository<UserExtra, Long> {
     public Optional<UserExtra> findByUser(User user);
+
+    public Optional<UserExtra> findOneByNumDoc(String NumDoc);
 }
