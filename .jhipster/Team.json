@@ -22,7 +22,7 @@
   "javadoc": "Team entity.\\n@author Marcelo Miño",
   "entityTableName": "team",
   "dto": "mapstruct",
-  "pagination": "pagination",
+  "pagination": "infinite-scroll",
   "service": "serviceClass",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

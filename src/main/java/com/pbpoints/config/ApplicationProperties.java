@@ -13,6 +13,8 @@ public class ApplicationProperties {
 
     public String cronFixture;
 
+    public String cronEventStatus;
+
     public String getCronFixture() {
         return cronFixture;
     }
@@ -21,8 +23,16 @@ public class ApplicationProperties {
         this.cronFixture = cronFixture;
     }
 
+    public String getcronEventStatus() {
+        return cronEventStatus;
+    }
+
+    public void setcronEventStatus(String cronEventStatus) {
+        this.cronEventStatus = cronEventStatus;
+    }
+
     @Override
     public String toString() {
-        return "ApplicationProperties [cronFixture=" + cronFixture + "]";
+        return "ApplicationProperties [cronFixture=" + cronFixture + ",cronEventStatus=" + cronEventStatus + "]";
     }
 }

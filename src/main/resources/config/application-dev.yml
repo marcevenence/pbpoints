@@ -122,3 +122,4 @@ jhipster:
 
 # application:
 #   cronFixture: 0 0/2 * 1/1 * ?
+#   cronEventStatus: 0 0/2 * 1/1 * ?

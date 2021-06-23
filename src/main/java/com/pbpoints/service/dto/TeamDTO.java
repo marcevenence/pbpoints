@@ -34,7 +34,7 @@ public class TeamDTO implements Serializable {
         this.name = name;
     }
 
-    public Boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
@@ -46,8 +46,8 @@ public class TeamDTO implements Serializable {
         return owner;
     }
 
-    public void setOwner(UserDTO user) {
-        this.owner = user;
+    public void setOwner(UserDTO owner) {
+        this.owner = owner;
     }
 
     @Override
@@ -55,38 +55,30 @@ public class TeamDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof TeamDTO)) {
             return false;
         }
 
         TeamDTO teamDTO = (TeamDTO) o;
-        if (teamDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), teamDTO.getId());
+        return Objects.equals(this.id, teamDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "TeamDTO{" +
-            "id=" +
-            getId() +
-            ", name='" +
-            getName() +
-            "'" +
-            ", active='" +
-            isActive() +
-            "'" +
-            ", owner=" +
-            getOwner() +
-            "'" +
-            "}"
-        );
+        return "TeamDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", active='" + getActive() + "'" +
+            ", owner=" + getOwner() +
+            "}";
     }
 }

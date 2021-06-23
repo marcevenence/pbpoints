@@ -1,14 +1,15 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.domain.Team;
+import com.pbpoints.repository.TeamRepository;
 import com.pbpoints.service.TeamQueryService;
 import com.pbpoints.service.TeamService;
-import com.pbpoints.service.dto.TeamCriteria;
+import com.pbpoints.service.criteria.TeamCriteria;
 import com.pbpoints.service.dto.TeamDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,10 +41,13 @@ public class TeamResource {
 
     private final TeamService teamService;
 
+    private final TeamRepository teamRepository;
+
     private final TeamQueryService teamQueryService;
 
-    public TeamResource(TeamService teamService, TeamQueryService teamQueryService) {
+    public TeamResource(TeamService teamService, TeamRepository teamRepository, TeamQueryService teamQueryService) {
         this.teamService = teamService;
+        this.teamRepository = teamRepository;
         this.teamQueryService = teamQueryService;
     }
 
@@ -78,8 +83,9 @@ public class TeamResource {
     }
 
     /**
-     * {@code PUT  /teams} : Updates an existing team.
+     * {@code PUT  /teams/:id} : Updates an existing team.
      *
+     * @param id the id of the teamDTO to save.
      * @param teamDTO the teamDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamDTO,
      * or with status {@code 400 (Bad Request)} if the teamDTO is not valid,

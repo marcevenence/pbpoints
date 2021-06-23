@@ -1,8 +1,15 @@
 package com.pbpoints.service;
 
 import com.pbpoints.domain.Game;
+import com.pbpoints.domain.Team;
+import com.pbpoints.domain.TeamDetailPoint;
+import com.pbpoints.domain.TeamPoint;
+import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.GameRepository;
+import com.pbpoints.repository.TeamPointRepository;
+import com.pbpoints.repository.TeamRepository;
 import com.pbpoints.service.dto.GameDTO;
+import com.pbpoints.service.dto.xml.PositionDTO;
 import com.pbpoints.service.mapper.GameMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -25,9 +32,20 @@ public class GameService {
 
     private final GameMapper gameMapper;
 
-    public GameService(GameRepository gameRepository, GameMapper gameMapper) {
+    private final TeamRepository teamRepository;
+
+    private final TeamPointRepository teamPointRepository;
+
+    public GameService(
+        GameRepository gameRepository,
+        GameMapper gameMapper,
+        TeamRepository teamRepository,
+        TeamPointRepository teamPointRepository
+    ) {
         this.gameRepository = gameRepository;
         this.gameMapper = gameMapper;
+        this.teamRepository = teamRepository;
+        this.teamPointRepository = teamPointRepository;
     }
 
     /**
@@ -96,5 +114,90 @@ public class GameService {
     public void delete(Long id) {
         log.debug("Request to delete Game : {}", id);
         gameRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public TeamPoint findPosByXML(com.pbpoints.service.dto.xml.PositionDTO positionDTO) {
+        log.info("Transformando TeamPoint entity");
+        TeamPoint teamPoint = teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get());
+        log.info("TeamPointId encontrado: {}" + teamPoint.getId());
+        if (teamPoint.getId() == null) {
+            teamPoint.setTeam(teamRepository.findById(positionDTO.getTeamId()).get());
+            teamPoint.setPoints(positionDTO.getPoints());
+        } else {
+            teamPoint.setPoints(teamPoint.getPoints() + positionDTO.getPoints());
+        }
+        return teamPoint;
+    }
+
+    @Transactional(readOnly = true)
+    public TeamDetailPoint findPosDetByXML(com.pbpoints.service.dto.xml.PositionDTO positionDTO) {
+        log.info("Transformando TeamDetailPoint entity");
+        TeamDetailPoint teamDetailPoint = new TeamDetailPoint();
+        teamDetailPoint.setTeamPoint(teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get()));
+        teamDetailPoint.setPoints(positionDTO.getPoints());
+        return teamDetailPoint;
+    }
+
+    @Transactional(readOnly = true)
+    public Game findByXML(com.pbpoints.service.dto.xml.GameDTO gameDTO) {
+        log.info("Transformando Game entity");
+        // validaciones de entidades
+        log.debug("Buscando Game");
+        Game game = new Game();
+        try {
+            //Game game = gameRepository.findById(gameDTO.getId()).orElseThrow(() -> new IllegalArgumentException("No existe un Game con el ID: " + gameDTO.getId()));
+            game =
+                gameRepository
+                    .findById(gameDTO.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No existe un Game con el ID: " + gameDTO.getId()));
+            log.debug("Buscando Team A");
+            Team teamA = teamRepository
+                .findByName(gameDTO.getTeamA())
+                .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamA()));
+            log.debug("Buscando Team A");
+            log.debug("Buscando Team B");
+            Team teamB = teamRepository
+                .findByName(gameDTO.getTeamB())
+                .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamB()));
+            if (!game.getTeamA().equals(teamA)) {
+                throw new IllegalArgumentException("El Team - " + teamA.getName() + " - no pertenece al Game informado");
+            }
+            if (!game.getTeamB().equals(teamB)) {
+                throw new IllegalArgumentException("El Team - " + teamB.getName() + " - no pertenece al Game informado");
+            }
+        } catch (Exception e) {
+            log.debug("No se encontro Game");
+            log.debug("Buscando Team A");
+            Team teamA = teamRepository
+                .findByName(gameDTO.getTeamA())
+                .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamA()));
+            log.debug("Buscando Team A");
+            log.debug("Buscando Team B");
+            Team teamB = teamRepository
+                .findByName(gameDTO.getTeamB())
+                .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamB()));
+        }
+
+        if (!game.getStatus().equals(Status.CREATED)) {
+            throw new IllegalArgumentException(
+                "El game está en estado - " + game.getStatus() + " -, por lo que no se pueden modificar los datos"
+            );
+        }
+
+        // actualizo los datos
+        game.setSplitDeckNum(gameDTO.getSplitDeckNum());
+        game.setTimeLeft(gameDTO.getTimeLeft());
+        game.setClasif(gameDTO.getClasification());
+        game.setGroup(gameDTO.getGroup());
+        game.setPointsA(gameDTO.getPointsA());
+        game.setOvertimeA(gameDTO.getOvertimeA());
+        game.setUvuA(gameDTO.getUvuA());
+        game.setPointsB(gameDTO.getPointsB());
+        game.setOvertimeB(gameDTO.getOvertimeB());
+        game.setUvuB(gameDTO.getUvuB());
+        game.setStatus(Status.DONE);
+        log.debug("Game actualizado: {}", game);
+        return game;
     }
 }

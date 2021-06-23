@@ -6,12 +6,14 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.pbpoints.domain.*;
+import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.*;
 import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.xml.GameResultDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -460,5 +463,19 @@ public class EventService {
 
         document.add(table);
         document.close();
+    }
+
+    @Scheduled(cron = "${application.cronEventStatus}")
+    public void updateEventStatus() {
+        log.info("*** Inicio de Cierre de Eventos ***");
+        Optional<List<Event>> events = eventRepository.findByEndDate(LocalDate.now());
+        if (events.isPresent()) {
+            for (Event event : events.get()) {
+                event.setStatus(Status.DONE);
+            }
+        } else {
+            log.info("no hay eventos a cerrar para el día actual");
+        }
+        log.info("*** Fin de Cierre de Eventos  ***");
     }
 }
