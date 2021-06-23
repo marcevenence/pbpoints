@@ -166,61 +166,41 @@ public class GameDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof GameDTO)) {
             return false;
         }
 
         GameDTO gameDTO = (GameDTO) o;
-        if (gameDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), gameDTO.getId());
+        return Objects.equals(this.id, gameDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "GameDTO{" +
-            "id=" +
-            getId() +
-            ", pointsA=" +
-            getPointsA() +
-            ", pointsB=" +
-            getPointsB() +
-            ", splitDeckNum=" +
-            getSplitDeckNum() +
-            ", timeLeft=" +
-            getTimeLeft() +
-            ", status='" +
-            getStatus() +
-            "'" +
-            ", overtimeA=" +
-            getOvertimeA() +
-            ", overtimeB=" +
-            getOvertimeB() +
-            ", uvuA=" +
-            getUvuA() +
-            ", uvuB=" +
-            getUvuB() +
-            ", group=" +
-            getGroup() +
-            ", clasif='" +
-            getClasif() +
-            "'" +
-            ", teamA=" +
-            getTeamA() +
-            "'" +
-            ", teamB=" +
-            getTeamB() +
-            "'" +
-            ", eventCategory=" +
-            getEventCategory() +
-            "}"
-        );
+        return "GameDTO{" +
+            "id=" + getId() +
+            ", pointsA=" + getPointsA() +
+            ", pointsB=" + getPointsB() +
+            ", splitDeckNum=" + getSplitDeckNum() +
+            ", timeLeft=" + getTimeLeft() +
+            ", status='" + getStatus() + "'" +
+            ", overtimeA=" + getOvertimeA() +
+            ", overtimeB=" + getOvertimeB() +
+            ", uvuA=" + getUvuA() +
+            ", uvuB=" + getUvuB() +
+            ", group=" + getGroup() +
+            ", clasif='" + getClasif() + "'" +
+            ", teamA=" + getTeamA() +
+            ", teamB=" + getTeamB() +
+            ", eventCategory=" + getEventCategory() +
+            "}";
     }
 }

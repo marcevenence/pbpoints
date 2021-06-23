@@ -8,8 +8,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data  repository for the Game entity.
+ * Spring Data SQL repository for the Game entity.
  */
+@SuppressWarnings("unused")
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificationExecutor<Game> {
     public List<Game> findByEventCategory(EventCategory eventCategory);

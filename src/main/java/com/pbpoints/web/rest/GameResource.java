@@ -1,21 +1,25 @@
 package com.pbpoints.web.rest;
 
+import com.pbpoints.repository.GameRepository;
 import com.pbpoints.service.GameQueryService;
 import com.pbpoints.service.GameService;
-import com.pbpoints.service.dto.GameCriteria;
+import com.pbpoints.service.criteria.GameCriteria;
 import com.pbpoints.service.dto.GameDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,10 +43,13 @@ public class GameResource {
 
     private final GameService gameService;
 
+    private final GameRepository gameRepository;
+
     private final GameQueryService gameQueryService;
 
-    public GameResource(GameService gameService, GameQueryService gameQueryService) {
+    public GameResource(GameService gameService, GameRepository gameRepository, GameQueryService gameQueryService) {
         this.gameService = gameService;
+        this.gameRepository = gameRepository;
         this.gameQueryService = gameQueryService;
     }
 
@@ -67,20 +74,32 @@ public class GameResource {
     }
 
     /**
-     * {@code PUT  /games} : Updates an existing game.
+     * {@code PUT  /games/:id} : Updates an existing game.
      *
+     * @param id the id of the gameDTO to save.
      * @param gameDTO the gameDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated gameDTO,
      * or with status {@code 400 (Bad Request)} if the gameDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the gameDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/games")
-    public ResponseEntity<GameDTO> updateGame(@Valid @RequestBody GameDTO gameDTO) throws URISyntaxException {
-        log.debug("REST request to update Game : {}", gameDTO);
+    @PutMapping("/games/{id}")
+    public ResponseEntity<GameDTO> updateGame(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody GameDTO gameDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update Game : {}, {}", id, gameDTO);
         if (gameDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, gameDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!gameRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         GameDTO result = gameService.save(gameDTO);
         return ResponseEntity
             .ok()
@@ -89,11 +108,45 @@ public class GameResource {
     }
 
     /**
+     * {@code PATCH  /games/:id} : Partial updates given fields of an existing game, field will ignore if it is null
+     *
+     * @param id the id of the gameDTO to save.
+     * @param gameDTO the gameDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated gameDTO,
+     * or with status {@code 400 (Bad Request)} if the gameDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the gameDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the gameDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/games/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<GameDTO> partialUpdateGame(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody GameDTO gameDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Game partially : {}, {}", id, gameDTO);
+        if (gameDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, gameDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!gameRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<GameDTO> result = gameService.partialUpdate(gameDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, gameDTO.getId().toString())
+        );
+    }
+
+    /**
      * {@code GET  /games} : get all the games.
      *
-
      * @param pageable the pagination information.
-
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of games in body.
      */
