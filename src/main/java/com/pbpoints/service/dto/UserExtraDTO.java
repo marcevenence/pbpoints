@@ -99,46 +99,33 @@ public class UserExtraDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof UserExtraDTO)) {
             return false;
         }
 
         UserExtraDTO userExtraDTO = (UserExtraDTO) o;
-        if (userExtraDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), userExtraDTO.getId());
+        return Objects.equals(this.id, userExtraDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "UserExtraDTO{" +
-            "id=" +
-            getId() +
-            ", numDoc='" +
-            getNumDoc() +
-            "'" +
-            ", phone='" +
-            getPhone() +
-            "'" +
-            ", bornDate='" +
-            getBornDate() +
-            "'" +
-            ", picture='" +
-            getPicture() +
-            "'" +
-            ", docType=" +
-            getDocType() +
-            ", user=" +
-            getUser() +
-            "'" +
-            "}"
-        );
+        return "UserExtraDTO{" +
+            "id=" + getId() +
+            ", numDoc='" + getNumDoc() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", bornDate='" + getBornDate() + "'" +
+            ", picture='" + getPicture() + "'" +
+            ", user=" + getUser() +
+            ", docType=" + getDocType() +
+            "}";
     }
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IUserExtra } from '../user-extra.model';
@@ -10,53 +8,70 @@ import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { UserExtraService } from '../service/user-extra.service';
 import { UserExtraDeleteDialogComponent } from '../delete/user-extra-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
+import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
   selector: 'jhi-user-extra',
   templateUrl: './user-extra.component.html',
 })
 export class UserExtraComponent implements OnInit {
-  userExtras?: IUserExtra[];
+  userExtras: IUserExtra[];
   isLoading = false;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+  itemsPerPage: number;
+  links: { [key: string]: number };
+  page: number;
+  predicate: string;
+  ascending: boolean;
 
   constructor(
     protected userExtraService: UserExtraService,
-    protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks
+  ) {
+    this.userExtras = [];
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.page = 0;
+    this.links = {
+      last: 0,
+    };
+    this.predicate = 'id';
+    this.ascending = true;
+  }
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
 
     this.userExtraService
       .query({
-        page: pageToLoad - 1,
+        page: this.page,
         size: this.itemsPerPage,
         sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IUserExtra[]>) => {
           this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          this.paginateUserExtras(res.body, res.headers);
         },
         () => {
           this.isLoading = false;
-          this.onError();
         }
       );
   }
 
+  reset(): void {
+    this.page = 0;
+    this.userExtras = [];
+    this.loadAll();
+  }
+
+  loadPage(page: number): void {
+    this.page = page;
+    this.loadAll();
+  }
+
   ngOnInit(): void {
-    this.handleNavigation();
+    this.loadAll();
   }
 
   trackId(index: number, item: IUserExtra): number {
@@ -77,7 +92,7 @@ export class UserExtraComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.reset();
       }
     });
   }
@@ -90,38 +105,12 @@ export class UserExtraComponent implements OnInit {
     return result;
   }
 
-  protected handleNavigation(): void {
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+  protected paginateUserExtras(data: IUserExtra[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.userExtras.push(d);
       }
-    });
-  }
-
-  protected onSuccess(data: IUserExtra[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate(['/user-extra'], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
-        },
-      });
     }
-    this.userExtras = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
   }
 }

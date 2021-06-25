@@ -14,7 +14,7 @@ import org.mapstruct.Named;
 /**
  * Mapper for the entity {@link UserExtra} and its DTO {@link UserExtraDTO}.
  */
-@Mapper(componentModel = "spring", uses = { DocTypeMapper.class, UserMapper.class })
+@Mapper(componentModel = "spring", uses = { UserMapper.class, DocTypeMapper.class })
 public interface UserExtraMapper extends EntityMapper<UserExtraDTO, UserExtra> {
     @Mapping(source = "docType", target = "docType")
     @Mapping(source = "user", target = "user")

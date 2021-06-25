@@ -19,6 +19,7 @@ public class UserExtra implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "num_doc")
@@ -65,8 +66,13 @@ public class UserExtra implements Serializable {
         this.id = id;
     }
 
+    public UserExtra id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getNumDoc() {
-        return numDoc;
+        return this.numDoc;
     }
 
     public UserExtra numDoc(String numDoc) {
@@ -79,7 +85,7 @@ public class UserExtra implements Serializable {
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public UserExtra phone(String phone) {
@@ -92,7 +98,7 @@ public class UserExtra implements Serializable {
     }
 
     public LocalDate getBornDate() {
-        return bornDate;
+        return this.bornDate;
     }
 
     public UserExtra bornDate(LocalDate bornDate) {
@@ -105,7 +111,7 @@ public class UserExtra implements Serializable {
     }
 
     public byte[] getPicture() {
-        return picture;
+        return this.picture;
     }
 
     public UserExtra picture(byte[] picture) {
@@ -118,7 +124,7 @@ public class UserExtra implements Serializable {
     }
 
     public String getPictureContentType() {
-        return pictureContentType;
+        return this.pictureContentType;
     }
 
     public UserExtra pictureContentType(String pictureContentType) {
@@ -131,11 +137,11 @@ public class UserExtra implements Serializable {
     }
 
     public DocType getDocType() {
-        return docType;
+        return this.docType;
     }
 
     public UserExtra docType(DocType docType) {
-        this.docType = docType;
+        this.setDocType(docType);
         return this;
     }
 
@@ -144,11 +150,11 @@ public class UserExtra implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public UserExtra user(User user) {
-        this.user = user;
+        this.setUser(user);
         return this;
     }
 
@@ -156,7 +162,7 @@ public class UserExtra implements Serializable {
         this.user = user;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -171,31 +177,20 @@ public class UserExtra implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "UserExtra{" +
-            "id=" +
-            getId() +
-            ", numDoc='" +
-            getNumDoc() +
-            "'" +
-            ", phone='" +
-            getPhone() +
-            "'" +
-            ", bornDate='" +
-            getBornDate() +
-            "'" +
-            ", picture='" +
-            getPicture() +
-            "'" +
-            ", pictureContentType='" +
-            getPictureContentType() +
-            "'" +
-            "}"
-        );
+        return "UserExtra{" +
+            "id=" + getId() +
+            ", numDoc='" + getNumDoc() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", bornDate='" + getBornDate() + "'" +
+            ", picture='" + getPicture() + "'" +
+            ", pictureContentType='" + getPictureContentType() + "'" +
+            "}";
     }
 }

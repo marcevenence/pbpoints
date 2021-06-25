@@ -6,9 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.pbpoints.IntegrationTest;
+import com.pbpoints.domain.DocType;
 import com.pbpoints.domain.User;
 import com.pbpoints.domain.UserExtra;
 import com.pbpoints.repository.UserExtraRepository;
+import com.pbpoints.service.criteria.UserExtraCriteria;
 import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.service.mapper.UserExtraMapper;
 import java.time.LocalDate;
@@ -43,6 +45,7 @@ class UserExtraResourceIT {
 
     private static final LocalDate DEFAULT_BORN_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_BORN_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_BORN_DATE = LocalDate.ofEpochDay(-1L);
 
     private static final byte[] DEFAULT_PICTURE = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_PICTURE = TestUtil.createByteArray(1, "1");
@@ -192,6 +195,360 @@ class UserExtraResourceIT {
             .andExpect(jsonPath("$.bornDate").value(DEFAULT_BORN_DATE.toString()))
             .andExpect(jsonPath("$.pictureContentType").value(DEFAULT_PICTURE_CONTENT_TYPE))
             .andExpect(jsonPath("$.picture").value(Base64Utils.encodeToString(DEFAULT_PICTURE)));
+    }
+
+    @Test
+    @Transactional
+    void getUserExtrasByIdFiltering() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        Long id = userExtra.getId();
+
+        defaultUserExtraShouldBeFound("id.equals=" + id);
+        defaultUserExtraShouldNotBeFound("id.notEquals=" + id);
+
+        defaultUserExtraShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultUserExtraShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultUserExtraShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultUserExtraShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc equals to DEFAULT_NUM_DOC
+        defaultUserExtraShouldBeFound("numDoc.equals=" + DEFAULT_NUM_DOC);
+
+        // Get all the userExtraList where numDoc equals to UPDATED_NUM_DOC
+        defaultUserExtraShouldNotBeFound("numDoc.equals=" + UPDATED_NUM_DOC);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc not equals to DEFAULT_NUM_DOC
+        defaultUserExtraShouldNotBeFound("numDoc.notEquals=" + DEFAULT_NUM_DOC);
+
+        // Get all the userExtraList where numDoc not equals to UPDATED_NUM_DOC
+        defaultUserExtraShouldBeFound("numDoc.notEquals=" + UPDATED_NUM_DOC);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocIsInShouldWork() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc in DEFAULT_NUM_DOC or UPDATED_NUM_DOC
+        defaultUserExtraShouldBeFound("numDoc.in=" + DEFAULT_NUM_DOC + "," + UPDATED_NUM_DOC);
+
+        // Get all the userExtraList where numDoc equals to UPDATED_NUM_DOC
+        defaultUserExtraShouldNotBeFound("numDoc.in=" + UPDATED_NUM_DOC);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc is not null
+        defaultUserExtraShouldBeFound("numDoc.specified=true");
+
+        // Get all the userExtraList where numDoc is null
+        defaultUserExtraShouldNotBeFound("numDoc.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc contains DEFAULT_NUM_DOC
+        defaultUserExtraShouldBeFound("numDoc.contains=" + DEFAULT_NUM_DOC);
+
+        // Get all the userExtraList where numDoc contains UPDATED_NUM_DOC
+        defaultUserExtraShouldNotBeFound("numDoc.contains=" + UPDATED_NUM_DOC);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByNumDocNotContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where numDoc does not contain DEFAULT_NUM_DOC
+        defaultUserExtraShouldNotBeFound("numDoc.doesNotContain=" + DEFAULT_NUM_DOC);
+
+        // Get all the userExtraList where numDoc does not contain UPDATED_NUM_DOC
+        defaultUserExtraShouldBeFound("numDoc.doesNotContain=" + UPDATED_NUM_DOC);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone equals to DEFAULT_PHONE
+        defaultUserExtraShouldBeFound("phone.equals=" + DEFAULT_PHONE);
+
+        // Get all the userExtraList where phone equals to UPDATED_PHONE
+        defaultUserExtraShouldNotBeFound("phone.equals=" + UPDATED_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone not equals to DEFAULT_PHONE
+        defaultUserExtraShouldNotBeFound("phone.notEquals=" + DEFAULT_PHONE);
+
+        // Get all the userExtraList where phone not equals to UPDATED_PHONE
+        defaultUserExtraShouldBeFound("phone.notEquals=" + UPDATED_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneIsInShouldWork() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone in DEFAULT_PHONE or UPDATED_PHONE
+        defaultUserExtraShouldBeFound("phone.in=" + DEFAULT_PHONE + "," + UPDATED_PHONE);
+
+        // Get all the userExtraList where phone equals to UPDATED_PHONE
+        defaultUserExtraShouldNotBeFound("phone.in=" + UPDATED_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone is not null
+        defaultUserExtraShouldBeFound("phone.specified=true");
+
+        // Get all the userExtraList where phone is null
+        defaultUserExtraShouldNotBeFound("phone.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone contains DEFAULT_PHONE
+        defaultUserExtraShouldBeFound("phone.contains=" + DEFAULT_PHONE);
+
+        // Get all the userExtraList where phone contains UPDATED_PHONE
+        defaultUserExtraShouldNotBeFound("phone.contains=" + UPDATED_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByPhoneNotContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where phone does not contain DEFAULT_PHONE
+        defaultUserExtraShouldNotBeFound("phone.doesNotContain=" + DEFAULT_PHONE);
+
+        // Get all the userExtraList where phone does not contain UPDATED_PHONE
+        defaultUserExtraShouldBeFound("phone.doesNotContain=" + UPDATED_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate equals to DEFAULT_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.equals=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate equals to UPDATED_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.equals=" + UPDATED_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate not equals to DEFAULT_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.notEquals=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate not equals to UPDATED_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.notEquals=" + UPDATED_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate in DEFAULT_BORN_DATE or UPDATED_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.in=" + DEFAULT_BORN_DATE + "," + UPDATED_BORN_DATE);
+
+        // Get all the userExtraList where bornDate equals to UPDATED_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.in=" + UPDATED_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate is not null
+        defaultUserExtraShouldBeFound("bornDate.specified=true");
+
+        // Get all the userExtraList where bornDate is null
+        defaultUserExtraShouldNotBeFound("bornDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate is greater than or equal to DEFAULT_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.greaterThanOrEqual=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate is greater than or equal to UPDATED_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.greaterThanOrEqual=" + UPDATED_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate is less than or equal to DEFAULT_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.lessThanOrEqual=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate is less than or equal to SMALLER_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.lessThanOrEqual=" + SMALLER_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate is less than DEFAULT_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.lessThan=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate is less than UPDATED_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.lessThan=" + UPDATED_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByBornDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where bornDate is greater than DEFAULT_BORN_DATE
+        defaultUserExtraShouldNotBeFound("bornDate.greaterThan=" + DEFAULT_BORN_DATE);
+
+        // Get all the userExtraList where bornDate is greater than SMALLER_BORN_DATE
+        defaultUserExtraShouldBeFound("bornDate.greaterThan=" + SMALLER_BORN_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByUserIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        User user = userExtra.getUser();
+        userExtraRepository.saveAndFlush(userExtra);
+        Long userId = user.getId();
+
+        // Get all the userExtraList where user equals to userId
+        defaultUserExtraShouldBeFound("userId.equals=" + userId);
+
+        // Get all the userExtraList where user equals to (userId + 1)
+        defaultUserExtraShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByDocTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+        DocType docType = DocTypeResourceIT.createEntity(em);
+        em.persist(docType);
+        em.flush();
+        userExtra.setDocType(docType);
+        userExtraRepository.saveAndFlush(userExtra);
+        Long docTypeId = docType.getId();
+
+        // Get all the userExtraList where docType equals to docTypeId
+        defaultUserExtraShouldBeFound("docTypeId.equals=" + docTypeId);
+
+        // Get all the userExtraList where docType equals to (docTypeId + 1)
+        defaultUserExtraShouldNotBeFound("docTypeId.equals=" + (docTypeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultUserExtraShouldBeFound(String filter) throws Exception {
+        restUserExtraMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(userExtra.getId().intValue())))
+            .andExpect(jsonPath("$.[*].numDoc").value(hasItem(DEFAULT_NUM_DOC)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
+            .andExpect(jsonPath("$.[*].bornDate").value(hasItem(DEFAULT_BORN_DATE.toString())))
+            .andExpect(jsonPath("$.[*].pictureContentType").value(hasItem(DEFAULT_PICTURE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))));
+
+        // Check, that the count call also returns 1
+        restUserExtraMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultUserExtraShouldNotBeFound(String filter) throws Exception {
+        restUserExtraMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restUserExtraMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

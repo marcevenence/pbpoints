@@ -3,7 +3,7 @@
     <span jhiTranslate="pbpointsApp.userExtra.home.title">User Extras</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.userExtra.home.refreshListLabel">Refresh List</span>
       </button>
@@ -31,7 +31,7 @@
   <div class="table-responsive" id="entities" *ngIf="userExtras && userExtras.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="numDoc">
             <span jhiTranslate="pbpointsApp.userExtra.numDoc">Num Doc</span> <fa-icon icon="sort"></fa-icon>
@@ -45,7 +45,7 @@
           <th scope="col" jhiSortBy="picture">
             <span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="user.login">
+          <th scope="col" jhiSortBy="user.id">
             <span jhiTranslate="pbpointsApp.userExtra.user">User</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col" jhiSortBy="docType.id">
@@ -54,7 +54,7 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let userExtra of userExtras; trackBy: trackId" data-cy="entityTable">
           <td>
             <a [routerLink]="['/user-extra', userExtra.id, 'view']">{{ userExtra.id }}</a>
@@ -73,7 +73,7 @@
             <span *ngIf="userExtra.picture">{{ userExtra.pictureContentType }}, {{ byteSize(userExtra.picture) }}</span>
           </td>
           <td>
-            {{ userExtra.user?.login }}
+            {{ userExtra.user?.id }}
           </td>
           <td>
             <div *ngIf="userExtra.docType">
@@ -111,23 +111,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="userExtras && userExtras.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
   </div>
 </div>

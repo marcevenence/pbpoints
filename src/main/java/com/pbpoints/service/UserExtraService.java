@@ -76,6 +76,27 @@ public class UserExtraService {
     }
 
     /**
+     * Partially update a userExtra.
+     *
+     * @param userExtraDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<UserExtraDTO> partialUpdate(UserExtraDTO userExtraDTO) {
+        log.debug("Request to partially update UserExtra : {}", userExtraDTO);
+
+        return userExtraRepository
+            .findById(userExtraDTO.getId())
+            .map(
+                existingUserExtra -> {
+                    userExtraMapper.partialUpdate(existingUserExtra, userExtraDTO);
+                    return existingUserExtra;
+                }
+            )
+            .map(userExtraRepository::save)
+            .map(userExtraMapper::toDto);
+    }
+
+    /**
      * Get all the userExtras.
      *
      * @param pageable the pagination information.

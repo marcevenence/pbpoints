@@ -1,0 +1,112 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="searchForm" role="form" novalidate (ngSubmit)="find()" [formGroup]="searchForm">
+      <h2 id="jhi-player-heading" data-cy="PlayerSearchHeading" jhiTranslate="pbpointsApp.player.home.createOrEditLabel">Search a User</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" />
+        </div>
+      </div>
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button type="submit" id="save-entity" data-cy="entityFindButton" class="btn btn-primary">
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.find">Find</span>
+        </button>
+      </div>
+      <br />
+      <h2>Usuario</h2>
+      <br />
+      <div class="alert alert-warning" id="no-result" *ngIf="userExtras?.length === 0">
+        <span jhiTranslate="pbpointsApp.player.home.notFound">No Users found</span>
+      </div>
+
+      <div class="table-responsive" id="entities" *ngIf="userExtras && userExtras.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+              <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col" jhiSortBy="picture">
+                <span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" jhiSortBy="user.id">
+                <span jhiTranslate="pbpointsApp.userExtra.name">Name</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" jhiSortBy="numDoc">
+                <span jhiTranslate="pbpointsApp.userExtra.numDoc">Num Doc</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" jhiSortBy="phone">
+                <span jhiTranslate="pbpointsApp.userExtra.phone">Phone</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" jhiSortBy="bornDate">
+                <span jhiTranslate="pbpointsApp.userExtra.bornDate">Born Date</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody
+            infinite-scroll
+            (scrolled)="loadPage(page + 1)"
+            [infiniteScrollDisabled]="page >= links['last']"
+            [infiniteScrollDistance]="0"
+          >
+            <tr *ngFor="let userExtra of userExtras; trackBy: trackUserExtraId" data-cy="entityTable">
+              <td>{{ userExtra.id }}</td>
+              <td>
+                <a *ngIf="userExtra.picture" (click)="openFile(userExtra.picture, userExtra.pictureContentType)">
+                  <img
+                    [src]="'data:' + userExtra.pictureContentType + ';base64,' + userExtra.picture"
+                    style="max-height: 30px"
+                    alt="userExtra image"
+                  />
+                </a>
+              </td>
+              <td>{{ userExtra.user?.lastName }},{{ userExtra.user?.firstName }}</td>
+              <td>{{ userExtra.numDoc }}</td>
+              <td>{{ userExtra.phone }}</td>
+              <td>{{ userExtra.bornDate | formatMediumDate }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <h2>Equipos</h2>
+      <br />
+      <div class="alert alert-warning" *ngIf="teams?.length === 0">
+        <span jhiTranslate="pbpointsApp.team.home.notFound">No Teams found</span>
+      </div>
+      <div class="table-responsive" *ngIf="teams && teams.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+          <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+              <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+              <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.team.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'" jhiSortBy="active">
+                <span jhiTranslate="pbpointsApp.team.active">Active</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody
+            infinite-scroll
+            (scrolled)="loadPage(page + 1)"
+            [infiniteScrollDisabled]="page >= links['last']"
+            [infiniteScrollDistance]="0"
+          >
+            <tr *ngFor="let team of teams; trackBy: trackTeamId" data-cy="entityTable">
+              <!--<td><a [routerLink]="['/team', team.id, 'view']">{{ team.id }}</a></td>-->
+              <td>{{ team.name }}</td>
+              <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ team.active }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</div>

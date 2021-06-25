@@ -29,7 +29,7 @@ export class UserExtraService {
   update(userExtra: IUserExtra): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(userExtra);
     return this.http
-      .put<IUserExtra>(`${this.resourceUrl}`, copy, { observe: 'response' })
+      .put<IUserExtra>(`${this.resourceUrl}/${getUserExtraIdentifier(userExtra) as number}`, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

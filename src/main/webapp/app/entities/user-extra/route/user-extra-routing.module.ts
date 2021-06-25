@@ -11,9 +11,6 @@ const userExtraRoute: Routes = [
   {
     path: '',
     component: UserExtraComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

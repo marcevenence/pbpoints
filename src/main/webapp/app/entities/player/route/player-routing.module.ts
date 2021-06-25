@@ -6,6 +6,7 @@ import { PlayerComponent } from '../list/player.component';
 import { PlayerDetailComponent } from '../detail/player-detail.component';
 import { PlayerUpdateComponent } from '../update/player-update.component';
 import { PlayerRoutingResolveService } from './player-routing-resolve.service';
+import { PlayerSearchComponent } from '../search/player-search.component';
 
 const playerRoute: Routes = [
   {
@@ -34,6 +35,14 @@ const playerRoute: Routes = [
     component: PlayerUpdateComponent,
     resolve: {
       player: PlayerRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'search',
+    component: PlayerSearchComponent,
+    resolve: {
+      roster: PlayerRoutingResolveService,
     },
     canActivate: [UserRouteAccessService],
   },

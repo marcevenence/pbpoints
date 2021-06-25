@@ -208,7 +208,8 @@
       "edit": "Editar",
       "open": "Abrir",
       "save": "Guardar",
-      "view": "Vista"
+      "view": "Vista",
+      "find": "Buscar"
     },
     "detail": {
       "field": "Campo",
@@ -251,5 +252,5 @@
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
-  "footer": "PBPoints 2021, Argentina. Es una marca registrada"
+  "footer": "PBPoints 2021, Argentina. Marca registrada"
 }

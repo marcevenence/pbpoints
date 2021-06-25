@@ -127,45 +127,25 @@
         </ul>
       </li>
       <li
-        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+        *jhiHasAnyAuthority="'ROLE_USER'"
         ngbDropdown
         class="nav-item dropdown pointer"
         display="dynamic"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
-        <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="tool-menu">
+        <a
+          class="nav-link dropdown-item"
+          routerLink="player/search"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="collapseNavbar()"
+        >
           <span>
-            <fa-icon icon="th-list"></fa-icon>
-            <span jhiTranslate="global.menu.player.main"> Players </span>
+            <fa-icon [icon]="'user'"></fa-icon>
+            <span jhiTranslate="global.menu.player.find">Find Player</span>
           </span>
         </a>
-        <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="tool-menu">
-          <li>
-            <a
-              class="dropdown-item"
-              routerLink="player"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              (click)="collapseNavbar()"
-            >
-              <fa-icon [icon]="'user'" [fixedWidth]="true"></fa-icon>
-              <span jhiTranslate="global.menu.player.find">Find Player</span>
-            </a>
-          </li>
-          <li>
-            <a
-              class="dropdown-item"
-              routerLink="player"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              (click)="collapseNavbar()"
-            >
-              <fa-icon [icon]="'user'" [fixedWidth]="true"></fa-icon>
-              <span jhiTranslate="global.menu.player.suspend">Suspend Player</span>
-            </a>
-          </li>
-        </ul>
       </li>
       <!--  Fin  Menu Reportes OWNER TOURNAMENT  -->
       <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->

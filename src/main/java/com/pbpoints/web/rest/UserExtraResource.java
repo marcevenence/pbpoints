@@ -1,6 +1,9 @@
 package com.pbpoints.web.rest;
 
+import com.pbpoints.repository.UserExtraRepository;
+import com.pbpoints.service.UserExtraQueryService;
 import com.pbpoints.service.UserExtraService;
+import com.pbpoints.service.criteria.UserExtraCriteria;
 import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -9,12 +12,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,8 +43,18 @@ public class UserExtraResource {
 
     private final UserExtraService userExtraService;
 
-    public UserExtraResource(UserExtraService userExtraService) {
+    private final UserExtraRepository userExtraRepository;
+
+    private final UserExtraQueryService userExtraQueryService;
+
+    public UserExtraResource(
+        UserExtraService userExtraService,
+        UserExtraRepository userExtraRepository,
+        UserExtraQueryService userExtraQueryService
+    ) {
         this.userExtraService = userExtraService;
+        this.userExtraRepository = userExtraRepository;
+        this.userExtraQueryService = userExtraQueryService;
     }
 
     /**
@@ -66,20 +81,32 @@ public class UserExtraResource {
     }
 
     /**
-     * {@code PUT  /user-extras} : Updates an existing userExtra.
+     * {@code PUT  /user-extras/:id} : Updates an existing userExtra.
      *
+     * @param id the id of the userExtraDTO to save.
      * @param userExtraDTO the userExtraDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
      * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/user-extras")
-    public ResponseEntity<UserExtraDTO> updateUserExtra(@Valid @RequestBody UserExtraDTO userExtraDTO) throws URISyntaxException {
-        log.debug("REST request to update UserExtra : {}", userExtraDTO);
+    @PutMapping("/user-extras/{id}")
+    public ResponseEntity<UserExtraDTO> updateUserExtra(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody UserExtraDTO userExtraDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update UserExtra : {}, {}", id, userExtraDTO);
         if (userExtraDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, userExtraDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!userExtraRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         UserExtraDTO result = userExtraService.save(userExtraDTO);
         return ResponseEntity
             .ok()
@@ -88,19 +115,66 @@ public class UserExtraResource {
     }
 
     /**
+     * {@code PATCH  /user-extras/:id} : Partial updates given fields of an existing userExtra, field will ignore if it is null
+     *
+     * @param id the id of the userExtraDTO to save.
+     * @param userExtraDTO the userExtraDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userExtraDTO,
+     * or with status {@code 400 (Bad Request)} if the userExtraDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the userExtraDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the userExtraDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/user-extras/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<UserExtraDTO> partialUpdateUserExtra(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody UserExtraDTO userExtraDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update UserExtra partially : {}, {}", id, userExtraDTO);
+        if (userExtraDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, userExtraDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!userExtraRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<UserExtraDTO> result = userExtraService.partialUpdate(userExtraDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, userExtraDTO.getId().toString())
+        );
+    }
+
+    /**
      * {@code GET  /user-extras} : get all the userExtras.
      *
-
      * @param pageable the pagination information.
-
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userExtras in body.
      */
     @GetMapping("/user-extras")
-    public ResponseEntity<List<UserExtraDTO>> getAllUserExtras(Pageable pageable) {
-        log.debug("REST request to get a page of UserExtras");
-        Page<UserExtraDTO> page = userExtraService.findAll(pageable);
+    public ResponseEntity<List<UserExtraDTO>> getAllUserExtras(UserExtraCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get UserExtras by criteria: {}", criteria);
+        Page<UserExtraDTO> page = userExtraQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /user-extras/count} : count all the userExtras.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/user-extras/count")
+    public ResponseEntity<Long> countUserExtras(UserExtraCriteria criteria) {
+        log.debug("REST request to count UserExtras by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userExtraQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -131,17 +205,4 @@ public class UserExtraResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-    /*@GetMapping("/user-extras/roster")
-    public ResponseEntity<UserExtraDTO> getUserExtraToRoster(@RequestParam(value="idUser", required=true) Long idUser, @RequestParam(value="idRoster", required=true) Long idRoster,
-            @RequestParam(value="idEventCategory", required=true) Long idEventCategory) {
-        log.debug("REST request to get UserExtra to Roster --> iduser: {}, idRoster: {}, idEventCategory: {}", idUser,
-                idRoster, idEventCategory);
-        Optional<UserExtraDTO> userExtraDTO;
-        try {
-            userExtraDTO = userExtraService.getUniqueUserToRoster(idUser, idRoster, idEventCategory);
-        }catch (Exception e) {
-            throw new BadRequestAlertException(e.getMessage(), ENTITY_NAME, "genericError");
-        }
-        return ResponseUtil.wrapOrNotFound(userExtraDTO);
-    }*/
 }

@@ -47,10 +47,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call User query and add missing value', () => {
         const userExtra: IUserExtra = { id: 456 };
-        const user: IUser = { id: 42031 };
+        const user: IUser = { id: 27699 };
         userExtra.user = user;
 
-        const userCollection: IUser[] = [{ id: 15999 }];
+        const userCollection: IUser[] = [{ id: 87926 }];
         spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
         const additionalUsers = [user];
         const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -66,10 +66,10 @@ describe('Component Tests', () => {
 
       it('Should call DocType query and add missing value', () => {
         const userExtra: IUserExtra = { id: 456 };
-        const docType: IDocType = { id: 57567 };
+        const docType: IDocType = { id: 19378 };
         userExtra.docType = docType;
 
-        const docTypeCollection: IDocType[] = [{ id: 62489 }];
+        const docTypeCollection: IDocType[] = [{ id: 91939 }];
         spyOn(docTypeService, 'query').and.returnValue(of(new HttpResponse({ body: docTypeCollection })));
         const additionalDocTypes = [docType];
         const expectedCollection: IDocType[] = [...additionalDocTypes, ...docTypeCollection];
@@ -85,9 +85,9 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const userExtra: IUserExtra = { id: 456 };
-        const user: IUser = { id: 47420 };
+        const user: IUser = { id: 47918 };
         userExtra.user = user;
-        const docType: IDocType = { id: 65053 };
+        const docType: IDocType = { id: 99455 };
         userExtra.docType = docType;
 
         activatedRoute.data = of({ userExtra });
