@@ -1,9 +1,9 @@
 <div>
   <!-- Inicio User -->
   <h2>
-    <span *!jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" jhiTranslate="global.menu.account.playerPoint">Player Point</span>
+    <span *jhiHasNotAuthority="'ROLE_ADMIN'" jhiTranslate="global.menu.account.playerPoint">Player Point</span>
     <button
-      *!jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+      *jhiHasNotAuthority="'ROLE_ADMIN'"
       id="jh-create-entity-back"
       class="btn btn-primary float-right jh-create-entity create-player-point"
       (click)="Cancel()"
@@ -11,7 +11,7 @@
       <span jhiTranslate="global.menu.back">Back</span>
     </button>
   </h2>
-  <table *!jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" class="table table-striped" aria-describedby="page-heading">
+  <table *jhiHasNotAuthority="'ROLE_ADMIN'" class="table table-striped" aria-describedby="page-heading">
     <thead>
       <tr>
         <th jhiTranslate="global.form.picture.label">Picture</th>
@@ -81,14 +81,6 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.playerPoint.home.createLabel"> Create a new Player Point </span>
-      </button>
-      <button
-        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
-        id="jh-create-entity-back"
-        class="btn btn-primary float-right jh-create-entity create-player-point"
-        (click)="Cancel()"
-      >
-        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>

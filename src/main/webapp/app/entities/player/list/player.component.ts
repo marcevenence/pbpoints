@@ -33,6 +33,10 @@ export class PlayerComponent implements OnInit {
     this.ascending = true;
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   loadAll(): void {
     this.isLoading = true;
 

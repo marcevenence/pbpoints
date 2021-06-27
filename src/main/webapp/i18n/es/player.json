@@ -24,7 +24,18 @@
       "user": "Usuario",
       "userId": "PBPoint ID",
       "roster": "Roster",
-      "category": "Categoria"
+      "category": "Categoria",
+      "search": {
+        "suspend": "Suspender",
+        "picture": "Foto",
+        "username": "Nombre",
+        "numDoc": "Nro Documento",
+        "phone": "Telefono",
+        "bornDate": "Fecha Nacimiento",
+        "event": "Evento",
+        "category": "Categoria",
+        "team": "Equipo"
+      }
     }
   }
 }

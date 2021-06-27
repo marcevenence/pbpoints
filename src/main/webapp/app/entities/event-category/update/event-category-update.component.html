@@ -20,7 +20,7 @@
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.eventCategory.event" for="field_event">Event</label>
           <select class="form-control" id="field_event" data-cy="event" name="event" formControlName="event">
-            <option *ngIf="!editForm.get('event')!.value" [ngValue]="null" selected></option>
+            <!--<option *ngIf="!editForm.get('event')!.value" [ngValue]="null" selected></option>-->
             <option
               [ngValue]="eventOption.id === editForm.get('event')!.value?.id ? editForm.get('event')!.value : eventOption"
               *ngFor="let eventOption of eventsSharedCollection; trackBy: trackEventById"
@@ -50,7 +50,7 @@
             <td>
               <div class="form-group">
                 <select class="form-control" id="field_category" data-cy="category" name="category" formControlName="category">
-                  <option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>
+                  <!--<option *ngIf="!editForm.get('category')!.value" [ngValue]="null" selected></option>-->
                   <option
                     [ngValue]="categoryOption.id === editForm.get('category')!.value?.id ? editForm.get('category')!.value : categoryOption"
                     *ngFor="let categoryOption of categoriesSharedCollection; trackBy: trackCategoryById"
@@ -74,7 +74,7 @@
             <td>
               <div class="form-group">
                 <select class="form-control" id="field_format" data-cy="format" name="format" formControlName="format">
-                  <option *ngIf="!editForm.get('format')!.value" [ngValue]="null" selected></option>
+                  <!--<option *ngIf="!editForm.get('format')!.value" [ngValue]="null" selected></option>-->
                   <option
                     [ngValue]="formatOption.id === editForm.get('format')!.value?.id ? editForm.get('format')!.value : formatOption"
                     *ngFor="let formatOption of formatsSharedCollection; trackBy: trackFormatById"

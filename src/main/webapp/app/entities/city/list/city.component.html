@@ -8,6 +8,15 @@
         <span jhiTranslate="pbpointsApp.city.home.refreshListLabel">Refresh List</span>
       </button>-->
       <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-city"
+        [routerLink]="['/city/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.city.home.createLabel"> Create a new City </span>
+      </button>
+      <button
         id="jh-create-entity-back"
         class="btn btn-primary float-right jh-create-entity create-city"
         (click)="Cancel()"
@@ -16,15 +25,6 @@
       >
         <fa-icon [icon]="'arrow-left'"></fa-icon>
         <span jhiTranslate="global.menu.back">Back</span>
-      </button>
-      <button
-        id="jh-create-entity"
-        data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-city"
-        [routerLink]="['/city/new']"
-      >
-        <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="pbpointsApp.city.home.createLabel"> Create a new City </span>
       </button>
     </div>
   </h2>

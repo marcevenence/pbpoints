@@ -7,8 +7,13 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
+import { UserService } from 'app/entities/user/user.service';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
+import { IPlayer } from 'app/entities/player/player.model';
+import { PlayerService } from 'app/entities/player/service/player.service';
+import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
+import { PlayerPointService } from 'app/entities/player-point/service/player-point.service';
 
 @Component({
   selector: 'jhi-player-search',
@@ -17,6 +22,8 @@ import { TeamService } from 'app/entities/team/service/team.service';
 export class PlayerSearchComponent implements OnInit {
   userExtras?: IUserExtra[];
   teams?: ITeam[];
+  players?: IPlayer[];
+  playerPoints?: IPlayerPoint[];
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
@@ -29,7 +36,10 @@ export class PlayerSearchComponent implements OnInit {
 
   constructor(
     protected userExtraService: UserExtraService,
+    protected userService: UserService,
     protected teamService: TeamService,
+    protected playerService: PlayerService,
+    protected playerPointService: PlayerPointService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
     protected fb: FormBuilder,
@@ -37,6 +47,8 @@ export class PlayerSearchComponent implements OnInit {
   ) {
     this.userExtras = [];
     this.teams = [];
+    this.players = [];
+    this.playerPoints = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -49,11 +61,15 @@ export class PlayerSearchComponent implements OnInit {
   ngOnInit(): void {
     this.userExtras = [];
     this.teams = [];
+    this.players = [];
+    this.playerPoints = [];
   }
 
   find(): void {
     this.userExtras = [];
     this.teams = [];
+    this.players = [];
+    this.playerPoints = [];
     if (this.searchForm.get(['id'])!.value) {
       this.userExtraService
         .query({
@@ -65,6 +81,7 @@ export class PlayerSearchComponent implements OnInit {
         .subscribe((res: HttpResponse<IUserExtra[]>) => {
           this.paginateUserExtras(res.body, res.headers);
         });
+
       this.teamService
         .query({
           'ownerId.equals': this.searchForm.get(['id'])!.value,
@@ -75,7 +92,33 @@ export class PlayerSearchComponent implements OnInit {
         .subscribe((res: HttpResponse<ITeam[]>) => {
           this.paginateTeams(res.body, res.headers);
         });
+
+      this.playerService
+        .query({
+          'userId.equals': this.searchForm.get(['id'])!.value,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe((res: HttpResponse<IPlayer[]>) => {
+          this.paginatePlayers(res.body, res.headers);
+        });
+
+      this.playerPointService
+        .query({
+          'userId.equals': this.searchForm.get(['id'])!.value,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe((res: HttpResponse<IPlayerPoint[]>) => {
+          this.paginatePlayerPoints(res.body, res.headers);
+        });
     }
+  }
+
+  Suspend(id: any): void {
+    this.userService.suspend(id);
   }
 
   byteSize(base64String: string): string {
@@ -98,17 +141,21 @@ export class PlayerSearchComponent implements OnInit {
     return item.id!;
   }
 
+  trackPlayerId(index: number, item: IPlayer): number {
+    return item.id!;
+  }
+
+  trackPlayerPointId(index: number, item: IPlayerPoint): number {
+    return item.id!;
+  }
+
   reset(): void {
     this.page = 0;
-    this.userExtras = [];
-    this.teams = [];
     this.find();
   }
 
   loadPage(page: number): void {
     this.page = page;
-    this.userExtras = [];
-    this.teams = [];
     this.find();
   }
 
@@ -134,6 +181,24 @@ export class PlayerSearchComponent implements OnInit {
     if (data) {
       for (const d of data) {
         this.teams?.push(d);
+      }
+    }
+  }
+
+  protected paginatePlayers(data: IPlayer[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.players?.push(d);
+      }
+    }
+  }
+
+  protected paginatePlayerPoints(data: IPlayerPoint[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.playerPoints?.push(d);
       }
     }
   }

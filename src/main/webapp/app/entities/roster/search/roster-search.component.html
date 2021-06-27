@@ -51,46 +51,37 @@
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-              <th scope="col" jhiSortBy="team.name">
-                <span jhiTranslate="pbpointsApp.roster.search.team">Team</span> <fa-icon icon="sort"></fa-icon>
-              </th>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.team">Team</span> <fa-icon icon="sort"></fa-icon></th>
               <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span> <fa-icon icon="sort"></fa-icon></th>
               <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span> <fa-icon icon="sort"></fa-icon></th>
               <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
-              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
-              <td>{{ roster.team?.name }}</td>
-              <td>
-                <div *ngFor="let player of players; trackBy: trackPlayerId">
-                  <div *ngIf="roster.id == player.roster?.id">
-                    <div *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
-                      <div *ngIf="player.user?.id == userextra.id">
-                        <div *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
+            <ng-container *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
+              <tr *ngFor="let player of players; trackBy: trackPlayerId">
+                <ng-container *ngIf="roster.id == player.roster?.id">
+                  <td>{{ roster.eventCategory?.category?.name }}</td>
+                  <td>{{ roster.team?.name }}</td>
+                  <ng-container *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
+                    <ng-container *ngIf="player.user?.id == userextra.id">
+                      <td>
+                        <ng-container *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
                           <img
                             [src]="'data:' + userextra.pictureContentType + ';base64,' + userextra.picture"
-                            style="max-height: 30px"
+                            style="max-height: 70px"
                             alt="userextra image"
                           />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div *ngFor="let player of players; trackBy: trackPlayerId">
-                  <div *ngIf="roster.id == player.roster?.id">{{ player.user?.lastName }}, {{ player.user?.firstName }}</div>
-                </div>
-              </td>
-              <td>
-                <div *ngFor="let player of players; trackBy: trackPlayerId">
-                  <div *ngIf="roster.id == player.roster?.id">{{ player.category?.name }}</div>
-                </div>
-              </td>
-            </tr>
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </ng-container>
+                  <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
+                  <td>{{ player.category?.name }}</td>
+                </ng-container>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>

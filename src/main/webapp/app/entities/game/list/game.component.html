@@ -17,7 +17,15 @@
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.game.home.createLabel"> Create a new Game </span>
       </button>
-      <button id="jh-create-entity-back" class="btn btn-primary float-right jh-create-entity create-game" (click)="Cancel()">
+
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
         <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>

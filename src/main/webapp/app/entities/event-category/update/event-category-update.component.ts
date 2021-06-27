@@ -58,7 +58,11 @@ export class EventCategoryUpdateComponent implements OnInit {
     this.isSaving = true;
     const eventCategory = this.createFromForm();
     if (eventCategory.id !== undefined) {
-      this.subscribeToSaveResponse(this.eventCategoryService.update(eventCategory));
+      if (eventCategory.id) {
+        this.subscribeToSaveResponse(this.eventCategoryService.update(eventCategory));
+      } else {
+        this.subscribeToSaveResponse(this.eventCategoryService.create(eventCategory));
+      }
     } else {
       this.subscribeToSaveResponse(this.eventCategoryService.create(eventCategory));
     }
@@ -114,13 +118,17 @@ export class EventCategoryUpdateComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.eventService
-      .query()
+      .query({
+        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
+      })
       .pipe(map((res: HttpResponse<IEvent[]>) => res.body ?? []))
       .pipe(map((events: IEvent[]) => this.eventService.addEventToCollectionIfMissing(events, this.editForm.get('event')!.value)))
       .subscribe((events: IEvent[]) => (this.eventsSharedCollection = events));
 
     this.categoryService
-      .query()
+      .query({
+        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
+      })
       .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
       .pipe(
         map((categories: ICategory[]) =>
@@ -130,7 +138,9 @@ export class EventCategoryUpdateComponent implements OnInit {
       .subscribe((categories: ICategory[]) => (this.categoriesSharedCollection = categories));
 
     this.formatService
-      .query()
+      .query({
+        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
+      })
       .pipe(map((res: HttpResponse<IFormat[]>) => res.body ?? []))
       .pipe(map((formats: IFormat[]) => this.formatService.addFormatToCollectionIfMissing(formats, this.editForm.get('format')!.value)))
       .subscribe((formats: IFormat[]) => (this.formatsSharedCollection = formats));

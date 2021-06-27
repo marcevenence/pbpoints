@@ -7,10 +7,18 @@ import { RosterSearchComponent } from './search/roster-search.component';
 import { RosterUpdateComponent } from './update/roster-update.component';
 import { RosterDeleteDialogComponent } from './delete/roster-delete-dialog.component';
 import { RosterRoutingModule } from './route/roster-routing.module';
+import { PlayerFilterPipe } from 'app/shared/player-filter.pipe';
 
 @NgModule({
   imports: [SharedModule, RosterRoutingModule],
-  declarations: [RosterComponent, RosterDetailComponent, RosterSearchComponent, RosterUpdateComponent, RosterDeleteDialogComponent],
+  declarations: [
+    RosterComponent,
+    RosterDetailComponent,
+    RosterSearchComponent,
+    RosterUpdateComponent,
+    RosterDeleteDialogComponent,
+    PlayerFilterPipe,
+  ],
   entryComponents: [RosterDeleteDialogComponent],
 })
 export class RosterModule {}
