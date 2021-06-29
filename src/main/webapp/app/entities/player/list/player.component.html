@@ -7,7 +7,7 @@
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.player.home.refreshListLabel">Refresh List</span>
       </button>-->
-      <button
+      <!--<button
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-player"
@@ -15,6 +15,16 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.player.home.createLabel"> Create a new Player </span>
+      </button>-->
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-province"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>
@@ -31,48 +41,23 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="profile">
-            <span jhiTranslate="pbpointsApp.player.profile">Profile</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="user.login">
-            <span jhiTranslate="pbpointsApp.player.user">User</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="roster.id">
-            <span jhiTranslate="pbpointsApp.player.roster">Roster</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="category.name">
-            <span jhiTranslate="pbpointsApp.player.category">Category</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col"><span jhiTranslate="pbpointsApp.player.user">User</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
+          <!--<th scope="col"><span jhiTranslate="pbpointsApp.player.roster">Roster</span></th>-->
+          <th scope="col"><span jhiTranslate="pbpointsApp.player.category">Category</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let player of players; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/player', player.id, 'view']">{{ player.id }}</a>
-          </td>
+          <!--<td>{{ player.id }}</td>-->
+          <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
           <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + player.profile }}">{{ player.profile }}</td>
-          <td>
-            {{ player.user?.login }}
-          </td>
-          <td>
-            <div *ngIf="player.roster">
-              <a [routerLink]="['/roster', player.roster?.id, 'view']">{{ player.roster?.id }}</a>
-            </div>
-          </td>
-          <td>
-            <div *ngIf="player.category">
-              <a [routerLink]="['/category', player.category?.id, 'view']">{{ player.category?.name }}</a>
-            </div>
-          </td>
+          <!--<td>{{ player.roster?.id }}</td>-->
+          <td>{{ player.category?.name }}</td>
           <td class="text-right">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/player', player.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
+            <div class="btn-group" *ngIf="isTheOwner(player.roster?.team?.owner?.id!)">
               <button type="submit" [routerLink]="['/player', player.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

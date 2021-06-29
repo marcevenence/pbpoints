@@ -11,6 +11,7 @@ import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
 import { IEventCategory } from 'app/entities/event-category/event-category.model';
 import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-roster-update',
@@ -18,7 +19,10 @@ import { EventCategoryService } from 'app/entities/event-category/service/event-
 })
 export class RosterUpdateComponent implements OnInit {
   isSaving = false;
+  currentAccount: any;
 
+  teId?: number;
+  evCatId?: number;
   teamsSharedCollection: ITeam[] = [];
   eventCategoriesSharedCollection: IEventCategory[] = [];
 
@@ -33,11 +37,19 @@ export class RosterUpdateComponent implements OnInit {
     protected rosterService: RosterService,
     protected teamService: TeamService,
     protected eventCategoryService: EventCategoryService,
+    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.teId = +params['teId'] || 0;
+      this.evCatId = +params['evCatId'] || 0;
+    });
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.activatedRoute.data.subscribe(({ roster }) => {
       this.updateForm(roster);
 
@@ -102,21 +114,40 @@ export class RosterUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.teamService
-      .query()
-      .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
-      .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.editForm.get('team')!.value)))
-      .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
-
-    this.eventCategoryService
-      .query()
-      .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
-      .pipe(
-        map((eventCategories: IEventCategory[]) =>
-          this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      this.teamService
+        .query({ 'teamId.equals': this.teId })
+        .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
+        .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.editForm.get('team')!.value)))
+        .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+    } else {
+      this.teamService
+        .query({ 'teamId.equals': this.teId, 'ownerId.equals': this.currentAccount.id })
+        .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
+        .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.editForm.get('team')!.value)))
+        .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+    }
+    if (this.evCatId) {
+      this.eventCategoryService
+        .query({ 'id.equals': this.evCatId })
+        .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
+        .pipe(
+          map((eventCategories: IEventCategory[]) =>
+            this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+          )
         )
-      )
-      .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+        .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+    } else {
+      this.eventCategoryService
+        .query()
+        .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
+        .pipe(
+          map((eventCategories: IEventCategory[]) =>
+            this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+          )
+        )
+        .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+    }
   }
 
   protected createFromForm(): IRoster {

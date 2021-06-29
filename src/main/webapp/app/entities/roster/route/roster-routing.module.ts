@@ -7,6 +7,7 @@ import { RosterDetailComponent } from '../detail/roster-detail.component';
 import { RosterUpdateComponent } from '../update/roster-update.component';
 import { RosterRoutingResolveService } from './roster-routing-resolve.service';
 import { RosterSearchComponent } from '../search/roster-search.component';
+import { RosterSubsComponent } from '../subs/roster-subs.component';
 
 const rosterRoute: Routes = [
   {
@@ -44,6 +45,14 @@ const rosterRoute: Routes = [
   {
     path: 'search',
     component: RosterSearchComponent,
+    resolve: {
+      roster: RosterRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'subs',
+    component: RosterSubsComponent,
     resolve: {
       roster: RosterRoutingResolveService,
     },

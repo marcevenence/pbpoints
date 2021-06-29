@@ -1,28 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivatedRoute } from '@angular/router';
 import { IPlayer } from '../player.model';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { PlayerService } from '../service/player.service';
 import { PlayerDeleteDialogComponent } from '../delete/player-delete-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-player',
   templateUrl: './player.component.html',
 })
 export class PlayerComponent implements OnInit {
+  currentAccount: any;
   players: IPlayer[];
   isLoading = false;
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
   predicate: string;
+  rId?: number;
   ascending: boolean;
 
-  constructor(protected playerService: PlayerService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+  constructor(
+    protected playerService: PlayerService,
+    protected modalService: NgbModal,
+    protected parseLinks: ParseLinks,
+    protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService
+  ) {
     this.players = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
@@ -39,22 +48,40 @@ export class PlayerComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-
-    this.playerService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<IPlayer[]>) => {
-          this.isLoading = false;
-          this.paginatePlayers(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.rId) {
+      this.playerService
+        .query({
+          'rosterId.equals': this.rId,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IPlayer[]>) => {
+            this.isLoading = false;
+            this.paginatePlayers(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.playerService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IPlayer[]>) => {
+            this.isLoading = false;
+            this.paginatePlayers(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -69,7 +96,21 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.rId = +params['rId'] || 0;
+    });
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.loadAll();
+  }
+
+  isTheOwner(ownerId: number): boolean {
+    if (ownerId.toString() === this.currentAccount.id.toString()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   trackId(index: number, item: IPlayer): number {

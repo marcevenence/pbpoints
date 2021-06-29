@@ -86,6 +86,12 @@ export class EventService {
     return eventCollection;
   }
 
+  queryOne(id: number): Observable<EntityResponseType> {
+    return this.http
+      .get<IEvent>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  }
+
   protected convertDateFromClient(event: IEvent): IEvent {
     return Object.assign({}, event, {
       fromDate: event.fromDate?.isValid() ? event.fromDate.format(DATE_FORMAT) : undefined,

@@ -8,32 +8,14 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="pbpointsApp.roster.active" for="field_active">Active</label>
           <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.roster.team" for="field_team">Team</label>
-          <select class="form-control" id="field_team" data-cy="team" name="team" formControlName="team">
-            <option *ngIf="!editForm.get('team')!.value" [ngValue]="null" selected></option>
-            <option
-              [ngValue]="teamOption.id === editForm.get('team')!.value?.id ? editForm.get('team')!.value : teamOption"
-              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
-            >
-              {{ teamOption.name }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['team'])!.invalid && (editForm.get(['team'])!.dirty || editForm.get(['team'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['team'])?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
         </div>
 
         <div class="form-group">
@@ -45,7 +27,7 @@
             name="eventCategory"
             formControlName="eventCategory"
           >
-            <option *ngIf="!editForm.get('eventCategory')!.value" [ngValue]="null" selected></option>
+            <!--<option *ngIf="!editForm.get('eventCategory')!.value" [ngValue]="null" selected></option>-->
             <option
               [ngValue]="
                 eventCategoryOption.id === editForm.get('eventCategory')!.value?.id
@@ -54,7 +36,7 @@
               "
               *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
             >
-              {{ eventCategoryOption.id }}
+              {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }}
             </option>
           </select>
         </div>
@@ -68,6 +50,24 @@
             *ngIf="editForm.get(['eventCategory'])?.errors?.required"
             jhiTranslate="entity.validation.required"
           >
+            This field is required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.roster.team" for="field_team">Team</label>
+          <select class="form-control" id="field_team" data-cy="team" name="team" formControlName="team">
+            <!--<option *ngIf="!editForm.get('team')!.value" [ngValue]="null" selected></option>-->
+            <option
+              [ngValue]="teamOption.id === editForm.get('team')!.value?.id ? editForm.get('team')!.value : teamOption"
+              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+            >
+              {{ teamOption.name }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="editForm.get(['team'])!.invalid && (editForm.get(['team'])!.dirty || editForm.get(['team'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['team'])?.errors?.required" jhiTranslate="entity.validation.required">
             This field is required.
           </small>
         </div>

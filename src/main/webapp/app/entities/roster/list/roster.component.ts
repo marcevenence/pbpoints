@@ -18,6 +18,7 @@ import { RosterDeleteDialogComponent } from '../delete/roster-delete-dialog.comp
 export class RosterComponent implements OnInit {
   currentAccount: any;
   rosters?: IRoster[];
+  roster?: IRoster[];
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -120,6 +121,18 @@ export class RosterComponent implements OnInit {
     });
   }
 
+  isAllowed(ownerId: number, status: string): boolean {
+    if (ownerId.toString() === this.currentAccount.id.toString()) {
+      if (status === 'DONE' || status === 'CANCEL') {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
   Cancel(): void {
     window.history.back();
   }
@@ -164,6 +177,10 @@ export class RosterComponent implements OnInit {
     }
     this.rosters = data ?? [];
     this.ngbPaginationPage = this.page;
+  }
+
+  protected onOneSuccess(data: IRoster[] | null): void {
+    this.roster = data ?? [];
   }
 
   protected onError(): void {

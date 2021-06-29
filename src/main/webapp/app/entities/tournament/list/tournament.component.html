@@ -58,7 +58,7 @@
           <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
             <span jhiTranslate="pbpointsApp.tournament.categorize">Categorize</span>
           </th>
-          <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"><span jhiTranslate="pbpointsApp.tournament.owner">Owner</span></th>
+          <th scope="col" *jhiHasAnyAuthority="'ROLE_ADMIN'"><span jhiTranslate="pbpointsApp.tournament.owner">Owner</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -82,7 +82,7 @@
           </td>
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.cantPlayersNextCategory }}</td>
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.categorize }}</td>
-          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ tournament.owner?.login }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ tournament.owner?.login }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

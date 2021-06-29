@@ -3,9 +3,11 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { AccountService } from 'app/core/auth/account.service';
 import { IEventCategory } from '../event-category.model';
 
+import { IEvent } from 'app/entities/event/event.model';
+import { EventService } from 'app/entities/event/service/event.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { EventCategoryService } from '../service/event-category.service';
 import { EventCategoryDeleteDialogComponent } from '../delete/event-category-delete-dialog.component';
@@ -16,6 +18,8 @@ import { EventCategoryDeleteDialogComponent } from '../delete/event-category-del
 })
 export class EventCategoryComponent implements OnInit {
   eventCategories?: IEventCategory[];
+  event?: IEvent;
+  currentAccount: any;
   isLoading = false;
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -24,12 +28,14 @@ export class EventCategoryComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
   evId = 0;
-  updAllowed = 0;
   updateAllow = true;
+  enableNew = false;
 
   constructor(
     protected eventCategoryService: EventCategoryService,
+    protected eventService: EventService,
     protected activatedRoute: ActivatedRoute,
+    protected accountService: AccountService,
     protected router: Router,
     protected modalService: NgbModal
   ) {}
@@ -76,6 +82,9 @@ export class EventCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.handleNavigation();
   }
 
@@ -96,6 +105,10 @@ export class EventCategoryComponent implements OnInit {
 
   enableUpdate(): boolean {
     return this.updateAllow;
+  }
+
+  getEnableNew(): boolean {
+    return this.enableNew;
   }
 
   Cancel(): void {
@@ -124,7 +137,7 @@ export class EventCategoryComponent implements OnInit {
         this.ascending = ascending;
         this.loadPage(pageNumber, true);
       }
-      this.eventCategoryService.enableUpdate(this.evId).subscribe((res: HttpResponse<number>) => this.paginateUpdate(res.body));
+      this.eventService.queryOne(this.evId).subscribe((res: HttpResponse<IEvent>) => this.paginateEvent(res.body));
     });
   }
 
@@ -148,12 +161,27 @@ export class EventCategoryComponent implements OnInit {
     this.ngbPaginationPage = this.page ?? 1;
   }
 
-  protected paginateUpdate(data: any): void {
-    this.updAllowed = data;
-    if (this.updAllowed.toString() !== '0') {
+  protected paginateEvent(data: any): void {
+    this.event = data;
+    const today = new Date();
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
       this.updateAllow = true;
+      this.enableNew = true;
     } else {
-      this.updateAllow = false;
+      if (
+        this.currentAccount.authorities.includes('ROLE_OWNER_TOURNAMENT') &&
+        this.event!.tournament!.owner!.id!.toString() === this.currentAccount?.id!.toString()
+      ) {
+        this.updateAllow = true;
+        this.enableNew = true;
+      } else {
+        this.enableNew = false;
+        if (this.event!.endInscriptionDate!.toDate() < today) {
+          this.updateAllow = false;
+        } else {
+          this.updateAllow = true;
+        }
+      }
     }
   }
 }

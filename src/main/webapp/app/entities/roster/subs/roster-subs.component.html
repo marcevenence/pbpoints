@@ -1,0 +1,163 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="findForm" role="form" novalidate [formGroup]="findForm">
+      <!--<h2 id="jhi-roster-heading" data-cy="RosterCreateSearchHeading" jhiTranslate="pbpointsApp.roster.search.home.title">Title</h2>-->
+      <ng-container *ngFor="let eventCategory of eventCategoriesSharedCollection; trackBy: trackEventCategoryById" data-cy="entityTable">
+        <h2>{{ eventCategory.event?.tournament?.name }}, {{ eventCategory.event?.name }}</h2>
+      </ng-container>
+
+      <jhi-alert-error></jhi-alert-error>
+      <div class="form-group">
+        <label class="form-control-label" jhiTranslate="pbpointsApp.roster.team" for="field_team">Team</label>
+        <select class="form-control" id="field_team" data-cy="team" name="team" formControlName="team" (ngModelChange)="onChange()">
+          <option
+            [ngValue]="teamOption.id === findForm.get('team')!.value?.id ? findForm.get('team')!.value : teamOption"
+            *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+          >
+            {{ teamOption.name }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="findForm.get(['team'])!.invalid && (findForm.get(['team'])!.dirty || findForm.get(['team'])!.touched)">
+        <small class="form-text text-danger" *ngIf="findForm.get(['team'])?.errors?.required" jhiTranslate="entity.validation.required">
+          This field is required.
+        </small>
+      </div>
+      <table class="table">
+        <tr>
+          <td width="40%">
+            <div class="form-group" [hidden]="findForm.get('team')!.value == null">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.player.id" for="field_id">PBPointsId</label>
+              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" />
+            </div>
+          </td>
+          <td width="10%">
+            <div class="form-group" [hidden]="findForm.get('team')!.value == null">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.player.profile" for="field_code">PBPointsId</label>
+              <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+            </div>
+          </td>
+          <td width="30%">
+            <div class="form-group" [hidden]="findForm.get('team')!.value == null">
+              <label class="form-control-label" jhiTranslate="pbpointsApp.player.profile" for="field_profile">PBPointsId</label>
+              <input type="text" class="form-control" name="profile" id="field_profile" data-cy="profile" formControlName="profile" />
+            </div>
+          </td>
+          <td width="20%" style="vertical-align: bottom">
+            <div class="form-group" [hidden]="findForm.get('team')!.value == null">
+              <button type="submit" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="plus"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table class="table">
+        <tr>
+          <td style="vertical-align: top" width="50%">
+            <!-- Listar Players y Staff nuevos-->
+            <h2>Players</h2>
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                  <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.category">Category</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let playerNew of playerNews; trackBy: trackPlayerId" data-cy="entityTable">
+                  <td>{{ playerNew.user?.lastName }}, {{ playerNew.user?.firstName }}</td>
+                  <td>{{ playerNew.category?.name }}</td>
+                  <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + playerNew.profile }}">{{ playerNew.profile }}</td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <button type="submit" (click)="addStaff(playerNew)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="plus"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                      </button>
+                      <button type="submit" (click)="addPlayer(playerNew)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="plus"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <h2>Staff</h2>
+            <table class="table table-striped" aria-describedby="page-heading">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                  <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.category">Category</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let playerNew of playerNews; trackBy: trackPlayerId" data-cy="entityTable">
+                  <td>{{ playerNew.user?.lastName }}, {{ playerNew.user?.firstName }}</td>
+                  <td>{{ playerNew.category?.name }}</td>
+                  <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + playerNew.profile }}">{{ playerNew.profile }}</td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <button type="submit" (click)="addStaff(playerNew)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="plus"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                      </button>
+                      <button type="submit" (click)="addPlayer(playerNew)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                        <fa-icon icon="plus"></fa-icon>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <h2>History</h2>
+            <table class="table table-striped" aria-describedby="page-heading" align="right">
+              <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                  <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.category">Category</span></th>
+                  <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
+                  <tr *ngFor="let player of players; trackBy: trackPlayerId" data-cy="entityTable">
+                    <ng-container *ngIf="roster.id == player.roster?.id">
+                      <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
+                      <td>{{ player.category?.name }}</td>
+                      <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + player.profile }}">{{ player.profile }}</td>
+                      <td class="text-right">
+                        <div class="btn-group">
+                          <button type="submit" (click)="addStaff(player)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                            <fa-icon icon="plus"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                          </button>
+                          <button type="submit" (click)="addPlayer(player)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                            <fa-icon icon="plus"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+            <br />
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>

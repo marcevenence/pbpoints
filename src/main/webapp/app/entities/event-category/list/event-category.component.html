@@ -8,7 +8,7 @@
         <span jhiTranslate="pbpointsApp.eventCategory.home.refreshListLabel">Refresh List</span>
       </button>-->
       <button
-        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+        *ngIf="getEnableNew()"
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-event-category"
@@ -106,7 +106,7 @@
               <button
                 *ngIf="enableUpdate()"
                 type="submit"
-                [routerLink]="['/roster/new']"
+                [routerLink]="['/roster/subs']"
                 [queryParams]="{ evCatId: eventCategory.id }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityDetailsButton"
@@ -116,7 +116,7 @@
               </button>
 
               <button
-                *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                *ngIf="getEnableNew()"
                 type="submit"
                 [routerLink]="['/event-category', eventCategory.id, 'edit']"
                 class="btn btn-primary btn-sm"
@@ -126,7 +126,13 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(eventCategory)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button
+                *ngIf="getEnableNew()"
+                type="submit"
+                (click)="delete(eventCategory)"
+                class="btn btn-danger btn-sm"
+                data-cy="entityDeleteButton"
+              >
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>

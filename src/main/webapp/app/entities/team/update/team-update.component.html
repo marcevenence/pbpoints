@@ -18,9 +18,17 @@
           <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
           <label class="form-control-label" jhiTranslate="pbpointsApp.team.active" for="field_active">Active</label>
-          <input type="checkbox" class="form-check" name="active" id="field_active" data-cy="active" formControlName="active" />
+          <input
+            type="checkbox"
+            class="form-check"
+            name="active"
+            checked="true"
+            id="field_active"
+            data-cy="active"
+            formControlName="active"
+          />
         </div>
 
         <div class="form-group">
@@ -35,7 +43,7 @@
             name="owner"
             formControlName="owner"
           >
-            <option [ngValue]="null"></option>
+            <!--<option [ngValue]="null"></option>-->
             <option
               [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption"
               *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
