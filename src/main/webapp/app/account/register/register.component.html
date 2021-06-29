@@ -290,17 +290,16 @@
           <div class="input-group">
             <input
               id="bornDate"
-              type="text"
+              type="date"
               class="form-control"
               name="bornDate"
-              ngbDatepicker
-              #bornDateDp="ngbDatepicker"
               formControlName="bornDate"
               placeholder="{{ 'global.form.bornDate.placeholder' | translate }}"
+              data-cy="bornDate"
             />
-            <button type="button" class="btn btn-secondary" (click)="bornDateDp.toggle()">
+            <!--<button type="button" class="btn btn-secondary" (click)="bornDateDp.toggle()">
               <fa-icon [icon]="'calendar-alt'"></fa-icon>
-            </button>
+            </button>-->
           </div>
         </div>
 
