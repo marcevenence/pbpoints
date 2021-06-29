@@ -1,5 +1,6 @@
 package com.pbpoints.web.rest.vm;
 
+import com.pbpoints.domain.DocType;
 import com.pbpoints.service.dto.UserDTO;
 import java.time.LocalDate;
 import javax.persistence.Lob;
@@ -25,6 +26,10 @@ public class ManagedUserVM extends UserDTO {
     private byte[] picture;
 
     private String pictureContentType;
+
+    private String code;
+
+    private DocType docType;
 
     public ManagedUserVM() {
         // Empty constructor needed for Jackson.
@@ -78,8 +83,38 @@ public class ManagedUserVM extends UserDTO {
         this.pictureContentType = pictureContentType;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public DocType getDocType() {
+        return docType;
+    }
+
+    public void setDocType(DocType docType) {
+        this.docType = docType;
+    }
+
     @Override
     public String toString() {
-        return "ManagedUserVM [" + super.toString() + ", phone=" + phone + ", numDoc=" + numDoc + ", bornDate=" + bornDate + "]";
+        return (
+            "ManagedUserVM [" +
+            super.toString() +
+            ", phone=" +
+            phone +
+            ", numDoc=" +
+            numDoc +
+            ", bornDate=" +
+            bornDate +
+            ", code=" +
+            code +
+            ", docType=" +
+            docType +
+            "]"
+        );
     }
 }

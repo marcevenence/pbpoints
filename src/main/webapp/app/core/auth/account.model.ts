@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import { IDocType } from 'app/entities/doc-type/doc-type.model';
 
 export class Account {
   constructor(
@@ -15,6 +16,8 @@ export class Account {
     public phone?: string,
     public bornDate?: dayjs.Dayjs | null,
     public picture?: any,
-    public pictureContentType?: string
+    public pictureContentType?: string,
+    public code?: string,
+    public docType?: IDocType | null
   ) {}
 }

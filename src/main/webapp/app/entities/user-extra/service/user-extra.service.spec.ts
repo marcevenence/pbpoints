@@ -31,6 +31,7 @@ describe('Service Tests', () => {
         bornDate: currentDate,
         pictureContentType: 'image/png',
         picture: 'AAAAAAA',
+        code: 'AAAAAAA',
       };
     });
 
@@ -81,6 +82,7 @@ describe('Service Tests', () => {
             phone: 'BBBBBB',
             bornDate: currentDate.format(DATE_FORMAT),
             picture: 'BBBBBB',
+            code: 'BBBBBB',
           },
           elemDefault
         );
@@ -132,6 +134,7 @@ describe('Service Tests', () => {
             phone: 'BBBBBB',
             bornDate: currentDate.format(DATE_FORMAT),
             picture: 'BBBBBB',
+            code: 'BBBBBB',
           },
           elemDefault
         );
@@ -188,7 +191,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique UserExtra to an array', () => {
-          const userExtraArray: IUserExtra[] = [{ id: 123 }, { id: 456 }, { id: 13048 }];
+          const userExtraArray: IUserExtra[] = [{ id: 123 }, { id: 456 }, { id: 96102 }];
           const userExtraCollection: IUserExtra[] = [{ id: 123 }];
           expectedResult = service.addUserExtraToCollectionIfMissing(userExtraCollection, ...userExtraArray);
           expect(expectedResult).toHaveLength(3);

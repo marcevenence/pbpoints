@@ -2,6 +2,7 @@ package com.pbpoints.service;
 
 import com.pbpoints.config.Constants;
 import com.pbpoints.domain.Authority;
+import com.pbpoints.domain.DocType;
 import com.pbpoints.domain.User;
 import com.pbpoints.domain.UserExtra;
 import com.pbpoints.repository.AuthorityRepository;
@@ -210,7 +211,9 @@ public class UserService {
         String numDoc,
         LocalDate bornDate,
         byte[] picture,
-        String pictureContentType
+        String pictureContentType,
+        String code,
+        DocType docType
     ) {
         User newUser = new User();
         Authority authority = authorityRepository.findByName(AuthoritiesConstants.USER);
@@ -240,6 +243,8 @@ public class UserService {
         newUserExtra.setBornDate(bornDate);
         newUserExtra.setPicture(picture);
         newUserExtra.setPictureContentType(pictureContentType);
+        newUserExtra.setCode(code);
+        newUserExtra.setDocType(docType);
         userExtraRepository.save(newUserExtra);
         log.debug("Created Information for UserExtra: {}", newUserExtra);
 

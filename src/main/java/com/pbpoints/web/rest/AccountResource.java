@@ -113,7 +113,9 @@ public class AccountResource {
                                                 managedUserVM.getNumDoc(),
                                                 managedUserVM.getBornDate(),
                                                 managedUserVM.getPicture(),
-                                                managedUserVM.getPictureContentType()
+                                                managedUserVM.getPictureContentType(),
+                                                managedUserVM.getCode(),
+                                                managedUserVM.getDocType()
                                             );
 
                                             mailService.sendActivationEmail(user);

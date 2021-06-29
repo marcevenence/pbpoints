@@ -134,6 +134,8 @@
       "firstName.placeholder": "Nombre",
       "docType.label": "Tipo de Documento",
       "docType.placeholder": "Tipo de Documento",
+      "code.label": "Codigo Personal",
+      "code.placeholder": "Codigo Personal",
       "numDoc.label": "Nro de Documento",
       "numDoc.placeholder": "Nro de Documento",
       "bornDate.label": "Fecha de Nacimiento",
@@ -175,6 +177,11 @@
           "required": "Se requiere que confirme la contraseña.",
           "minlength": "Se requiere que su contraseña de confirmación tenga por lo menos 4 caracteres",
           "maxlength": "Su contraseña de confirmación no puede tener más de 50 caracteres"
+        },
+        "code": {
+          "required": "Se requiere que ingrese una codigo alfanumerico de 4 caracteres.",
+          "minlength": "Se requiere que su codigo tenga por lo menos 4 caracteres",
+          "maxlength": "Su contraseña no puede tener más de 50 caracteres"
         },
         "email": {
           "required": "Se requiere un correo electrónico.",

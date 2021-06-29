@@ -52,6 +52,9 @@ class UserExtraResourceIT {
     private static final String DEFAULT_PICTURE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_PICTURE_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/user-extras";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -84,7 +87,8 @@ class UserExtraResourceIT {
             .phone(DEFAULT_PHONE)
             .bornDate(DEFAULT_BORN_DATE)
             .picture(DEFAULT_PICTURE)
-            .pictureContentType(DEFAULT_PICTURE_CONTENT_TYPE);
+            .pictureContentType(DEFAULT_PICTURE_CONTENT_TYPE)
+            .code(DEFAULT_CODE);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -105,7 +109,8 @@ class UserExtraResourceIT {
             .phone(UPDATED_PHONE)
             .bornDate(UPDATED_BORN_DATE)
             .picture(UPDATED_PICTURE)
-            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE);
+            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
+            .code(UPDATED_CODE);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -138,6 +143,7 @@ class UserExtraResourceIT {
         assertThat(testUserExtra.getBornDate()).isEqualTo(DEFAULT_BORN_DATE);
         assertThat(testUserExtra.getPicture()).isEqualTo(DEFAULT_PICTURE);
         assertThat(testUserExtra.getPictureContentType()).isEqualTo(DEFAULT_PICTURE_CONTENT_TYPE);
+        assertThat(testUserExtra.getCode()).isEqualTo(DEFAULT_CODE);
     }
 
     @Test
@@ -161,6 +167,24 @@ class UserExtraResourceIT {
 
     @Test
     @Transactional
+    void checkCodeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = userExtraRepository.findAll().size();
+        // set the field null
+        userExtra.setCode(null);
+
+        // Create the UserExtra, which fails.
+        UserExtraDTO userExtraDTO = userExtraMapper.toDto(userExtra);
+
+        restUserExtraMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(userExtraDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<UserExtra> userExtraList = userExtraRepository.findAll();
+        assertThat(userExtraList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllUserExtras() throws Exception {
         // Initialize the database
         userExtraRepository.saveAndFlush(userExtra);
@@ -175,7 +199,8 @@ class UserExtraResourceIT {
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].bornDate").value(hasItem(DEFAULT_BORN_DATE.toString())))
             .andExpect(jsonPath("$.[*].pictureContentType").value(hasItem(DEFAULT_PICTURE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))));
+            .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)));
     }
 
     @Test
@@ -194,7 +219,8 @@ class UserExtraResourceIT {
             .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE))
             .andExpect(jsonPath("$.bornDate").value(DEFAULT_BORN_DATE.toString()))
             .andExpect(jsonPath("$.pictureContentType").value(DEFAULT_PICTURE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.picture").value(Base64Utils.encodeToString(DEFAULT_PICTURE)));
+            .andExpect(jsonPath("$.picture").value(Base64Utils.encodeToString(DEFAULT_PICTURE)))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE));
     }
 
     @Test
@@ -477,6 +503,84 @@ class UserExtraResourceIT {
 
     @Test
     @Transactional
+    void getAllUserExtrasByCodeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code equals to DEFAULT_CODE
+        defaultUserExtraShouldBeFound("code.equals=" + DEFAULT_CODE);
+
+        // Get all the userExtraList where code equals to UPDATED_CODE
+        defaultUserExtraShouldNotBeFound("code.equals=" + UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByCodeIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code not equals to DEFAULT_CODE
+        defaultUserExtraShouldNotBeFound("code.notEquals=" + DEFAULT_CODE);
+
+        // Get all the userExtraList where code not equals to UPDATED_CODE
+        defaultUserExtraShouldBeFound("code.notEquals=" + UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByCodeIsInShouldWork() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code in DEFAULT_CODE or UPDATED_CODE
+        defaultUserExtraShouldBeFound("code.in=" + DEFAULT_CODE + "," + UPDATED_CODE);
+
+        // Get all the userExtraList where code equals to UPDATED_CODE
+        defaultUserExtraShouldNotBeFound("code.in=" + UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByCodeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code is not null
+        defaultUserExtraShouldBeFound("code.specified=true");
+
+        // Get all the userExtraList where code is null
+        defaultUserExtraShouldNotBeFound("code.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByCodeContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code contains DEFAULT_CODE
+        defaultUserExtraShouldBeFound("code.contains=" + DEFAULT_CODE);
+
+        // Get all the userExtraList where code contains UPDATED_CODE
+        defaultUserExtraShouldNotBeFound("code.contains=" + UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserExtrasByCodeNotContainsSomething() throws Exception {
+        // Initialize the database
+        userExtraRepository.saveAndFlush(userExtra);
+
+        // Get all the userExtraList where code does not contain DEFAULT_CODE
+        defaultUserExtraShouldNotBeFound("code.doesNotContain=" + DEFAULT_CODE);
+
+        // Get all the userExtraList where code does not contain UPDATED_CODE
+        defaultUserExtraShouldBeFound("code.doesNotContain=" + UPDATED_CODE);
+    }
+
+    @Test
+    @Transactional
     void getAllUserExtrasByUserIsEqualToSomething() throws Exception {
         // Get already existing entity
         User user = userExtra.getUser();
@@ -522,7 +626,8 @@ class UserExtraResourceIT {
             .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)))
             .andExpect(jsonPath("$.[*].bornDate").value(hasItem(DEFAULT_BORN_DATE.toString())))
             .andExpect(jsonPath("$.[*].pictureContentType").value(hasItem(DEFAULT_PICTURE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))));
+            .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)));
 
         // Check, that the count call also returns 1
         restUserExtraMockMvc
@@ -575,7 +680,8 @@ class UserExtraResourceIT {
             .phone(UPDATED_PHONE)
             .bornDate(UPDATED_BORN_DATE)
             .picture(UPDATED_PICTURE)
-            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE);
+            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
+            .code(UPDATED_CODE);
         UserExtraDTO userExtraDTO = userExtraMapper.toDto(updatedUserExtra);
 
         restUserExtraMockMvc
@@ -595,6 +701,7 @@ class UserExtraResourceIT {
         assertThat(testUserExtra.getBornDate()).isEqualTo(UPDATED_BORN_DATE);
         assertThat(testUserExtra.getPicture()).isEqualTo(UPDATED_PICTURE);
         assertThat(testUserExtra.getPictureContentType()).isEqualTo(UPDATED_PICTURE_CONTENT_TYPE);
+        assertThat(testUserExtra.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test
@@ -693,6 +800,7 @@ class UserExtraResourceIT {
         assertThat(testUserExtra.getBornDate()).isEqualTo(DEFAULT_BORN_DATE);
         assertThat(testUserExtra.getPicture()).isEqualTo(UPDATED_PICTURE);
         assertThat(testUserExtra.getPictureContentType()).isEqualTo(UPDATED_PICTURE_CONTENT_TYPE);
+        assertThat(testUserExtra.getCode()).isEqualTo(DEFAULT_CODE);
     }
 
     @Test
@@ -712,7 +820,8 @@ class UserExtraResourceIT {
             .phone(UPDATED_PHONE)
             .bornDate(UPDATED_BORN_DATE)
             .picture(UPDATED_PICTURE)
-            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE);
+            .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
+            .code(UPDATED_CODE);
 
         restUserExtraMockMvc
             .perform(
@@ -731,6 +840,7 @@ class UserExtraResourceIT {
         assertThat(testUserExtra.getBornDate()).isEqualTo(UPDATED_BORN_DATE);
         assertThat(testUserExtra.getPicture()).isEqualTo(UPDATED_PICTURE);
         assertThat(testUserExtra.getPictureContentType()).isEqualTo(UPDATED_PICTURE_CONTENT_TYPE);
+        assertThat(testUserExtra.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test

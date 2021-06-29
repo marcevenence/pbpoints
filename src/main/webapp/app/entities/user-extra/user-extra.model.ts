@@ -9,6 +9,7 @@ export interface IUserExtra {
   bornDate?: dayjs.Dayjs | null;
   pictureContentType?: string;
   picture?: string;
+  code?: string;
   user?: IUser;
   docType?: IDocType | null;
 }
@@ -21,6 +22,7 @@ export class UserExtra implements IUserExtra {
     public bornDate?: dayjs.Dayjs | null,
     public pictureContentType?: string,
     public picture?: string,
+    public code?: string,
     public user?: IUser,
     public docType?: IDocType | null
   ) {}

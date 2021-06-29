@@ -1,11 +1,11 @@
 package com.pbpoints.service.dto;
 
-import com.pbpoints.domain.DocType;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import javax.persistence.Lob;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.UserExtra} entity.
@@ -27,6 +27,9 @@ public class UserExtraDTO implements Serializable {
     private String pictureContentType;
 
     private DocTypeDTO docType;
+
+    @NotNull
+    private String code;
 
     private UserDTO user;
 
@@ -86,6 +89,14 @@ public class UserExtraDTO implements Serializable {
         this.docType = docType;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public UserDTO getUser() {
         return user;
     }
@@ -124,6 +135,7 @@ public class UserExtraDTO implements Serializable {
             ", phone='" + getPhone() + "'" +
             ", bornDate='" + getBornDate() + "'" +
             ", picture='" + getPicture() + "'" +
+            ", code='" + getCode() + "'" +
             ", user=" + getUser() +
             ", docType=" + getDocType() +
             "}";

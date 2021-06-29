@@ -20,12 +20,18 @@
     </thead>
     <tbody>
       <tr>
-        <td rowspan="6">
+        <td rowspan="8">
           <img [src]="currentImage" width="200" height="250" />
         </td>
         <td><span jhiTranslate="global.form.id.label">PBPointID</span></td>
         <td>
           <span>{{ currentAccount.id }}</span>
+        </td>
+      </tr>
+      <tr>
+        <td><span jhiTranslate="global.form.code.label">Code</span></td>
+        <td>
+          <span>{{ currentAccount.code }}</span>
         </td>
       </tr>
       <tr>

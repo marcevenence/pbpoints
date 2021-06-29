@@ -1,10 +1,13 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IDocType } from 'app/entities/doc-type/doc-type.model';
+import { DocTypeService } from 'app/entities/doc-type/service/doc-type.service';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/config/error.constants';
 import { RegisterService } from './register.service';
@@ -16,6 +19,7 @@ import { RegisterService } from './register.service';
 export class RegisterComponent implements AfterViewInit {
   @ViewChild('login', { static: false })
   login?: ElementRef;
+  docTypes: IDocType[] = [];
 
   doNotMatch = false;
   error = false;
@@ -41,6 +45,8 @@ export class RegisterComponent implements AfterViewInit {
     bornDate: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(10)]],
     picture: ['', [Validators.required]],
     pictureContentType: [],
+    code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
+    docType: [],
   });
 
   constructor(
@@ -49,10 +55,21 @@ export class RegisterComponent implements AfterViewInit {
     protected elementRef: ElementRef,
     private translateService: TranslateService,
     private registerService: RegisterService,
+    private docTypeService: DocTypeService,
     private fb: FormBuilder
   ) {}
 
   ngAfterViewInit(): void {
+    this.docTypeService
+      .query()
+      .pipe(map((res: HttpResponse<IDocType[]>) => res.body ?? []))
+      .pipe(
+        map((docTypes: IDocType[]) =>
+          this.docTypeService.addDocTypeToCollectionIfMissing(docTypes, this.registerForm.get('docType')!.value)
+        )
+      )
+      .subscribe((docTypes: IDocType[]) => (this.docTypes = docTypes));
+
     if (this.login) {
       this.login.nativeElement.focus();
     }
@@ -70,13 +87,27 @@ export class RegisterComponent implements AfterViewInit {
     const bornDate = this.registerForm.get(['bornDate'])!.value;
     const picture = this.registerForm.get(['picture'])!.value;
     const pictureContentType = this.registerForm.get(['pictureContentType'])!.value;
+    const code = this.registerForm.get(['code'])!.value;
+    const docType = this.registerForm.get(['docType'])!.value;
     if (password !== this.registerForm.get(['confirmPassword'])!.value) {
       this.doNotMatch = true;
     } else {
       const login = this.registerForm.get(['login'])!.value;
       const email = this.registerForm.get(['email'])!.value;
       this.registerService
-        .save({ login, email, password, langKey: this.translateService.currentLang, phone, numDoc, bornDate, picture, pictureContentType })
+        .save({
+          login,
+          email,
+          password,
+          langKey: this.translateService.currentLang,
+          phone,
+          numDoc,
+          bornDate,
+          picture,
+          pictureContentType,
+          code,
+          docType,
+        })
         .subscribe(
           () => (this.success = true),
           response => this.processError(response)
@@ -86,6 +117,10 @@ export class RegisterComponent implements AfterViewInit {
 
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
+  }
+
+  trackDocTypeById(index: number, item: IDocType): number {
+    return item.id!;
   }
 
   openFile(base64String: string, contentType: string | null | undefined): void {

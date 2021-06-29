@@ -32,6 +32,7 @@ export class UserExtraUpdateComponent implements OnInit {
     bornDate: [],
     picture: [null, [Validators.required]],
     pictureContentType: [],
+    code: [null, [Validators.required]],
     user: [null, Validators.required],
     docType: [],
   });
@@ -131,6 +132,7 @@ export class UserExtraUpdateComponent implements OnInit {
       bornDate: userExtra.bornDate,
       picture: userExtra.picture,
       pictureContentType: userExtra.pictureContentType,
+      code: userExtra.code,
       user: userExtra.user,
       docType: userExtra.docType,
     });
@@ -164,6 +166,7 @@ export class UserExtraUpdateComponent implements OnInit {
       bornDate: this.editForm.get(['bornDate'])!.value,
       pictureContentType: this.editForm.get(['pictureContentType'])!.value,
       picture: this.editForm.get(['picture'])!.value,
+      code: this.editForm.get(['code'])!.value,
       user: this.editForm.get(['user'])!.value,
       docType: this.editForm.get(['docType'])!.value,
     };

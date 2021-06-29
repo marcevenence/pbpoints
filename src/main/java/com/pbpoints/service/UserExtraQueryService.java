@@ -95,6 +95,9 @@ public class UserExtraQueryService extends QueryService<UserExtra> {
             if (criteria.getBornDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getBornDate(), UserExtra_.bornDate));
             }
+            if (criteria.getCode() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCode(), UserExtra_.code));
+            }
             if (criteria.getUserId() != null) {
                 specification =
                     specification.and(

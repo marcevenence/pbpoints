@@ -39,8 +39,11 @@ public class UserExtra implements Serializable {
     private String pictureContentType;
 
     @ManyToOne
-    @JsonIgnoreProperties("userExtras")
     private DocType docType;
+
+    @NotNull
+    @Column(name = "code", nullable = false)
+    private String code;
 
     @OneToOne(optional = false)
     @NotNull
@@ -149,6 +152,19 @@ public class UserExtra implements Serializable {
         this.docType = docType;
     }
 
+    public String getCode() {
+        return this.code;
+    }
+
+    public UserExtra code(String code) {
+        this.code = code;
+        return this;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public User getUser() {
         return this.user;
     }
@@ -191,6 +207,7 @@ public class UserExtra implements Serializable {
             ", bornDate='" + getBornDate() + "'" +
             ", picture='" + getPicture() + "'" +
             ", pictureContentType='" + getPictureContentType() + "'" +
+            ", code='" + getCode() + "'" +
             "}";
     }
 }

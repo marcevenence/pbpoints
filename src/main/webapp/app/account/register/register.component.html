@@ -225,6 +225,56 @@
             formControlName="firstName"
           />
         </div>
+
+        <div class="form-group">
+          <label class="form-control-label" for="code" jhiTranslate="global.form.code.label">Code</label>
+          <input
+            type="text"
+            class="form-control"
+            id="code"
+            name="code"
+            placeholder="{{ 'global.form.code.placeholder' | translate }}"
+            formControlName="code"
+          />
+          <div *ngIf="registerForm.get('code')!.invalid && (registerForm.get('code')!.dirty || registerForm.get('code')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('code')?.errors?.required"
+              jhiTranslate="global.messages.validate.code.required"
+            >
+              Your Code is required.
+            </small>
+
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('code')?.errors?.minlength"
+              jhiTranslate="global.messages.validate.code.minlength"
+            >
+              Your Code is required to be at least 4 characters.
+            </small>
+
+            <small
+              class="form-text text-danger"
+              *ngIf="registerForm.get('confirmPassword')?.errors?.maxlength"
+              jhiTranslate="global.messages.validate.confirmpassword.maxlength"
+            >
+              Your Code cannot be longer than 50 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="global.form.docType.label" for="field_docType">Doc Type</label>
+          <select class="form-control" id="field_docType" data-cy="docType" name="docType" formControlName="docType">
+            <option
+              [ngValue]="docTypeOption.id === registerForm.get('docType')!.value?.id ? registerForm.get('docType')!.value : docTypeOption"
+              *ngFor="let docTypeOption of docTypes; trackBy: trackDocTypeById"
+            >
+              {{ docTypeOption.name }}
+            </option>
+          </select>
+        </div>
+
         <div class="form-group">
           <label class="form-control-label" for="numDoc" jhiTranslate="global.form.numDoc.label">numDoc</label>
           <input

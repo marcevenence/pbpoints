@@ -45,6 +45,7 @@
           <th scope="col" jhiSortBy="picture">
             <span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span> <fa-icon icon="sort"></fa-icon>
           </th>
+          <th scope="col" jhiSortBy="code"><span jhiTranslate="pbpointsApp.userExtra.code">Code</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col" jhiSortBy="user.id">
             <span jhiTranslate="pbpointsApp.userExtra.user">User</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -72,6 +73,7 @@
             </a>
             <span *ngIf="userExtra.picture">{{ userExtra.pictureContentType }}, {{ byteSize(userExtra.picture) }}</span>
           </td>
+          <td>{{ userExtra.code }}</td>
           <td>
             {{ userExtra.user?.id }}
           </td>

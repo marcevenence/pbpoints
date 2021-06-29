@@ -33,6 +33,8 @@ public class UserExtraCriteria implements Serializable, Criteria {
 
     private LocalDateFilter bornDate;
 
+    private StringFilter code;
+
     private LongFilter userId;
 
     private LongFilter docTypeId;
@@ -44,6 +46,7 @@ public class UserExtraCriteria implements Serializable, Criteria {
         this.numDoc = other.numDoc == null ? null : other.numDoc.copy();
         this.phone = other.phone == null ? null : other.phone.copy();
         this.bornDate = other.bornDate == null ? null : other.bornDate.copy();
+        this.code = other.code == null ? null : other.code.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.docTypeId = other.docTypeId == null ? null : other.docTypeId.copy();
     }
@@ -113,6 +116,21 @@ public class UserExtraCriteria implements Serializable, Criteria {
         this.bornDate = bornDate;
     }
 
+    public StringFilter getCode() {
+        return code;
+    }
+
+    public StringFilter code() {
+        if (code == null) {
+            code = new StringFilter();
+        }
+        return code;
+    }
+
+    public void setCode(StringFilter code) {
+        this.code = code;
+    }
+
     public LongFilter getUserId() {
         return userId;
     }
@@ -157,6 +175,7 @@ public class UserExtraCriteria implements Serializable, Criteria {
             Objects.equals(numDoc, that.numDoc) &&
             Objects.equals(phone, that.phone) &&
             Objects.equals(bornDate, that.bornDate) &&
+            Objects.equals(code, that.code) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(docTypeId, that.docTypeId)
         );
@@ -164,7 +183,7 @@ public class UserExtraCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, numDoc, phone, bornDate, userId, docTypeId);
+        return Objects.hash(id, numDoc, phone, bornDate, code, userId, docTypeId);
     }
 
     // prettier-ignore
@@ -175,6 +194,7 @@ public class UserExtraCriteria implements Serializable, Criteria {
             (numDoc != null ? "numDoc=" + numDoc + ", " : "") +
             (phone != null ? "phone=" + phone + ", " : "") +
             (bornDate != null ? "bornDate=" + bornDate + ", " : "") +
+            (code != null ? "code=" + code + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (docTypeId != null ? "docTypeId=" + docTypeId + ", " : "") +
             "}";
