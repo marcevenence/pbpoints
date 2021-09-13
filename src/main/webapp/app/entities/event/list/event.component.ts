@@ -66,7 +66,7 @@ export class EventComponent implements OnInit {
         this.eventService
           .query({
             'tournamentId.equals': this.tourId,
-            'status.in': ['CREATED', 'IN_PROGRESS'],
+            'status.in': ['CREATED', 'IN_PROGRESS', 'DONE'],
             page: this.page,
             size: this.itemsPerPage,
             sort: this.sort(),
@@ -116,6 +116,14 @@ export class EventComponent implements OnInit {
             }
           );
       }
+    }
+  }
+
+  isNotClosed(status: string): boolean {
+    if (status === 'DONE' || status === 'PENDING' || status === 'CANCEL') {
+      return false;
+    } else {
+      return true;
     }
   }
 

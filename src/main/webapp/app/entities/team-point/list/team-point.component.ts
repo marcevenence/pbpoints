@@ -57,6 +57,10 @@ export class TeamPointComponent implements OnInit {
     this.handleNavigation();
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   trackId(index: number, item: ITeamPoint): number {
     return item.id!;
   }

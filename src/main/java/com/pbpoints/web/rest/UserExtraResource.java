@@ -191,6 +191,19 @@ public class UserExtraResource {
     }
 
     /**
+     * {@code GET  /user-extras/:id} : get the "id" userExtra.
+     *
+     * @param id the id of the userExtraDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the userExtraDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/user-extras/{id}/{code}")
+    public ResponseEntity<UserExtraDTO> getUserExtraByIdAndCode(@PathVariable Long id, @PathVariable String code) {
+        log.debug("REST request to get UserExtra By Id and Code:", id, code);
+        Optional<UserExtraDTO> userExtraDTO = userExtraService.findOneByIdAndCode(id, code);
+        return ResponseUtil.wrapOrNotFound(userExtraDTO);
+    }
+
+    /**
      * {@code DELETE  /user-extras/:id} : delete the "id" userExtra.
      *
      * @param id the id of the userExtraDTO to delete.

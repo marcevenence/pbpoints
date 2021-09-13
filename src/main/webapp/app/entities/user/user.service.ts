@@ -15,12 +15,16 @@ export class UserService {
   constructor(private http: HttpClient, private applicationConfigService: ApplicationConfigService) {}
 
   suspend(id: number): void {
-    alert('Jugador Suspendido');
+    alert(id.toString() + 'Jugador Suspendido');
   }
 
   query(req?: Pagination): Observable<HttpResponse<IUser[]>> {
     const options = createRequestOption(req);
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  find(id: number): Observable<HttpResponse<IUser>> {
+    return this.http.get<IUser>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   addUserToCollectionIfMissing(userCollection: IUser[], ...usersToCheck: (IUser | null | undefined)[]): IUser[] {

@@ -16,7 +16,8 @@
           "team": "Agregar Equipo",
           "teammenu": "Nuevo Equipo",
           "player": "Agregar Jugador",
-          "add": "Agregar"
+          "add": "Agregar",
+          "xml": "Generar Archivo"
         },
         "view": {
           "view": "Ver Todo",
@@ -181,7 +182,7 @@
         "code": {
           "required": "Se requiere que ingrese una codigo alfanumerico de 4 caracteres.",
           "minlength": "Se requiere que su codigo tenga por lo menos 4 caracteres",
-          "maxlength": "Su contraseña no puede tener más de 50 caracteres"
+          "maxlength": "Su codigo no puede tener más de 4 caracteres"
         },
         "email": {
           "required": "Se requiere un correo electrónico.",
@@ -236,7 +237,8 @@
       "maxbytes": "Este campo no puede tener más de {{max}} bytes.",
       "pattern": "Este campo debe seguir el patrón {{pattern}}.",
       "number": "Este campo debe ser un número.",
-      "datetimelocal": "Este campo debe ser una fecha y hora."
+      "datetimelocal": "Este campo debe ser una fecha y hora.",
+      "patternLogin": "Este campo solo puede contener letras, números o e-mail."
     }
   },
   "error": {
@@ -260,5 +262,5 @@
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
-  "footer": "PBPoints 2021, Argentina. Marca registrada"
+  "footer": "PBPoints® 2021, Argentina."
 }

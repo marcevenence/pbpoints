@@ -8,6 +8,7 @@
         "createOrEditLabel": "Jugadores",
         "notFound": "No hay Jugadores Cargados"
       },
+      "code": "Codigo",
       "created": "El Jugador ha sido creado",
       "updated": "El Jugador ha sido actualizado",
       "deleted": "El Jugador ha sido eliminado",

@@ -117,6 +117,21 @@ export class RosterSearchComponent implements OnInit {
     return item.id!;
   }
 
+  filterEventCategoryFunction(): IEventCategory[] {
+    if (!this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      return this.eventCategoriesSharedCollection.filter(evCat => evCat.event!.tournament!.owner!.id === this.currentAccount.id);
+    } else {
+      return this.eventCategoriesSharedCollection;
+    }
+  }
+  filterPlayerFunction(id: number): IPlayer[] {
+    return this.players!.filter(i => i.roster!.id === id);
+  }
+
+  filterUserExtraFunction(id: number): IUserExtra[] {
+    return this.userExtras!.filter(i => i.id === id);
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {

@@ -23,6 +23,7 @@ export class SettingsComponent implements OnInit {
     phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     numDoc: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     bornDate: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+    code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
 
     langKey: [undefined],
     login: [],
@@ -45,6 +46,7 @@ export class SettingsComponent implements OnInit {
           phone: account.phone,
           numDoc: account.numDoc,
           bornDate: account.bornDate,
+          code: account.code,
         });
 
         this.account = account;
@@ -63,6 +65,7 @@ export class SettingsComponent implements OnInit {
     this.account.imageUrl = this.settingsForm.get('imageUrl')!.value;
     this.account.phone = this.settingsForm.get(['phone'])!.value;
     this.account.numDoc = this.settingsForm.get(['numDoc'])!.value;
+    this.account.code = this.settingsForm.get(['code'])!.value;
     this.account.bornDate = this.settingsForm.get(['bornDate'])!.value
       ? dayjs(this.settingsForm.get(['bornDate'])!.value, DATE_FORMAT)
       : undefined;

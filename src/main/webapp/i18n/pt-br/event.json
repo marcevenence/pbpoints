@@ -18,15 +18,24 @@
         "title": "Event"
       },
       "id": "ID",
-      "name": "Name",
-      "fromDate": "From Date",
-      "endDate": "End Date",
-      "endInscriptionDate": "End Inscription Date",
-      "status": "Status",
+      "name": "Nome",
+      "fromDate": "Desde a",
+      "endDate": "até",
+      "endInscriptionDate": "Data de fechamento do registro",
+      "status": "Doença",
       "createDate": "Create Date",
       "updatedDate": "Updated Date",
-      "city": "City",
-      "tournament": "Tournament"
+      "tournament": "Torneio",
+      "city": "Cidade",
+      "pdf": "Fixture",
+      "xml": {
+        "title": "Importar arquivo",
+        "accept": "Importar",
+        "import": {
+          "label": "selecione o arquivo",
+          "placeholder": "Arquivo"
+        }
+      }
     }
   }
 }

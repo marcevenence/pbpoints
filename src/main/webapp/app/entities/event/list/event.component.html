@@ -50,7 +50,7 @@
           <th scope="col"><span jhiTranslate="pbpointsApp.event.fromDate">From Date</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.event.endDate">End Date</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.event.endInscriptionDate">End Inscription Date</span></th>
-          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col"><span jhiTranslate="pbpointsApp.event.status">Status</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.status">Status</span></th>
           <!--<th scope="col">
             <span jhiTranslate="pbpointsApp.event.createDate">Create Date</span> <fa-icon icon="sort"></fa-icon>
           </th>
@@ -69,7 +69,7 @@
           <td>{{ event.fromDate | formatMediumDate }}</td>
           <td>{{ event.endDate | formatMediumDate }}</td>
           <td>{{ event.endInscriptionDate | formatMediumDate }}</td>
-          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" jhiTranslate="{{ 'pbpointsApp.Status.' + event.status }}">
+          <td jhiTranslate="{{ 'pbpointsApp.Status.' + event.status }}">
             {{ event.status }}
           </td>
           <!--<td>{{ event.createDate | formatMediumDatetime }}</td>-->
@@ -93,10 +93,12 @@
                             <fa-icon [icon]="'download'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
                         </button>-->
-              <button type="submit" (click)="generatePDF(event.id!)" class="btn btn-primary btn-sm" data-cy="entityPDFButton">
-                <fa-icon [icon]="'file-pdf'"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
-              </button>
+              <ng-container *ngIf="isNotClosed(event.status!)">
+                <button type="submit" (click)="generatePDF(event.id!)" class="btn btn-primary btn-sm" data-cy="entityPDFButton">
+                  <fa-icon [icon]="'file-pdf'"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
+                </button>
+              </ng-container>
               <button
                 *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 (click)="generateXML(event.id!)"

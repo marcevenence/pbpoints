@@ -8,7 +8,8 @@
       "lastname.placeholder": "Sus apellidos",
       "language": "Idioma",
       "button": "Guardar",
-      "id": "PBPoint ID"
+      "id": "PBPoint ID",
+      "code": "Codigo Personal"
     },
     "messages": {
       "error": {
@@ -26,6 +27,11 @@
           "required": "Se requiere que ingrese sus apellidos.",
           "minlength": "Se requiere que sus apellidos tengan por lo menos 1 caracter",
           "maxlength": "Sus apellidos no pueden tener más de 50 caracteres"
+        },
+        "code": {
+          "required": "Se requiere que ingrese un codigo personal.",
+          "minlength": "Se requiere que su codigo personal tenga 4 caracteres",
+          "maxlength": "Sus codigo personal no puede tener más de 4 caracteres"
         }
       }
     }

@@ -8,9 +8,9 @@
         "createOrEditLabel": "Criar ou editar Divisão de pontos por equipe",
         "notFound": "Nenhum Divisão de pontos por equipe encontrado"
       },
-      "created": "Um novo Divisão de pontos por equipe foi criado com o identificador {{ param }}",
-      "updated": "Um Divisão de pontos por equipe foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Divisão de pontos por equipe foi excluído com o identificador {{ param }}",
+      "created": "Um novo Divisão de pontos por equipe",
+      "updated": "Um Divisão de pontos por equipe",
+      "deleted": "Um Divisão de pontos por equipe",
       "delete": {
         "question": "Tem certeza de que deseja excluir Divisão de pontos por equipe {{ id }}?"
       },
@@ -20,7 +20,8 @@
       "id": "ID",
       "points": "Pontos",
       "teamPoint": "Pontos por equipe",
-      "event": "Evento"
+      "event": "Evento",
+      "tournament": "Torneio"
     }
   }
 }

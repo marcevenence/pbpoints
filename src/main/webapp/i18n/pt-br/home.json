@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Bem vindo, Java Hipster!",
+    "title": "Bem vindo a PBPoints",
     "subtitle": "Esta é a página principal",
     "logged": {
       "message": "Você está logado como \"{{username}}\"."
@@ -14,6 +14,20 @@
       "follow": "siga @jhipster no Twitter"
     },
     "like": "Se você gosta do JHipster, não se esqueça de avaliar no",
-    "github": "GitHub"
+    "github": "GitHub",
+    "tournament": {
+      "logo": "Logo"
+    },
+    "event": {
+      "tournament": "Torneo",
+      "event": "Evento",
+      "city": "Ciudad",
+      "fromDate": "Desde",
+      "endDate": "Hasta",
+      "endInscriptionDate": "Cierre Inscripcion",
+      "old": "Eventos Finalizados",
+      "next": "Proximos Eventos",
+      "status": "Estado"
+    }
   }
 }

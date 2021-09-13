@@ -403,7 +403,10 @@ public class EventService {
         log.debug("*** Generando PDF ***");
 
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance(document, new FileOutputStream(event.getTournament().getId() + "-" + event.getId() + ".pdf"));
+        PdfWriter.getInstance(
+            document,
+            new FileOutputStream(event.getTournament().getName().replace(' ', '_') + "_" + event.getName().replace(' ', '_') + ".pdf")
+        );
         document.open();
 
         Paragraph parrafo = new Paragraph(event.getName());

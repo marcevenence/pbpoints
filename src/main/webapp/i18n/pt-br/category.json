@@ -2,32 +2,32 @@
   "pbpointsApp": {
     "category": {
       "home": {
-        "title": "Categories",
+        "title": "Categorias",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Category",
-        "createOrEditLabel": "Criar ou editar Category",
-        "notFound": "Nenhum Category encontrado"
+        "createLabel": "Criar novo Categoria",
+        "createOrEditLabel": "Criar ou editar Categoria",
+        "notFound": "Nenhum Categoria encontrado"
       },
-      "created": "Um novo Category foi criado com o identificador {{ param }}",
-      "updated": "Um Category foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Category foi excluído com o identificador {{ param }}",
+      "created": "Um novo Categoria foi criado",
+      "updated": "Um Categoria foi atualizado",
+      "deleted": "Um Categoria foi excluído",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Category {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Categoria {{ id }}?"
       },
       "detail": {
-        "title": "Category"
+        "title": "Categoria"
       },
       "id": "ID",
-      "name": "Name",
-      "description": "Description",
-      "gameTimeType": "Game Time Type",
-      "gameTime": "Game Time",
-      "stopTimeType": "Stop Time Type",
-      "stopTime": "Stop Time",
-      "totalPoints": "Total Points",
-      "difPoints": "Dif Points",
+      "name": "Nome",
+      "description": "Descrição",
+      "gameTimeType": "Tipo de duração Partida",
+      "gameTime": "duração Partida",
+      "stopTimeType": "Tipo de duração Meia hora",
+      "stopTime": "duração Meia Hora",
+      "totalPoints": "Total Pontos",
+      "difPoints": "Dif Pontos",
       "order": "Order",
-      "tournament": "Tournament"
+      "tournament": "Torneio"
     }
   }
 }

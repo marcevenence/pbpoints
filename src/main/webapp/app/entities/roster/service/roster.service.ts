@@ -6,6 +6,9 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IRoster, getRosterIdentifier } from '../roster.model';
+import { IPlayer } from 'app/entities/player/player.model';
+import { IEventCategory } from 'app/entities/event-category/event-category.model';
+import { ITeam } from 'app/entities/team/team.model';
 
 export type EntityResponseType = HttpResponse<IRoster>;
 export type EntityArrayResponseType = HttpResponse<IRoster[]>;
@@ -18,6 +21,11 @@ export class RosterService {
 
   create(roster: IRoster): Observable<EntityResponseType> {
     return this.http.post<IRoster>(this.resourceUrl, roster, { observe: 'response' });
+  }
+
+  createWithPlayers(players: IPlayer[], team: ITeam, eventCategory: IEventCategory): Observable<EntityResponseType> {
+    const data = { players, team, eventCategory };
+    return this.http.post<IRoster>(`${this.resourceUrl}/players`, data, { observe: 'response' });
   }
 
   update(roster: IRoster): Observable<EntityResponseType> {

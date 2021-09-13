@@ -15,13 +15,27 @@
         "question": "Tem certeza de que deseja excluir Roster {{ id }}?"
       },
       "detail": {
-        "title": "Roster"
+        "title": "Equipos"
       },
       "id": "ID",
       "active": "Ativo",
+      "team": "Equipo",
+      "eventCategory": "Evento",
+      "event": "Evento",
+      "category": "Categoria",
+      "tournament": "Torneo",
+      "tournamentEvent": "Torneo/Evento",
       "player": "Jogador",
-      "team": "Equipe",
-      "eventCategory": "Categoria"
+      "search": {
+        "home": {
+          "title": "Rosters por evento"
+        },
+        "find": "Buscar",
+        "team": "Equipe",
+        "picture": "Foto",
+        "player": "Jogador",
+        "eventCategory": "Categoria"
+      }
     }
   }
 }

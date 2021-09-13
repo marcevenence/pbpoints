@@ -53,6 +53,10 @@ export class UserExtraService {
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
+  queryOneByIdAndCode(id: number, code: string): Observable<EntityResponseType> {
+    return this.http.get<IUserExtra>(`${this.resourceUrl}/${id}/${code}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

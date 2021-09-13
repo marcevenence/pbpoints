@@ -2,19 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { IRoster } from 'app/entities/roster/roster.model';
+import { IRoster, Roster } from 'app/entities/roster/roster.model';
 import { RosterService } from 'app/entities/roster/service/roster.service';
-import { IPlayer } from 'app/entities/player/player.model';
+import { IPlayer, Player } from 'app/entities/player/player.model';
 import { PlayerService } from 'app/entities/player/service/player.service';
 import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
 import { IEventCategory } from 'app/entities/event-category/event-category.model';
 import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
+import { ProfileUser } from 'app/entities/enumerations/profile-user.model';
 
 @Component({
   selector: 'jhi-roster-subs',
@@ -26,20 +30,28 @@ export class RosterSubsComponent implements OnInit {
   rosters?: IRoster[];
   currentAccount: any;
   userExtras?: IUserExtra[];
-  eventCategoriesSharedCollection: IEventCategory[] = [];
+  eventCategory?: IEventCategory;
   teamsSharedCollection: ITeam[] = [];
   predicate!: string;
   ascending!: boolean;
-  evCatId?: number;
+  evCatId!: number;
+  newPlayer?: IUserExtra;
+  roster?: IRoster;
+  Nplayer?: IPlayer;
+  user?: IUser;
 
   findForm = this.fb.group({
     eventCategory: [null, Validators.required],
+    id: [],
+    code: [],
+    profile: [],
     team: [null, Validators.required],
   });
 
   constructor(
     protected playerService: PlayerService,
     protected rosterService: RosterService,
+    protected userService: UserService,
     protected userExtraService: UserExtraService,
     protected eventCategoryService: EventCategoryService,
     protected teamService: TeamService,
@@ -48,18 +60,22 @@ export class RosterSubsComponent implements OnInit {
     protected accountService: AccountService,
     protected router: Router,
     protected fb: FormBuilder
-  ) {}
+  ) {
+    this.evCatId = 0;
+    this.roster = {};
+    this.newPlayer = {};
+    this.Nplayer = {};
+  }
 
   ngOnInit(): void {
     this.players = [];
+    this.playerNews = [];
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
+    this.handleNavigation();
     this.activatedRoute.data.subscribe(() => {
       this.loadRelationshipsOptions();
-    });
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.evCatId = +params.get('evCatId')!;
     });
   }
 
@@ -127,12 +143,92 @@ export class RosterSubsComponent implements OnInit {
     return item.id!;
   }
 
-  addPlayer(player: IPlayer): void {
-    alert('Agregado: ' + player.user!.lastName! + ' como jugador');
+  saveAll(): void {
+    this.subscribeToSaveResponseRoster(
+      this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
+    );
+    window.history.back();
   }
 
-  addStaff(player: IPlayer): void {
-    alert('Agregado: ' + player.user!.lastName! + ' como staff');
+  addNewPlayer(): void {
+    if (this.findForm.get('id')!.value === null || this.findForm.get('code')!.value === '') {
+      alert('Debe ingresar id y codigo');
+    } else {
+      this.userExtraService.queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value).subscribe(
+        (res: HttpResponse<IUserExtra>) => {
+          this.newPlayer = res.body!;
+        },
+        () => {
+          this.onError();
+        }
+      );
+      if (this.findForm.get('profile')!.value.toString() !== '' && this.newPlayer?.code !== undefined && this.evCatId.toString() !== '') {
+        if (this.roster?.id === undefined) {
+          this.roster = this.createNewRoster();
+        }
+        const nPlayer = this.createNewPlayer();
+        const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
+        if (targetIdx === -1) {
+          this.playerNews!.push(nPlayer);
+        } else {
+          alert('No es posible agregar');
+        }
+      }
+    }
+  }
+
+  addPlayer(player1: IPlayer): void {
+    if (player1.roster?.id === 0) {
+      const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(player1.user?.login);
+      if (targetIdx === -1) {
+        player1.profile = ProfileUser.PLAYER;
+        this.playerNews!.push(player1);
+        const targetIdx2 = this.players!.map(item => item.user?.login).indexOf(player1.user?.login);
+        if (targetIdx2 !== -1) {
+          this.players!.splice(targetIdx2, 1);
+        }
+      } else {
+        player1.profile = ProfileUser.PLAYER;
+        this.playerNews![targetIdx] = player1;
+      }
+    } else {
+      player1.profile = ProfileUser.PLAYER;
+      player1.roster = {};
+      this.playerNews!.push(player1);
+    }
+  }
+
+  addStaff(player1: IPlayer): void {
+    if (player1.roster?.id === 0) {
+      const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(player1.user?.login);
+      if (targetIdx === -1) {
+        player1.profile = ProfileUser.STAFF;
+        this.playerNews!.push(player1);
+        const targetIdx2 = this.players!.map(item => item.user?.login).indexOf(player1.user?.login);
+        if (targetIdx2 !== -1) {
+          this.players!.splice(targetIdx2, 1);
+        }
+      } else {
+        player1.profile = ProfileUser.STAFF;
+        this.playerNews![targetIdx] = player1;
+      }
+    } else {
+      alert(player1.roster?.id);
+    }
+  }
+
+  delPlayer(player: IPlayer): void {
+    this.players!.push(player);
+    const targetIdx = this.playerNews!.map(item => item.user?.id).indexOf(player.user?.id);
+    this.playerNews!.splice(targetIdx, 1);
+  }
+
+  enableSaveAll(): boolean {
+    if (this.playerNews!.length !== 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   protected sort(): string[] {
@@ -155,25 +251,80 @@ export class RosterSubsComponent implements OnInit {
     this.userExtras = data ?? [];
   }
 
+  protected onNewPlayerSuccess(data: any): void {
+    this.newPlayer = data ?? [];
+  }
+
   protected onError(): void {
     // Api for inheritance.
   }
 
   protected loadRelationshipsOptions(): void {
-    this.eventCategoryService
-      .query({ 'id.equals': 11 })
-      .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
-      .pipe(
-        map((eventCategories: IEventCategory[]) =>
-          this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.findForm.get('eventCategory')!.value)
-        )
-      )
-      .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
-
     this.teamService
       .query({ 'ownerId.equals': this.currentAccount.id })
       .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
       .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
       .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+  }
+
+  protected handleNavigation(): void {
+    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
+      // Defaults to 0 if no query param provided.
+      this.evCatId = +params.get('evCatId')!;
+      this.eventCategoryService.find(this.evCatId).subscribe((res: HttpResponse<IEventCategory>) => this.paginateEventCategory(res.body));
+    });
+  }
+
+  protected paginateEventCategory(data: any): void {
+    this.eventCategory = data;
+  }
+
+  protected createNewRoster(): IRoster {
+    return {
+      ...new Roster(),
+      active: true,
+      team: this.findForm.get(['team'])!.value,
+      eventCategory: this.eventCategory,
+    };
+  }
+
+  protected createNewPlayer(): IPlayer {
+    return {
+      ...new Player(),
+      profile: this.findForm.get(['profile'])!.value,
+      user: this.newPlayer?.user,
+      roster: this.roster,
+      category: this.eventCategory?.category,
+    };
+  }
+
+  protected subscribeToSaveResponseRoster(result: Observable<HttpResponse<IRoster>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize(result))).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected subscribeToSaveResponsePlayer(result: Observable<HttpResponse<IPlayer>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize(result))).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(result: any): void {
+    // Api for inheritance.
+  }
+
+  protected paginateUser(data: any): void {
+    this.user = data;
   }
 }

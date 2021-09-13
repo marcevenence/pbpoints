@@ -16,14 +16,13 @@
             formControlName="eventCategory"
             (ngModelChange)="onChange()"
           >
-            <option *ngIf="!findForm.get('eventCategory')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="
                 eventCategoryOption.id === findForm.get('eventCategory')!.value?.id
                   ? findForm.get('eventCategory')!.value
                   : eventCategoryOption
               "
-              *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
+              *ngFor="let eventCategoryOption of filterEventCategoryFunction(); trackBy: trackEventCategoryById"
             >
               {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }} (
               {{ eventCategoryOption.category?.name }} )
@@ -51,22 +50,32 @@
         <table class="table table-striped" aria-describedby="page-heading">
           <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.team">Team</span> <fa-icon icon="sort"></fa-icon></th>
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span> <fa-icon icon="sort"></fa-icon></th>
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span> <fa-icon icon="sort"></fa-icon></th>
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon></th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.team">Team</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.player">Player</span> <fa-icon icon="sort"></fa-icon>
+              </th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.category">Category</span> <fa-icon icon="sort"></fa-icon>
+              </th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
-              <tr *ngFor="let player of players; trackBy: trackPlayerId">
+              <tr *ngFor="let player of filterPlayerFunction(roster.id!); trackBy: trackPlayerId">
                 <ng-container *ngIf="roster.id == player.roster?.id">
-                  <td>{{ roster.eventCategory?.category?.name }}</td>
-                  <td>{{ roster.team?.name }}</td>
-                  <ng-container *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
+                  <td style="height: 20%; text-align: left">{{ roster.eventCategory?.category?.name }}</td>
+                  <td style="height: 20%; text-align: left">{{ roster.team?.name }}</td>
+                  <ng-container *ngFor="let userextra of filterUserExtraFunction(player.user?.id!); trackBy: trackUserExtraId">
                     <ng-container *ngIf="player.user?.id == userextra.id">
-                      <td>
+                      <td style="height: 20%; text-align: center">
                         <ng-container *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
                           <img
                             [src]="'data:' + userextra.pictureContentType + ';base64,' + userextra.picture"
@@ -77,8 +86,8 @@
                       </td>
                     </ng-container>
                   </ng-container>
-                  <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
-                  <td>{{ player.category?.name }}</td>
+                  <td style="height: 20%; text-align: left">{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
+                  <td style="height: 20%; text-align: left">{{ player.category?.name }}</td>
                 </ng-container>
               </tr>
             </ng-container>

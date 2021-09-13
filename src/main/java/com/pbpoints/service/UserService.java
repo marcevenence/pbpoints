@@ -333,6 +333,7 @@ public class UserService {
                     if (!ObjectUtils.isEmpty(managedUserVM.getPictureContentType())) {
                         u.setPictureContentType(managedUserVM.getPictureContentType());
                     }
+                    u.setCode(managedUserVM.getCode());
                     User user = u.getUser();
                     this.clearUserCaches(user);
                     user.setLogin(managedUserVM.getLogin().toLowerCase());

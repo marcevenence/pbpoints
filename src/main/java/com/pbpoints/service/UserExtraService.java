@@ -121,6 +121,19 @@ public class UserExtraService {
     }
 
     /**
+     * Get one userExtra by id and Code.
+     *
+     * @param id the id of the entity.
+     * @param code the code of the entity.
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<UserExtraDTO> findOneByIdAndCode(Long id, String code) {
+        log.debug("Request to get UserExtra :", id, code);
+        return userExtraRepository.findByIdAndCode(id, code).map(userExtraMapper::toDto);
+    }
+
+    /**
      * Delete the userExtra by id.
      *
      * @param id the id of the entity.

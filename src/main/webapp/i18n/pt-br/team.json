@@ -8,9 +8,9 @@
         "createOrEditLabel": "Criar ou editar Equipe",
         "notFound": "Nenhum Equipe encontrado"
       },
-      "created": "Um novo Equipe foi criado com o identificador {{ param }}",
-      "updated": "Um Equipe foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Equipe foi excluído com o identificador {{ param }}",
+      "created": "Um novo Equipe foi criado",
+      "updated": "Um Equipe foi atualizado",
+      "deleted": "Um Equipe foi excluído",
       "delete": {
         "question": "Tem certeza de que deseja excluir Equipe {{ id }}?"
       },

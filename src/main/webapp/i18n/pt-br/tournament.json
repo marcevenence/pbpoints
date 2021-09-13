@@ -8,9 +8,9 @@
         "createOrEditLabel": "Criar ou editar Torneio",
         "notFound": "Nenhum Torneio encontrado"
       },
-      "created": "Um novo Torneio foi criado com o identificador {{ param }}",
-      "updated": "Um Torneio foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Torneio foi excluído com o identificador {{ param }}",
+      "created": "Um novo Torneio foi criado",
+      "updated": "Um Torneio foi atualizado",
+      "deleted": "Um Torneio foi excluído",
       "delete": {
         "question": "Tem certeza de que deseja excluir Torneio {{ id }}?"
       },

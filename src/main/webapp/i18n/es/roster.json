@@ -17,6 +17,13 @@
       "detail": {
         "title": "Equipos"
       },
+      "subs": {
+        "history": "Historial",
+        "player": "Jugadores",
+        "staff": "Staff",
+        "add": "Agregar",
+        "delete": "Eliminar"
+      },
       "id": "ID",
       "active": "Active",
       "team": "Equipo",

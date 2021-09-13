@@ -8,9 +8,9 @@
         "createOrEditLabel": "Criar ou editar Pontos da equipe",
         "notFound": "Nenhum Pontos da equipe encontrado"
       },
-      "created": "Um novo Pontos da equipe foi criado com o identificador {{ param }}",
-      "updated": "Um Pontos da equipe foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Pontos da equipe foi excluído com o identificador {{ param }}",
+      "created": "Um novo Pontos da equipe foi criado",
+      "updated": "Um Pontos da equipe foi atualizado",
+      "deleted": "Um Pontos da equipe foi excluído",
       "delete": {
         "question": "Tem certeza de que deseja excluir Pontos da equipe {{ id }}?"
       },

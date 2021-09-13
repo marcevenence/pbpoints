@@ -2,25 +2,25 @@
   "pbpointsApp": {
     "playerDetailPoint": {
       "home": {
-        "title": "Player Detail Points",
+        "title": "divisão de pontos por jogador",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Player Detail Point",
-        "createOrEditLabel": "Criar ou editar Player Detail Point",
-        "notFound": "Nenhum Player Detail Point encontrado"
+        "createLabel": "Criar novo divisão de pontos por jogador",
+        "createOrEditLabel": "Criar ou editar divisão de pontos por jogador",
+        "notFound": "Nenhum divisão de pontos por jogador encontrado"
       },
-      "created": "Um novo Player Detail Point foi criado com o identificador {{ param }}",
-      "updated": "Um Player Detail Point foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Player Detail Point foi excluído com o identificador {{ param }}",
+      "created": "Um novo divisão de pontos por jogador foi criado",
+      "updated": "Um divisão de pontos por jogador foi atualizado",
+      "deleted": "Um divisão de pontos por jogador foi excluído",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Player Detail Point {{ id }}?"
+        "question": "Tem certeza de que deseja excluir divisão de pontos por jogador {{ id }}?"
       },
       "detail": {
-        "title": "Player Detail Point"
+        "title": "divisão de pontos por jogador"
       },
       "id": "ID",
-      "points": "Points",
-      "event": "Event",
-      "playerPoint": "Player Point"
+      "points": "Pontos",
+      "event": "Evento",
+      "playerPoint": "Pontos por jogador"
     }
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 import { ITeam } from '../team.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
@@ -15,6 +16,7 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 })
 export class TeamComponent implements OnInit {
   currentAccount: any;
+  isSaving = false;
   teams?: ITeam[];
   authSubscription?: Subscription;
   isLoading = false;
@@ -109,8 +111,24 @@ export class TeamComponent implements OnInit {
     });
   }
 
+  deleteUpd(team: ITeam): void {
+    team.active = false;
+    this.subscribeToSaveResponse(this.teamService.update(team));
+  }
+
   Cancel(): void {
     window.history.back();
+  }
+
+  previousState(): void {
+    window.history.back();
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeam>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 
   protected sort(): string[] {
@@ -128,5 +146,16 @@ export class TeamComponent implements OnInit {
         this.teams?.push(d);
       }
     }
+  }
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveSuccess(): void {
+    this.previousState();
+  }
+
+  protected onSaveFinalize(): void {
+    this.isSaving = false;
   }
 }

@@ -2,36 +2,36 @@
   "pbpointsApp": {
     "game": {
       "home": {
-        "title": "Games",
+        "title": "Jogos",
         "refreshListLabel": "Atualizar lista",
-        "createLabel": "Criar novo Game",
-        "createOrEditLabel": "Criar ou editar Game",
-        "notFound": "Nenhum Game encontrado"
+        "createLabel": "Criar novo Jogo",
+        "createOrEditLabel": "Criar ou editar Jogo",
+        "notFound": "Nenhum Jogo encontrado"
       },
-      "created": "Um novo Game foi criado com o identificador {{ param }}",
-      "updated": "Um Game foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Game foi excluído com o identificador {{ param }}",
+      "created": "O novo Jogo foi criado",
+      "updated": "O Jogo foi atualizado",
+      "deleted": "O Jogo foi excluído",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Game {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Jogo {{ id }}?"
       },
       "detail": {
-        "title": "Game"
+        "title": "Jogo"
       },
       "id": "ID",
-      "pointsA": "Points A",
-      "pointsB": "Points B",
+      "pointsA": "Pontos A",
+      "pointsB": "Pontos B",
       "splitDeckNum": "Split Deck Num",
-      "timeLeft": "Time Left",
-      "status": "Status",
+      "timeLeft": "Tempo restante",
+      "status": "doença",
       "overtimeA": "Overtime A",
       "overtimeB": "Overtime B",
       "uvuA": "Uvu A",
       "uvuB": "Uvu B",
-      "group": "Group",
+      "group": "Grupo",
       "clasif": "Clasif",
-      "teamA": "Team A",
-      "teamB": "Team B",
-      "eventCategory": "Event Category"
+      "teamA": "Equipe A",
+      "teamB": "Equipe B",
+      "eventCategory": "Categoria"
     }
   }
 }

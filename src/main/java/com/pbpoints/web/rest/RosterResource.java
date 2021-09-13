@@ -1,11 +1,16 @@
 package com.pbpoints.web.rest;
 
 import com.pbpoints.domain.EventCategory;
+import com.pbpoints.domain.Player;
+import com.pbpoints.domain.RosterWithPlayers;
 import com.pbpoints.domain.User;
+import com.pbpoints.service.PlayerService;
 import com.pbpoints.service.RosterQueryService;
 import com.pbpoints.service.RosterService;
+import com.pbpoints.service.dto.PlayerDTO;
 import com.pbpoints.service.dto.RosterCriteria;
 import com.pbpoints.service.dto.RosterDTO;
+import com.pbpoints.service.dto.RosterWithPlayersDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,11 +46,14 @@ public class RosterResource {
 
     private final RosterService rosterService;
 
+    private final PlayerService playerService;
+
     private final RosterQueryService rosterQueryService;
 
-    public RosterResource(RosterService rosterService, RosterQueryService rosterQueryService) {
+    public RosterResource(RosterService rosterService, RosterQueryService rosterQueryService, PlayerService playerService) {
         this.rosterService = rosterService;
         this.rosterQueryService = rosterQueryService;
+        this.playerService = playerService;
     }
 
     /**
@@ -63,6 +71,38 @@ public class RosterResource {
         }
         rosterDTO.setActive(true);
         RosterDTO result = rosterService.save(rosterDTO);
+        return ResponseEntity
+            .created(new URI("/api/rosters/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code POST  /rosters/players} : Create a new roster with players.
+     *
+     * @param rosterWithPlayersDTO the rosterWithPlayersDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new rosterDTO, or with status {@code 400 (Bad Request)} if the roster has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/rosters/players")
+    public ResponseEntity<RosterDTO> createRosterWithPlayers(@Valid @RequestBody RosterWithPlayersDTO rosterWithPlayersDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save Roster with Players: {}", rosterWithPlayersDTO);
+        RosterDTO rosterDTO = new RosterDTO();
+        rosterDTO.setTeam(rosterWithPlayersDTO.getTeam());
+        rosterDTO.setEventCategory(rosterWithPlayersDTO.getEventCategory());
+        rosterDTO.setActive(true);
+
+        RosterDTO result = rosterService.save(rosterDTO);
+        PlayerDTO result2 = new PlayerDTO();
+
+        List<PlayerDTO> playersDTO = rosterWithPlayersDTO.getPlayers();
+        int i = 0;
+        for (PlayerDTO playerDTO : playersDTO) {
+            playerDTO.setRoster(result);
+            result2 = playerService.save(playerDTO);
+            i++;
+        }
         return ResponseEntity
             .created(new URI("/api/rosters/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

@@ -17,4 +17,6 @@ public interface UserExtraRepository extends JpaRepository<UserExtra, Long>, Jpa
     public Optional<UserExtra> findByUser(User user);
 
     public Optional<UserExtra> findOneByNumDoc(String NumDoc);
+
+    public Optional<UserExtra> findByIdAndCode(Long id, String code);
 }

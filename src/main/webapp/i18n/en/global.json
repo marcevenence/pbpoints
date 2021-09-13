@@ -4,6 +4,7 @@
     "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
     "menu": {
       "home": "Home",
+      "software": "Download Software",
       "back": "Back",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "custom": {
@@ -13,6 +14,7 @@
           "Country": "Add Country",
           "province": "Add Province",
           "team": "Add Team",
+          "teammenu": "New Team",
           "player": "Add Player",
           "add": "Add",
           "xml": "Generate File"
@@ -52,9 +54,25 @@
           "country": "Countries",
           "city": "Cities"
         },
-        "next": {
-          "event": "Next Events"
+        "xml": {
+          "export": "Download File",
+          "import": "Import Results"
         }
+      },
+      "reports": {
+        "main": "Events",
+        "event": {
+          "subscription": "Subscription",
+          "roster": "View Rosters"
+        },
+        "fixture": {
+          "print": "Print Fixture"
+        }
+      },
+      "player": {
+        "main": "Players",
+        "find": "Find Players",
+        "suspend": "Suspend Player"
       },
       "entities": {
         "main": "Entities",
@@ -117,6 +135,8 @@
       "firstName.placeholder": "Your Name",
       "docType.label": "Document Type",
       "docType.placeholder": "Document Type",
+      "code.label": "Personal Code",
+      "code.placeholder": "Personal Code",
       "numDoc.label": "Document Number",
       "numDoc.placeholder": "Document Number",
       "bornDate.label": "Born Date",
@@ -159,6 +179,11 @@
           "minlength": "Your confirmation password is required to be at least 4 characters.",
           "maxlength": "Your confirmation password cannot be longer than 50 characters."
         },
+        "code": {
+          "required": "Your Personal Code is required.",
+          "minlength": "Your Personal Code is required to be at least 4 characters",
+          "maxlength": "Your Personal Code cannot be longer than 4 characters"
+        },
         "email": {
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
@@ -191,7 +216,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "find": "Find"
     },
     "detail": {
       "field": "Field",
@@ -234,5 +260,5 @@
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
     }
   },
-  "footer": "PBPoints 2021, Argentina. Trademark Registered"
+  "footer": "PBPoints® 2021, Argentina."
 }
