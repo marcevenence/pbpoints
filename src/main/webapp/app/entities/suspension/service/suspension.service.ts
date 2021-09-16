@@ -21,6 +21,7 @@ export class SuspensionService {
 
   create(suspension: ISuspension): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(suspension);
+    alert(copy.user?.id!.toString());
     return this.http
       .post<ISuspension>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));

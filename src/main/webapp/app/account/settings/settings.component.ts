@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import * as dayjs from 'dayjs';
-import { DATE_FORMAT } from 'app/config/input.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 import { LANGUAGES } from 'app/config/language.constants';
@@ -22,7 +20,7 @@ export class SettingsComponent implements OnInit {
     email: [undefined, [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     numDoc: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-    bornDate: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+    bornDate: [],
     code: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]],
 
     langKey: [undefined],
@@ -66,9 +64,7 @@ export class SettingsComponent implements OnInit {
     this.account.phone = this.settingsForm.get(['phone'])!.value;
     this.account.numDoc = this.settingsForm.get(['numDoc'])!.value;
     this.account.code = this.settingsForm.get(['code'])!.value;
-    this.account.bornDate = this.settingsForm.get(['bornDate'])!.value
-      ? dayjs(this.settingsForm.get(['bornDate'])!.value, DATE_FORMAT)
-      : undefined;
+    this.account.bornDate = this.settingsForm.get(['bornDate'])!.value;
 
     this.accountService.save(this.account).subscribe(() => {
       this.success = true;

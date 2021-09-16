@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as dayjs from 'dayjs';
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -126,8 +128,12 @@ export class PlayerSearchComponent implements OnInit {
   Suspend(user: any): void {
     this.playerSusp = {};
     this.playerSusp.user = user;
-    this.playerSusp.startDate = dayjs();
-    this.suspensionService.create(this.playerSusp);
+    this.playerSusp.startDate = dayjs().startOf('day');
+    this.subscribeToSaveResponse(this.suspensionService.create(this.playerSusp));
+  }
+
+  suspendido(): boolean {
+    return true;
   }
 
   byteSize(base64String: string): string {
@@ -210,5 +216,24 @@ export class PlayerSearchComponent implements OnInit {
         this.playerPoints?.push(d);
       }
     }
+  }
+
+  protected onSaveSuccess(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveError(): void {
+    // Api for inheritance.
+  }
+
+  protected onSaveFinalize(): void {
+    // Api for inheritance.
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ISuspension>>): void {
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError()
+    );
   }
 }

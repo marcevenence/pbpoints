@@ -71,16 +71,30 @@
               <td>{{ userExtra.phone }}</td>
               <td>{{ userExtra.bornDate | formatMediumDate }}</td>
               <td>
-                <button
-                  id="jh-create-entity-back"
-                  class="btn btn-danger btn-sm"
-                  (click)="Suspend(userExtra?.user)"
-                  data-toggle="tooltip"
-                  [title]="'global.menu.back' | translate"
-                >
-                  <fa-icon [icon]="'exclamation'"></fa-icon>
-                  <span jhiTranslate="pbpointsApp.player.search.suspend">Back</span>
-                </button>
+                <a *ngIf="suspendido()">
+                  <button
+                    id="jh-create-entity-back"
+                    class="btn btn-danger btn-sm"
+                    (click)="Suspend(userExtra?.user)"
+                    data-toggle="tooltip"
+                    [title]="'global.menu.back' | translate"
+                  >
+                    <fa-icon [icon]="'exclamation'"></fa-icon>
+                    <span jhiTranslate="pbpointsApp.player.search.suspend">Suspend</span>
+                  </button>
+                </a>
+                <a *ngIf="!suspendido()">
+                  <button
+                    id="jh-create-entity-back2"
+                    class="btn btn-danger btn-sm"
+                    (click)="Suspend(userExtra?.user)"
+                    data-toggle="tooltip"
+                    [title]="'global.menu.back' | translate"
+                  >
+                    <fa-icon [icon]="'exclamation'"></fa-icon>
+                    <span jhiTranslate="pbpointsApp.player.search.bornDate">Back</span>
+                  </button>
+                </a>
               </td>
             </tr>
           </tbody>

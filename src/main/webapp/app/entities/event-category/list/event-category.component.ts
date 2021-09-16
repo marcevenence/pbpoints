@@ -83,7 +83,9 @@ export class EventCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
-      this.currentAccount = account;
+      if (account) {
+        this.currentAccount = account;
+      }
     });
     this.handleNavigation();
   }

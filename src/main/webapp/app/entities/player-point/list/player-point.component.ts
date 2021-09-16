@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { Account } from 'app/core/auth/account.model';
 import { IPlayerPoint } from '../player-point.model';
 import { AccountService } from 'app/core/auth/account.service';
 
@@ -16,7 +16,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: './player-point.component.html',
 })
 export class PlayerPointComponent implements OnInit {
-  currentAccount: any;
+  currentAccount!: Account;
   playerPoints: IPlayerPoint[];
   isLoading = false;
   itemsPerPage: number;
@@ -95,12 +95,11 @@ export class PlayerPointComponent implements OnInit {
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {
-      this.currentAccount = account;
+      if (account) {
+        this.currentAccount = account;
+      }
     });
     this.loadAll();
-    this.accountService.identity().subscribe(account => {
-      this.currentAccount = account;
-    });
     this.currentImageURL = 'data:' + String(this.currentAccount.pictureContentType) + ';base64,' + String(this.currentAccount.picture);
     this.currentImage = this.sanitizer.bypassSecurityTrustUrl(this.currentImageURL);
   }
