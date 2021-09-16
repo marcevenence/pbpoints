@@ -81,7 +81,7 @@ export class RosterSearchComponent implements OnInit {
       }
     );
 
-    this.userExtraService.query({}).subscribe(
+    this.userExtraService.query({ size: 2000 }).subscribe(
       (res: HttpResponse<IUserExtra[]>) => {
         this.onUserExtraSuccess(res.body);
       },

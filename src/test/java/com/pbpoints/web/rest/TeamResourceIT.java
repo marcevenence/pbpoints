@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link TeamResource} REST controller.
@@ -38,6 +39,11 @@ class TeamResourceIT {
 
     private static final Boolean DEFAULT_ACTIVE = false;
     private static final Boolean UPDATED_ACTIVE = true;
+
+    private static final byte[] DEFAULT_LOGO = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_LOGO = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_LOGO_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_LOGO_CONTENT_TYPE = "image/png";
 
     private static final String ENTITY_API_URL = "/api/teams";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -66,7 +72,7 @@ class TeamResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Team createEntity(EntityManager em) {
-        Team team = new Team().name(DEFAULT_NAME).active(DEFAULT_ACTIVE);
+        Team team = new Team().name(DEFAULT_NAME).active(DEFAULT_ACTIVE).logo(DEFAULT_LOGO).logoContentType(DEFAULT_LOGO_CONTENT_TYPE);
         return team;
     }
 
@@ -77,7 +83,7 @@ class TeamResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Team createUpdatedEntity(EntityManager em) {
-        Team team = new Team().name(UPDATED_NAME).active(UPDATED_ACTIVE);
+        Team team = new Team().name(UPDATED_NAME).active(UPDATED_ACTIVE).logo(UPDATED_LOGO).logoContentType(UPDATED_LOGO_CONTENT_TYPE);
         return team;
     }
 
@@ -102,6 +108,8 @@ class TeamResourceIT {
         Team testTeam = teamList.get(teamList.size() - 1);
         assertThat(testTeam.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTeam.getActive()).isEqualTo(DEFAULT_ACTIVE);
+        assertThat(testTeam.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testTeam.getLogoContentType()).isEqualTo(DEFAULT_LOGO_CONTENT_TYPE);
     }
 
     @Test
@@ -136,7 +144,9 @@ class TeamResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(team.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))));
     }
 
     @Test
@@ -152,7 +162,9 @@ class TeamResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(team.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
+            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
+            .andExpect(jsonPath("$.logoContentType").value(DEFAULT_LOGO_CONTENT_TYPE))
+            .andExpect(jsonPath("$.logo").value(Base64Utils.encodeToString(DEFAULT_LOGO)));
     }
 
     @Test
@@ -332,7 +344,9 @@ class TeamResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(team.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))));
 
         // Check, that the count call also returns 1
         restTeamMockMvc
@@ -380,7 +394,7 @@ class TeamResourceIT {
         Team updatedTeam = teamRepository.findById(team.getId()).get();
         // Disconnect from session so that the updates on updatedTeam are not directly saved in db
         em.detach(updatedTeam);
-        updatedTeam.name(UPDATED_NAME).active(UPDATED_ACTIVE);
+        updatedTeam.name(UPDATED_NAME).active(UPDATED_ACTIVE).logo(UPDATED_LOGO).logoContentType(UPDATED_LOGO_CONTENT_TYPE);
         TeamDTO teamDTO = teamMapper.toDto(updatedTeam);
 
         restTeamMockMvc
@@ -397,6 +411,8 @@ class TeamResourceIT {
         Team testTeam = teamList.get(teamList.size() - 1);
         assertThat(testTeam.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTeam.getActive()).isEqualTo(UPDATED_ACTIVE);
+        assertThat(testTeam.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testTeam.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
     }
 
     @Test
@@ -476,7 +492,7 @@ class TeamResourceIT {
         Team partialUpdatedTeam = new Team();
         partialUpdatedTeam.setId(team.getId());
 
-        partialUpdatedTeam.active(UPDATED_ACTIVE);
+        partialUpdatedTeam.active(UPDATED_ACTIVE).logo(UPDATED_LOGO).logoContentType(UPDATED_LOGO_CONTENT_TYPE);
 
         restTeamMockMvc
             .perform(
@@ -492,6 +508,8 @@ class TeamResourceIT {
         Team testTeam = teamList.get(teamList.size() - 1);
         assertThat(testTeam.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testTeam.getActive()).isEqualTo(UPDATED_ACTIVE);
+        assertThat(testTeam.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testTeam.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
     }
 
     @Test
@@ -506,7 +524,7 @@ class TeamResourceIT {
         Team partialUpdatedTeam = new Team();
         partialUpdatedTeam.setId(team.getId());
 
-        partialUpdatedTeam.name(UPDATED_NAME).active(UPDATED_ACTIVE);
+        partialUpdatedTeam.name(UPDATED_NAME).active(UPDATED_ACTIVE).logo(UPDATED_LOGO).logoContentType(UPDATED_LOGO_CONTENT_TYPE);
 
         restTeamMockMvc
             .perform(
@@ -522,6 +540,8 @@ class TeamResourceIT {
         Team testTeam = teamList.get(teamList.size() - 1);
         assertThat(testTeam.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testTeam.getActive()).isEqualTo(UPDATED_ACTIVE);
+        assertThat(testTeam.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testTeam.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
     }
 
     @Test

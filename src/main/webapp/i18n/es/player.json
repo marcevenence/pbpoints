@@ -1,6 +1,8 @@
 {
   "pbpointsApp": {
     "player": {
+      "yes": "Si",
+      "no": "No",
       "home": {
         "title": "Jugadores",
         "refreshListLabel": "Refrescar lista",

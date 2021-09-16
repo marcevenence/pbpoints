@@ -12,7 +12,7 @@
       "updated": "Um Equipe foi atualizado",
       "deleted": "Um Equipe foi excluído",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Equipe {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Equipe?"
       },
       "detail": {
         "title": "Equipe"
@@ -20,7 +20,8 @@
       "id": "ID",
       "name": "Nome",
       "active": "Ativo",
-      "owner": "Proprietário"
+      "owner": "Proprietário",
+      "logo": "Logo"
     }
   }
 }

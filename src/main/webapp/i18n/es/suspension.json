@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "suspension": {
+      "home": {
+        "title": "Suspensiones",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Suspender Jugador",
+        "createOrEditLabel": "Crear o editar Suspension",
+        "notFound": "No se encontraron suspensiones"
+      },
+      "created": "La Suspension ha sido creada",
+      "updated": "La Suspension ha sido actualizada",
+      "deleted": "La Suspension ha sido eliminada",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar la Suspension?"
+      },
+      "detail": {
+        "title": "Suspension"
+      },
+      "id": "PBPoints ID",
+      "startDate": "Fecha Inicio Suspension",
+      "endDate": "Fecha Fin Suspension",
+      "user": "Jugador"
+    }
+  }
+}

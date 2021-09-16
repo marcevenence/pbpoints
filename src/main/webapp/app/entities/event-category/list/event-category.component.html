@@ -77,7 +77,10 @@
               <div>{{ eventCategory.format?.name }}</div>
             </div>
           </td>
-          <td>{{ eventCategory.splitDeck }}</td>
+          <td>
+            <div *ngIf="eventCategory.splitDeck"><span jhiTranslate="pbpointsApp.eventCategory.yes">Yes</span></div>
+            <div *ngIf="!eventCategory.splitDeck"><span jhiTranslate="pbpointsApp.eventCategory.no">No</span></div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button

@@ -8,11 +8,11 @@
         "createOrEditLabel": "Criar ou editar Roster",
         "notFound": "Nenhum Roster encontrado"
       },
-      "created": "Um novo Roster foi criado com o identificador {{ param }}",
-      "updated": "Um Roster foi atualizado com o identificador {{ param }}",
-      "deleted": "Um Roster foi excluído com o identificador {{ param }}",
+      "created": "Um novo Roster foi criado",
+      "updated": "Um Roster foi atualizado",
+      "deleted": "Um Roster foi excluído",
       "delete": {
-        "question": "Tem certeza de que deseja excluir Roster {{ id }}?"
+        "question": "Tem certeza de que deseja excluir Roster?"
       },
       "detail": {
         "title": "Equipos"

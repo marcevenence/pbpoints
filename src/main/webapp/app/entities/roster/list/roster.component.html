@@ -59,7 +59,10 @@
           <td>{{ roster.eventCategory?.event?.tournament?.name }} - {{ roster.eventCategory?.event?.name }}</td>
           <td>{{ roster.eventCategory?.category?.name }}</td>
           <td>{{ roster.team?.name }}</td>
-          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ roster.active }}</td>
+          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+            <div *ngIf="roster.active"><span jhiTranslate="pbpointsApp.roster.yes">Yes</span></div>
+            <div *ngIf="!roster.active"><span jhiTranslate="pbpointsApp.roster.no">No</span></div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/player']" [queryParams]="{ rId: roster.id }" class="btn btn-primary btn-sm">
@@ -78,7 +81,7 @@
               </button>
 
               <button
-                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                *ngIf="isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!)"
                 type="submit"
                 (click)="delete(roster)"
                 class="btn btn-danger btn-sm"

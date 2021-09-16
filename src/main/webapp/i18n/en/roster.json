@@ -8,11 +8,11 @@
         "createOrEditLabel": "Create or edit a Roster",
         "notFound": "No Rosters found"
       },
-      "created": "The Roster {{ param }} has been created with identifier",
-      "updated": "The Roster {{ param }} has been updated with identifier",
-      "deleted": "The Roster {{ param }} has been deleted with identifier",
+      "created": "The Roster has been created",
+      "updated": "The Roster has been updated",
+      "deleted": "The Roster has been deleted",
       "delete": {
-        "question": "Are you sure you want to delete Roster {{ id }}?"
+        "question": "Are you sure you want to delete Roster?"
       },
       "detail": {
         "title": "Roster"

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as dayjs from 'dayjs';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +15,8 @@ import { IPlayer } from 'app/entities/player/player.model';
 import { PlayerService } from 'app/entities/player/service/player.service';
 import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
 import { PlayerPointService } from 'app/entities/player-point/service/player-point.service';
+import { ISuspension } from 'app/entities/suspension/suspension.model';
+import { SuspensionService } from 'app/entities/suspension/service/suspension.service';
 
 @Component({
   selector: 'jhi-player-search',
@@ -29,6 +32,7 @@ export class PlayerSearchComponent implements OnInit {
   page: number;
   predicate: string;
   ascending: boolean;
+  playerSusp: ISuspension;
 
   searchForm = this.fb.group({
     id: [],
@@ -40,6 +44,7 @@ export class PlayerSearchComponent implements OnInit {
     protected teamService: TeamService,
     protected playerService: PlayerService,
     protected playerPointService: PlayerPointService,
+    protected suspensionService: SuspensionService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
     protected fb: FormBuilder,
@@ -49,6 +54,7 @@ export class PlayerSearchComponent implements OnInit {
     this.teams = [];
     this.players = [];
     this.playerPoints = [];
+    this.playerSusp = {};
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -117,8 +123,11 @@ export class PlayerSearchComponent implements OnInit {
     }
   }
 
-  Suspend(id: any): void {
-    this.userService.suspend(id);
+  Suspend(user: any): void {
+    this.playerSusp = {};
+    this.playerSusp.user = user;
+    this.playerSusp.startDate = dayjs();
+    this.suspensionService.create(this.playerSusp);
   }
 
   byteSize(base64String: string): string {

@@ -1,6 +1,8 @@
 {
   "pbpointsApp": {
     "roster": {
+      "yes": "Si",
+      "no": "No",
       "home": {
         "title": "Equipos",
         "refreshListLabel": "Refrescar lista",
@@ -8,11 +10,11 @@
         "createOrEditLabel": "Equipos",
         "notFound": "No hay Equipos Anotados"
       },
-      "created": "Un nuevo Roster ha sido creado con el identificador {{ param }}",
-      "updated": "Un Roster ha sido actualizado con el identificador {{ param }}",
-      "deleted": "Un Roster ha sido eliminado con el identificador {{ param }}",
+      "created": "El nuevo Roster ha sido creado",
+      "updated": "El Roster ha sido actualizado",
+      "deleted": "El Roster ha sido eliminado",
       "delete": {
-        "question": "¿Seguro que quiere eliminar el equipo {{ id }}?"
+        "question": "¿Seguro que quiere eliminar el equipo?"
       },
       "detail": {
         "title": "Equipos"

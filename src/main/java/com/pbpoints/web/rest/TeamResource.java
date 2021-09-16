@@ -64,17 +64,11 @@ public class TeamResource {
         if (teamDTO.getId() != null) {
             throw new BadRequestAlertException("A new team cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        log.debug("AAAAA");
-        log.debug("GetName: {}", teamDTO.getName());
-        log.debug("GetOwner: {}", teamDTO.getOwner());
         if (teamService.findByNameAndIdOwner(teamDTO.getName(), teamDTO.getOwner().getId()).isPresent()) {
             throw new BadRequestAlertException("The Team has already exists", ENTITY_NAME, "teamexists");
         }
-        log.debug("SET ACTIVE NEXT");
         teamDTO.setActive(true);
-        log.debug("SET ACTIVE DONE");
         TeamDTO result = teamService.save(teamDTO);
-        log.debug("REST save Team Result : {}", result);
         return ResponseEntity
             .created(new URI("/api/teams/" + result.getId()))
             //.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -92,12 +86,21 @@ public class TeamResource {
      * or with status {@code 500 (Internal Server Error)} if the teamDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/teams")
-    public ResponseEntity<TeamDTO> updateTeam(@RequestBody TeamDTO teamDTO) throws URISyntaxException {
-        log.debug("REST request to update Team : {}", teamDTO);
+    @PutMapping("/teams/{id}")
+    public ResponseEntity<TeamDTO> updateTeam(@PathVariable(value = "id", required = false) final Long id, @RequestBody TeamDTO teamDTO)
+        throws URISyntaxException {
+        log.debug("REST request to update Team : {}, {}", id, teamDTO);
         if (teamDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, teamDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!teamRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         TeamDTO result = teamService.save(teamDTO);
         return ResponseEntity
             .ok()
@@ -107,11 +110,45 @@ public class TeamResource {
     }
 
     /**
+     * {@code PATCH  /teams/:id} : Partial updates given fields of an existing team, field will ignore if it is null
+     *
+     * @param id the id of the teamDTO to save.
+     * @param teamDTO the teamDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamDTO,
+     * or with status {@code 400 (Bad Request)} if the teamDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the teamDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the teamDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/teams/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<TeamDTO> partialUpdateTeam(
+        @PathVariable(value = "id", required = false) final Long id,
+        @RequestBody TeamDTO teamDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update Team partially : {}, {}", id, teamDTO);
+        if (teamDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, teamDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!teamRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<TeamDTO> result = teamService.partialUpdate(teamDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamDTO.getId().toString())
+        );
+    }
+
+    /**
      * {@code GET  /teams} : get all the teams.
      *
-
      * @param pageable the pagination information.
-
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of teams in body.
      */

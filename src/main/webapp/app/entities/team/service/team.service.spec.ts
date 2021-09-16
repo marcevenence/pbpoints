@@ -24,6 +24,8 @@ describe('Service Tests', () => {
         id: 0,
         name: 'AAAAAAA',
         active: false,
+        logoContentType: 'image/png',
+        logo: 'AAAAAAA',
       };
     });
 
@@ -61,6 +63,7 @@ describe('Service Tests', () => {
             id: 1,
             name: 'BBBBBB',
             active: true,
+            logo: 'BBBBBB',
           },
           elemDefault
         );
@@ -78,6 +81,7 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             active: true,
+            logo: 'BBBBBB',
           },
           new Team()
         );
@@ -99,6 +103,7 @@ describe('Service Tests', () => {
             id: 1,
             name: 'BBBBBB',
             active: true,
+            logo: 'BBBBBB',
           },
           elemDefault
         );
@@ -150,7 +155,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Team to an array', () => {
-          const teamArray: ITeam[] = [{ id: 123 }, { id: 456 }, { id: 65044 }];
+          const teamArray: ITeam[] = [{ id: 123 }, { id: 456 }, { id: 41436 }];
           const teamCollection: ITeam[] = [{ id: 123 }];
           expectedResult = service.addTeamToCollectionIfMissing(teamCollection, ...teamArray);
           expect(expectedResult).toHaveLength(3);

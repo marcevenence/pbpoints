@@ -1,6 +1,8 @@
 {
   "pbpointsApp": {
     "eventCategory": {
+      "yes": "Si",
+      "no": "No",
       "home": {
         "title": "Categorias",
         "refreshListLabel": "Refrescar lista",

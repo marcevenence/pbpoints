@@ -19,11 +19,18 @@ public class Team implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "active")
     private Boolean active;
+
+    @Lob
+    @Column(name = "logo")
+    private byte[] logo;
+
+    @Column(name = "logo_content_type")
+    private String logoContentType;
 
     @ManyToOne
     private User owner;
@@ -68,6 +75,32 @@ public class Team implements Serializable {
         this.active = active;
     }
 
+    public byte[] getLogo() {
+        return this.logo;
+    }
+
+    public Team logo(byte[] logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public String getLogoContentType() {
+        return this.logoContentType;
+    }
+
+    public Team logoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
+        return this;
+    }
+
+    public void setLogoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
+    }
+
     public User getOwner() {
         return this.owner;
     }
@@ -107,6 +140,8 @@ public class Team implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", logoContentType='" + getLogoContentType() + "'" +
             "}";
     }
 }

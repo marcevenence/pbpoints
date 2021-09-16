@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "suspension": {
+      "home": {
+        "title": "Suspensions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Suspension",
+        "createOrEditLabel": "Create or edit a Suspension",
+        "notFound": "No Suspensions found"
+      },
+      "created": "A new Suspension is created with identifier {{ param }}",
+      "updated": "A Suspension is updated with identifier {{ param }}",
+      "deleted": "A Suspension is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Suspension {{ id }}?"
+      },
+      "detail": {
+        "title": "Suspension"
+      },
+      "id": "ID",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "user": "User"
+    }
+  }
+}

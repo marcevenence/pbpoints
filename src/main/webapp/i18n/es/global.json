@@ -96,6 +96,7 @@
         "game": "Partidos",
         "bracket": "Bracket",
         "formula": "Formula",
+        "suspension": "Suspension",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -189,7 +190,7 @@
           "invalid": "Su correo electrónico no es válido.",
           "minlength": "Se requiere que su correo electrónico tenga por lo menos 5 caracteres",
           "maxlength": "Su correo electrónico no puede tener más de 50 caracteres",
-          "modify": "Para modificar este dato, contactese con info@pbpoints.net. Gracias"
+          "modify": "Para modificar este dato, contactese con pbpoints.info@gmail.com. Gracias"
         },
         "phone": {
           "required": "Se requiere un teléfono.",

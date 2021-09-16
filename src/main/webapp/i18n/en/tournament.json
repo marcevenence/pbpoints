@@ -1,6 +1,8 @@
 {
   "pbpointsApp": {
     "tournament": {
+      "yes": "Yes",
+      "no": "No",
       "home": {
         "title": "Tournaments",
         "refreshListLabel": "Refresh list",

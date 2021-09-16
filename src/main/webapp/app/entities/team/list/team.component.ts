@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { ITeam } from '../team.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { TeamService } from '../service/team.service';
 import { TeamDeleteDialogComponent } from '../delete/team-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
@@ -17,17 +18,18 @@ import { ParseLinks } from 'app/core/util/parse-links.service';
 export class TeamComponent implements OnInit {
   currentAccount: any;
   isSaving = false;
-  teams?: ITeam[];
+  teams: ITeam[];
   authSubscription?: Subscription;
   isLoading = false;
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
-  predicate!: string;
-  ascending!: boolean;
+  predicate: string;
+  ascending: boolean;
 
   constructor(
     protected teamService: TeamService,
+    protected dataUtils: DataUtils,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
     protected accountService: AccountService
@@ -100,6 +102,14 @@ export class TeamComponent implements OnInit {
     return item.id!;
   }
 
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
+  }
+
   delete(team: ITeam): void {
     const modalRef = this.modalService.open(TeamDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.team = team;
@@ -143,7 +153,7 @@ export class TeamComponent implements OnInit {
     this.links = this.parseLinks.parse(headers.get('link') ?? '');
     if (data) {
       for (const d of data) {
-        this.teams?.push(d);
+        this.teams.push(d);
       }
     }
   }

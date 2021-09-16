@@ -42,7 +42,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.teams?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.teams[0]).toEqual(jasmine.objectContaining({ id: 123 }));
     });
 
     it('should load a page', () => {
@@ -51,7 +51,7 @@ describe('Component Tests', () => {
 
       // THEN
       expect(service.query).toHaveBeenCalled();
-      expect(comp.teams?.[0]).toEqual(jasmine.objectContaining({ id: 123 }));
+      expect(comp.teams[0]).toEqual(jasmine.objectContaining({ id: 123 }));
     });
 
     it('should calculate the sort attribute for an id', () => {

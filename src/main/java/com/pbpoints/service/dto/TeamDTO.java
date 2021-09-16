@@ -3,6 +3,7 @@ package com.pbpoints.service.dto;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.Team} entity.
@@ -16,6 +17,10 @@ public class TeamDTO implements Serializable {
 
     private Boolean active;
 
+    @Lob
+    private byte[] logo;
+
+    private String logoContentType;
     private UserDTO owner;
 
     public Long getId() {
@@ -40,6 +45,22 @@ public class TeamDTO implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public String getLogoContentType() {
+        return logoContentType;
+    }
+
+    public void setLogoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
     }
 
     public UserDTO getOwner() {
@@ -78,6 +99,7 @@ public class TeamDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
+            ", logo='" + getLogo() + "'" +
             ", owner=" + getOwner() +
             "}";
     }

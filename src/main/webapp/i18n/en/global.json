@@ -96,6 +96,7 @@
         "game": "Matches",
         "bracket": "Bracket",
         "formula": "Formula",
+        "suspension": "Suspension",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -188,7 +189,8 @@
           "required": "Your email is required.",
           "invalid": "Your email is invalid.",
           "minlength": "Your email is required to be at least 5 characters.",
-          "maxlength": "Your email cannot be longer than 50 characters."
+          "maxlength": "Your email cannot be longer than 50 characters.",
+          "modify": "To update this data, send an email to pbpoints.info@gmail.com. Thank you"
         },
         "phone": {
           "required": "Your phone is required.",

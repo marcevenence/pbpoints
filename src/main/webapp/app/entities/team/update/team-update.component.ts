@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -7,6 +7,9 @@ import { finalize, map } from 'rxjs/operators';
 
 import { ITeam, Team } from '../team.model';
 import { TeamService } from '../service/team.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { AccountService } from 'app/core/auth/account.service';
@@ -25,12 +28,17 @@ export class TeamUpdateComponent implements OnInit {
     id: [],
     name: [],
     active: [],
+    logo: [],
+    logoContentType: [],
     owner: [],
   });
 
   constructor(
+    protected dataUtils: DataUtils,
+    protected eventManager: EventManager,
     protected teamService: TeamService,
     protected userService: UserService,
+    protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService,
     protected fb: FormBuilder
@@ -45,6 +53,33 @@ export class TeamUpdateComponent implements OnInit {
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
+  }
+
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
+  }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(
+          new EventWithContent<AlertError>('pbpointsApp.error', { ...err, key: 'error.file.' + err.key })
+        ),
+    });
+  }
+
+  clearInputImage(field: string, fieldContentType: string, idInput: string): void {
+    this.editForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null,
+    });
+    if (idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
   }
 
   previousState(): void {
@@ -89,6 +124,8 @@ export class TeamUpdateComponent implements OnInit {
       id: team.id,
       name: team.name,
       active: team.active,
+      logo: team.logo,
+      logoContentType: team.logoContentType,
       owner: team.owner,
     });
 
@@ -109,6 +146,8 @@ export class TeamUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       active: this.editForm.get(['active'])!.value,
+      logoContentType: this.editForm.get(['logoContentType'])!.value,
+      logo: this.editForm.get(['logo'])!.value,
       owner: this.editForm.get(['owner'])!.value || this.currentAccount,
     };
   }

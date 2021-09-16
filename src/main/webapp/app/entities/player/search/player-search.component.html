@@ -74,7 +74,7 @@
                 <button
                   id="jh-create-entity-back"
                   class="btn btn-danger btn-sm"
-                  (click)="Suspend(userExtra?.user?.id)"
+                  (click)="Suspend(userExtra?.user)"
                   data-toggle="tooltip"
                   [title]="'global.menu.back' | translate"
                 >
@@ -109,7 +109,10 @@
           >
             <tr *ngFor="let team of teams; trackBy: trackTeamId" data-cy="entityTable">
               <td>{{ team.name }}</td>
-              <td>{{ team.active }}</td>
+              <td>
+                <div *ngIf="team.active"><span jhiTranslate="pbpointsApp.player.yes">Yes</span></div>
+                <div *ngIf="!team.active"><span jhiTranslate="pbpointsApp.player.no">No</span></div>
+              </td>
             </tr>
           </tbody>
         </table>

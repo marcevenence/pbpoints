@@ -54,6 +54,27 @@ public class TeamService {
     }
 
     /**
+     * Partially update a team.
+     *
+     * @param teamDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<TeamDTO> partialUpdate(TeamDTO teamDTO) {
+        log.debug("Request to partially update Team : {}", teamDTO);
+
+        return teamRepository
+            .findById(teamDTO.getId())
+            .map(
+                existingTeam -> {
+                    teamMapper.partialUpdate(existingTeam, teamDTO);
+                    return existingTeam;
+                }
+            )
+            .map(teamRepository::save)
+            .map(teamMapper::toDto);
+    }
+
+    /**
      * Get all the teams.
      *
      * @param pageable the pagination information.

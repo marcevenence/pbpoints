@@ -8,6 +8,11 @@
     {
       "fieldName": "active",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "logo",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image"
     }
   ],
   "relationships": [
