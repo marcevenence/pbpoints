@@ -3,7 +3,9 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { IPlayer } from '../player.model';
-
+import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
+import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
+import { DataUtils } from 'app/core/util/data-util.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { PlayerService } from '../service/player.service';
 import { PlayerDeleteDialogComponent } from '../delete/player-delete-dialog.component';
@@ -18,6 +20,7 @@ export class PlayerComponent implements OnInit {
   currentAccount: any;
   players: IPlayer[];
   isLoading = false;
+  userExtras?: IUserExtra[];
   itemsPerPage: number;
   links: { [key: string]: number };
   page: number;
@@ -29,6 +32,8 @@ export class PlayerComponent implements OnInit {
     protected playerService: PlayerService,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
+    protected userExtraService: UserExtraService,
+    protected dataUtils: DataUtils,
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService
   ) {
@@ -82,6 +87,15 @@ export class PlayerComponent implements OnInit {
           }
         );
     }
+
+    this.userExtraService.query({ size: 2000 }).subscribe(
+      (res: HttpResponse<IUserExtra[]>) => {
+        this.onUserExtraSuccess(res.body);
+      },
+      () => {
+        this.onError();
+      }
+    );
   }
 
   reset(): void {
@@ -113,7 +127,19 @@ export class PlayerComponent implements OnInit {
     }
   }
 
+  filterUserExtraFunction(id: number): IUserExtra[] {
+    return this.userExtras!.filter(i => i.id === id);
+  }
+
   trackId(index: number, item: IPlayer): number {
+    return item.id!;
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  trackUserExtraId(index: number, item: IUserExtra): number {
     return item.id!;
   }
 
@@ -134,6 +160,14 @@ export class PlayerComponent implements OnInit {
       result.push('id');
     }
     return result;
+  }
+
+  protected onUserExtraSuccess(data: IUserExtra[] | null): void {
+    this.userExtras = data ?? [];
+  }
+
+  protected onError(): void {
+    // Api for inheritance.
   }
 
   protected paginatePlayers(data: IPlayer[] | null, headers: HttpHeaders): void {

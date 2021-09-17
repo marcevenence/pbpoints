@@ -42,6 +42,9 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col" style="height: 20%">
+            <span jhiTranslate="pbpointsApp.player.picture">Picture</span>
+          </th>
           <th scope="col"><span jhiTranslate="pbpointsApp.player.user">User</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
           <!--<th scope="col"><span jhiTranslate="pbpointsApp.player.roster">Roster</span></th>-->
@@ -51,7 +54,19 @@
       </thead>
       <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let player of players; trackBy: trackId" data-cy="entityTable">
-          <!--<td>{{ player.id }}</td>-->
+          <ng-container *ngFor="let userextra of filterUserExtraFunction(player.user?.id!); trackBy: trackUserExtraId">
+            <ng-container *ngIf="player.user?.id == userextra.id">
+              <td style="height: 20%; text-align: left">
+                <ng-container *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
+                  <img
+                    [src]="'data:' + userextra.pictureContentType + ';base64,' + userextra.picture"
+                    style="max-height: 70px"
+                    alt="userextra image"
+                  />
+                </ng-container>
+              </td>
+            </ng-container>
+          </ng-container>
           <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
           <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + player.profile }}">{{ player.profile }}</td>
           <!--<td>{{ player.roster?.id }}</td>-->
