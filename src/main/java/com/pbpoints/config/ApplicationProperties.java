@@ -15,6 +15,8 @@ public class ApplicationProperties {
 
     public String cronEventStatus;
 
+    public String cronDataExport;
+
     public String getCronFixture() {
         return cronFixture;
     }
@@ -23,16 +25,36 @@ public class ApplicationProperties {
         this.cronFixture = cronFixture;
     }
 
-    public String getcronEventStatus() {
+    public String getCronEventStatus() {
         return cronEventStatus;
     }
 
-    public void setcronEventStatus(String cronEventStatus) {
+    public void setCronEventStatus(String cronEventStatus) {
         this.cronEventStatus = cronEventStatus;
+    }
+
+    public String getCronDataExport() {
+        return cronDataExport;
+    }
+
+    public void setCronDataExport(String cronDataExport) {
+        this.cronDataExport = cronDataExport;
     }
 
     @Override
     public String toString() {
-        return "ApplicationProperties [cronFixture=" + cronFixture + ",cronEventStatus=" + cronEventStatus + "]";
+        return (
+            "ApplicationProperties{" +
+            "cronFixture='" +
+            cronFixture +
+            '\'' +
+            ", cronEventStatus='" +
+            cronEventStatus +
+            '\'' +
+            ", cronDataExport='" +
+            cronDataExport +
+            '\'' +
+            '}'
+        );
     }
 }
