@@ -48,7 +48,6 @@ public class UserExtra implements Serializable {
     @OneToOne(optional = false)
     @NotNull
     @MapsId
-    @JoinColumn(name = "id")
     private User user;
 
     public UserExtra() {
@@ -205,7 +204,7 @@ public class UserExtra implements Serializable {
             ", numDoc='" + getNumDoc() + "'" +
             ", phone='" + getPhone() + "'" +
             ", bornDate='" + getBornDate() + "'" +
-            ", picture='" + getPicture() + "'" +
+            ", picture='" + new String(getPicture()) + "'" +
             ", pictureContentType='" + getPictureContentType() + "'" +
             ", code='" + getCode() + "'" +
             "}";
