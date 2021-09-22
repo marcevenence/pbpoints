@@ -23,7 +23,7 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api/data-backup")
 public class DataBackupResource {
 
-    private static final String ENTITY_NAME = "formula";
+    private static final String ENTITY_NAME = "DataBackup";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -37,7 +37,7 @@ public class DataBackupResource {
     }
 
     /**
-     * {@code GET  /users} : get all the brackets.
+     * {@code GET  /users} : get all the users.
      *
 
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of brackets in body.

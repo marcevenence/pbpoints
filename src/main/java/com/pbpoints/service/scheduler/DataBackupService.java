@@ -24,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 public class DataBackupService {
 
     private final Logger log = LoggerFactory.getLogger(DataBackupService.class);
+    ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private UserExtraRepository userExtraRepository;
@@ -31,12 +32,14 @@ public class DataBackupService {
     @Autowired
     private UserRepository userRepository;
 
+    public DataBackupService() {
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    }
+
     @Async
     @Scheduled(cron = "${application.cronDataExport}")
     public void exportUsers() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         log.info("Inicio proceso de export de users");
 
         List<UserExtra> usersExtra = userExtraRepository.findAll(Sort.by("id"));
