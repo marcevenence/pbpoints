@@ -134,6 +134,15 @@ export class EventCategoryComponent implements OnInit {
       const ascending = sort[1] === 'asc';
       // Defaults to 0 if no query param provided.
       this.evId = +params.get('evId')!;
+
+      if (this.evId !== 0) {
+        localStorage.setItem('EVENTID', this.evId.toString());
+      } else {
+        if (+localStorage.getItem('EVENTID')! !== 0) {
+          this.evId = +localStorage.getItem('EVENTID')!;
+        }
+      }
+
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

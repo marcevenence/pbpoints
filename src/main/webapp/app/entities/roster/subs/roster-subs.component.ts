@@ -188,10 +188,20 @@ export class RosterSubsComponent implements OnInit {
           this.players!.splice(targetIdx2, 1);
         }
       } else {
+        const pl = player1.user;
+        const cat = player1.category;
+        player1 = {};
+        player1.user = pl;
+        player1.category = cat;
         player1.profile = ProfileUser.PLAYER;
         this.playerNews![targetIdx] = player1;
       }
     } else {
+      const pl = player1.user;
+      const cat = player1.category;
+      player1 = {};
+      player1.user = pl;
+      player1.category = cat;
       player1.profile = ProfileUser.PLAYER;
       player1.roster = {};
       this.playerNews!.push(player1);
@@ -209,11 +219,23 @@ export class RosterSubsComponent implements OnInit {
           this.players!.splice(targetIdx2, 1);
         }
       } else {
+        const pl = player1.user;
+        const cat = player1.category;
+        player1 = {};
+        player1.user = pl;
+        player1.category = cat;
         player1.profile = ProfileUser.STAFF;
         this.playerNews![targetIdx] = player1;
       }
     } else {
-      alert(player1.roster?.id);
+      const pl = player1.user;
+      const cat = player1.category;
+      player1 = {};
+      player1.user = pl;
+      player1.category = cat;
+      player1.profile = ProfileUser.STAFF;
+      player1.roster = {};
+      this.playerNews!.push(player1);
     }
   }
 

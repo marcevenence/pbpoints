@@ -11,6 +11,7 @@ import com.pbpoints.service.dto.xml.GameResultDTO;
 import com.pbpoints.service.mapper.EventCategoryMapper;
 import com.pbpoints.service.util.FixtureUtils;
 import com.pbpoints.service.util.FixtureUtils.Partido;
+import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -87,13 +88,26 @@ public class EventCategoryService {
         log.debug("Request to save EventCategory : {}", eventCategoryDTO);
         EventCategory eventCategory = eventCategoryMapper.toEntity(eventCategoryDTO);
         // Validaciones de duplicidad
-        Optional<EventCategory> optional = eventCategoryRepository.findByEventAndCategory(
-            eventCategory.getEvent(),
-            eventCategory.getCategory()
-        );
-        if (optional.isPresent()) {
-            log.error(optional.get().toString());
-            throw new DuplicateKeyException("Ya existe un eventCategory con los datos ingresados");
+        log.debug("eventCategory ID: {}", eventCategory.getId());
+        if (eventCategory.getId() == null) {
+            Optional<EventCategory> optional = eventCategoryRepository.findByEventAndCategory(
+                eventCategory.getEvent(),
+                eventCategory.getCategory()
+            );
+            if (optional.isPresent()) {
+                log.error(optional.get().toString());
+                throw new DuplicateKeyException("Ya existe un eventCategory con los datos ingresados");
+            }
+        } else {
+            Optional<EventCategory> optional = eventCategoryRepository.findByEventAndCategoryAndFormat(
+                eventCategory.getEvent(),
+                eventCategory.getCategory(),
+                eventCategory.getFormat()
+            );
+            if (optional.isPresent()) {
+                log.error(optional.get().toString());
+                throw new DuplicateKeyException("Ya existe un eventCategory con los datos ingresados");
+            }
         }
         eventCategory = eventCategoryRepository.save(eventCategory);
         return eventCategoryMapper.toDto(eventCategory);
