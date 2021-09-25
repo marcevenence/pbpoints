@@ -5,6 +5,7 @@ import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IPlayerDetailPoint } from '../player-detail-point.model';
+import { AccountService } from 'app/core/auth/account.service';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { PlayerDetailPointService } from '../service/player-detail-point.service';
@@ -15,6 +16,7 @@ import { PlayerDetailPointDeleteDialogComponent } from '../delete/player-detail-
   templateUrl: './player-detail-point.component.html',
 })
 export class PlayerDetailPointComponent implements OnInit {
+  currentAccount: any;
   playerDetailPoints?: IPlayerDetailPoint[];
   isLoading = false;
   totalItems = 0;
@@ -23,9 +25,11 @@ export class PlayerDetailPointComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  ppId?: number;
 
   constructor(
     protected playerDetailPointService: PlayerDetailPointService,
+    protected accountService: AccountService,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected modalService: NgbModal
@@ -37,6 +41,7 @@ export class PlayerDetailPointComponent implements OnInit {
 
     this.playerDetailPointService
       .query({
+        'playerPointId.equals': this.ppId,
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -54,6 +59,9 @@ export class PlayerDetailPointComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     this.handleNavigation();
   }
 
@@ -72,6 +80,10 @@ export class PlayerDetailPointComponent implements OnInit {
     });
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -87,6 +99,7 @@ export class PlayerDetailPointComponent implements OnInit {
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
+      this.ppId = +params.get('ppId')! || 0;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

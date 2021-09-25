@@ -36,18 +36,18 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
-          <th scope="col" jhiSortBy="tournament.name">
-            <span jhiTranslate="pbpointsApp.format.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.format.tournament">Tournament</span>
           </th>
-          <th scope="col" jhiSortBy="name"><span jhiTranslate="pbpointsApp.format.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="description">
-            <span jhiTranslate="pbpointsApp.format.description">Description</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col"><span jhiTranslate="pbpointsApp.format.name">Name</span></th>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.format.description">Description</span>
           </th>
-          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col" jhiSortBy="coeficient">
-            <span jhiTranslate="pbpointsApp.format.coeficient">Coeficient</span> <fa-icon icon="sort"></fa-icon>
+          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col">
+            <span jhiTranslate="pbpointsApp.format.coeficient">Coeficient</span>
           </th>
-          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col" jhiSortBy="playersQty">
-            <span jhiTranslate="pbpointsApp.format.playersQty">Players Qty</span> <fa-icon icon="sort"></fa-icon>
+          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col">
+            <span jhiTranslate="pbpointsApp.format.playersQty">Players Qty</span>
           </th>
 
           <th scope="col"></th>

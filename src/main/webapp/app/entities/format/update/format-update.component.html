@@ -7,7 +7,30 @@
 
       <div>
         <jhi-alert-error></jhi-alert-error>
-
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.format.tournament" for="field_tournament">Tournament</label>
+          <select class="form-control" id="field_tournament" data-cy="tournament" name="tournament" formControlName="tournament">
+            <option
+              [ngValue]="
+                tournamentOption.id === editForm.get('tournament')!.value?.id ? editForm.get('tournament')!.value : tournamentOption
+              "
+              *ngFor="let tournamentOption of tournamentsSharedCollection; trackBy: trackTournamentById"
+            >
+              {{ tournamentOption.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="editForm.get(['tournament'])!.invalid && (editForm.get(['tournament'])!.dirty || editForm.get(['tournament'])!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['tournament'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
         <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
@@ -73,32 +96,6 @@
             data-cy="playersQty"
             formControlName="playersQty"
           />
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.format.tournament" for="field_tournament">Tournament</label>
-          <select class="form-control" id="field_tournament" data-cy="tournament" name="tournament" formControlName="tournament">
-            <option *ngIf="!editForm.get('tournament')!.value" [ngValue]="null" selected></option>
-            <option
-              [ngValue]="
-                tournamentOption.id === editForm.get('tournament')!.value?.id ? editForm.get('tournament')!.value : tournamentOption
-              "
-              *ngFor="let tournamentOption of tournamentsSharedCollection; trackBy: trackTournamentById"
-            >
-              {{ tournamentOption.name }}
-            </option>
-          </select>
-        </div>
-        <div
-          *ngIf="editForm.get(['tournament'])!.invalid && (editForm.get(['tournament'])!.dirty || editForm.get(['tournament'])!.touched)"
-        >
-          <small
-            class="form-text text-danger"
-            *ngIf="editForm.get(['tournament'])?.errors?.required"
-            jhiTranslate="entity.validation.required"
-          >
-            This field is required.
-          </small>
         </div>
       </div>
 

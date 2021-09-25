@@ -73,10 +73,10 @@
           <td>{{ player.category?.name }}</td>
           <td class="text-right">
             <div class="btn-group" *ngIf="isTheOwner(player.roster?.team?.owner?.id!)">
-              <button type="submit" [routerLink]="['/player', player.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <!--<button type="submit" [routerLink]="['/player', player.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+              </button>-->
 
               <button type="submit" (click)="delete(player)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>

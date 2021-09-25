@@ -104,17 +104,17 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
-          <th scope="col" jhiSortBy="tournament.name">
-            <span jhiTranslate="pbpointsApp.playerPoint.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerPoint.tournament">Tournament</span>
           </th>
-          <th scope="col" jhiSortBy="user.login">
-            <span jhiTranslate="pbpointsApp.playerPoint.user">User</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerPoint.user">User</span>
           </th>
-          <th scope="col" jhiSortBy="category.name">
-            <span jhiTranslate="pbpointsApp.playerPoint.category">Category</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerPoint.category">Category</span>
           </th>
-          <th scope="col" jhiSortBy="points">
-            <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span>
           </th>
           <th scope="col"></th>
         </tr>

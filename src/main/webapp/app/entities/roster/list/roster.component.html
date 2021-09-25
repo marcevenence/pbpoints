@@ -43,10 +43,10 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col"><span jhiTranslate="pbpointsApp.roster.tournamentEvent">Tournament</span></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.roster.category">Event</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.roster.team">Team</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.roster.category">Event</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.roster.team">Team</span></th>
           <th scope="col" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
-            <span jhiTranslate="pbpointsApp.roster.active">Active</span> <fa-icon icon="sort"></fa-icon>
+            <span jhiTranslate="pbpointsApp.roster.active">Active</span>
           </th>
 
           <th scope="col"></th>
@@ -70,7 +70,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.player">View</span>
               </button>
               <button
-                *ngIf="isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!)"
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 type="submit"
                 [routerLink]="['/roster', roster.id, 'edit']"
                 class="btn btn-primary btn-sm"

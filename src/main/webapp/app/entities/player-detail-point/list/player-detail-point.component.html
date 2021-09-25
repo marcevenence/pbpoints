@@ -3,11 +3,6 @@
     <span jhiTranslate="pbpointsApp.playerDetailPoint.home.title">Player Detail Points</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="pbpointsApp.playerDetailPoint.home.refreshListLabel">Refresh List</span>
-      </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -16,6 +11,16 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.playerDetailPoint.home.createLabel"> Create a new Player Detail Point </span>
+      </button>
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>
@@ -32,38 +37,38 @@
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="points">
-            <span jhiTranslate="pbpointsApp.playerDetailPoint.points">Points</span> <fa-icon icon="sort"></fa-icon>
+          <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerDetailPoint.event">Event</span>
           </th>
-          <th scope="col" jhiSortBy="event.name">
-            <span jhiTranslate="pbpointsApp.playerDetailPoint.event">Event</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="playerPoint.id">
+          <!--<th scope="col" >
             <span jhiTranslate="pbpointsApp.playerDetailPoint.playerPoint">Player Point</span> <fa-icon icon="sort"></fa-icon>
+          </th>-->
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerDetailPoint.points">Points</span>
           </th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let playerDetailPoint of playerDetailPoints; trackBy: trackId" data-cy="entityTable">
-          <td>
+          <!--<td>
             <a [routerLink]="['/player-detail-point', playerDetailPoint.id, 'view']">{{ playerDetailPoint.id }}</a>
-          </td>
-          <td>{{ playerDetailPoint.points }}</td>
+          </td>-->
           <td>
             <div *ngIf="playerDetailPoint.event">
-              <a [routerLink]="['/event', playerDetailPoint.event?.id, 'view']">{{ playerDetailPoint.event?.name }}</a>
+              <div>{{ playerDetailPoint.event?.tournament?.name }} - {{ playerDetailPoint.event?.name }}</div>
             </div>
           </td>
-          <td>
+          <td>{{ playerDetailPoint.points }}</td>
+          <!--<td>
             <div *ngIf="playerDetailPoint.playerPoint">
               <a [routerLink]="['/player-point', playerDetailPoint.playerPoint?.id, 'view']">{{ playerDetailPoint.playerPoint?.id }}</a>
             </div>
-          </td>
+          </td>-->
           <td class="text-right">
             <div class="btn-group">
-              <button
+              <!--<button
                 type="submit"
                 [routerLink]="['/player-detail-point', playerDetailPoint.id, 'view']"
                 class="btn btn-info btn-sm"
@@ -81,7 +86,7 @@
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>
+              </button>-->
 
               <button type="submit" (click)="delete(playerDetailPoint)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
