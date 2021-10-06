@@ -65,9 +65,10 @@
       "TeamPoint",
       "Tournament",
       "UserExtra",
-      "Suspension"
+      "Suspension",
+      "MainRoster"
     ],
-    "lastLiquibaseTimestamp": 1631752444000
+    "lastLiquibaseTimestamp": 1632867293000
   },
   "git-provider": "GitHub",
   "git-company": "marcevenence",

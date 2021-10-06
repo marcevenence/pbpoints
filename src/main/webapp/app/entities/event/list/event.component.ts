@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { IEvent } from '../event.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { EventService } from '../service/event.service';
 import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.component';
@@ -44,7 +43,7 @@ export class EventComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    if (this.tourId) {
+    if (this.tourId !== 0) {
       if (this.currentAccount.authorities.includes('ROLE_ADMIN') || this.currentAccount.authorities.includes('ROLE_OWNER_TOURNAMENT')) {
         this.eventService
           .query({
@@ -139,9 +138,11 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
-      this.tourId = +params.get('tourId')!;
-    });
+    if (history.state.tourId === undefined) {
+      this.tourId = 0;
+    } else {
+      this.tourId = history.state.tourId;
+    }
     localStorage.setItem('TOURNAMENTID', this.tourId.toString());
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;

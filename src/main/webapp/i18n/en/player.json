@@ -1,6 +1,9 @@
 {
   "pbpointsApp": {
     "player": {
+      "yes": "Yes",
+      "no": "No",
+      "add": "Add",
       "home": {
         "title": "Players",
         "refreshListLabel": "Refresh list",

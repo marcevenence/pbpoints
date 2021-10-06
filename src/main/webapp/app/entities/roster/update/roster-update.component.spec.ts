@@ -46,10 +46,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Team query and add missing value', () => {
         const roster: IRoster = { id: 456 };
-        const team: ITeam = { id: 77222 };
+        const team: ITeam = { id: 99089 };
         roster.team = team;
 
-        const teamCollection: ITeam[] = [{ id: 36446 }];
+        const teamCollection: ITeam[] = [{ id: 45778 }];
         spyOn(teamService, 'query').and.returnValue(of(new HttpResponse({ body: teamCollection })));
         const additionalTeams = [team];
         const expectedCollection: ITeam[] = [...additionalTeams, ...teamCollection];
@@ -87,7 +87,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const roster: IRoster = { id: 456 };
-        const team: ITeam = { id: 40697 };
+        const team: ITeam = { id: 66100 };
         roster.team = team;
         const eventCategory: IEventCategory = { id: 64142 };
         roster.eventCategory = eventCategory;

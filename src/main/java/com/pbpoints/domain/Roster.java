@@ -28,7 +28,7 @@ public class Roster implements Serializable {
 
     @OneToMany(mappedBy = "roster")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "user", "roster" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "user", "roster", "category" }, allowSetters = true)
     private Set<Player> players = new HashSet<>();
 
     @ManyToOne(optional = false)

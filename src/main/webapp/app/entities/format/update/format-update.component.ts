@@ -16,7 +16,7 @@ import { TournamentService } from 'app/entities/tournament/service/tournament.se
 })
 export class FormatUpdateComponent implements OnInit {
   isSaving = false;
-
+  tourId: any;
   tournamentsSharedCollection: ITournament[] = [];
 
   editForm = this.fb.group({
@@ -36,9 +36,9 @@ export class FormatUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.tourId = history.state.tourId ?? 0;
     this.activatedRoute.data.subscribe(({ format }) => {
       this.updateForm(format);
-
       this.loadRelationshipsOptions();
     });
   }
@@ -97,15 +97,27 @@ export class FormatUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.tournamentService
-      .query()
-      .pipe(map((res: HttpResponse<ITournament[]>) => res.body ?? []))
-      .pipe(
-        map((tournaments: ITournament[]) =>
-          this.tournamentService.addTournamentToCollectionIfMissing(tournaments, this.editForm.get('tournament')!.value)
+    if (this.tourId === 0) {
+      this.tournamentService
+        .query()
+        .pipe(map((res: HttpResponse<ITournament[]>) => res.body ?? []))
+        .pipe(
+          map((tournaments: ITournament[]) =>
+            this.tournamentService.addTournamentToCollectionIfMissing(tournaments, this.editForm.get('tournament')!.value)
+          )
         )
-      )
-      .subscribe((tournaments: ITournament[]) => (this.tournamentsSharedCollection = tournaments));
+        .subscribe((tournaments: ITournament[]) => (this.tournamentsSharedCollection = tournaments));
+    } else {
+      this.tournamentService
+        .query({ 'id.equals': this.tourId })
+        .pipe(map((res: HttpResponse<ITournament[]>) => res.body ?? []))
+        .pipe(
+          map((tournaments: ITournament[]) =>
+            this.tournamentService.addTournamentToCollectionIfMissing(tournaments, this.editForm.get('tournament')!.value)
+          )
+        )
+        .subscribe((tournaments: ITournament[]) => (this.tournamentsSharedCollection = tournaments));
+    }
   }
 
   protected createFromForm(): IFormat {

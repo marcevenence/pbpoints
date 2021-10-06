@@ -97,6 +97,7 @@
         "bracket": "Bracket",
         "formula": "Formula",
         "suspension": "Suspension",
+        "mainRoster": "Main Roster",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

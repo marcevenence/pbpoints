@@ -82,6 +82,7 @@ export class EventCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.evId = history.state.evId ?? 0;
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.currentAccount = account;
@@ -132,14 +133,14 @@ export class EventCategoryComponent implements OnInit {
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
-      // Defaults to 0 if no query param provided.
-      this.evId = +params.get('evId')!;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;
         this.loadPage(pageNumber, true);
       }
-      this.eventService.queryOne(this.evId).subscribe((res: HttpResponse<IEvent>) => this.paginateEvent(res.body));
+      if (this.evId !== 0) {
+        this.eventService.queryOne(this.evId).subscribe((res: HttpResponse<IEvent>) => this.paginateEvent(res.body));
+      }
     });
   }
 

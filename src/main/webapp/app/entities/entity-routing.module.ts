@@ -114,6 +114,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'pbpointsApp.suspension.home.title' },
         loadChildren: () => import('./suspension/suspension.module').then(m => m.SuspensionModule),
       },
+      {
+        path: 'main-roster',
+        data: { pageTitle: 'pbpointsApp.main-roster.home.title' },
+        loadChildren: () => import('./main-roster/main-roster.module').then(m => m.MainRosterModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

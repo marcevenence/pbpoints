@@ -12,7 +12,8 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-category"
-        [routerLink]="['/category/new']"
+        [routerLink]="['/category/new/']"
+        [state]="{ tourId: this.tourId }"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.category.home.createLabel"> Create a new Category </span>
@@ -93,6 +94,7 @@
                 *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 type="submit"
                 [routerLink]="['/category', category.id, 'edit']"
+                [state]="{ tourId: this.tourId }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

@@ -3,6 +3,7 @@
     "player": {
       "yes": "Si",
       "no": "No",
+      "add": "Agregar",
       "home": {
         "title": "Jugadores",
         "refreshListLabel": "Refrescar lista",

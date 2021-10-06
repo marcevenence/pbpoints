@@ -97,6 +97,7 @@
         "bracket": "Bracket",
         "formula": "Formula",
         "suspension": "Suspension",
+        "mainRoster": "Mis jugadores",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

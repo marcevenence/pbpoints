@@ -14,39 +14,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.team.name" for="field_name">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            name="name"
-            id="field_name"
-            data-cy="name"
-            formControlName="name"
-            [readonly]="editForm.get('id')!.value != null"
-          />
-          <small
-            *ngIf="editForm.get('id')!.value != null"
-            class="form-text text-danger"
-            jhiTranslate="global.messages.validate.email.modify"
-          >
-            Please send an email to pbpoints.info@gmail.com.
-          </small>
-        </div>
-
-        <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.team.active" for="field_active">Active</label>
-          <input
-            type="checkbox"
-            class="form-check"
-            name="active"
-            checked="true"
-            id="field_active"
-            data-cy="active"
-            formControlName="active"
-          />
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.team.logo" for="field_logo">Logo</label>
           <div>
             <img
@@ -79,6 +46,35 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.team.name" for="field_name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            id="field_name"
+            data-cy="name"
+            formControlName="name"
+            [readonly]="editForm.get('id')!.value != null"
+          />
+        </div>
+
+        <small *ngIf="editForm.get('id')!.value != null" class="form-text text-danger" jhiTranslate="global.messages.validate.email.modify">
+          Please send an email to pbpoints.info@gmail.com.
+        </small>
+        <div class="form-group" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.team.active" for="field_active">Active</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="active"
+            checked="true"
+            id="field_active"
+            data-cy="active"
+            formControlName="active"
+          />
+        </div>
+
+        <div class="form-group">
           <label *jhiHasAnyAuthority="'ROLE_ADMIN'" class="form-control-label" jhiTranslate="pbpointsApp.team.owner" for="field_owner"
             >Owner</label
           >
@@ -99,6 +95,70 @@
             </option>
           </select>
         </div>
+      </div>
+
+      <div class="form-group">
+        <table>
+          <tr>
+            <th>
+              <label class="form-control-label" jhiTranslate="pbpointsApp.player.home.createOrEditLabel">Players</label>
+            </th>
+          </tr>
+          <tr>
+            <td width="40%">
+              <div class="form-group">
+                <label class="form-control-label" jhiTranslate="pbpointsApp.player.id" for="playerId">PBPointsId</label>
+                <input type="number" class="form-control" name="playerId" id="playerId" data-cy="id" formControlName="playerId" />
+              </div>
+            </td>
+            <td width="10%">
+              <div class="form-group">
+                <label class="form-control-label" jhiTranslate="pbpointsApp.player.code" for="playerCode">PBPointsId</label>
+                <input type="text" class="form-control" name="playerCode" id="playerCode" data-cy="code" formControlName="playerCode" />
+              </div>
+            </td>
+            <td width="30%">
+              <div class="form-group">
+                <label class="form-control-label" jhiTranslate="pbpointsApp.player.profile" for="playerProfile">Profile</label>
+                <select class="form-control" name="playerProfile" formControlName="playerProfile" id="playerProfile" data-cy="profile">
+                  <option value="PLAYER">{{ 'pbpointsApp.ProfileUser.PLAYER' | translate }}</option>
+                  <option value="STAFF">{{ 'pbpointsApp.ProfileUser.STAFF' | translate }}</option>
+                </select>
+              </div>
+            </td>
+            <td width="20%" style="vertical-align: bottom">
+              <div class="form-group" [hidden]="editForm.get('team')!.value == null">
+                <button (click)="addNewPlayer()" id="save-entity2" data-cy="entityCreateSaveButton" class="btn btn-primary">
+                  <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.player.add">Add</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <table class="table table-striped" aria-describedby="page-heading" align="right">
+          <thead>
+            <tr>
+              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mainPlayer of mainRoster; trackBy: trackMainRosterId" data-cy="entityTable">
+              <td>{{ mainPlayer.user?.lastName }}, {{ mainPlayer.user?.firstName }}</td>
+              <td class="text-right">
+                <div class="btn-group">
+                  <!--<button type="submit" (click)="addStaff(player)" data-cy="entityStaffButton" class="btn btn-primary">
+                        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.STAFF">Staff</span>
+                      </button>
+                      <button type="submit" (click)="addPlayer(player)" data-cy="entityStaffButton" class="btn btn-primary">
+                        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.PLAYER">Player</span>
+                      </button>-->
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div>

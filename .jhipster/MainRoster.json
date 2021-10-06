@@ -1,0 +1,26 @@
+{
+  "fields": [],
+  "relationships": [
+    {
+      "relationshipName": "team",
+      "otherEntityName": "team",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "name"
+    },
+    {
+      "relationshipName": "user",
+      "otherEntityName": "user",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "login",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "mainRoster"
+    }
+  ],
+  "service": "serviceImpl",
+  "dto": "mapstruct",
+  "jpaMetamodelFiltering": true,
+  "readOnly": false,
+  "pagination": "infinite-scroll",
+  "name": "MainRoster",
+  "changelogDate": "20210928221453"
+}

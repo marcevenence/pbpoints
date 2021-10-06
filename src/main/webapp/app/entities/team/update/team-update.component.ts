@@ -13,6 +13,8 @@ import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IUser } from 'app/entities/user/user.model';
 import { UserService } from 'app/entities/user/user.service';
 import { AccountService } from 'app/core/auth/account.service';
+import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
+import { MainRosterService } from 'app/entities/main-roster/service/main-roster.service';
 
 @Component({
   selector: 'jhi-team-update',
@@ -23,6 +25,7 @@ export class TeamUpdateComponent implements OnInit {
   currentAccount: any;
   currentOwner: IUser = {};
   usersSharedCollection: IUser[] = [];
+  mainRoster: IMainRoster[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -31,6 +34,9 @@ export class TeamUpdateComponent implements OnInit {
     logo: [],
     logoContentType: [],
     owner: [],
+    playerId: [],
+    playerCode: [],
+    playerProfile: [],
   });
 
   constructor(
@@ -41,13 +47,14 @@ export class TeamUpdateComponent implements OnInit {
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService,
-    protected fb: FormBuilder
+    protected fb: FormBuilder,
+    protected mainRosterService: MainRosterService
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ team }) => {
       this.updateForm(team);
-
+      this.uploadPlayers(team);
       this.loadRelationshipsOptions();
     });
     this.accountService.identity().subscribe(account => {
@@ -86,6 +93,10 @@ export class TeamUpdateComponent implements OnInit {
     window.history.back();
   }
 
+  addNewPlayer(): void {
+    alert('Agregado');
+  }
+
   save(): void {
     this.isSaving = true;
     const team = this.createFromForm();
@@ -97,6 +108,10 @@ export class TeamUpdateComponent implements OnInit {
   }
 
   trackUserById(index: number, item: IUser): number {
+    return item.id!;
+  }
+
+  trackMainRosterId(index: number, item: IMainRoster): number {
     return item.id!;
   }
 
@@ -130,6 +145,15 @@ export class TeamUpdateComponent implements OnInit {
     });
 
     this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, team.owner);
+  }
+
+  protected uploadPlayers(team: ITeam): void {
+    if (team.id !== undefined) {
+      this.mainRosterService
+        .query({ 'teamId.equals': team.id })
+        .pipe(map((res: HttpResponse<IMainRoster[]>) => res.body ?? []))
+        .subscribe((mainRoster: IMainRoster[]) => (this.mainRoster = mainRoster));
+    }
   }
 
   protected loadRelationshipsOptions(): void {

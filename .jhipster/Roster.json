@@ -32,7 +32,7 @@
   "javadoc": "Roster entity.\\n@author Marcelo Miño",
   "entityTableName": "roster",
   "dto": "mapstruct",
-  "pagination": "pagination",
+  "pagination": "infinite-scroll",
   "service": "serviceClass",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

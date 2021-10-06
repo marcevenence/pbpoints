@@ -84,10 +84,16 @@ public class RosterQueryService extends QueryService<Roster> {
         Specification<Roster> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), Roster_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Roster_.id));
             }
             if (criteria.getActive() != null) {
                 specification = specification.and(buildSpecification(criteria.getActive(), Roster_.active));
+            }
+            if (criteria.getPlayerId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getPlayerId(), root -> root.join(Roster_.players, JoinType.LEFT).get(Player_.id))
+                    );
             }
             if (criteria.getTeamId() != null) {
                 specification =
@@ -102,12 +108,6 @@ public class RosterQueryService extends QueryService<Roster> {
                             criteria.getEventCategoryId(),
                             root -> root.join(Roster_.eventCategory, JoinType.LEFT).get(EventCategory_.id)
                         )
-                    );
-            }
-            if (criteria.getPlayerId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getPlayerId(), root -> root.join(Roster_.players, JoinType.LEFT).get(Player_.id))
                     );
             }
         }

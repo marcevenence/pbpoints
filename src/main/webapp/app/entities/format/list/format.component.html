@@ -12,6 +12,7 @@
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-format"
         [routerLink]="['/format/new']"
+        [state]="{ tourId: this.tourId }"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.format.home.createLabel"> Create a new Format </span>
@@ -71,7 +72,13 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>-->
 
-              <button type="submit" [routerLink]="['/format', format.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                type="submit"
+                [routerLink]="['/format', format.id, 'edit']"
+                [state]="{ tourId: this.tourId }"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>

@@ -3,7 +3,6 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { IFormat } from '../format.model';
-import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { FormatService } from '../service/format.service';
 import { FormatDeleteDialogComponent } from '../delete/format-delete-dialog.component';
@@ -41,7 +40,7 @@ export class FormatComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    if (this.tourId) {
+    if (this.tourId !== 0) {
       this.formatService
         .query({
           'tournamentId.equals': this.tourId,
@@ -89,9 +88,7 @@ export class FormatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
-      this.tourId = +params.get('tourId')!;
-    });
+    this.tourId = history.state.tourId ?? 0;
     this.loadAll();
   }
 

@@ -1,0 +1,25 @@
+{
+  "pbpointsApp": {
+    "mainRoster": {
+      "home": {
+        "title": "Main Rosters",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Main Roster",
+        "createOrEditLabel": "Criar ou editar Main Roster",
+        "notFound": "Nenhum Main Roster encontrado"
+      },
+      "created": "Um novo Main Roster foi criado com o identificador {{ param }}",
+      "updated": "Um Main Roster foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Main Roster foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Main Roster {{ id }}?"
+      },
+      "detail": {
+        "title": "Main Roster"
+      },
+      "id": "ID",
+      "team": "Team",
+      "user": "User"
+    }
+  }
+}
