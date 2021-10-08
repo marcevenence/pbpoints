@@ -41,7 +41,7 @@ export class RosterComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    if (this.evCatId) {
+    if (this.evCatId !== 0) {
       this.rosterService
         .query({
           'eventCategoryId.equals': this.evCatId,
@@ -60,7 +60,7 @@ export class RosterComponent implements OnInit {
           }
         );
     } else {
-      if (this.teId) {
+      if (this.teId !== 0) {
         this.rosterService
           .query({
             'teamId.equals': this.teId,
@@ -146,14 +146,15 @@ export class RosterComponent implements OnInit {
   }
 
   protected handleNavigation(): void {
+    this.teId = history.state.teId ?? 0;
+    this.evCatId = history.state.evCatId ?? 0;
+
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
       const pageNumber = page !== null ? +page : 1;
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
-      this.teId = +params.get('teId')!;
-      this.evCatId = +params.get('evCatId')!;
 
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;

@@ -321,14 +321,14 @@ export class RosterSubsComponent implements OnInit {
   }
 
   protected subscribeToSaveResponseRoster(result: Observable<HttpResponse<IRoster>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize(result))).subscribe(
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
     );
   }
 
   protected subscribeToSaveResponsePlayer(result: Observable<HttpResponse<IPlayer>>): void {
-    result.pipe(finalize(() => this.onSaveFinalize(result))).subscribe(
+    result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError()
     );
@@ -342,7 +342,7 @@ export class RosterSubsComponent implements OnInit {
     // Api for inheritance.
   }
 
-  protected onSaveFinalize(result: any): void {
+  protected onSaveFinalize(): void {
     // Api for inheritance.
   }
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
 import { IPlayer } from '../player.model';
 import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
 import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
@@ -34,7 +33,6 @@ export class PlayerComponent implements OnInit {
     protected parseLinks: ParseLinks,
     protected userExtraService: UserExtraService,
     protected dataUtils: DataUtils,
-    protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService
   ) {
     this.players = [];
@@ -53,7 +51,7 @@ export class PlayerComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    if (this.rId) {
+    if (this.rId !== 0) {
       this.playerService
         .query({
           'rosterId.equals': this.rId,
@@ -110,9 +108,7 @@ export class PlayerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.rId = +params['rId'] || 0;
-    });
+    this.rId = history.state.rId ?? 0;
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });

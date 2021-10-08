@@ -65,7 +65,7 @@
           </td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/player']" [queryParams]="{ rId: roster.id }" class="btn btn-primary btn-sm">
+              <button type="submit" [routerLink]="['/player']" [state]="{ rId: roster.id }" class="btn btn-primary btn-sm">
                 <fa-icon [icon]="'user'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.player">View</span>
               </button>
@@ -73,6 +73,7 @@
                 *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 type="submit"
                 [routerLink]="['/roster', roster.id, 'edit']"
+                [state]="{ roster: { teId: roster.team?.id, evCatId: roster.eventCategory?.id } }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

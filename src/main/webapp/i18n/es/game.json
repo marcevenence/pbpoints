@@ -20,6 +20,7 @@
       "id": "ID",
       "pointsA": "Puntos A",
       "pointsB": "Puntos B",
+      "points": "Puntos",
       "splitDeckNum": "Nro Serie",
       "timeLeft": "Tiempo Restante",
       "status": "Estado",
@@ -31,6 +32,7 @@
       "clasif": "Ronda",
       "teamA": "Equipo A",
       "teamB": "Equipo B",
+      "team": "Partido",
       "eventCategory": "Categoria"
     }
   }

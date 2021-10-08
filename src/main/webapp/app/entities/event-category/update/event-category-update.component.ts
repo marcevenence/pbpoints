@@ -25,6 +25,8 @@ export class EventCategoryUpdateComponent implements OnInit {
   categoriesSharedCollection: ICategory[] = [];
   formatsSharedCollection: IFormat[] = [];
 
+  tId = 0;
+
   editForm = this.fb.group({
     id: [],
     splitDeck: [],
@@ -43,10 +45,10 @@ export class EventCategoryUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.tId = history.state.tId ?? 0;
     this.activatedRoute.data.subscribe(({ eventCategory }) => {
       this.updateForm(eventCategory);
-
-      this.loadRelationshipsOptions();
+      this.loadRelationshipsOptions(eventCategory);
     });
   }
 
@@ -116,18 +118,33 @@ export class EventCategoryUpdateComponent implements OnInit {
     this.formatsSharedCollection = this.formatService.addFormatToCollectionIfMissing(this.formatsSharedCollection, eventCategory.format);
   }
 
-  protected loadRelationshipsOptions(): void {
-    this.eventService
-      .query({
-        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
-      })
-      .pipe(map((res: HttpResponse<IEvent[]>) => res.body ?? []))
-      .pipe(map((events: IEvent[]) => this.eventService.addEventToCollectionIfMissing(events, this.editForm.get('event')!.value)))
-      .subscribe((events: IEvent[]) => (this.eventsSharedCollection = events));
+  protected loadRelationshipsOptions(eventCategory: IEventCategory): void {
+    let tourId = +localStorage.getItem('TOURNAMENTID')! || 0;
+    if (tourId === 0 && this.tId !== 0) {
+      tourId = this.tId;
+    }
+
+    if (eventCategory.id !== undefined) {
+      this.eventService
+        .query({
+          'id.equals': eventCategory.event?.id,
+        })
+        .pipe(map((res: HttpResponse<IEvent[]>) => res.body ?? []))
+        .pipe(map((events: IEvent[]) => this.eventService.addEventToCollectionIfMissing(events, this.editForm.get('event')!.value)))
+        .subscribe((events: IEvent[]) => (this.eventsSharedCollection = events));
+    } else {
+      this.eventService
+        .query({
+          'tournamentId.equals': tourId,
+        })
+        .pipe(map((res: HttpResponse<IEvent[]>) => res.body ?? []))
+        .pipe(map((events: IEvent[]) => this.eventService.addEventToCollectionIfMissing(events, this.editForm.get('event')!.value)))
+        .subscribe((events: IEvent[]) => (this.eventsSharedCollection = events));
+    }
 
     this.categoryService
       .query({
-        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
+        'tournamentId.equals': tourId,
       })
       .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
       .pipe(
@@ -139,7 +156,7 @@ export class EventCategoryUpdateComponent implements OnInit {
 
     this.formatService
       .query({
-        'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!,
+        'tournamentId.equals': tourId,
       })
       .pipe(map((res: HttpResponse<IFormat[]>) => res.body ?? []))
       .pipe(map((formats: IFormat[]) => this.formatService.addFormatToCollectionIfMissing(formats, this.editForm.get('format')!.value)))

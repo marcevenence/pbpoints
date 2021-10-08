@@ -36,7 +36,7 @@ export class GameComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    if (this.ecatId) {
+    if (this.ecatId !== 0) {
       this.gameService
         .query({
           'eventCategoryId.equals': this.ecatId,
@@ -111,13 +111,13 @@ export class GameComponent implements OnInit {
   }
 
   protected handleNavigation(): void {
+    this.ecatId = history.state.ecatId ?? 0;
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
       const pageNumber = page !== null ? +page : 1;
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
-      this.ecatId = +params.get('ecatId')!;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

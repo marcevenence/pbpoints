@@ -55,7 +55,7 @@
               <button
                 type="submit"
                 [routerLink]="['/province']"
-                [queryParams]="{ coId: country.id }"
+                [state]="{ coId: country.id }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityDetailsButton"
               >

@@ -55,7 +55,7 @@
                   <button
                     type="submit"
                     [routerLink]="['/event-category']"
-                    [state]="{ evId: event.id }"
+                    [state]="{ evId: event.id, tId: event.tournament?.id }"
                     class="btn btn-primary btn-sm"
                     data-toggle="tooltip"
                     [title]="'global.menu.custom.view.category' | translate"

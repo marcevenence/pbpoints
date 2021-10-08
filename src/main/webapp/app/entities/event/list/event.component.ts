@@ -118,8 +118,8 @@ export class EventComponent implements OnInit {
     }
   }
 
-  isNotClosed(status: string): boolean {
-    if (status === 'DONE' || status === 'PENDING' || status === 'CANCEL') {
+  canGenerate(status: string): boolean {
+    if (status === 'PENDING' || status === 'CANCEL') {
       return false;
     } else {
       return true;

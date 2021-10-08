@@ -13,6 +13,7 @@
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-event-category"
         [routerLink]="['/event-category/new']"
+        [state]="{ tId: this.tId }"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.eventCategory.home.createLabel"> Create a new Event Category </span>
@@ -86,7 +87,7 @@
               <button
                 type="submit"
                 [routerLink]="['/game']"
-                [queryParams]="{ ecatId: eventCategory.id }"
+                [state]="{ ecatId: eventCategory.id }"
                 class="btn btn-info btn-sm"
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.games' | translate"
@@ -98,7 +99,7 @@
               <button
                 type="submit"
                 [routerLink]="['/roster']"
-                [queryParams]="{ evCatId: eventCategory.id }"
+                [state]="{ evCatId: eventCategory.id }"
                 class="btn btn-info btn-sm"
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.roster' | translate"
@@ -110,7 +111,7 @@
                 *ngIf="enableUpdate()"
                 type="submit"
                 [routerLink]="['/roster/subs']"
-                [queryParams]="{ evCatId: eventCategory.id }"
+                [state]="{ evCatId: eventCategory.id }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -122,6 +123,7 @@
                 *ngIf="getEnableNew()"
                 type="submit"
                 [routerLink]="['/event-category', eventCategory.id, 'edit']"
+                [state]="{ evCatId: eventCategory.id }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

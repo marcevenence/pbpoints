@@ -201,12 +201,11 @@ public class UserExtra implements Serializable {
     public String toString() {
         return "UserExtra{" +
             "id=" + getId() +
+            ", code='" + getCode() + "'" +
             ", numDoc='" + getNumDoc() + "'" +
             ", phone='" + getPhone() + "'" +
             ", bornDate='" + getBornDate() + "'" +
-            ", picture='" + new String(getPicture()) + "'" +
-            ", pictureContentType='" + getPictureContentType() + "'" +
-            ", code='" + getCode() + "'" +
+            ", picture='1'" +
             "}";
     }
 }

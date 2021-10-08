@@ -18,7 +18,7 @@ import { EventCategoryService } from 'app/entities/event-category/service/event-
 })
 export class GameUpdateComponent implements OnInit {
   isSaving = false;
-
+  eCatId = 0;
   teamsSharedCollection: ITeam[] = [];
   eventCategoriesSharedCollection: IEventCategory[] = [];
 
@@ -51,7 +51,6 @@ export class GameUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ game }) => {
       this.updateForm(game);
-
       this.loadRelationshipsOptions();
     });
   }
@@ -124,8 +123,9 @@ export class GameUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
+    this.eCatId = history.state.eCatId ?? 0;
     this.teamService
-      .query()
+      .query({ size: 1000 })
       .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
       .pipe(
         map((teams: ITeam[]) =>
@@ -134,15 +134,27 @@ export class GameUpdateComponent implements OnInit {
       )
       .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
 
-    this.eventCategoryService
-      .query()
-      .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
-      .pipe(
-        map((eventCategories: IEventCategory[]) =>
-          this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+    if (this.eCatId !== 0) {
+      this.eventCategoryService
+        .query({ 'id.equals': this.eCatId })
+        .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
+        .pipe(
+          map((eventCategories: IEventCategory[]) =>
+            this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+          )
         )
-      )
-      .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+        .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+    } else {
+      this.eventCategoryService
+        .query()
+        .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
+        .pipe(
+          map((eventCategories: IEventCategory[]) =>
+            this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+          )
+        )
+        .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
+    }
   }
 
   protected createFromForm(): IGame {

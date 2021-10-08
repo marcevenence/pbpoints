@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 import { IProvince } from '../province.model';
 
-import { combineLatest } from 'rxjs';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { ProvinceService } from '../service/province.service';
 import { ProvinceDeleteDialogComponent } from '../delete/province-delete-dialog.component';
@@ -42,7 +41,7 @@ export class ProvinceComponent implements OnInit {
 
   loadAll(): void {
     this.isLoading = true;
-    if (this.coId) {
+    if (this.coId !== 0) {
       this.provinceService
         .query({
           'countryId.equals': this.coId,
@@ -90,9 +89,7 @@ export class ProvinceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
-      this.coId = +params.get('coId')!;
-    });
+    this.coId = history.state.coId ?? 0;
     this.loadAll();
   }
 

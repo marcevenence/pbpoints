@@ -28,6 +28,7 @@ export class EventCategoryComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
   evId = 0;
+  tId = 0;
   updateAllow = true;
   enableNew = false;
 
@@ -43,7 +44,7 @@ export class EventCategoryComponent implements OnInit {
   loadPage(page?: number, dontNavigate?: boolean): void {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
-    if (this.evId) {
+    if (this.evId !== 0) {
       this.eventCategoryService
         .query({
           'eventId.equals': this.evId,
@@ -83,6 +84,7 @@ export class EventCategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.evId = history.state.evId ?? 0;
+    this.tId = history.state.tId ?? 0;
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.currentAccount = account;
@@ -140,6 +142,11 @@ export class EventCategoryComponent implements OnInit {
       }
       if (this.evId !== 0) {
         this.eventService.queryOne(this.evId).subscribe((res: HttpResponse<IEvent>) => this.paginateEvent(res.body));
+      } else {
+        if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+          this.updateAllow = true;
+          this.enableNew = true;
+        }
       }
     });
   }
@@ -182,7 +189,11 @@ export class EventCategoryComponent implements OnInit {
         if (this.event!.endInscriptionDate!.toDate() < today) {
           this.updateAllow = false;
         } else {
-          this.updateAllow = true;
+          if (this.event!.endDate!.toDate() < today) {
+            this.updateAllow = false;
+          } else {
+            this.updateAllow = true;
+          }
         }
       }
     }

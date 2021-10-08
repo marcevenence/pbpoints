@@ -61,7 +61,7 @@
               <button
                 type="submit"
                 [routerLink]="['/city']"
-                [queryParams]="{ pId: province.id }"
+                [state]="{ pId: province.id }"
                 class="btn btn-primary btn-sm"
                 data-toggle="tooltip"
                 [title]="'global.menu.custom.view.city' | translate"

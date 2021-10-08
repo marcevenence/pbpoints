@@ -15,6 +15,9 @@
             <column name="logo" type="longblob">
                 <constraints nullable="false" />
             </column>
+            <column name="logo_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

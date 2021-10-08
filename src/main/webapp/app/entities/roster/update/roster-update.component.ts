@@ -43,16 +43,13 @@ export class RosterUpdateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.teId = +params['teId'] || 0;
-      this.evCatId = +params['evCatId'] || 0;
-    });
+    this.teId = history.state.roster.teId ?? 0;
+    this.evCatId = history.state.roster.evCatId ?? 0;
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
     this.activatedRoute.data.subscribe(({ roster }) => {
       this.updateForm(roster);
-
       this.loadRelationshipsOptions();
     });
   }
@@ -127,7 +124,7 @@ export class RosterUpdateComponent implements OnInit {
         .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.editForm.get('team')!.value)))
         .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
     }
-    if (this.evCatId) {
+    if (this.evCatId !== 0) {
       this.eventCategoryService
         .query({ 'id.equals': this.evCatId })
         .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))

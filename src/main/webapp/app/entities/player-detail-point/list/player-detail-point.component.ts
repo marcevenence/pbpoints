@@ -99,7 +99,7 @@ export class PlayerDetailPointComponent implements OnInit {
       const sort = (params.get('sort') ?? data['defaultSort']).split(',');
       const predicate = sort[0];
       const ascending = sort[1] === 'asc';
-      this.ppId = +params.get('ppId')! || 0;
+      this.ppId = history.state.ppId ?? 0;
       if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
         this.predicate = predicate;
         this.ascending = ascending;

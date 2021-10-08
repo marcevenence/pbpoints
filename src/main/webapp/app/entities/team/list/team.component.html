@@ -67,10 +67,10 @@
           <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ team.active }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/roster']" [queryParams]="{ teId: team.id }" class="btn btn-info btn-sm">
+              <button type="submit" [routerLink]="['/roster']" [state]="{ teId: team.id }" class="btn btn-info btn-sm">
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.roster">Subs Team</span>
               </button>
-              <button type="submit" [routerLink]="['/team-point']" [queryParams]="{ teId: team.id }" class="btn btn-info btn-sm">
+              <button type="submit" [routerLink]="['/team-point']" [state]="{ teId: team.id }" class="btn btn-info btn-sm">
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.teamPoints">Subs Team</span>
               </button>
               <!--<button type="submit" [routerLink]="['/team', team.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
