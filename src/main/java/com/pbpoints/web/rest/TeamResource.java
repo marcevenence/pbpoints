@@ -1,16 +1,18 @@
 package com.pbpoints.web.rest;
 
 import com.pbpoints.repository.TeamRepository;
+import com.pbpoints.service.MainRosterService;
 import com.pbpoints.service.TeamQueryService;
 import com.pbpoints.service.TeamService;
 import com.pbpoints.service.criteria.TeamCriteria;
-import com.pbpoints.service.dto.TeamDTO;
+import com.pbpoints.service.dto.*;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,10 +47,18 @@ public class TeamResource {
 
     private final TeamQueryService teamQueryService;
 
-    public TeamResource(TeamService teamService, TeamRepository teamRepository, TeamQueryService teamQueryService) {
+    private MainRosterService mainRosterService;
+
+    public TeamResource(
+        TeamService teamService,
+        TeamRepository teamRepository,
+        TeamQueryService teamQueryService,
+        MainRosterService mainRosterService
+    ) {
         this.teamService = teamService;
         this.teamRepository = teamRepository;
         this.teamQueryService = teamQueryService;
+        this.mainRosterService = mainRosterService;
     }
 
     /**
@@ -77,6 +87,44 @@ public class TeamResource {
     }
 
     /**
+     * {@code POST  /teams/players} : Create a new roster with players.
+     *
+     * @param teamWithRostersDTO the rosterWithPlayersDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new rosterDTO, or with status {@code 400 (Bad Request)} if the roster has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/teams/mainRoster")
+    public ResponseEntity<TeamDTO> createTeamWithRosters(@Valid @RequestBody TeamWithRostersDTO teamWithRostersDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save Team with Rosters: {}", teamWithRostersDTO);
+        if (teamWithRostersDTO.getTeam().getId() != null) {
+            throw new BadRequestAlertException("A new team cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (
+            teamService
+                .findByNameAndIdOwner(teamWithRostersDTO.getTeam().getName(), teamWithRostersDTO.getTeam().getOwner().getId())
+                .isPresent()
+        ) {
+            throw new BadRequestAlertException("The Team has already exists", ENTITY_NAME, "teamexists");
+        }
+
+        TeamDTO result = teamService.save(teamWithRostersDTO.getTeam());
+        List<MainRosterDTO> mainRostersDTO = teamWithRostersDTO.getMainRosters();
+        MainRosterDTO result2 = new MainRosterDTO();
+
+        int i = 0;
+        for (MainRosterDTO mainRosterDTO : mainRostersDTO) {
+            mainRosterDTO.setTeam(result);
+            result2 = mainRosterService.save(mainRosterDTO);
+            i++;
+        }
+        return ResponseEntity
+            .created(new URI("/api/teams/players/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getName()))
+            .body(result);
+    }
+
+    /**
      * {@code PUT  /teams} : Updates an existing team.
      *
      * @param teamDTO the teamDTO to update.
@@ -96,6 +144,37 @@ public class TeamResource {
             .ok()
             //.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamDTO.getId().toString()))
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamDTO.getName()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /teams/mainRoster} : Updates an existing team and add Players.
+     *
+     * @param teamWithRostersDTO the teamDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated teamDTO,
+     * or with status {@code 400 (Bad Request)} if the teamDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the teamDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/teams/mainRoster")
+    public ResponseEntity<TeamDTO> updateTeamWithRoster(@RequestBody TeamWithRostersDTO teamWithRostersDTO) throws URISyntaxException {
+        log.debug("REST request to update Team : {}", teamWithRostersDTO.getTeam());
+        if (teamWithRostersDTO.getTeam().getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        TeamDTO result = teamService.save(teamWithRostersDTO.getTeam());
+        List<MainRosterDTO> mainRostersDTO = teamWithRostersDTO.getMainRosters();
+        MainRosterDTO result2 = new MainRosterDTO();
+        log.debug("Cantidad : {}", mainRostersDTO.size());
+        int i = 0;
+        for (MainRosterDTO mainRosterDTO : mainRostersDTO) {
+            mainRosterDTO.setTeam(result);
+            result2 = mainRosterService.save(mainRosterDTO);
+            i++;
+        }
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, teamWithRostersDTO.getTeam().getName()))
             .body(result);
     }
 

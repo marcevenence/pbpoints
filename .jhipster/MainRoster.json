@@ -8,12 +8,10 @@
       "otherEntityField": "name"
     },
     {
-      "relationshipName": "user",
-      "otherEntityName": "user",
+      "relationshipName": "userExtra",
+      "otherEntityName": "userExtra",
       "relationshipType": "many-to-one",
-      "otherEntityField": "login",
-      "ownerSide": true,
-      "otherEntityRelationshipName": "mainRoster"
+      "otherEntityField": "id"
     }
   ],
   "service": "serviceImpl",

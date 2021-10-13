@@ -20,9 +20,11 @@
             <a [routerLink]="['/team', mainRoster.team?.id, 'view']">{{ mainRoster.team?.name }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="pbpointsApp.mainRoster.user">User</span></dt>
+        <dt><span jhiTranslate="pbpointsApp.mainRoster.userExtra">User Extra</span></dt>
         <dd>
-          <span>{{ mainRoster.user?.login }}</span>
+          <div *ngIf="mainRoster.userExtra">
+            <a [routerLink]="['/user-extra', mainRoster.userExtra?.id, 'view']">{{ mainRoster.userExtra?.id }}</a>
+          </div>
         </dd>
       </dl>
 

@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.pbpoints.IntegrationTest;
 import com.pbpoints.domain.MainRoster;
 import com.pbpoints.domain.Team;
-import com.pbpoints.domain.User;
+import com.pbpoints.domain.UserExtra;
 import com.pbpoints.repository.MainRosterRepository;
 import com.pbpoints.service.criteria.MainRosterCriteria;
 import com.pbpoints.service.dto.MainRosterDTO;
@@ -183,21 +183,21 @@ class MainRosterResourceIT {
 
     @Test
     @Transactional
-    void getAllMainRostersByUserIsEqualToSomething() throws Exception {
+    void getAllMainRostersByUserExtraIsEqualToSomething() throws Exception {
         // Initialize the database
         mainRosterRepository.saveAndFlush(mainRoster);
-        User user = UserResourceIT.createEntity(em);
-        em.persist(user);
+        UserExtra userExtra = UserExtraResourceIT.createEntity(em);
+        em.persist(userExtra);
         em.flush();
-        mainRoster.setUser(user);
+        mainRoster.setUserExtra(userExtra);
         mainRosterRepository.saveAndFlush(mainRoster);
-        Long userId = user.getId();
+        Long userExtraId = userExtra.getId();
 
-        // Get all the mainRosterList where user equals to userId
-        defaultMainRosterShouldBeFound("userId.equals=" + userId);
+        // Get all the mainRosterList where userExtra equals to userExtraId
+        defaultMainRosterShouldBeFound("userExtraId.equals=" + userExtraId);
 
-        // Get all the mainRosterList where user equals to (userId + 1)
-        defaultMainRosterShouldNotBeFound("userId.equals=" + (userId + 1));
+        // Get all the mainRosterList where userExtra equals to (userExtraId + 1)
+        defaultMainRosterShouldNotBeFound("userExtraId.equals=" + (userExtraId + 1));
     }
 
     /**

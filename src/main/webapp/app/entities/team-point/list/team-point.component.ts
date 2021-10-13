@@ -23,6 +23,7 @@ export class TeamPointComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  teId: any;
 
   constructor(
     protected teamPointService: TeamPointService,
@@ -40,6 +41,7 @@ export class TeamPointComponent implements OnInit {
         page: pageToLoad - 1,
         size: this.itemsPerPage,
         sort: this.sort(),
+        'teamId.equals': this.teId,
       })
       .subscribe(
         (res: HttpResponse<ITeamPoint[]>) => {
@@ -85,6 +87,7 @@ export class TeamPointComponent implements OnInit {
   }
 
   protected handleNavigation(): void {
+    this.teId = history.state.teId ?? 0;
     combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
       const page = params.get('page');
       const pageNumber = page !== null ? +page : 1;

@@ -36,8 +36,8 @@
           <th scope="col" jhiSortBy="team.name">
             <span jhiTranslate="pbpointsApp.mainRoster.team">Team</span> <fa-icon icon="sort"></fa-icon>
           </th>
-          <th scope="col" jhiSortBy="user.login">
-            <span jhiTranslate="pbpointsApp.mainRoster.user">User</span> <fa-icon icon="sort"></fa-icon>
+          <th scope="col" jhiSortBy="userExtra.id">
+            <span jhiTranslate="pbpointsApp.mainRoster.userExtra">User Extra</span> <fa-icon icon="sort"></fa-icon>
           </th>
           <th scope="col"></th>
         </tr>
@@ -53,7 +53,9 @@
             </div>
           </td>
           <td>
-            {{ mainRoster.user?.login }}
+            <div *ngIf="mainRoster.userExtra">
+              <a [routerLink]="['/user-extra', mainRoster.userExtra?.id, 'view']">{{ mainRoster.userExtra?.id }}</a>
+            </div>
           </td>
           <td class="text-right">
             <div class="btn-group">

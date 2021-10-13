@@ -7,9 +7,9 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link MainRoster} and its DTO {@link MainRosterDTO}.
  */
-@Mapper(componentModel = "spring", uses = { TeamMapper.class, UserMapper.class })
+@Mapper(componentModel = "spring", uses = { TeamMapper.class, UserExtraMapper.class })
 public interface MainRosterMapper extends EntityMapper<MainRosterDTO, MainRoster> {
     @Mapping(target = "team", source = "team")
-    @Mapping(target = "user", source = "user")
+    @Mapping(target = "userExtra", source = "userExtra")
     MainRosterDTO toDto(MainRoster s);
 }

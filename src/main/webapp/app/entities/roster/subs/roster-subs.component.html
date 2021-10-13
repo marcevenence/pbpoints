@@ -57,36 +57,38 @@
       <table class="table" [hidden]="findForm.get('team')!.value == null">
         <tr>
           <td>
-            <h4 jhiTranslate="pbpointsApp.roster.subs.history">History</h4>
+            <h4 jhiTranslate="pbpointsApp.roster.subs.myTeam">History</h4>
             <table class="table table-striped" aria-describedby="page-heading" align="right">
               <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                   <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
-                  <th scope="col"><span jhiTranslate="pbpointsApp.player.category">Category</span></th>
-                  <th scope="col"><span jhiTranslate="pbpointsApp.player.profile">Profile</span></th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
-                <ng-container *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
-                  <tr *ngFor="let player of players; trackBy: trackPlayerId" data-cy="entityTable">
-                    <ng-container *ngIf="roster.id == player.roster?.id">
-                      <td>{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
-                      <td>{{ player.category?.name }}</td>
-                      <td jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + player.profile }}">{{ player.profile }}</td>
-                      <td class="text-right">
-                        <div class="btn-group">
-                          <button type="submit" (click)="addStaff(player)" data-cy="entityStaffButton" class="btn btn-primary">
-                            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.STAFF">Staff</span>
-                          </button>
-                          <button type="submit" (click)="addPlayer(player)" data-cy="entityStaffButton" class="btn btn-primary">
-                            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.PLAYER">Player</span>
-                          </button>
-                        </div>
-                      </td>
-                    </ng-container>
-                  </tr>
-                </ng-container>
+                <tr *ngFor="let mainRoster of mainRosters; trackBy: trackMainRosterId" data-cy="entityTable">
+                  <td>{{ mainRoster.userExtra?.user?.lastName }}, {{ mainRoster.userExtra?.user?.firstName }}</td>
+                  <td class="text-right">
+                    <div class="btn-group">
+                      <button
+                        type="submit"
+                        (click)="addUserStaff(mainRoster.userExtra?.user!)"
+                        data-cy="entityStaffButton"
+                        class="btn btn-primary"
+                      >
+                        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.STAFF">Staff</span>
+                      </button>
+                      <button
+                        type="submit"
+                        (click)="addUserPlayer(mainRoster.userExtra?.user!)"
+                        data-cy="entityStaffButton"
+                        class="btn btn-primary"
+                      >
+                        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.PLAYER">Player</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
             <br />

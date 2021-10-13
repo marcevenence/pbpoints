@@ -7,6 +7,7 @@ import com.pbpoints.security.AuthoritiesConstants;
 import com.pbpoints.service.MailService;
 import com.pbpoints.service.UserService;
 import com.pbpoints.service.dto.AdminUserDTO;
+import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import com.pbpoints.web.rest.errors.EmailAlreadyUsedException;
 import com.pbpoints.web.rest.errors.LoginAlreadyUsedException;

@@ -27,14 +27,14 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.mainRoster.user" for="field_user">User</label>
-          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.mainRoster.userExtra" for="field_userExtra">User Extra</label>
+          <select class="form-control" id="field_userExtra" data-cy="userExtra" name="userExtra" formControlName="userExtra">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
-              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+              [ngValue]="userExtraOption.id === editForm.get('userExtra')!.value?.id ? editForm.get('userExtra')!.value : userExtraOption"
+              *ngFor="let userExtraOption of userExtrasSharedCollection; trackBy: trackUserExtraById"
             >
-              {{ userOption.login }}
+              {{ userExtraOption.id }}
             </option>
           </select>
         </div>

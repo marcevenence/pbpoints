@@ -9,8 +9,8 @@ import { IMainRoster, MainRoster } from '../main-roster.model';
 import { MainRosterService } from '../service/main-roster.service';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
+import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
+import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
 
 @Component({
   selector: 'jhi-main-roster-update',
@@ -20,18 +20,18 @@ export class MainRosterUpdateComponent implements OnInit {
   isSaving = false;
 
   teamsSharedCollection: ITeam[] = [];
-  usersSharedCollection: IUser[] = [];
+  userExtrasSharedCollection: IUserExtra[] = [];
 
   editForm = this.fb.group({
     id: [],
     team: [],
-    user: [],
+    userExtra: [],
   });
 
   constructor(
     protected mainRosterService: MainRosterService,
     protected teamService: TeamService,
-    protected userService: UserService,
+    protected userExtraService: UserExtraService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -62,7 +62,7 @@ export class MainRosterUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  trackUserById(index: number, item: IUser): number {
+  trackUserExtraById(index: number, item: IUserExtra): number {
     return item.id!;
   }
 
@@ -89,11 +89,14 @@ export class MainRosterUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: mainRoster.id,
       team: mainRoster.team,
-      user: mainRoster.user,
+      userExtra: mainRoster.userExtra,
     });
 
     this.teamsSharedCollection = this.teamService.addTeamToCollectionIfMissing(this.teamsSharedCollection, mainRoster.team);
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, mainRoster.user);
+    this.userExtrasSharedCollection = this.userExtraService.addUserExtraToCollectionIfMissing(
+      this.userExtrasSharedCollection,
+      mainRoster.userExtra
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -103,11 +106,15 @@ export class MainRosterUpdateComponent implements OnInit {
       .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.editForm.get('team')!.value)))
       .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
 
-    this.userService
+    this.userExtraService
       .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+      .pipe(map((res: HttpResponse<IUserExtra[]>) => res.body ?? []))
+      .pipe(
+        map((userExtras: IUserExtra[]) =>
+          this.userExtraService.addUserExtraToCollectionIfMissing(userExtras, this.editForm.get('userExtra')!.value)
+        )
+      )
+      .subscribe((userExtras: IUserExtra[]) => (this.userExtrasSharedCollection = userExtras));
   }
 
   protected createFromForm(): IMainRoster {
@@ -115,7 +122,7 @@ export class MainRosterUpdateComponent implements OnInit {
       ...new MainRoster(),
       id: this.editForm.get(['id'])!.value,
       team: this.editForm.get(['team'])!.value,
-      user: this.editForm.get(['user'])!.value,
+      userExtra: this.editForm.get(['userExtra'])!.value,
     };
   }
 }

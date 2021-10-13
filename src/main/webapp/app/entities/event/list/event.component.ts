@@ -138,15 +138,20 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.accountService.identity().subscribe(account => {
+      this.currentAccount = account;
+    });
     if (history.state.tourId === undefined) {
-      this.tourId = 0;
+      if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+        this.tourId = 0;
+      } else {
+        history.go(-1);
+      }
     } else {
       this.tourId = history.state.tourId;
     }
     localStorage.setItem('TOURNAMENTID', this.tourId.toString());
-    this.accountService.identity().subscribe(account => {
-      this.currentAccount = account;
-    });
+
     this.loadAll();
   }
 

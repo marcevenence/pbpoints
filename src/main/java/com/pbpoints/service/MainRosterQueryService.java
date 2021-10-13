@@ -92,10 +92,13 @@ public class MainRosterQueryService extends QueryService<MainRoster> {
                         buildSpecification(criteria.getTeamId(), root -> root.join(MainRoster_.team, JoinType.LEFT).get(Team_.id))
                     );
             }
-            if (criteria.getUserId() != null) {
+            if (criteria.getUserExtraId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getUserId(), root -> root.join(MainRoster_.user, JoinType.LEFT).get(User_.id))
+                        buildSpecification(
+                            criteria.getUserExtraId(),
+                            root -> root.join(MainRoster_.userExtra, JoinType.LEFT).get(UserExtra_.id)
+                        )
                     );
             }
         }

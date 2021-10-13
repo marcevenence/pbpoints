@@ -8,7 +8,9 @@
       "lastname.placeholder": "Seu sobrenome",
       "language": "Idioma",
       "button": "Salvar",
-      "id": "PBPoint ID"
+      "id": "PBPoint ID",
+      "code": "Codigo Personal",
+      "code.placeholder": "Codigo Personal"
     },
     "messages": {
       "error": {

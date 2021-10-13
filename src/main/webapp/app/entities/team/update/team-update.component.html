@@ -23,7 +23,7 @@
               alt="team image"
             />
             <div *ngIf="editForm.get('logo')!.value" class="form-text text-danger clearfix">
-              <!--<span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>-->
+              <span class="pull-left">{{ editForm.get('logoContentType')!.value }}, {{ byteSize(editForm.get('logo')!.value) }}</span>
               <button
                 type="button"
                 (click)="clearInputImage('logo', 'logoContentType', 'file_logo')"
@@ -57,7 +57,11 @@
             [readonly]="editForm.get('id')!.value != null"
           />
         </div>
-
+        <div *ngIf="editForm.get(['name'])!.invalid && (editForm.get(['name'])!.dirty || editForm.get(['name'])!.touched)">
+          <small class="form-text text-danger" *ngIf="editForm.get(['name'])?.value == null" jhiTranslate="entity.validation.required">
+            This field is required.
+          </small>
+        </div>
         <small *ngIf="editForm.get('id')!.value != null" class="form-text text-danger" jhiTranslate="global.messages.validate.email.modify">
           Please send an email to pbpoints.info@gmail.com.
         </small>
@@ -89,9 +93,9 @@
             <!--<option [ngValue]="null"></option>-->
             <option
               [ngValue]="userOption.id === editForm.get('owner')!.value?.id ? editForm.get('owner')!.value : userOption"
-              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+              *ngFor="let userOption of userExtrasSharedCollection; trackBy: trackUserExtraById"
             >
-              {{ userOption.login }}
+              {{ userOption.user?.lastName }}, {{ userOption.user?.firstName }}
             </option>
           </select>
         </div>
@@ -101,7 +105,7 @@
         <table>
           <tr>
             <th>
-              <label class="form-control-label" jhiTranslate="pbpointsApp.player.home.createOrEditLabel">Players</label>
+              <label class="form-control-label" jhiTranslate="pbpointsApp.player.add">Players</label>
             </th>
           </tr>
           <tr>
@@ -117,48 +121,48 @@
                 <input type="text" class="form-control" name="playerCode" id="playerCode" data-cy="code" formControlName="playerCode" />
               </div>
             </td>
-            <td width="30%">
-              <div class="form-group">
-                <label class="form-control-label" jhiTranslate="pbpointsApp.player.profile" for="playerProfile">Profile</label>
-                <select class="form-control" name="playerProfile" formControlName="playerProfile" id="playerProfile" data-cy="profile">
-                  <option value="PLAYER">{{ 'pbpointsApp.ProfileUser.PLAYER' | translate }}</option>
-                  <option value="STAFF">{{ 'pbpointsApp.ProfileUser.STAFF' | translate }}</option>
-                </select>
-              </div>
-            </td>
             <td width="20%" style="vertical-align: bottom">
-              <div class="form-group" [hidden]="editForm.get('team')!.value == null">
-                <button (click)="addNewPlayer()" id="save-entity2" data-cy="entityCreateSaveButton" class="btn btn-primary">
+              <div class="form-group">
+                <button type="button" (click)="addNewPlayer()" class="btn btn-primary">
                   <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.player.add">Add</span>
                 </button>
               </div>
             </td>
           </tr>
         </table>
-
-        <table class="table table-striped" aria-describedby="page-heading" align="right">
-          <thead>
-            <tr>
-              <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let mainPlayer of mainRoster; trackBy: trackMainRosterId" data-cy="entityTable">
-              <td>{{ mainPlayer.user?.lastName }}, {{ mainPlayer.user?.firstName }}</td>
-              <td class="text-right">
-                <div class="btn-group">
-                  <!--<button type="submit" (click)="addStaff(player)" data-cy="entityStaffButton" class="btn btn-primary">
+        <div class="table-responsive" id="entities" *ngIf="mainRosters && mainRosters.length > 0">
+          <table class="table table-striped" aria-describedby="page-heading" align="right">
+            <thead>
+              <tr>
+                <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mainPlayer of mainRosters; trackBy: trackMainRosterId" data-cy="entityTable">
+                <td>
+                  <img
+                    [src]="'data:' + mainPlayer.userExtra?.pictureContentType + ';base64,' + mainPlayer.userExtra?.picture"
+                    style="max-height: 50px"
+                    *ngIf="mainPlayer.userExtra?.picture"
+                    alt="player image"
+                  />
+                </td>
+                <td>{{ mainPlayer.userExtra?.user?.lastName }}, {{ mainPlayer.userExtra?.user?.firstName }}</td>
+                <td class="text-right">
+                  <div class="btn-group">
+                    <!--<button type="submit" (click)="addStaff(player)" data-cy="entityStaffButton" class="btn btn-primary">
                         <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.STAFF">Staff</span>
-                      </button>
-                      <button type="submit" (click)="addPlayer(player)" data-cy="entityStaffButton" class="btn btn-primary">
-                        <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.PLAYER">Player</span>
                       </button>-->
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    <button type="button" (click)="deletePlayer(mainPlayer)" class="btn btn-primary">
+                      <fa-icon icon="times"></fa-icon>&nbsp;<span jhiTranslate="pbpointsApp.ProfileUser.PLAYER">Player</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div>

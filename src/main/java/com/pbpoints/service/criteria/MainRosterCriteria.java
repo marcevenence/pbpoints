@@ -28,14 +28,14 @@ public class MainRosterCriteria implements Serializable, Criteria {
 
     private LongFilter teamId;
 
-    private LongFilter userId;
+    private LongFilter userExtraId;
 
     public MainRosterCriteria() {}
 
     public MainRosterCriteria(MainRosterCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.teamId = other.teamId == null ? null : other.teamId.copy();
-        this.userId = other.userId == null ? null : other.userId.copy();
+        this.userExtraId = other.userExtraId == null ? null : other.userExtraId.copy();
     }
 
     @Override
@@ -73,19 +73,19 @@ public class MainRosterCriteria implements Serializable, Criteria {
         this.teamId = teamId;
     }
 
-    public LongFilter getUserId() {
-        return userId;
+    public LongFilter getUserExtraId() {
+        return userExtraId;
     }
 
-    public LongFilter userId() {
-        if (userId == null) {
-            userId = new LongFilter();
+    public LongFilter userExtraId() {
+        if (userExtraId == null) {
+            userExtraId = new LongFilter();
         }
-        return userId;
+        return userExtraId;
     }
 
-    public void setUserId(LongFilter userId) {
-        this.userId = userId;
+    public void setUserExtraId(LongFilter userExtraId) {
+        this.userExtraId = userExtraId;
     }
 
     @Override
@@ -97,12 +97,12 @@ public class MainRosterCriteria implements Serializable, Criteria {
             return false;
         }
         final MainRosterCriteria that = (MainRosterCriteria) o;
-        return Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(userId, that.userId);
+        return Objects.equals(id, that.id) && Objects.equals(teamId, that.teamId) && Objects.equals(userExtraId, that.userExtraId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, teamId, userId);
+        return Objects.hash(id, teamId, userExtraId);
     }
 
     // prettier-ignore
@@ -111,7 +111,7 @@ public class MainRosterCriteria implements Serializable, Criteria {
         return "MainRosterCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (teamId != null ? "teamId=" + teamId + ", " : "") +
-            (userId != null ? "userId=" + userId + ", " : "") +
+            (userExtraId != null ? "userExtraId=" + userExtraId + ", " : "") +
             "}";
     }
 }

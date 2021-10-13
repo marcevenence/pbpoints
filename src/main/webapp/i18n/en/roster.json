@@ -17,6 +17,13 @@
       "detail": {
         "title": "Roster"
       },
+      "subs": {
+        "myTeam": "My Team",
+        "player": "Players",
+        "staff": "Staff",
+        "add": "Add",
+        "delete": "Delete"
+      },
       "id": "ID",
       "active": "Active",
       "team": "Team",

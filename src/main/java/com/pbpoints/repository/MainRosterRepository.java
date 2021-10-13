@@ -1,7 +1,6 @@
 package com.pbpoints.repository;
 
 import com.pbpoints.domain.MainRoster;
-import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MainRosterRepository extends JpaRepository<MainRoster, Long>, JpaSpecificationExecutor<MainRoster> {
-    @Query("select mainRoster from MainRoster mainRoster where mainRoster.user.login = ?#{principal.username}")
-    List<MainRoster> findByUserIsCurrentUser();
-}
+public interface MainRosterRepository extends JpaRepository<MainRoster, Long>, JpaSpecificationExecutor<MainRoster> {}

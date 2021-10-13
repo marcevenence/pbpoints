@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "team": "Team",
-      "user": "User"
+      "userExtra": "User Extra"
     }
   }
 }

@@ -12,7 +12,7 @@
     <changeSet id="20210406023747-1" author="jhipster">
         <createTable tableName="user_extra" remarks="UserExtra entity.\n@author Marcelo Miño">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" unique="true" uniqueConstraintName="ux_user_extra__user_id"/>
             </column>
             <column name="num_doc" type="varchar(255)">
                 <constraints nullable="true" />
@@ -32,9 +32,9 @@
             <column name="code" type="varchar(5)">
                 <constraints nullable="false" />
             </column>
-            <column name="user_id" type="bigint">
+            <!--<column name="user_id" type="bigint">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_extra__user_id" />
-            </column>
+            </column>-->
             <column name="doc_type_id" type="bigint">
                 <constraints nullable="true" />
             </column>

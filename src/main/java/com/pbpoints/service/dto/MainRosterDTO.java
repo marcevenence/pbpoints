@@ -12,7 +12,7 @@ public class MainRosterDTO implements Serializable {
 
     private TeamDTO team;
 
-    private UserDTO user;
+    private UserExtraDTO userExtra;
 
     public Long getId() {
         return id;
@@ -30,12 +30,12 @@ public class MainRosterDTO implements Serializable {
         this.team = team;
     }
 
-    public UserDTO getUser() {
-        return user;
+    public UserExtraDTO getUserExtra() {
+        return userExtra;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setUserExtra(UserExtraDTO userExtra) {
+        this.userExtra = userExtra;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MainRosterDTO implements Serializable {
         return "MainRosterDTO{" +
             "id=" + getId() +
             ", team=" + getTeam() +
-            ", user=" + getUser() +
+            ", userExtra=" + getUserExtra() +
             "}";
     }
 }

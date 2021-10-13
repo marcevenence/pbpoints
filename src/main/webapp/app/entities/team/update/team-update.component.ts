@@ -11,9 +11,10 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
+import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
+import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
+import { IMainRoster, MainRoster } from 'app/entities/main-roster/main-roster.model';
 import { MainRosterService } from 'app/entities/main-roster/service/main-roster.service';
 
 @Component({
@@ -24,8 +25,10 @@ export class TeamUpdateComponent implements OnInit {
   isSaving = false;
   currentAccount: any;
   currentOwner: IUser = {};
-  usersSharedCollection: IUser[] = [];
-  mainRoster: IMainRoster[] = [];
+  userExtrasSharedCollection: IUserExtra[] = [];
+  mainRosters: IMainRoster[] = [];
+  userExtra: any;
+  team: ITeam = {};
 
   editForm = this.fb.group({
     id: [],
@@ -43,7 +46,7 @@ export class TeamUpdateComponent implements OnInit {
     protected dataUtils: DataUtils,
     protected eventManager: EventManager,
     protected teamService: TeamService,
-    protected userService: UserService,
+    protected userExtraService: UserExtraService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService,
@@ -94,25 +97,69 @@ export class TeamUpdateComponent implements OnInit {
   }
 
   addNewPlayer(): void {
-    alert('Agregado');
+    if (this.editForm.get('playerId')!.value === null || this.editForm.get('playerCode')!.value === '') {
+      alert('Debe ingresar id y codigo');
+    } else {
+      this.userExtraService
+        .queryOneByIdAndCode(+this.editForm.get('playerId')!.value, this.editForm.get('playerCode')!.value)
+        .subscribe((res: HttpResponse<IUserExtra>) => {
+          this.userExtra = res.body;
+          const mainRoster = this.createNewMainRoster();
+          mainRoster.userExtra = this.userExtra;
+          const targetIdx = this.mainRosters.map(item => item.userExtra?.user?.login).indexOf(mainRoster.userExtra?.user?.login);
+          if (targetIdx === -1) {
+            this.mainRosters.push(mainRoster);
+          } else {
+            alert('No es posible agregar');
+          }
+        });
+    }
   }
 
   save(): void {
     this.isSaving = true;
     const team = this.createFromForm();
     if (team.id !== undefined) {
-      this.subscribeToSaveResponse(this.teamService.update(team));
+      if (this.mainRosters.length > 0) {
+        this.subscribeToSaveResponse(this.teamService.updateWithRoster(team, this.mainRosters));
+      } else {
+        this.subscribeToSaveResponse(this.teamService.update(team));
+      }
     } else {
-      this.subscribeToSaveResponse(this.teamService.create(team));
+      if (this.mainRosters.length > 0) {
+        this.subscribeToSaveResponse(this.teamService.createWithRoster(team, this.mainRosters));
+      } else {
+        this.subscribeToSaveResponse(this.teamService.create(team));
+      }
     }
+  }
+
+  deletePlayer(mainRoster: IMainRoster): void {
+    alert('Eliminado');
   }
 
   trackUserById(index: number, item: IUser): number {
     return item.id!;
   }
 
+  trackUserExtraById(index: number, item: IUserExtra): number {
+    return item.id!;
+  }
+
   trackMainRosterId(index: number, item: IMainRoster): number {
     return item.id!;
+  }
+
+  protected onError(): void {
+    // Api for inheritance.
+  }
+
+  protected createNewMainRoster(): IMainRoster {
+    return {
+      ...new MainRoster(),
+      userExtra: this.userExtra,
+      team: this.team,
+    };
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeam>>): void {
@@ -144,7 +191,7 @@ export class TeamUpdateComponent implements OnInit {
       owner: team.owner,
     });
 
-    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, team.owner);
+    this.userExtrasSharedCollection = this.userExtraService.addUserExtraToCollectionIfMissing(this.userExtrasSharedCollection, team.owner);
   }
 
   protected uploadPlayers(team: ITeam): void {
@@ -152,16 +199,20 @@ export class TeamUpdateComponent implements OnInit {
       this.mainRosterService
         .query({ 'teamId.equals': team.id })
         .pipe(map((res: HttpResponse<IMainRoster[]>) => res.body ?? []))
-        .subscribe((mainRoster: IMainRoster[]) => (this.mainRoster = mainRoster));
+        .subscribe((mainRosters: IMainRoster[]) => (this.mainRosters = mainRosters));
     }
   }
 
   protected loadRelationshipsOptions(): void {
-    this.userService
+    this.userExtraService
       .query()
-      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
-      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('owner')!.value)))
-      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
+      .pipe(map((res: HttpResponse<IUserExtra[]>) => res.body ?? []))
+      .pipe(
+        map((userExtras: IUserExtra[]) =>
+          this.userExtraService.addUserExtraToCollectionIfMissing(userExtras, this.editForm.get('owner')!.value)
+        )
+      )
+      .subscribe((userExtras: IUserExtra[]) => (this.userExtrasSharedCollection = userExtras));
   }
 
   protected createFromForm(): ITeam {

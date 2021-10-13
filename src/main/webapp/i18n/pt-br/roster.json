@@ -17,6 +17,13 @@
       "detail": {
         "title": "Equipos"
       },
+      "subs": {
+        "myTeam": "Mi Equipo",
+        "player": "Jogadores",
+        "staff": "Staff",
+        "add": "Agregar",
+        "delete": "Eliminar"
+      },
       "id": "ID",
       "active": "Ativo",
       "team": "Equipo",

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { AccountService } from 'app/core/auth/account.service';
@@ -18,6 +18,8 @@ import { IEventCategory } from 'app/entities/event-category/event-category.model
 import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
+import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
+import { MainRosterService } from 'app/entities/main-roster/service/main-roster.service';
 import { ProfileUser } from 'app/entities/enumerations/profile-user.model';
 
 @Component({
@@ -27,7 +29,7 @@ import { ProfileUser } from 'app/entities/enumerations/profile-user.model';
 export class RosterSubsComponent implements OnInit {
   players?: IPlayer[];
   playerNews?: IPlayer[];
-  rosters?: IRoster[];
+  mainRosters?: IMainRoster[];
   currentAccount: any;
   userExtras?: IUserExtra[];
   eventCategory?: IEventCategory;
@@ -50,6 +52,7 @@ export class RosterSubsComponent implements OnInit {
 
   constructor(
     protected playerService: PlayerService,
+    protected mainRosterService: MainRosterService,
     protected rosterService: RosterService,
     protected userService: UserService,
     protected userExtraService: UserExtraService,
@@ -84,9 +87,9 @@ export class RosterSubsComponent implements OnInit {
   }
 
   onChange(): void {
-    this.rosterService.query({ 'teamId.equals': this.findForm.get('team')!.value?.id }).subscribe(
-      (res: HttpResponse<IRoster[]>) => {
-        this.onRosterSuccess(res.body);
+    this.mainRosterService.query({ 'teamId.equals': this.findForm.get('team')!.value?.id }).subscribe(
+      (res: HttpResponse<IMainRoster[]>) => {
+        this.onMainRosterSuccess(res.body);
       },
       () => {
         this.onError();
@@ -121,6 +124,10 @@ export class RosterSubsComponent implements OnInit {
 
   openFile(base64String: string, contentType: string | null | undefined): void {
     return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  trackMainRosterId(index: number, item: IMainRoster): number {
+    return item.id!;
   }
 
   trackRosterId(index: number, item: IRoster): number {
@@ -208,6 +215,14 @@ export class RosterSubsComponent implements OnInit {
     }
   }
 
+  addUserPlayer(user1: IUser): void {
+    alert('Agregado Player');
+  }
+
+  addUserStaff(user1: IUser): void {
+    alert('Agregado Staff');
+  }
+
   addStaff(player1: IPlayer): void {
     if (player1.roster?.id === 0) {
       const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(player1.user?.login);
@@ -261,8 +276,8 @@ export class RosterSubsComponent implements OnInit {
     return result;
   }
 
-  protected onRosterSuccess(data: IRoster[] | null): void {
-    this.rosters = data ?? [];
+  protected onMainRosterSuccess(data: IMainRoster[] | null): void {
+    this.mainRosters = data ?? [];
   }
 
   protected onPlayerSuccess(data: IPlayer[] | null): void {
@@ -283,18 +298,17 @@ export class RosterSubsComponent implements OnInit {
 
   protected loadRelationshipsOptions(): void {
     this.teamService
-      .query({ 'ownerId.equals': this.currentAccount.id })
+      .query({ 'ownerId.equals': +this.currentAccount.id })
       .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
       .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
       .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
   }
 
   protected handleNavigation(): void {
-    combineLatest([this.activatedRoute.queryParamMap]).subscribe(([params]) => {
-      // Defaults to 0 if no query param provided.
-      this.evCatId = +params.get('evCatId')!;
+    this.evCatId = history.state.evCatId ?? 0;
+    if (this.evCatId !== 0) {
       this.eventCategoryService.find(this.evCatId).subscribe((res: HttpResponse<IEventCategory>) => this.paginateEventCategory(res.body));
-    });
+    }
   }
 
   protected paginateEventCategory(data: any): void {

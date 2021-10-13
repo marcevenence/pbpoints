@@ -11,9 +11,8 @@ import { MainRosterService } from '../service/main-roster.service';
 import { IMainRoster, MainRoster } from '../main-roster.model';
 import { ITeam } from 'app/entities/team/team.model';
 import { TeamService } from 'app/entities/team/service/team.service';
-
-import { IUser } from 'app/entities/user/user.model';
-import { UserService } from 'app/entities/user/user.service';
+import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
+import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
 
 import { MainRosterUpdateComponent } from './main-roster-update.component';
 
@@ -24,7 +23,7 @@ describe('Component Tests', () => {
     let activatedRoute: ActivatedRoute;
     let mainRosterService: MainRosterService;
     let teamService: TeamService;
-    let userService: UserService;
+    let userExtraService: UserExtraService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -39,7 +38,7 @@ describe('Component Tests', () => {
       activatedRoute = TestBed.inject(ActivatedRoute);
       mainRosterService = TestBed.inject(MainRosterService);
       teamService = TestBed.inject(TeamService);
-      userService = TestBed.inject(UserService);
+      userExtraService = TestBed.inject(UserExtraService);
 
       comp = fixture.componentInstance;
     });
@@ -64,38 +63,38 @@ describe('Component Tests', () => {
         expect(comp.teamsSharedCollection).toEqual(expectedCollection);
       });
 
-      it('Should call User query and add missing value', () => {
+      it('Should call UserExtra query and add missing value', () => {
         const mainRoster: IMainRoster = { id: 456 };
-        const user: IUser = { id: 27699 };
-        mainRoster.user = user;
+        const userExtra: IUserExtra = { id: 69019 };
+        mainRoster.userExtra = userExtra;
 
-        const userCollection: IUser[] = [{ id: 87926 }];
-        spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
-        const additionalUsers = [user];
-        const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
-        spyOn(userService, 'addUserToCollectionIfMissing').and.returnValue(expectedCollection);
+        const userExtraCollection: IUserExtra[] = [{ id: 59131 }];
+        spyOn(userExtraService, 'query').and.returnValue(of(new HttpResponse({ body: userExtraCollection })));
+        const additionalUserExtras = [userExtra];
+        const expectedCollection: IUserExtra[] = [...additionalUserExtras, ...userExtraCollection];
+        spyOn(userExtraService, 'addUserExtraToCollectionIfMissing').and.returnValue(expectedCollection);
 
         activatedRoute.data = of({ mainRoster });
         comp.ngOnInit();
 
-        expect(userService.query).toHaveBeenCalled();
-        expect(userService.addUserToCollectionIfMissing).toHaveBeenCalledWith(userCollection, ...additionalUsers);
-        expect(comp.usersSharedCollection).toEqual(expectedCollection);
+        expect(userExtraService.query).toHaveBeenCalled();
+        expect(userExtraService.addUserExtraToCollectionIfMissing).toHaveBeenCalledWith(userExtraCollection, ...additionalUserExtras);
+        expect(comp.userExtrasSharedCollection).toEqual(expectedCollection);
       });
 
       it('Should update editForm', () => {
         const mainRoster: IMainRoster = { id: 456 };
         const team: ITeam = { id: 13467 };
         mainRoster.team = team;
-        const user: IUser = { id: 47918 };
-        mainRoster.user = user;
+        const userExtra: IUserExtra = { id: 45246 };
+        mainRoster.userExtra = userExtra;
 
         activatedRoute.data = of({ mainRoster });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(mainRoster));
         expect(comp.teamsSharedCollection).toContain(team);
-        expect(comp.usersSharedCollection).toContain(user);
+        expect(comp.userExtrasSharedCollection).toContain(userExtra);
       });
     });
 
@@ -172,10 +171,10 @@ describe('Component Tests', () => {
         });
       });
 
-      describe('trackUserById', () => {
-        it('Should return tracked User primary key', () => {
+      describe('trackUserExtraById', () => {
+        it('Should return tracked UserExtra primary key', () => {
           const entity = { id: 123 };
-          const trackResult = comp.trackUserById(0, entity);
+          const trackResult = comp.trackUserExtraById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });
       });

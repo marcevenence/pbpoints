@@ -25,7 +25,8 @@ public class MainRoster implements Serializable {
     private Team team;
 
     @ManyToOne
-    private User user;
+    @JsonIgnoreProperties(value = { "user", "docType" }, allowSetters = true)
+    private UserExtra userExtra;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -54,17 +55,17 @@ public class MainRoster implements Serializable {
         this.team = team;
     }
 
-    public User getUser() {
-        return this.user;
+    public UserExtra getUserExtra() {
+        return this.userExtra;
     }
 
-    public MainRoster user(User user) {
-        this.setUser(user);
+    public MainRoster userExtra(UserExtra userExtra) {
+        this.setUserExtra(userExtra);
         return this;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserExtra(UserExtra userExtra) {
+        this.userExtra = userExtra;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

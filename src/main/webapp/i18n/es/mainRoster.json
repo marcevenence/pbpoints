@@ -19,7 +19,7 @@
       },
       "id": "ID",
       "team": "Team",
-      "player": "Player"
+      "userExtra": "User Extra"
     }
   }
 }

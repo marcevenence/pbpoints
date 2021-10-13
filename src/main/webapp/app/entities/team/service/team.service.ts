@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { ITeam, getTeamIdentifier } from '../team.model';
+import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
 
 export type EntityResponseType = HttpResponse<ITeam>;
 export type EntityArrayResponseType = HttpResponse<ITeam[]>;
@@ -20,8 +21,18 @@ export class TeamService {
     return this.http.post<ITeam>(this.resourceUrl, team, { observe: 'response' });
   }
 
+  createWithRoster(team: ITeam, mainRosters: IMainRoster[]): Observable<EntityResponseType> {
+    const data = { team, mainRosters };
+    return this.http.post<ITeam>(`${this.resourceUrl}/mainRoster`, data, { observe: 'response' });
+  }
+
   update(team: ITeam): Observable<EntityResponseType> {
     return this.http.put<ITeam>(`${this.resourceUrl}`, team, { observe: 'response' });
+  }
+
+  updateWithRoster(team: ITeam, mainRosters: IMainRoster[]): Observable<EntityResponseType> {
+    const data = { team, mainRosters };
+    return this.http.put<ITeam>(`${this.resourceUrl}/mainRoster`, data, { observe: 'response' });
   }
 
   partialUpdate(team: ITeam): Observable<EntityResponseType> {
