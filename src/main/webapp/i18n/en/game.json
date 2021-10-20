@@ -20,6 +20,7 @@
       "id": "ID",
       "pointsA": "Points A",
       "pointsB": "Points B",
+      "points": "Points",
       "splitDeckNum": "Split Deck Num",
       "timeLeft": "Time Left",
       "status": "Status",
@@ -29,9 +30,10 @@
       "uvuB": "Uvu B",
       "group": "Group",
       "clasif": "Clasif",
-      "teamA": "Team A",
-      "teamB": "Team B",
-      "eventCategory": "Category"
+      "teamA": "Team",
+      "teamB": "Team",
+      "eventCategory": "Category",
+      "match": "Match"
     }
   }
 }

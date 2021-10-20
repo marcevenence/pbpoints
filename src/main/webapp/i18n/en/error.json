@@ -13,6 +13,7 @@
     "validation": "Validation error on the server.",
     "teamexists": "The Team exists already",
     "alreadyInRoster": "The Player is already in Roster",
+    "TeamAlreadyInRoster": "The Team is already in Tournament",
     "alreadyInOtherRoster": "The Player is in other Roster",
     "nullProfile": "The profile is not complete",
     "invalidCategoryPlayer": "No se puede agregar un jugador con esta categoria",

@@ -13,6 +13,7 @@
     "validation": "Error de validación en el servidor.",
     "teamexists": "El Equipo ya existe",
     "alreadyInRoster": "El Jugador ya esta inscripto",
+    "TeamAlreadyInRoster": "El equipo ya esta inscripto",
     "alreadyInOtherRoster": "El Jugador ya esta Inscripto en otro Equipo",
     "nullProfile": "Debe indicar un Perfil de Jugador",
     "invalidCategoryPlayer": "No se puede agregar un jugador con esta categoria",

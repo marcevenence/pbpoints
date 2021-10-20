@@ -8,7 +8,10 @@ import com.pbpoints.repository.RosterRepository;
 import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.RosterDTO;
+import com.pbpoints.service.dto.TeamDTO;
+import com.pbpoints.service.mapper.EventCategoryMapper;
 import com.pbpoints.service.mapper.RosterMapper;
+import com.pbpoints.service.mapper.TeamMapper;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +36,10 @@ public class RosterService {
 
     private final RosterMapper rosterMapper;
 
+    private final TeamMapper teamMapper;
+
+    private final EventCategoryMapper eventCategoryMapper;
+
     private final UserService userService;
 
     private final EventCategoryRepository eventCategoryRepository;
@@ -44,6 +51,8 @@ public class RosterService {
     public RosterService(
         RosterRepository rosterRepository,
         RosterMapper rosterMapper,
+        TeamMapper teamMapper,
+        EventCategoryMapper eventCategoryMapper,
         UserService userService,
         EventCategoryRepository eventCategoryRepository,
         EventCategoryService eventCategoryService,
@@ -51,6 +60,8 @@ public class RosterService {
     ) {
         this.rosterRepository = rosterRepository;
         this.rosterMapper = rosterMapper;
+        this.eventCategoryMapper = eventCategoryMapper;
+        this.teamMapper = teamMapper;
         this.userService = userService;
         this.eventCategoryRepository = eventCategoryRepository;
         this.eventCategoryService = eventCategoryService;
@@ -130,6 +141,12 @@ public class RosterService {
 
     public Long checkOwner(Long id) {
         return rosterRepository.findByRosterId(id);
+    }
+
+    public RosterDTO findByTeamAndEventCategory(TeamDTO teamDTO, EventCategoryDTO eventCategoryDTO) {
+        return rosterMapper.toDto(
+            rosterRepository.findByTeamAndEventCategory(teamMapper.toEntity(teamDTO), eventCategoryMapper.toEntity(eventCategoryDTO))
+        );
     }
 
     public long validRoster(Long rosterId) {

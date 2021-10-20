@@ -69,6 +69,10 @@ public class RosterResource {
         if (rosterDTO.getId() != null) {
             throw new BadRequestAlertException("A new roster cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        RosterDTO exists = rosterService.findByTeamAndEventCategory(rosterDTO.getTeam(), rosterDTO.getEventCategory());
+        if (exists.getId() != null) {
+            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInRoster");
+        }
         rosterDTO.setActive(true);
         RosterDTO result = rosterService.save(rosterDTO);
         return ResponseEntity
@@ -88,6 +92,13 @@ public class RosterResource {
     public ResponseEntity<RosterDTO> createRosterWithPlayers(@Valid @RequestBody RosterWithPlayersDTO rosterWithPlayersDTO)
         throws URISyntaxException {
         log.debug("REST request to save Roster with Players: {}", rosterWithPlayersDTO);
+        RosterDTO exists = rosterService.findByTeamAndEventCategory(
+            rosterWithPlayersDTO.getTeam(),
+            rosterWithPlayersDTO.getEventCategory()
+        );
+        if (exists.getId() != null) {
+            throw new BadRequestAlertException("Already Team Exists", ENTITY_NAME, "TeamAlreadyInRoster");
+        }
         RosterDTO rosterDTO = new RosterDTO();
         rosterDTO.setTeam(rosterWithPlayersDTO.getTeam());
         rosterDTO.setEventCategory(rosterWithPlayersDTO.getEventCategory());
@@ -99,6 +110,12 @@ public class RosterResource {
         List<PlayerDTO> playersDTO = rosterWithPlayersDTO.getPlayers();
         int i = 0;
         for (PlayerDTO playerDTO : playersDTO) {
+            if (playerService.validExists(playerDTO)) {
+                throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInRoster");
+            }
+            if (playerService.validExistsOtherRoster(playerDTO)) {
+                throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
+            }
             playerDTO.setRoster(result);
             result2 = playerService.save(playerDTO);
             i++;

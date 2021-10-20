@@ -25,7 +25,7 @@
           "tournament": "Tournaments",
           "team": "Teams",
           "format": "Formats",
-          "roster": "Rosters",
+          "roster": "Events Subs",
           "province": "Provinces",
           "doctype": "Document Types",
           "country": "Countries",
@@ -33,13 +33,13 @@
           "category": "Categories",
           "playerPoints": "View Detail",
           "playerDetailPoints": "View Detail",
-          "teamPoints": "Points",
+          "teamPoints": "Team Points",
           "teamDetailPoints": "Detail",
           "games": "Matches",
           "player": "Players"
         },
         "subscribe": {
-          "roster": "Subscribe mi equipo"
+          "roster": "Subscribe my team"
         },
         "admin": {
           "admin": "Admin",
@@ -47,7 +47,7 @@
           "tournament": "Tournaments",
           "team": "Teams",
           "myteam": "My Teams",
-          "mytournament": "Mi Tournaments",
+          "mytournament": "My Tournaments",
           "roster": "Players",
           "province": "Provinces",
           "doctype": "Document Types",
@@ -97,7 +97,7 @@
         "bracket": "Bracket",
         "formula": "Formula",
         "suspension": "Suspension",
-        "mainRoster": "Main Roster",
+        "mainRoster": "My Players",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -250,9 +250,10 @@
     "NotNull": "Field {{ fieldName }} cannot be empty!",
     "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
     "userexists": "Login name already used!",
+    "dniexists": "¡A User with this document number already exists!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
-    "category": "No puede inscribir al jugador en esta categoria",
+    "category": "Can not subscribe this player in this category",
     "idnull": "Invalid ID",
     "idinvalid": "Invalid ID",
     "duplicateError": "There is already a {{entityName}} with the entered values",

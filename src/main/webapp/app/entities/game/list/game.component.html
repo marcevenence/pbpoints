@@ -45,13 +45,17 @@
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
-          <th scope="col" jhiSortBy="clasif"><span jhiTranslate="pbpointsApp.game.clasif">Clasif</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="group"><span jhiTranslate="pbpointsApp.game.group">Group</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="splitDeckNum">
-            <span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.game.clasif">Clasif</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.game.group">Group</span></th>
           <th scope="col">
-            <span jhiTranslate="pbpointsApp.game.team">Match</span>
+            <span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span>
+          </th>
+          <th>
+            <span jhiTranslate="pbpointsApp.game.teamA">Team A</span>
+          </th>
+          <th scope="col"></th>
+          <th>
+            <span jhiTranslate="pbpointsApp.game.teamB">Team B</span>
           </th>
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.points">Points</span>
@@ -74,7 +78,9 @@
           <td>{{ game.clasif }}</td>
           <td>{{ game.group }}</td>
           <td>{{ game.splitDeckNum }}</td>
-          <td>{{ game.teamA?.name }} Vs {{ game.teamB?.name }}</td>
+          <td align="right">{{ game.teamA?.name }}</td>
+          <td align="center">Vs</td>
+          <td align="left">{{ game.teamB?.name }}</td>
           <td>{{ game.pointsA }}:{{ game.pointsB }} ({{ game.overtimeA }}:{{ game.overtimeB }}) ({{ game.uvuA }}:{{ game.uvuB }})</td>
           <td>{{ convertToTimeFormat(game.timeLeft) }}</td>
           <td jhiTranslate="{{ 'pbpointsApp.Status.' + game.status }}">{{ game.status }}</td>

@@ -2,6 +2,7 @@ package com.pbpoints.repository;
 
 import com.pbpoints.domain.EventCategory;
 import com.pbpoints.domain.Roster;
+import com.pbpoints.domain.Team;
 import com.pbpoints.domain.User;
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +28,6 @@ public interface RosterRepository extends JpaRepository<Roster, Long>, JpaSpecif
 
     @Query("select roster.team.owner.id from Roster roster where roster.id = ?1")
     Long findByRosterId(Long id);
+
+    Roster findByTeamAndEventCategory(Team team, EventCategory eventCategory);
 }
