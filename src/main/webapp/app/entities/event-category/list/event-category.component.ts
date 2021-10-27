@@ -83,8 +83,16 @@ export class EventCategoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.evId = history.state.evId ?? 0;
-    this.tId = history.state.tId ?? 0;
+    if (history.state.evId === undefined) {
+      if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+        this.evId = 0;
+      } else {
+        history.go(-1);
+      }
+    } else {
+      this.evId = history.state.evId ?? 0;
+      this.tId = history.state.tId ?? 0;
+    }
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.currentAccount = account;

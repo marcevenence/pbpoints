@@ -67,10 +67,10 @@ describe('Component Tests', () => {
 
       it('Should call EventCategory query and add missing value', () => {
         const game: IGame = { id: 456 };
-        const eventCategory: IEventCategory = { id: 13344 };
+        const eventCategory: IEventCategory = { id: 99043 };
         game.eventCategory = eventCategory;
 
-        const eventCategoryCollection: IEventCategory[] = [{ id: 61973 }];
+        const eventCategoryCollection: IEventCategory[] = [{ id: 71329 }];
         spyOn(eventCategoryService, 'query').and.returnValue(of(new HttpResponse({ body: eventCategoryCollection })));
         const additionalEventCategories = [eventCategory];
         const expectedCollection: IEventCategory[] = [...additionalEventCategories, ...eventCategoryCollection];
@@ -93,7 +93,7 @@ describe('Component Tests', () => {
         game.teamA = teamA;
         const teamB: ITeam = { id: 32001 };
         game.teamB = teamB;
-        const eventCategory: IEventCategory = { id: 36270 };
+        const eventCategory: IEventCategory = { id: 95340 };
         game.eventCategory = eventCategory;
 
         activatedRoute.data = of({ game });

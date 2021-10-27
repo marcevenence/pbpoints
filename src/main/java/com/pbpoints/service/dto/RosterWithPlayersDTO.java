@@ -33,4 +33,9 @@ public class RosterWithPlayersDTO {
     public void setEventCategory(EventCategoryDTO eventCategory) {
         this.eventCategory = eventCategory;
     }
+
+    @Override
+    public String toString() {
+        return "RosterWithPlayersDTO{" + "players=" + players + ", team=" + team + ", eventCategory=" + eventCategory + '}';
+    }
 }

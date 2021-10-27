@@ -5,6 +5,7 @@ import com.pbpoints.repository.TeamRepository;
 import com.pbpoints.service.dto.TeamDTO;
 import com.pbpoints.service.mapper.TeamMapper;
 import com.pbpoints.service.mapper.UserMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,5 +119,11 @@ public class TeamService {
     public void delete(Long id) {
         log.debug("Request to delete Team : {}", id);
         teamRepository.deleteById(id);
+    }
+
+    public List<TeamDTO> getTeamsNoSubs(Long ownerId, Long eventCatId) {
+        log.debug("request getTeamsNoSubs ownerId: {}", ownerId);
+        log.debug("request getTeamsNoSubs eventCatId: {}", eventCatId);
+        return teamMapper.toDto(teamRepository.findByOwnerAndNotSubs(ownerId, eventCatId));
     }
 }

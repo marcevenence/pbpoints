@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IGame } from '../game.model';
@@ -9,73 +7,86 @@ import { IGame } from '../game.model';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { GameService } from '../service/game.service';
 import { GameDeleteDialogComponent } from '../delete/game-delete-dialog.component';
+import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
   selector: 'jhi-game',
   templateUrl: './game.component.html',
 })
 export class GameComponent implements OnInit {
-  games?: IGame[];
+  games: IGame[];
   isLoading = false;
-  totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page?: number;
-  predicate!: string;
-  ascending!: boolean;
-  ngbPaginationPage = 1;
+  itemsPerPage: number;
+  links: { [key: string]: number };
+  page: number;
+  predicate: string;
+  ascending: boolean;
   ecatId = 0;
 
-  constructor(
-    protected gameService: GameService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal
-  ) {}
+  constructor(protected gameService: GameService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
+    this.games = [];
+    this.itemsPerPage = ITEMS_PER_PAGE;
+    this.page = 0;
+    this.links = {
+      last: 0,
+    };
+    this.predicate = 'id';
+    this.ascending = true;
+  }
 
-  loadPage(page?: number, dontNavigate?: boolean): void {
+  loadAll(): void {
     this.isLoading = true;
-    const pageToLoad: number = page ?? this.page ?? 1;
 
     if (this.ecatId !== 0) {
       this.gameService
         .query({
           'eventCategoryId.equals': this.ecatId,
-          page: pageToLoad - 1,
+          page: this.page,
           size: this.itemsPerPage,
           sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IGame[]>) => {
             this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            this.paginateGames(res.body, res.headers);
           },
           () => {
             this.isLoading = false;
-            this.onError();
           }
         );
     } else {
       this.gameService
         .query({
-          page: pageToLoad - 1,
+          page: this.page,
           size: this.itemsPerPage,
           sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IGame[]>) => {
             this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            this.paginateGames(res.body, res.headers);
           },
           () => {
             this.isLoading = false;
-            this.onError();
           }
         );
     }
   }
 
+  reset(): void {
+    this.page = 0;
+    this.games = [];
+    this.loadAll();
+  }
+
+  loadPage(page: number): void {
+    this.page = page;
+    this.loadAll();
+  }
+
   ngOnInit(): void {
-    this.handleNavigation();
+    this.ecatId = history.state.ecatId ?? 0;
+    this.loadAll();
   }
 
   trackId(index: number, item: IGame): number {
@@ -88,7 +99,7 @@ export class GameComponent implements OnInit {
     // unsubscribe not needed because closed completes on modal close
     modalRef.closed.subscribe(reason => {
       if (reason === 'deleted') {
-        this.loadPage();
+        this.reset();
       }
     });
   }
@@ -110,39 +121,12 @@ export class GameComponent implements OnInit {
     return result;
   }
 
-  protected handleNavigation(): void {
-    this.ecatId = history.state.ecatId ?? 0;
-    combineLatest([this.activatedRoute.data, this.activatedRoute.queryParamMap]).subscribe(([data, params]) => {
-      const page = params.get('page');
-      const pageNumber = page !== null ? +page : 1;
-      const sort = (params.get('sort') ?? data['defaultSort']).split(',');
-      const predicate = sort[0];
-      const ascending = sort[1] === 'asc';
-      if (pageNumber !== this.page || predicate !== this.predicate || ascending !== this.ascending) {
-        this.predicate = predicate;
-        this.ascending = ascending;
-        this.loadPage(pageNumber, true);
+  protected paginateGames(data: IGame[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.games.push(d);
       }
-    });
-  }
-
-  protected onSuccess(data: IGame[] | null, headers: HttpHeaders, page: number, navigate: boolean): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.page = page;
-    if (navigate) {
-      this.router.navigate(['/game'], {
-        queryParams: {
-          page: this.page,
-          size: this.itemsPerPage,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
-        },
-      });
     }
-    this.games = data ?? [];
-    this.ngbPaginationPage = this.page;
-  }
-
-  protected onError(): void {
-    this.ngbPaginationPage = this.page ?? 1;
   }
 }

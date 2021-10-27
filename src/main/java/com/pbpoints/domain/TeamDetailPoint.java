@@ -25,6 +25,9 @@ public class TeamDetailPoint implements Serializable {
     @Column(name = "points", nullable = false)
     private Float points;
 
+    @Column(name = "position")
+    private Integer position;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "team", "tournament" }, allowSetters = true)
@@ -60,6 +63,19 @@ public class TeamDetailPoint implements Serializable {
 
     public void setPoints(Float points) {
         this.points = points;
+    }
+
+    public Integer getPosition() {
+        return this.position;
+    }
+
+    public TeamDetailPoint position(Integer position) {
+        this.position = position;
+        return this;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 
     public TeamPoint getTeamPoint() {
@@ -113,6 +129,7 @@ public class TeamDetailPoint implements Serializable {
         return "TeamDetailPoint{" +
             "id=" + getId() +
             ", points=" + getPoints() +
+            ", position=" + getPosition() +
             "}";
     }
 }

@@ -23,6 +23,7 @@ export class TeamDetailPointComponent implements OnInit {
   predicate!: string;
   ascending!: boolean;
   ngbPaginationPage = 1;
+  evId: any;
 
   constructor(
     protected teamDetailPointService: TeamDetailPointService,
@@ -35,30 +36,55 @@ export class TeamDetailPointComponent implements OnInit {
     this.isLoading = true;
     const pageToLoad: number = page ?? this.page ?? 1;
 
-    this.teamDetailPointService
-      .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ITeamDetailPoint[]>) => {
-          this.isLoading = false;
-          this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-        },
-        () => {
-          this.isLoading = false;
-          this.onError();
-        }
-      );
+    if (this.evId !== 0) {
+      this.teamDetailPointService
+        .query({
+          'eventId.equals': this.evId,
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITeamDetailPoint[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    } else {
+      this.teamDetailPointService
+        .query({
+          page: pageToLoad - 1,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ITeamDetailPoint[]>) => {
+            this.isLoading = false;
+            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+          },
+          () => {
+            this.isLoading = false;
+            this.onError();
+          }
+        );
+    }
   }
 
   ngOnInit(): void {
+    this.evId = history.state.evId ?? 0;
     this.handleNavigation();
   }
 
   trackId(index: number, item: ITeamDetailPoint): number {
     return item.id!;
+  }
+
+  Cancel(): void {
+    window.history.back();
   }
 
   delete(teamDetailPoint: ITeamDetailPoint): void {

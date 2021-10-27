@@ -135,7 +135,15 @@ export class TeamUpdateComponent implements OnInit {
   }
 
   deletePlayer(mainRoster: IMainRoster): void {
-    alert('Eliminado');
+    if (mainRoster.id !== undefined) {
+      const targetIdx = this.mainRosters.map(item => item.id).indexOf(mainRoster.id);
+      this.mainRosters.splice(targetIdx, 1);
+      this.mainRosterService.delete(mainRoster.id).subscribe(() => {
+        alert('Eliminado');
+      });
+    } else {
+      alert('No se ha podido eliminar');
+    }
   }
 
   trackUserById(index: number, item: IUser): number {

@@ -48,6 +48,10 @@ export class TeamService {
     return this.http.get<ITeam[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  findNotAll(userId: number, evCatId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<ITeam[]>(`${this.resourceUrl}/findNotAll/${userId}/${evCatId}`, { observe: 'response' });
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

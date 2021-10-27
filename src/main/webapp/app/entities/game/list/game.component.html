@@ -3,7 +3,7 @@
     <span jhiTranslate="pbpointsApp.game.home.title">Games</span>
 
     <div class="d-flex justify-content-end">
-      <!--<button class="btn btn-info mr-2" (click)="loadPage()" [disabled]="isLoading">
+      <!--<button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.game.home.refreshListLabel">Refresh List</span>
       </button>-->
@@ -43,38 +43,35 @@
   <div class="table-responsive" id="entities" *ngIf="games && games.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col"><span jhiTranslate="pbpointsApp.game.clasif">Clasif</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.game.group">Group</span></th>
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span>
           </th>
-          <th>
+          <th scope="col">
             <span jhiTranslate="pbpointsApp.game.teamA">Team A</span>
           </th>
           <th scope="col"></th>
-          <th>
-            <span jhiTranslate="pbpointsApp.game.teamB">Team B</span>
-          </th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.game.teamB">Team B</span> <fa-icon icon="sort"></fa-icon></th>
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.points">Points</span>
           </th>
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.timeLeft">Time Left</span>
           </th>
-          <!--<th scope="col" jhiSortBy="overtimeA"><span jhiTranslate="pbpointsApp.game.overtimeA">Overtime A</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="overtimeB"><span jhiTranslate="pbpointsApp.game.overtimeB">Overtime B</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="uvuA"><span jhiTranslate="pbpointsApp.game.uvuA">Uvu A</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="uvuB"><span jhiTranslate="pbpointsApp.game.uvuB">Uvu B</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="eventCategory.id"><span jhiTranslate="pbpointsApp.game.eventCategory">Event Category</span> <fa-icon icon="sort"></fa-icon></th>-->
+          <!--<th scope="col"><span jhiTranslate="pbpointsApp.game.overtimeA">Overtime A</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.game.overtimeB">Overtime B</span></th>
+          <th scope="col" jhiSortBy="uvuA"><span jhiTranslate="pbpointsApp.game.uvuA">Uvu A</span></th>
+          <th scope="col" jhiSortBy="uvuB"><span jhiTranslate="pbpointsApp.game.uvuB">Uvu B</span></th>-->
           <th scope="col"><span jhiTranslate="pbpointsApp.game.status">Status</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
         <tr *ngFor="let game of games; trackBy: trackId" data-cy="entityTable">
-          <!--<td> <a [routerLink]="['/game', game.id, 'view']">{{ game.id }}</a></td>-->
+          <!--<td><a [routerLink]="['/game', game.id, 'view']">{{ game.id }}</a></td>-->
           <td>{{ game.clasif }}</td>
           <td>{{ game.group }}</td>
           <td>{{ game.splitDeckNum }}</td>
@@ -117,23 +114,5 @@
         </tr>
       </tbody>
     </table>
-  </div>
-
-  <div *ngIf="games && games.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
   </div>
 </div>

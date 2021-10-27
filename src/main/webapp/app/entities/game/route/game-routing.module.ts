@@ -11,9 +11,6 @@ const gameRoute: Routes = [
   {
     path: '',
     component: GameComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

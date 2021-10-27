@@ -165,6 +165,7 @@ export class RosterSubsComponent implements OnInit {
         .queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value)
         .subscribe((res: HttpResponse<IUserExtra>) => {
           this.newPlayer = res.body;
+          this.checkInRoster();
           if (
             this.findForm.get('profile')!.value.toString() !== '' &&
             this.newPlayer?.code !== undefined &&
@@ -304,7 +305,7 @@ export class RosterSubsComponent implements OnInit {
   }
 
   protected validateCategory(id: number, cat: number): boolean {
-    return true;
+    return false;
   }
 
   protected sort(): string[] {
@@ -335,9 +336,13 @@ export class RosterSubsComponent implements OnInit {
     // Api for inheritance.
   }
 
+  protected checkInRoster(): void {
+    alert('Pendiente Chequeando en Rosters RosterResource.CheckInRoster');
+  }
+
   protected loadRelationshipsOptions(): void {
     this.teamService
-      .query({ 'ownerId.equals': +this.currentAccount.id })
+      .findNotAll(+this.currentAccount.id, history.state.evCatId ?? 0)
       .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
       .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
       .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));

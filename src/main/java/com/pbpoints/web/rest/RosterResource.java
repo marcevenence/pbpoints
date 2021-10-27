@@ -92,33 +92,36 @@ public class RosterResource {
     public ResponseEntity<RosterDTO> createRosterWithPlayers(@Valid @RequestBody RosterWithPlayersDTO rosterWithPlayersDTO)
         throws URISyntaxException {
         log.debug("REST request to save Roster with Players: {}", rosterWithPlayersDTO);
-        RosterDTO exists = rosterService.findByTeamAndEventCategory(
-            rosterWithPlayersDTO.getTeam(),
-            rosterWithPlayersDTO.getEventCategory()
-        );
-        if (exists.getId() != null) {
-            throw new BadRequestAlertException("Already Team Exists", ENTITY_NAME, "TeamAlreadyInRoster");
-        }
+        /*try {
+            RosterDTO exists = rosterService.findByTeamAndEventCategory(
+                rosterWithPlayersDTO.getTeam(),
+                rosterWithPlayersDTO.getEventCategory()
+            );
+            if (exists.getId() != null) {
+                throw new BadRequestAlertException("Already Team Exists", ENTITY_NAME, "TeamAlreadyInRoster");
+            }
+        } finally {
+            log.debug("Fallo el Try");
+        }*/
         RosterDTO rosterDTO = new RosterDTO();
         rosterDTO.setTeam(rosterWithPlayersDTO.getTeam());
         rosterDTO.setEventCategory(rosterWithPlayersDTO.getEventCategory());
         rosterDTO.setActive(true);
-
+        log.debug("Before Roster Saved:");
         RosterDTO result = rosterService.save(rosterDTO);
-        PlayerDTO result2 = new PlayerDTO();
+        log.debug("Roster Saved:");
 
+        PlayerDTO result2 = new PlayerDTO();
         List<PlayerDTO> playersDTO = rosterWithPlayersDTO.getPlayers();
-        int i = 0;
         for (PlayerDTO playerDTO : playersDTO) {
+            playerDTO.setRoster(result);
             if (playerService.validExists(playerDTO)) {
                 throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInRoster");
             }
             if (playerService.validExistsOtherRoster(playerDTO)) {
                 throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
             }
-            playerDTO.setRoster(result);
             result2 = playerService.save(playerDTO);
-            i++;
         }
         return ResponseEntity
             .created(new URI("/api/rosters/" + result.getId()))
@@ -188,6 +191,12 @@ public class RosterResource {
         log.debug("REST request to get Roster : {}", id);
         Optional<RosterDTO> rosterDTO = rosterService.findOne(id);
         return ResponseUtil.wrapOrNotFound(rosterDTO);
+    }
+
+    @GetMapping("/rosters/check/{player}")
+    public ResponseEntity<Boolean> checkInRoster(@PathVariable PlayerDTO playerDTO) {
+        log.debug("Verificando en Rosters : {}", playerDTO);
+        return ResponseEntity.ok().body(playerService.validExistsOtherRoster(playerDTO));
     }
 
     /**

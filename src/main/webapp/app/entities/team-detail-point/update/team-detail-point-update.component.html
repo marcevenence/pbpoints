@@ -31,6 +31,11 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.position" for="field_position">Position</label>
+          <input type="number" class="form-control" name="position" id="field_position" data-cy="position" formControlName="position" />
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.teamPoint" for="field_teamPoint">Team Point</label>
           <select class="form-control" id="field_teamPoint" data-cy="teamPoint" name="teamPoint" formControlName="teamPoint">
             <option *ngIf="!editForm.get('teamPoint')!.value" [ngValue]="null" selected></option>

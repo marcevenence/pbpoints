@@ -125,7 +125,7 @@ export class GameUpdateComponent implements OnInit {
   protected loadRelationshipsOptions(): void {
     this.eCatId = history.state.eCatId ?? 0;
     this.teamService
-      .query({ size: 1000 })
+      .query()
       .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
       .pipe(
         map((teams: ITeam[]) =>

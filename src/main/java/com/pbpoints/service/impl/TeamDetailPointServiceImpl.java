@@ -31,12 +31,6 @@ public class TeamDetailPointServiceImpl implements TeamDetailPointService {
         this.teamDetailPointMapper = teamDetailPointMapper;
     }
 
-    /**
-     * Save a teamDetailPoint.
-     *
-     * @param teamDetailPointDTO the entity to save.
-     * @return the persisted entity.
-     */
     @Override
     public TeamDetailPointDTO save(TeamDetailPointDTO teamDetailPointDTO) {
         log.debug("Request to save TeamDetailPoint : {}", teamDetailPointDTO);
@@ -45,12 +39,22 @@ public class TeamDetailPointServiceImpl implements TeamDetailPointService {
         return teamDetailPointMapper.toDto(teamDetailPoint);
     }
 
-    /**
-     * Get all the teamDetailPoints.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
+    @Override
+    public Optional<TeamDetailPointDTO> partialUpdate(TeamDetailPointDTO teamDetailPointDTO) {
+        log.debug("Request to partially update TeamDetailPoint : {}", teamDetailPointDTO);
+
+        return teamDetailPointRepository
+            .findById(teamDetailPointDTO.getId())
+            .map(
+                existingTeamDetailPoint -> {
+                    teamDetailPointMapper.partialUpdate(existingTeamDetailPoint, teamDetailPointDTO);
+                    return existingTeamDetailPoint;
+                }
+            )
+            .map(teamDetailPointRepository::save)
+            .map(teamDetailPointMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Page<TeamDetailPointDTO> findAll(Pageable pageable) {
@@ -58,12 +62,6 @@ public class TeamDetailPointServiceImpl implements TeamDetailPointService {
         return teamDetailPointRepository.findAll(pageable).map(teamDetailPointMapper::toDto);
     }
 
-    /**
-     * Get one teamDetailPoint by id.
-     *
-     * @param id the id of the entity.
-     * @return the entity.
-     */
     @Override
     @Transactional(readOnly = true)
     public Optional<TeamDetailPointDTO> findOne(Long id) {
@@ -71,11 +69,6 @@ public class TeamDetailPointServiceImpl implements TeamDetailPointService {
         return teamDetailPointRepository.findById(id).map(teamDetailPointMapper::toDto);
     }
 
-    /**
-     * Delete the teamDetailPoint by id.
-     *
-     * @param id the id of the entity.
-     */
     @Override
     public void delete(Long id) {
         log.debug("Request to delete TeamDetailPoint : {}", id);

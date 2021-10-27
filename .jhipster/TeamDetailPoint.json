@@ -5,6 +5,10 @@
       "fieldName": "points",
       "fieldType": "Float",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "Integer"
     }
   ],
   "relationships": [
@@ -26,8 +30,8 @@
   ],
   "entityTableName": "team_detail_point",
   "dto": "mapstruct",
-  "pagination": "pagination",
-  "service": "serviceImpl",
+  "pagination": "infinite-scroll",
+  "service": "serviceClass",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,
   "readOnly": false,

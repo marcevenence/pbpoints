@@ -111,6 +111,17 @@
                 <div *ngIf="isAuthenticated()">
                   <button
                     type="submit"
+                    [routerLink]="['/team-detail-point']"
+                    [state]="{ evId: event.id }"
+                    class="btn btn-primary btn-sm"
+                    data-toggle="tooltip"
+                    [title]="'global.menu.custom.view.results' | translate"
+                  >
+                    <fa-icon [icon]="'list-ol'"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.results">Results</span>
+                  </button>
+                  <button
+                    type="submit"
                     [routerLink]="['/event-category']"
                     [state]="{ evId: event.id }"
                     class="btn btn-primary btn-sm"

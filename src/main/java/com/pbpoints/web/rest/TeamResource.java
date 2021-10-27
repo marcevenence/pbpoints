@@ -194,6 +194,20 @@ public class TeamResource {
     }
 
     /**
+     * {@code GET  /teams/findNotAll/:ownerId} : get all the teams.
+     *
+     * @param ownerId get algo XD.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of teams in body.
+     */
+    @GetMapping("/teams/findNotAll/{ownerId}/{evCatId}")
+    public ResponseEntity<List<TeamDTO>> getTeamsNoRoster(@PathVariable Long ownerId, @PathVariable Long evCatId) {
+        log.debug("REST request to get Teams Not Subscribe with ownerID: {}", ownerId);
+        log.debug("REST request to get Teams Not Subscribe with ownerID: {}", evCatId);
+        List<TeamDTO> teams = teamService.getTeamsNoSubs(ownerId, evCatId);
+        return ResponseEntity.ok().body(teams);
+    }
+
+    /**
      * {@code GET  /teams/count} : count all the teams.
      *
      * @param criteria the criteria which the requested entities should match.

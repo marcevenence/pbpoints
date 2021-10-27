@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Pbpoints",
+    "title": "PBPoints",
     "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=es\">actualice su navegador</a> para mejorar su experiencia.",
     "menu": {
       "home": "Inicio",
@@ -24,6 +24,7 @@
           "event": "Eventos",
           "tournament": "Torneos",
           "team": "Equipos",
+          "teams": "Equipos Anotados",
           "format": "Formatos",
           "roster": "Eventos Anotados",
           "province": "Provincias",
@@ -36,7 +37,8 @@
           "teamPoints": "Puntaje",
           "teamDetailPoints": "Detalle",
           "games": "Partidos",
-          "player": "Jugadores"
+          "player": "Jugadores",
+          "results": "Resultados"
         },
         "subscribe": {
           "roster": "Anotar mi equipo"

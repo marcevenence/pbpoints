@@ -20,7 +20,9 @@
       "id": "ID",
       "points": "Points",
       "teamPoint": "Team Point",
-      "event": "Event"
+      "event": "Event",
+      "tournament": "Tournament",
+      "position": "Position"
     }
   }
 }

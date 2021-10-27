@@ -15,6 +15,11 @@ public interface TeamRepository extends JpaRepository<Team, Long>, JpaSpecificat
     @Query("select team from Team team where team.owner.login = ?#{principal.username}")
     List<Team> findByOwnerIsCurrentUser();
 
+    @Query(
+        "select team from Team team where team.owner.id = ?1 and NOT EXISTS (select roster.team from Roster roster where roster.eventCategory.id = ?2 and roster.team = team)"
+    )
+    List<Team> findByOwnerAndNotSubs(Long ownerId, Long eventCatId);
+
     Optional<Team> findByName(String name);
 
     @Query("select team from Team team where team.name = ?1 and team.owner.id = ?2")
