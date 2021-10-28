@@ -119,6 +119,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'pbpointsApp.main-roster.home.title' },
         loadChildren: () => import('./main-roster/main-roster.module').then(m => m.MainRosterModule),
       },
+      {
+        path: 'sponsor',
+        data: { pageTitle: 'pbpointsApp.sponsor.home.title' },
+        loadChildren: () => import('./sponsor/sponsor.module').then(m => m.SponsorModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

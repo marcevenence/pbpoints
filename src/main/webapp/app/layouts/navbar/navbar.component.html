@@ -84,6 +84,27 @@
         </a>
       </li>
       <!-- FIn Agregado Edu Menu USER -->
+      <li
+        *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+        ngbDropdown
+        class="nav-item dropdown pointer"
+        display="dynamic"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <a
+          class="nav-link dropdown-item"
+          routerLink="sponsor"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="collapseNavbar()"
+        >
+          <span>
+            <fa-icon [icon]="'trophy'"></fa-icon>
+            <span jhiTranslate="global.menu.entities.sponsor">Sponsor</span>
+          </span>
+        </a>
+      </li>
       <!--  Inicio Menu Reportes OWNER TOURNAMENT  -->
       <li
         *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"

@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="sponsor">
+      <h2 data-cy="sponsorDetailsHeading"><span jhiTranslate="pbpointsApp.sponsor.detail.title">Sponsor</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ sponsor.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.sponsor.logo">Logo</span></dt>
+        <dd>
+          <div *ngIf="sponsor.logo">
+            <a (click)="openFile(sponsor.logo, sponsor.logoContentType)">
+              <img [src]="'data:' + sponsor.logoContentType + ';base64,' + sponsor.logo" style="max-width: 100%" alt="sponsor image" />
+            </a>
+            {{ sponsor.logoContentType }}, {{ byteSize(sponsor.logo) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.sponsor.name">Name</span></dt>
+        <dd>
+          <span>{{ sponsor.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.sponsor.active">Active</span></dt>
+        <dd>
+          <span>{{ sponsor.active }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.sponsor.tournament">Tournament</span></dt>
+        <dd>
+          <div *ngIf="sponsor.tournament">
+            <a [routerLink]="['/tournament', sponsor.tournament?.id, 'view']">{{ sponsor.tournament?.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/sponsor', sponsor.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

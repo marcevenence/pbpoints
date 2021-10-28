@@ -1,0 +1,27 @@
+{
+  "pbpointsApp": {
+    "sponsor": {
+      "home": {
+        "title": "Sponsors",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Sponsor",
+        "createOrEditLabel": "Crear o editar Sponsor",
+        "notFound": "Ningún Sponsors encontrado"
+      },
+      "created": "El Sponsor ha sido creado",
+      "updated": "El Sponsor ha sido actualizado",
+      "deleted": "El Sponsor ha sido eliminado",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar el Sponsor?"
+      },
+      "detail": {
+        "title": "Sponsor"
+      },
+      "id": "ID",
+      "logo": "Logo",
+      "name": "Nombre",
+      "active": "Activo",
+      "tournament": "Torneo"
+    }
+  }
+}

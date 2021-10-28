@@ -99,7 +99,8 @@
         "bracket": "Bracket",
         "formula": "Formula",
         "suspension": "Suspension",
-        "mainRoster": "Main Roster",
+        "mainRoster": "Mis jogadores",
+        "sponsor": "Mis Sponsors",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

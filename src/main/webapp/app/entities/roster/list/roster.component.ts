@@ -6,7 +6,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IRoster } from '../roster.model';
 import { AccountService } from 'app/core/auth/account.service';
-
+import * as dayjs from 'dayjs';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { RosterService } from '../service/roster.service';
 import { RosterDeleteDialogComponent } from '../delete/roster-delete-dialog.component';
@@ -121,12 +122,16 @@ export class RosterComponent implements OnInit {
     });
   }
 
-  isAllowed(ownerId: number, status: string): boolean {
+  isAllowed(ownerId: number, status: string, endInscriptionDate: any): boolean {
     if (ownerId.toString() === this.currentAccount.id.toString()) {
       if (status === 'DONE' || status === 'CANCEL') {
         return false;
       } else {
-        return true;
+        if (dayjs(endInscriptionDate, DATE_FORMAT) < dayjs().startOf('day')) {
+          return false;
+        } else {
+          return true;
+        }
       }
     } else {
       return false;

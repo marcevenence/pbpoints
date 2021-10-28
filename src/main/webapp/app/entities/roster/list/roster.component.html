@@ -65,14 +65,28 @@
           </td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/player']" [state]="{ rId: roster.id }" class="btn btn-primary btn-sm">
+              <button
+                *ngIf="
+                  !isAllowed(
+                    roster.team?.owner?.id!,
+                    roster.eventCategory?.event?.status!,
+                    roster.eventCategory?.event?.endInscriptionDate!
+                  )
+                "
+                type="submit"
+                [routerLink]="['/player']"
+                [state]="{ rId: roster.id }"
+                class="btn btn-primary btn-sm"
+              >
                 <fa-icon [icon]="'user'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.player">View</span>
               </button>
               <button
-                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                *ngIf="
+                  isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!, roster.eventCategory?.event?.endInscriptionDate!)
+                "
                 type="submit"
-                [routerLink]="['/roster', roster.id, 'edit']"
+                [routerLink]="['/roster/subs']"
                 [state]="{ roster: { teId: roster.team?.id, evCatId: roster.eventCategory?.id } }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
@@ -82,7 +96,9 @@
               </button>
 
               <button
-                *ngIf="isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!)"
+                *ngIf="
+                  isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!, roster.eventCategory?.event?.endInscriptionDate!)
+                "
                 type="submit"
                 (click)="delete(roster)"
                 class="btn btn-danger btn-sm"

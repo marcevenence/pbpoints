@@ -100,6 +100,7 @@
         "formula": "Formula",
         "suspension": "Suspension",
         "mainRoster": "Mis jugadores",
+        "sponsor": "Mis Sponsors",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

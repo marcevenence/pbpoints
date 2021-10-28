@@ -1,0 +1,89 @@
+<div>
+  <h2 id="page-heading" data-cy="SponsorHeading">
+    <span jhiTranslate="pbpointsApp.sponsor.home.title">Sponsors</span>
+
+    <div class="d-flex justify-content-end">
+      <!--<button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.sponsor.home.refreshListLabel">Refresh List</span>
+      </button>-->
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-sponsor"
+        [routerLink]="['/sponsor/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.sponsor.home.createLabel"> Create a new Sponsor </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="sponsors?.length === 0">
+    <span jhiTranslate="pbpointsApp.sponsor.home.notFound">No sponsors found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="sponsors && sponsors.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <!--<th scope="col"><span jhiTranslate="global.field.id">ID</span></th>-->
+          <th scope="col"><span jhiTranslate="pbpointsApp.sponsor.logo">Logo</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.sponsor.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.sponsor.tournament">Tournament</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.sponsor.active">Active</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sponsor of sponsors; trackBy: trackId" data-cy="entityTable">
+          <!--<td>
+            <a [routerLink]="['/sponsor', sponsor.id, 'view']">{{ sponsor.id }}</a>
+          </td>-->
+          <td>
+            <a *ngIf="sponsor.logo" (click)="openFile(sponsor.logo, sponsor.logoContentType)">
+              <img [src]="'data:' + sponsor.logoContentType + ';base64,' + sponsor.logo" style="max-height: 30px" alt="sponsor image" />
+            </a>
+            <!--<span *ngIf="sponsor.logo">{{ sponsor.logoContentType }}, {{ byteSize(sponsor.logo) }}</span>-->
+          </td>
+          <td>{{ sponsor.name }}</td>
+          <td>{{ sponsor.tournament?.name }}</td>
+          <td>{{ sponsor.active }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <!--<button
+                type="submit"
+                [routerLink]="['/sponsor', sponsor.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>-->
+
+              <button
+                type="submit"
+                [routerLink]="['/sponsor', sponsor.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(sponsor)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
