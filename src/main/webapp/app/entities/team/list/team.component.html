@@ -99,4 +99,37 @@
       </tbody>
     </table>
   </div>
+  <div *jhiHasNotAuthority="'ROLE_ADMIN'">
+    <br />
+    <h2 id="page-heading-mr" data-cy="MainRosterHeading">
+      <span jhiTranslate="pbpointsApp.mainRoster.home.title">Main Rosters</span>
+    </h2>
+    <br />
+    <!--Equipos a los que pertenece-->
+    <div class="alert alert-warning" id="no-result-mr" *ngIf="mainRosters?.length === 0">
+      <span jhiTranslate="pbpointsApp.mainRoster.home.notFound">No mainRosters found</span>
+    </div>
+
+    <div class="table-responsive" id="entitiesmr" *ngIf="mainRosters && mainRosters.length > 0">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+            <th scope="col">
+              <span jhiTranslate="pbpointsApp.mainRoster.team">Team</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          infinite-scroll
+          (scrolled)="loadPage(page + 1)"
+          [infiniteScrollDisabled]="page >= links['last']"
+          [infiniteScrollDistance]="0"
+        >
+          <tr *ngFor="let mainRoster of mainRosters; trackBy: trackMrId" data-cy="entityTablemr">
+            <td>{{ mainRoster.team?.name }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

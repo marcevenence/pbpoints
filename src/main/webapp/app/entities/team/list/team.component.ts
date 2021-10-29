@@ -10,12 +10,15 @@ import { TeamService } from '../service/team.service';
 import { TeamDeleteDialogComponent } from '../delete/team-delete-dialog.component';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
+import { MainRosterService } from 'app/entities/main-roster/service/main-roster.service';
 
 @Component({
   selector: 'jhi-team',
   templateUrl: './team.component.html',
 })
 export class TeamComponent implements OnInit {
+  mainRosters: IMainRoster[];
   currentAccount: any;
   isSaving = false;
   teams: ITeam[];
@@ -32,9 +35,11 @@ export class TeamComponent implements OnInit {
     protected dataUtils: DataUtils,
     protected modalService: NgbModal,
     protected parseLinks: ParseLinks,
-    protected accountService: AccountService
+    protected accountService: AccountService,
+    protected mainRosterService: MainRosterService
   ) {
     this.teams = [];
+    this.mainRosters = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -62,6 +67,21 @@ export class TeamComponent implements OnInit {
             this.isLoading = false;
           }
         );
+      this.mainRosterService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IMainRoster[]>) => {
+            this.isLoading = false;
+            this.paginateMainRosters(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
     } else {
       this.teamService
         .query({
@@ -74,6 +94,23 @@ export class TeamComponent implements OnInit {
           (res: HttpResponse<ITeam[]>) => {
             this.isLoading = false;
             this.paginateTeams(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+
+      this.mainRosterService
+        .query({
+          'userExtraId.equals': this.currentAccount.id,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<IMainRoster[]>) => {
+            this.isLoading = false;
+            this.paginateMainRosters(res.body, res.headers);
           },
           () => {
             this.isLoading = false;
@@ -134,6 +171,10 @@ export class TeamComponent implements OnInit {
     window.history.back();
   }
 
+  trackMrId(index: number, item: IMainRoster): number {
+    return item.id!;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ITeam>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -167,5 +208,14 @@ export class TeamComponent implements OnInit {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
+  }
+
+  protected paginateMainRosters(data: IMainRoster[] | null, headers: HttpHeaders): void {
+    this.links = this.parseLinks.parse(headers.get('link') ?? '');
+    if (data) {
+      for (const d of data) {
+        this.mainRosters.push(d);
+      }
+    }
   }
 }

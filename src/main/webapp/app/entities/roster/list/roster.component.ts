@@ -123,18 +123,22 @@ export class RosterComponent implements OnInit {
   }
 
   isAllowed(ownerId: number, status: string, endInscriptionDate: any): boolean {
-    if (ownerId.toString() === this.currentAccount.id.toString()) {
-      if (status === 'DONE' || status === 'CANCEL') {
-        return false;
-      } else {
-        if (dayjs(endInscriptionDate, DATE_FORMAT) < dayjs().startOf('day')) {
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      return true;
+    } else {
+      if (ownerId.toString() === this.currentAccount.id.toString()) {
+        if (status === 'DONE' || status === 'CANCEL') {
           return false;
         } else {
-          return true;
+          if (dayjs(endInscriptionDate, DATE_FORMAT) < dayjs().startOf('day')) {
+            return false;
+          } else {
+            return true;
+          }
         }
+      } else {
+        return false;
       }
-    } else {
-      return false;
     }
   }
 

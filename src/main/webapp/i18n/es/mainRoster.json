@@ -2,7 +2,7 @@
   "pbpointsApp": {
     "mainRoster": {
       "home": {
-        "title": "Main Rosters",
+        "title": "Inscripto en",
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Crear nuevo Main Roster",
         "createOrEditLabel": "Crear o editar Main Roster",
@@ -18,7 +18,7 @@
         "title": "Main Roster"
       },
       "id": "ID",
-      "team": "Team",
+      "team": "Equipo",
       "userExtra": "User Extra"
     }
   }

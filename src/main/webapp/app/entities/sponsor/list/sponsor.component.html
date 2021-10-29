@@ -53,7 +53,10 @@
           </td>
           <td>{{ sponsor.name }}</td>
           <td>{{ sponsor.tournament?.name }}</td>
-          <td>{{ sponsor.active }}</td>
+          <td>
+            <div *ngIf="sponsor.active"><span jhiTranslate="pbpointsApp.tournament.yes">Yes</span></div>
+            <div *ngIf="!sponsor.active"><span jhiTranslate="pbpointsApp.tournament.no">No</span></div>
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <!--<button

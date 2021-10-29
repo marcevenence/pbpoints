@@ -341,11 +341,27 @@ export class RosterSubsComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.teamService
-      .findNotAll(+this.currentAccount.id, history.state.evCatId ?? 0)
-      .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
-      .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
-      .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+    if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
+      this.teamService
+        .query({ size: 1000 })
+        .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
+        .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
+        .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+    } else {
+      if (history.state.evCatId !== 0) {
+        this.teamService
+          .findNotAll(+this.currentAccount.id, history.state.evCatId ?? 0)
+          .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
+          .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
+          .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+      } else {
+        this.teamService
+          .query({ size: 1000 })
+          .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
+          .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
+          .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
+      }
+    }
   }
 
   protected handleNavigation(): void {
