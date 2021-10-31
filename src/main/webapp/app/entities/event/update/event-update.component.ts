@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
@@ -25,18 +25,21 @@ export class EventUpdateComponent implements OnInit {
   citiesSharedCollection: ICity[] = [];
   tournamentsSharedCollection: ITournament[] = [];
 
-  editForm = this.fb.group({
-    id: [],
-    name: [],
-    fromDate: [],
-    endDate: [],
-    endInscriptionDate: [],
-    status: [],
-    createDate: [],
-    updatedDate: [],
-    city: [],
-    tournament: [],
-  });
+  editForm = this.fb.group(
+    {
+      id: [],
+      name: [],
+      fromDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      endInscriptionDate: ['', Validators.required],
+      status: [],
+      createDate: [],
+      updatedDate: [],
+      city: [],
+      tournament: [],
+    },
+    { validator: this.dateLessThan('fromDate', 'endDate', 'endInscriptionDate') }
+  );
 
   constructor(
     protected eventService: EventService,
@@ -45,6 +48,30 @@ export class EventUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
+
+  dateLessThan(from: string, to: string, end: string): any {
+    return (group: FormGroup): { [key: string]: any } => {
+      const f = group.controls[from];
+      const t = group.controls[to];
+      const e = group.controls[end];
+      if (f.value > t.value) {
+        return {
+          dates: 'Date from should be less than Date to',
+        };
+      }
+      if (f.value > e.value) {
+        return {
+          dates: 'Date from should be less than Inscription Date',
+        };
+      }
+      if (e.value > t.value) {
+        return {
+          dates: 'Inscription Date should be less than Date To',
+        };
+      }
+      return {};
+    };
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ event }) => {
