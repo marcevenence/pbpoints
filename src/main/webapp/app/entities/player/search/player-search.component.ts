@@ -19,6 +19,8 @@ import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
 import { PlayerPointService } from 'app/entities/player-point/service/player-point.service';
 import { ISuspension } from 'app/entities/suspension/suspension.model';
 import { SuspensionService } from 'app/entities/suspension/service/suspension.service';
+import { IMainRoster } from 'app/entities/main-roster/main-roster.model';
+import { MainRosterService } from 'app/entities/main-roster/service/main-roster.service';
 
 @Component({
   selector: 'jhi-player-search',
@@ -26,6 +28,7 @@ import { SuspensionService } from 'app/entities/suspension/service/suspension.se
 })
 export class PlayerSearchComponent implements OnInit {
   userExtras?: IUserExtra[];
+  mainRosters: IMainRoster[];
   teams?: ITeam[];
   players?: IPlayer[];
   playerPoints?: IPlayerPoint[];
@@ -50,13 +53,15 @@ export class PlayerSearchComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
     protected fb: FormBuilder,
-    protected parseLinks: ParseLinks
+    protected parseLinks: ParseLinks,
+    protected mainRosterService: MainRosterService
   ) {
     this.userExtras = [];
     this.teams = [];
     this.players = [];
     this.playerPoints = [];
     this.playerSusp = {};
+    this.mainRosters = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -98,7 +103,13 @@ export class PlayerSearchComponent implements OnInit {
           sort: this.sort(),
         })
         .subscribe((res: HttpResponse<ITeam[]>) => {
-          this.paginateTeams(res.body, res.headers);
+          this.teams = res.body ?? [];
+        });
+
+      this.mainRosterService
+        .query({ 'userExtraId.equals': this.searchForm.get(['id'])!.value })
+        .subscribe((res: HttpResponse<IMainRoster[]>) => {
+          this.mainRosters = res.body ?? [];
         });
 
       this.playerService
@@ -156,6 +167,10 @@ export class PlayerSearchComponent implements OnInit {
     return item.id!;
   }
 
+  trackMrId(index: number, item: IMainRoster): number {
+    return item.id!;
+  }
+
   trackPlayerId(index: number, item: IPlayer): number {
     return item.id!;
   }
@@ -187,15 +202,6 @@ export class PlayerSearchComponent implements OnInit {
     if (data) {
       for (const d of data) {
         this.userExtras?.push(d);
-      }
-    }
-  }
-
-  protected paginateTeams(data: ITeam[] | null, headers: HttpHeaders): void {
-    this.links = this.parseLinks.parse(headers.get('link') ?? '');
-    if (data) {
-      for (const d of data) {
-        this.teams?.push(d);
       }
     }
   }
