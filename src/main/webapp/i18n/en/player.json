@@ -11,6 +11,7 @@
         "createOrEditLabel": "Create or edit a Player",
         "notFound": "No Players found"
       },
+      "code": "Code",
       "created": "The Player has been created",
       "updated": "The Player has been updated",
       "deleted": "The Player has been deleted",
@@ -18,14 +19,28 @@
         "question": "Are you sure you want to delete Player {{ id }}?"
       },
       "detail": {
-        "title": "Player"
+        "title": "Player",
+        "player": "Player",
+        "staff": "Staff"
       },
       "id": "ID",
       "profile": "Profile",
       "user": "User",
       "userId": "PBPoint ID",
       "roster": "Roster",
-      "category": "Category"
+      "category": "Category",
+      "picture": "Picture",
+      "search": {
+        "suspend": "Suspend",
+        "picture": "Picture",
+        "username": "Name",
+        "numDoc": "Document Num",
+        "phone": "Phone",
+        "bornDate": "Birth Date",
+        "event": "Event",
+        "category": "Category",
+        "team": "Team"
+      }
     }
   }
 }

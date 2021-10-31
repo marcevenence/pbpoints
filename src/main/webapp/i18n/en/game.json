@@ -32,6 +32,7 @@
       "clasif": "Clasif",
       "teamA": "Team",
       "teamB": "Team",
+      "team": "Match",
       "eventCategory": "Category",
       "match": "Match"
     }

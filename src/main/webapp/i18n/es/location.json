@@ -19,7 +19,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "province": "Province"
+      "province": "Province",
+      "city": "City"
     }
   }
 }

@@ -20,8 +20,8 @@
       "id": "ID",
       "name": "Name",
       "active": "Active",
-      "logo": "Logo",
-      "owner": "Owner"
+      "owner": "Owner",
+      "logo": "Logo"
     }
   }
 }

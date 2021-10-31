@@ -1,12 +1,13 @@
 {
   "pbpointsApp": {
     "eventCategory": {
+      "yes": "Yes",
+      "no": "No",
       "home": {
         "title": "Categories",
         "refreshListLabel": "Refresh list",
         "createLabel": "Create a new Category",
         "createOrEditLabel": "Create or edit a Category",
-
         "notFound": "No Event Categories found"
       },
       "created": "The Category {{ param }} has been added",
@@ -20,6 +21,8 @@
       },
       "id": "ID",
       "splitDeck": "Split Deck",
+      "game": "Game",
+      "roster": "Roster",
       "event": "Event",
       "category": "Category",
       "format": "Format"

@@ -259,9 +259,9 @@
     "category": "Can not subscribe this player in this category",
     "idnull": "Invalid ID",
     "idinvalid": "Invalid ID",
-    "duplicateError": "There is already a {{entityName}} with the entered values",
     "idnotfound": "ID cannot be found",
     "genericError": "Error processing the data. Try again later",
+    "duplicateError": "There is already a {{entityName}} with the entered values",
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""

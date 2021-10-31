@@ -41,8 +41,11 @@
         },
         "find": "Buscar",
         "team": "Equipo",
+        "id": "PBPoint ID",
+        "name": "Nombre",
         "picture": "Foto",
         "player": "Jugador",
+        "players": "Jugadores",
         "category": "Categoria"
       }
     }

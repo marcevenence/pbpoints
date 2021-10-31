@@ -1,6 +1,8 @@
 {
   "pbpointsApp": {
     "roster": {
+      "yes": "Yes",
+      "no": "No",
       "home": {
         "title": "Rosters",
         "refreshListLabel": "Refresh list",
@@ -31,7 +33,21 @@
       "event": "Event",
       "category": "Category",
       "tournament": "Tournament",
-      "player": "Player"
+      "tournamentEvent": "Tournament/Event",
+      "player": "Player",
+      "search": {
+        "home": {
+          "title": "Rosters"
+        },
+        "find": "Search",
+        "team": "Team",
+        "id": "PBPoint ID",
+        "name": "Name",
+        "picture": "Picture",
+        "player": "Player",
+        "players": "Players",
+        "category": "Category"
+      }
     }
   }
 }
