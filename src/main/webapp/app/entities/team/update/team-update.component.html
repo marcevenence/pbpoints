@@ -101,12 +101,11 @@
         </div>
       </div>
 
+      <h3 class="form-control-label" jhiTranslate="pbpointsApp.player.add">Add</h3>
       <div class="form-group">
         <table>
           <tr>
-            <th>
-              <label class="form-control-label" jhiTranslate="pbpointsApp.player.add">Players</label>
-            </th>
+            <th></th>
           </tr>
           <tr>
             <td width="40%">
@@ -130,16 +129,20 @@
             </td>
           </tr>
         </table>
+        <h3 jhiTranslate="pbpointsApp.roster.search.player">Player</h3>
         <div class="table-responsive" id="entities" *ngIf="mainRosters && mainRosters.length > 0">
           <table class="table table-striped" aria-describedby="page-heading" align="right">
             <thead>
               <tr>
-                <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.player">Player</span></th>
+                <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.id">ID</span></th>
+                <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span></th>
+                <th scope="col"><span jhiTranslate="pbpointsApp.roster.search.name">Name</span></th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let mainPlayer of mainRosters; trackBy: trackMainRosterId" data-cy="entityTable">
+                <td>{{ mainPlayer.userExtra?.id }}</td>
                 <td>
                   <img
                     [src]="'data:' + mainPlayer.userExtra?.pictureContentType + ';base64,' + mainPlayer.userExtra?.picture"

@@ -27,7 +27,7 @@ export class TeamService {
   }
 
   update(team: ITeam): Observable<EntityResponseType> {
-    return this.http.put<ITeam>(`${this.resourceUrl}`, team, { observe: 'response' });
+    return this.http.put<ITeam>(`${this.resourceUrl}/${getTeamIdentifier(team) as number}`, team, { observe: 'response' });
   }
 
   updateWithRoster(team: ITeam, mainRosters: IMainRoster[]): Observable<EntityResponseType> {

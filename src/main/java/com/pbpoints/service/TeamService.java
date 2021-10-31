@@ -5,12 +5,12 @@ import com.pbpoints.repository.TeamRepository;
 import com.pbpoints.service.dto.TeamDTO;
 import com.pbpoints.service.mapper.TeamMapper;
 import com.pbpoints.service.mapper.UserMapper;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +45,7 @@ public class TeamService {
      * @return the persisted entity.
      */
     public TeamDTO save(TeamDTO teamDTO) {
-        log.debug("Request to save Team Service : {}", teamDTO);
+        log.debug("Request to save Team : {}", teamDTO);
         if (teamDTO.getOwner() == null) {
             teamDTO.setOwner(userMapper.userToUserDTO(userService.getUserWithAuthorities().get()));
         }
@@ -78,13 +78,12 @@ public class TeamService {
     /**
      * Get all the teams.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<TeamDTO> findAll(Pageable pageable) {
+    public List<TeamDTO> findAll() {
         log.debug("Request to get all Teams");
-        return teamRepository.findAll(pageable).map(teamMapper::toDto);
+        return teamRepository.findAll().stream().map(teamMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

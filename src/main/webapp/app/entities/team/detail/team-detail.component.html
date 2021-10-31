@@ -14,6 +14,14 @@
         <dd>
           <span>{{ team.id }}</span>
         </dd>
+        <dt><span jhiTranslate="pbpointsApp.team.name">Name</span></dt>
+        <dd>
+          <span>{{ team.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.team.active">Active</span></dt>
+        <dd>
+          <span>{{ team.active }}</span>
+        </dd>
         <dt><span jhiTranslate="pbpointsApp.team.logo">Logo</span></dt>
         <dd>
           <div *ngIf="team.logo">
@@ -22,14 +30,6 @@
             </a>
             {{ team.logoContentType }}, {{ byteSize(team.logo) }}
           </div>
-        </dd>
-        <dt><span jhiTranslate="pbpointsApp.team.name">Name</span></dt>
-        <dd>
-          <span>{{ team.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="pbpointsApp.team.active">Active</span></dt>
-        <dd>
-          <span>{{ team.active }}</span>
         </dd>
         <dt><span jhiTranslate="pbpointsApp.team.owner">Owner</span></dt>
         <dd>
