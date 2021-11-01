@@ -1,6 +1,8 @@
 package com.pbpoints.service.impl;
 
 import com.pbpoints.domain.PlayerPoint;
+import com.pbpoints.domain.Tournament;
+import com.pbpoints.domain.User;
 import com.pbpoints.repository.PlayerPointRepository;
 import com.pbpoints.service.PlayerPointService;
 import com.pbpoints.service.dto.PlayerPointDTO;
@@ -69,6 +71,12 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     public Optional<PlayerPointDTO> findOne(Long id) {
         log.debug("Request to get PlayerPoint : {}", id);
         return playerPointRepository.findById(id).map(playerPointMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament) {
+        log.debug("Request to get PlayerPoint : {}", user);
+        return Optional.of(playerPointMapper.toDto(playerPointRepository.findByUserAndTournament(user, tournament)));
     }
 
     /**

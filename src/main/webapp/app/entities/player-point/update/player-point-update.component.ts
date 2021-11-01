@@ -30,7 +30,7 @@ export class PlayerPointUpdateComponent implements OnInit {
     points: [null, [Validators.required]],
     tournament: [null, Validators.required],
     user: [null, Validators.required],
-    category: [],
+    category: [null, Validators.required],
   });
 
   constructor(
@@ -62,6 +62,14 @@ export class PlayerPointUpdateComponent implements OnInit {
     } else {
       this.subscribeToSaveResponse(this.playerPointService.create(playerPoint));
     }
+  }
+
+  onChange(): void {
+    this.editForm.patchValue({ category: null });
+    this.categoryService
+      .query({ 'tournamentId.equals': this.editForm.get(['tournament'])!.value.id })
+      .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
+      .subscribe((categories: ICategory[]) => (this.categoriesSharedCollection = categories));
   }
 
   trackTournamentById(index: number, item: ITournament): number {
@@ -127,13 +135,13 @@ export class PlayerPointUpdateComponent implements OnInit {
       .subscribe((tournaments: ITournament[]) => (this.tournamentsSharedCollection = tournaments));
 
     this.userService
-      .query()
+      .query({ page: 0, size: 10000, sort: this.sort() })
       .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
       .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
       .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
 
     this.categoryService
-      .query()
+      .query({ 'tournamentId.equals': this.editForm.get(['tournament'])!.value.id })
       .pipe(map((res: HttpResponse<ICategory[]>) => res.body ?? []))
       .pipe(
         map((categories: ICategory[]) =>
@@ -152,5 +160,10 @@ export class PlayerPointUpdateComponent implements OnInit {
       user: this.editForm.get(['user'])!.value,
       category: this.editForm.get(['category'])!.value,
     };
+  }
+
+  protected sort(): string[] {
+    const result = ['lastName' + ',' + 'asc'];
+    return result;
   }
 }

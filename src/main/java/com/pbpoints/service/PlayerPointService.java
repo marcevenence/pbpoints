@@ -1,5 +1,7 @@
 package com.pbpoints.service;
 
+import com.pbpoints.domain.Tournament;
+import com.pbpoints.domain.User;
 import com.pbpoints.service.dto.PlayerPointDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -39,4 +41,6 @@ public interface PlayerPointService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament);
 }

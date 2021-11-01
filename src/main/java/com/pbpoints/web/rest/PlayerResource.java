@@ -1,10 +1,14 @@
 package com.pbpoints.web.rest;
 
+import com.pbpoints.domain.Category;
+import com.pbpoints.domain.Player;
+import com.pbpoints.domain.PlayerPoint;
 import com.pbpoints.repository.PlayerRepository;
-import com.pbpoints.service.PlayerQueryService;
-import com.pbpoints.service.PlayerService;
+import com.pbpoints.service.*;
 import com.pbpoints.service.criteria.PlayerCriteria;
-import com.pbpoints.service.dto.PlayerDTO;
+import com.pbpoints.service.dto.*;
+import com.pbpoints.service.mapper.TournamentMapper;
+import com.pbpoints.service.mapper.UserMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,14 +47,38 @@ public class PlayerResource {
 
     private final PlayerService playerService;
 
+    private final PlayerPointService playerPointService;
+
     private final PlayerRepository playerRepository;
 
     private final PlayerQueryService playerQueryService;
 
-    public PlayerResource(PlayerService playerService, PlayerRepository playerRepository, PlayerQueryService playerQueryService) {
+    private final UserService userService;
+
+    private final TournamentService tournamentService;
+
+    private final TournamentMapper tournamentMapper;
+
+    private final CategoryService categoryService;
+
+    public PlayerResource(
+        PlayerService playerService,
+        PlayerRepository playerRepository,
+        PlayerQueryService playerQueryService,
+        PlayerPointService playerPointService,
+        UserService userService,
+        CategoryService categoryService,
+        TournamentService tournamentService,
+        TournamentMapper tournamentMapper
+    ) {
         this.playerService = playerService;
         this.playerRepository = playerRepository;
         this.playerQueryService = playerQueryService;
+        this.playerPointService = playerPointService;
+        this.userService = userService;
+        this.tournamentService = tournamentService;
+        this.tournamentMapper = tournamentMapper;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -181,6 +209,21 @@ public class PlayerResource {
         log.debug("REST request to get Player : {}", id);
         Optional<PlayerDTO> playerDTO = playerService.findOne(id);
         return ResponseUtil.wrapOrNotFound(playerDTO);
+    }
+
+    @GetMapping("/players/validCategory/{id}/{tId}/{catId}")
+    public ResponseEntity<PlayerPointDTO> getPlayer(@PathVariable Long id, @PathVariable Long tId, @PathVariable Long catId) {
+        log.debug("REST request to get Player ID and Category ID : {} {} {}", id, tId, catId);
+        Optional<CategoryDTO> categoryDTO = categoryService.findOne(catId);
+        Optional<PlayerPointDTO> playerPointDTO = playerPointService.findByUserAndTournament(
+            userService.getUser(id).get(),
+            tournamentMapper.toEntity(tournamentService.findOne(tId).get())
+        );
+        if (categoryDTO.get().getOrder() <= playerPointDTO.get().getCategory().getOrder()) {
+            log.debug("La categoria es mas alta");
+            log.debug("REST OK {} {}", categoryDTO.get().getOrder(), playerPointDTO.get().getCategory().getOrder());
+        }
+        return ResponseUtil.wrapOrNotFound(playerPointDTO);
     }
 
     /**
