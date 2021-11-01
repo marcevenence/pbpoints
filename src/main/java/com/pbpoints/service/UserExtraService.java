@@ -11,11 +11,12 @@ import com.pbpoints.repository.UserExtraRepository;
 import com.pbpoints.repository.UserRepository;
 import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.service.mapper.UserExtraMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,13 +100,12 @@ public class UserExtraService {
     /**
      * Get all the userExtras.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
     @Transactional(readOnly = true)
-    public Page<UserExtraDTO> findAll(Pageable pageable) {
+    public List<UserExtraDTO> findAll() {
         log.debug("Request to get all UserExtras");
-        return userExtraRepository.findAll(pageable).map(userExtraMapper::toDto);
+        return userExtraRepository.findAll().stream().map(userExtraMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -155,33 +155,4 @@ public class UserExtraService {
         log.debug("UserExtra: {} " + userExtra);
         return userExtra;
     }
-    /*@Transactional(readOnly = true)
-    public Optional<UserExtraDTO> getUniqueUserToRoster(Long idUser, Long idRoster, Long idEventCategory) {
-        // Busco si existe el usuario
-        UserExtra userExtra = userExtraRepository.findById(idUser)
-                .orElseThrow(() -> new NoResultException("No existe un User con ese ID: --> " + idUser));
-        log.debug(userExtra.toString());
-        // Busco si existe el Roster
-        Roster roster = rosterRepository.findById(idRoster)
-                .orElseThrow(() -> new NoResultException("No existe Roster con ese ID: --> " + idRoster));
-        log.debug(roster.toString());
-        // Busco si existe el EventoCategoria
-        EventCategory eventCategory = eventCategoryRepository.findById(idEventCategory)
-                .orElseThrow(() -> new NoResultException(
-                        "No existe un EventoCategory con ese ID: -->" + idEventCategory));
-        log.debug(eventCategory.toString());
-        log.info("Buscando Player en Roster");
-        log.info("Buscando Player en EventCategory");
-        // Busco que no exista ese usuario dentro del mismo roster
-        Optional<Player> player = playerService.findByUserAndRoster(userExtra.getUser(), roster);
-        if (player.isPresent()) {
-            throw new IllegalArgumentException("Ya existe el player para el Roster");
-        }
-        // Busco que no exista ese usuario como jugador en ese EventoCategoria
-        player = playerService.findByUserAndEventCategory(userExtra.getUser(), eventCategory);
-        if (player.isPresent()) {
-            throw new IllegalArgumentException("Ya existe el player para el EventoCategoria");
-        }
-        return Optional.of(userExtraMapper.toDto(userExtra));
-    }*/
 }

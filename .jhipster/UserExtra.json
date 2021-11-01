@@ -45,7 +45,7 @@
   "javadoc": "UserExtra entity.\\n@author Marcelo Miño",
   "entityTableName": "user_extra",
   "dto": "mapstruct",
-  "pagination": "infinite-scroll",
+  "pagination": "no",
   "service": "serviceClass",
   "jpaMetamodelFiltering": true,
   "fluentMethods": true,

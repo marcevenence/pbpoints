@@ -1,15 +1,12 @@
 package com.pbpoints.service.mapper;
 
-import com.pbpoints.domain.Authority;
-import com.pbpoints.domain.UserExtra;
+import com.pbpoints.domain.*;
 import com.pbpoints.service.dto.UserExtraDTO;
 import com.pbpoints.web.rest.vm.ManagedUserVM;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link UserExtra} and its DTO {@link UserExtraDTO}.
@@ -48,6 +45,11 @@ public interface UserExtraMapper extends EntityMapper<UserExtraDTO, UserExtra> {
     @Mapping(source = "user.password", target = "password")
     @Mapping(source = "user.id", target = "id")
     ManagedUserVM toManagedUserVM(UserExtra userExtra);
+
+    @Named("id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    UserExtraDTO toDtoId(UserExtra userExtra);
 
     @Named("lalala")
     default Set<String> authoritiesFromStrings(Set<Authority> authoritiesAsString) {

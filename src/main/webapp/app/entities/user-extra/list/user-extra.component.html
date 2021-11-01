@@ -3,7 +3,7 @@
     <span jhiTranslate="pbpointsApp.userExtra.home.title">User Extras</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="pbpointsApp.userExtra.home.refreshListLabel">Refresh List</span>
       </button>
@@ -31,31 +31,19 @@
   <div class="table-responsive" id="entities" *ngIf="userExtras && userExtras.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
-          <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="numDoc">
-            <span jhiTranslate="pbpointsApp.userExtra.numDoc">Num Doc</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="phone">
-            <span jhiTranslate="pbpointsApp.userExtra.phone">Phone</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="bornDate">
-            <span jhiTranslate="pbpointsApp.userExtra.bornDate">Born Date</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="picture">
-            <span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="code"><span jhiTranslate="pbpointsApp.userExtra.code">Code</span> <fa-icon icon="sort"></fa-icon></th>
-          <th scope="col" jhiSortBy="user.id">
-            <span jhiTranslate="pbpointsApp.userExtra.user">User</span> <fa-icon icon="sort"></fa-icon>
-          </th>
-          <th scope="col" jhiSortBy="docType.id">
-            <span jhiTranslate="pbpointsApp.userExtra.docType">Doc Type</span> <fa-icon icon="sort"></fa-icon>
-          </th>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.numDoc">Num Doc</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.phone">Phone</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.bornDate">Born Date</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.picture">Picture</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.code">Code</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.user">User</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.userExtra.docType">Doc Type</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+      <tbody>
         <tr *ngFor="let userExtra of userExtras; trackBy: trackId" data-cy="entityTable">
           <td>
             <a [routerLink]="['/user-extra', userExtra.id, 'view']">{{ userExtra.id }}</a>

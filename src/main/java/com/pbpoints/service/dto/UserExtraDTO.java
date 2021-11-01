@@ -26,12 +26,12 @@ public class UserExtraDTO implements Serializable {
 
     private String pictureContentType;
 
-    private DocTypeDTO docType;
-
     @NotNull
     private String code;
 
     private UserDTO user;
+
+    private DocTypeDTO docType;
 
     public Long getId() {
         return id;
@@ -81,14 +81,6 @@ public class UserExtraDTO implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public DocTypeDTO getDocType() {
-        return docType;
-    }
-
-    public void setDocType(DocTypeDTO docType) {
-        this.docType = docType;
-    }
-
     public String getCode() {
         return code;
     }
@@ -103,6 +95,14 @@ public class UserExtraDTO implements Serializable {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public DocTypeDTO getDocType() {
+        return docType;
+    }
+
+    public void setDocType(DocTypeDTO docType) {
+        this.docType = docType;
     }
 
     @Override

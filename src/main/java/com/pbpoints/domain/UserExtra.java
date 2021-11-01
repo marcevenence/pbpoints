@@ -47,6 +47,7 @@ public class UserExtra implements Serializable {
 
     @OneToOne(optional = false)
     @NotNull
+    @JoinColumn(unique = true)
     @MapsId
     private User user;
 
@@ -59,7 +60,7 @@ public class UserExtra implements Serializable {
         this.user = user;
     }
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
     }
@@ -138,19 +139,6 @@ public class UserExtra implements Serializable {
         this.pictureContentType = pictureContentType;
     }
 
-    public DocType getDocType() {
-        return this.docType;
-    }
-
-    public UserExtra docType(DocType docType) {
-        this.setDocType(docType);
-        return this;
-    }
-
-    public void setDocType(DocType docType) {
-        this.docType = docType;
-    }
-
     public String getCode() {
         return this.code;
     }
@@ -175,6 +163,19 @@ public class UserExtra implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public DocType getDocType() {
+        return this.docType;
+    }
+
+    public UserExtra docType(DocType docType) {
+        this.setDocType(docType);
+        return this;
+    }
+
+    public void setDocType(DocType docType) {
+        this.docType = docType;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

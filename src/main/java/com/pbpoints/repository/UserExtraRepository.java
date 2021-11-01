@@ -1,11 +1,9 @@
 package com.pbpoints.repository;
 
-import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.User;
 import com.pbpoints.domain.UserExtra;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 /**
