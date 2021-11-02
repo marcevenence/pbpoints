@@ -1,16 +1,13 @@
 package com.pbpoints.web.rest;
 
-import com.itextpdf.text.DocumentException;
 import com.pbpoints.domain.Event;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.service.EventQueryService;
 import com.pbpoints.service.EventService;
 import com.pbpoints.service.dto.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
-import com.pbpoints.service.dto.xml.FixtureDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -41,18 +38,14 @@ import tech.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class EventResource {
 
-    private final Logger log = LoggerFactory.getLogger(EventResource.class);
-
     private static final String ENTITY_NAME = "event";
+    private final Logger log = LoggerFactory.getLogger(EventResource.class);
+    private final EventService eventService;
+    private final EventQueryService eventQueryService;
+    private final EventMapper eventMapper;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
-
-    private final EventService eventService;
-
-    private final EventQueryService eventQueryService;
-
-    private final EventMapper eventMapper;
 
     public EventResource(EventService eventService, EventQueryService eventQueryService, EventMapper eventMapper) {
         this.eventService = eventService;
@@ -107,9 +100,7 @@ public class EventResource {
     /**
      * {@code GET  /events} : get all the events.
      *
-
      * @param pageable the pagination information.
-
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
      */
@@ -207,7 +198,7 @@ public class EventResource {
     }
 
     @GetMapping("/events/generatePDF/{id}")
-    public ResponseEntity<Void> generatePdf(@PathVariable Long id) throws DocumentException, FileNotFoundException {
+    public ResponseEntity<Void> generatePdf(@PathVariable Long id) throws IOException, URISyntaxException {
         log.debug("REST request to Generate a Pdf File from: {}", id);
         if (id == null) {
             throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");

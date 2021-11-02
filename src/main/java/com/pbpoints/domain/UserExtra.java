@@ -206,7 +206,9 @@ public class UserExtra implements Serializable {
             ", numDoc='" + getNumDoc() + "'" +
             ", phone='" + getPhone() + "'" +
             ", bornDate='" + getBornDate() + "'" +
-            ", picture='1'" +
+            ", picture=''" +
+            ", pictureContentType='" + getPictureContentType() + "'" +
+            ", code='" + getCode() + "'" +
             "}";
     }
 }

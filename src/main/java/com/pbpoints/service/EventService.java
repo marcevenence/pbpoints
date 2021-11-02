@@ -1,18 +1,20 @@
 package com.pbpoints.service;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.html2pdf.HtmlConverter;
 import com.pbpoints.domain.*;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.*;
-import com.pbpoints.service.dto.EventCategoryDTO;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.xml.GameResultDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -399,73 +401,151 @@ public class EventService {
         return Boolean.TRUE;
     }
 
-    public void generatePdf(Event event) throws DocumentException, FileNotFoundException {
+    public void generatePdf(Event event) throws IOException, URISyntaxException {
         log.debug("*** Generando PDF ***");
 
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance(
-            document,
-            new FileOutputStream(event.getTournament().getName().replace(' ', '_') + "_" + event.getName().replace(' ', '_') + ".pdf")
-        );
-        document.open();
+        // write a tempFile
+        Path tempFile = Files.createTempFile(null, ".html");
+        Path tempPDFFile = Files.createTempFile(null, ".pdf");
+        Path tempFileCss = Files.createTempFile(null, ".scs");
+        System.out.println(tempPDFFile);
+        System.out.println(tempFile);
+        System.out.println(tempFileCss);
 
-        Paragraph parrafo = new Paragraph(event.getName());
-        document.add(parrafo);
+        String htmlString = Files.readString(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.html").toURI()));
+        String title = event.getName();
+        String body =
+            "<div id=\"wrapper\">\n" +
+            "  <h1>Sortable Table of Search Queries</h1>\n" +
+            "  \n" +
+            "  <table id=\"keywords\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+            "    <thead>\n" +
+            "      <tr>\n" +
+            "        <th><span>Keywords</span></th>\n" +
+            "        <th><span>Impressions</span></th>\n" +
+            "        <th><span>Clicks</span></th>\n" +
+            "        <th><span>CTR</span></th>\n" +
+            "        <th><span>Rank</span></th>\n" +
+            "      </tr>\n" +
+            "    </thead>\n" +
+            "    <tbody>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">silly tshirts</td>\n" +
+            "        <td>6,000</td>\n" +
+            "        <td>110</td>\n" +
+            "        <td>1.8%</td>\n" +
+            "        <td>22.2</td>\n" +
+            "      </tr>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">desktop workspace photos</td>\n" +
+            "        <td>2,200</td>\n" +
+            "        <td>500</td>\n" +
+            "        <td>22%</td>\n" +
+            "        <td>8.9</td>\n" +
+            "      </tr>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">arrested development quotes</td>\n" +
+            "        <td>13,500</td>\n" +
+            "        <td>900</td>\n" +
+            "        <td>6.7%</td>\n" +
+            "        <td>12.0</td>\n" +
+            "      </tr>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">popular web series</td>\n" +
+            "        <td>8,700</td>\n" +
+            "        <td>350</td>\n" +
+            "        <td>4%</td>\n" +
+            "        <td>7.0</td>\n" +
+            "      </tr>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">2013 webapps</td>\n" +
+            "        <td>9,900</td>\n" +
+            "        <td>460</td>\n" +
+            "        <td>4.6%</td>\n" +
+            "        <td>11.5</td>\n" +
+            "      </tr>\n" +
+            "      <tr>\n" +
+            "        <td class=\"lalign\">ring bananaphone</td>\n" +
+            "        <td>10,500</td>\n" +
+            "        <td>748</td>\n" +
+            "        <td>7.1%</td>\n" +
+            "        <td>17.3</td>\n" +
+            "      </tr>\n" +
+            "    </tbody>\n" +
+            "  </table>\n" +
+            " </div>";
+        htmlString = htmlString.replace("$title", title);
+        htmlString = htmlString.replace("$scss", tempFileCss.toString());
+        htmlString = htmlString.replace("$body", body);
 
-        PdfPTable table = new PdfPTable(11);
+        //        Files.copy(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.css").toURI()), tempFileCss, StandardCopyOption.REPLACE_EXISTING);
+        Files.write(tempFile, htmlString.getBytes(StandardCharsets.UTF_8));
 
-        PdfPCell celda;
-
-        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
-        for (EventCategory eventCategory : eventCategories) {
-            celda = new PdfPCell(new Paragraph("Categoria: " + eventCategory.getCategory().getName()));
-            celda.setBorder(0);
-            celda.setColspan(11);
-            table.addCell(celda);
-            celda = new PdfPCell(new Paragraph(""));
-            celda.setBorder(0);
-            celda.setColspan(11);
-            table.addCell(celda);
-            List<Game> games = gameRepository.findByEventCategory(eventCategory);
-            for (Game game : games) {
-                celda = new PdfPCell(new Paragraph("Local"));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(game.getTeamA().getName()));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph("-"));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(""));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph(game.getTeamB().getName()));
-                celda.setBorder(1);
-                table.addCell(celda);
-                celda = new PdfPCell(new Paragraph("Visitante"));
-                celda.setBorder(1);
-                table.addCell(celda);
-            }
-        }
-
-        document.add(table);
-        document.close();
+        HtmlConverter.convertToPdf(new FileInputStream(tempFile.toString()), new FileOutputStream(tempPDFFile.toString()));
+        //        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        //        PdfWriter.getInstance(
+        //            document,
+        //            new FileOutputStream(event.getTournament().getName().replace(' ', '_') + "_" + event.getName().replace(' ', '_') + ".pdf")
+        //        );
+        //        document.open();
+        //
+        //        Paragraph parrafo = new Paragraph(event.getName());
+        //        document.add(parrafo);
+        //
+        //        PdfPTable table = new PdfPTable(11);
+        //
+        //        PdfPCell celda;
+        //
+        //        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
+        //        for (EventCategory eventCategory : eventCategories) {
+        //            celda = new PdfPCell(new Paragraph("Categoria: " + eventCategory.getCategory().getName()));
+        //            celda.setBorder(0);
+        //            celda.setColspan(11);
+        //            table.addCell(celda);
+        //            celda = new PdfPCell(new Paragraph(""));
+        //            celda.setBorder(0);
+        //            celda.setColspan(11);
+        //            table.addCell(celda);
+        //            List<Game> games = gameRepository.findByEventCategory(eventCategory);
+        //            for (Game game : games) {
+        //                celda = new PdfPCell(new Paragraph("Local"));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(game.getTeamA().getName()));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph("-"));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(""));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph(game.getTeamB().getName()));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //                celda = new PdfPCell(new Paragraph("Visitante"));
+        //                celda.setBorder(1);
+        //                table.addCell(celda);
+        //            }
+        //        }
+        //
+        //        document.add(table);
+        //        document.close();
     }
 
     @Scheduled(cron = "${application.cronEventStatus}")
