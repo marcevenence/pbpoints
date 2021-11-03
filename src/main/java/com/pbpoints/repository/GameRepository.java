@@ -13,4 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GameRepository extends JpaRepository<Game, Long>, JpaSpecificationExecutor<Game> {
     public List<Game> findByEventCategory(EventCategory eventCategory);
+
+    public List<Game> findByEventCategoryAndClasif(EventCategory eventCategory, String clasif);
 }

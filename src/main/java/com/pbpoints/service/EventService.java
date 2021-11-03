@@ -64,6 +64,8 @@ public class EventService {
 
     private final RosterRepository rosterRepository;
 
+    private final SponsorRepository sponsorRepository;
+
     private final EventMapper eventMapper;
 
     public EventService(
@@ -76,6 +78,7 @@ public class EventService {
         TeamDetailPointRepository teamPointDetailRepository,
         GameRepository gameRepository,
         RosterRepository rosterRepository,
+        SponsorRepository sponsorRepository,
         EventMapper eventMapper
     ) {
         this.eventRepository = eventRepository;
@@ -87,6 +90,7 @@ public class EventService {
         this.userExtraRepository = userExtraRepository;
         this.categoryRepository = categoryRepository;
         this.rosterRepository = rosterRepository;
+        this.sponsorRepository = sponsorRepository;
         this.eventMapper = eventMapper;
     }
 
@@ -401,6 +405,32 @@ public class EventService {
         return Boolean.TRUE;
     }
 
+    public Integer getlengthFixture(Event event) {
+        Integer quantity = 0;
+        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
+        for (EventCategory eventCategory : eventCategories) {
+            List<Game> games = gameRepository.findByEventCategory(eventCategory);
+            quantity = quantity + games.size();
+            quantity = quantity + 1;
+        }
+        return quantity;
+    }
+
+    public String getSponsorslogo(Tournament tournament) {
+        String result = "";
+        List<Sponsor> sponsors = sponsorRepository.findByTournament(tournament);
+        for (Sponsor sponsor : sponsors) {
+            result =
+                result +
+                "<img [src]=\"'data:'" +
+                sponsor.getLogoContentType() +
+                "';base64,'" +
+                sponsor.getLogo() +
+                " style=\"max-width: 10%\" alt=\"sponsor image\" />\n";
+        }
+        return result;
+    }
+
     public void generatePdf(Event event) throws IOException, URISyntaxException {
         log.debug("*** Generando PDF ***");
 
@@ -413,70 +443,188 @@ public class EventService {
         System.out.println(tempFileCss);
 
         String htmlString = Files.readString(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.html").toURI()));
-        String title = event.getName();
-        String body =
-            "<div id=\"wrapper\">\n" +
-            "  <h1>Sortable Table of Search Queries</h1>\n" +
+        String title = event.getTournament().getName() + " - " + event.getName();
+        String tournamentName = event.getTournament().getName();
+        String eventName = event.getName();
+        String mainTitle =
+            "<div id=\\\"wrapper\\\">" +
             "  \n" +
+            "               <h1>" +
+            tournamentName +
+            "</h1>\n" +
+            "               <h2>" +
+            eventName +
+            "</h2>\n";
+        String tableHeader =
             "  <table id=\"keywords\" cellspacing=\"0\" cellpadding=\"0\">\n" +
             "    <thead>\n" +
             "      <tr>\n" +
-            "        <th><span>Keywords</span></th>\n" +
-            "        <th><span>Impressions</span></th>\n" +
-            "        <th><span>Clicks</span></th>\n" +
-            "        <th><span>CTR</span></th>\n" +
-            "        <th><span>Rank</span></th>\n" +
+            "        <th width=\"10%\"></th>\n" +
+            "        <th width=\"30%\"><span>EQUIPO A</span></th>\n" +
+            "        <th width=\"5%\"></th>\n" +
+            "        <th width=\"10%\"></th>\n" +
+            "        <th width=\"5%\"></th>\n" +
+            "        <th width=\"30%\"><span>EQUIPO B</span></th>\n" +
+            "        <th width=\"10%\"></th>\n" +
             "      </tr>\n" +
             "    </thead>\n" +
-            "    <tbody>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">silly tshirts</td>\n" +
-            "        <td>6,000</td>\n" +
-            "        <td>110</td>\n" +
-            "        <td>1.8%</td>\n" +
-            "        <td>22.2</td>\n" +
-            "      </tr>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">desktop workspace photos</td>\n" +
-            "        <td>2,200</td>\n" +
-            "        <td>500</td>\n" +
-            "        <td>22%</td>\n" +
-            "        <td>8.9</td>\n" +
-            "      </tr>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">arrested development quotes</td>\n" +
-            "        <td>13,500</td>\n" +
-            "        <td>900</td>\n" +
-            "        <td>6.7%</td>\n" +
-            "        <td>12.0</td>\n" +
-            "      </tr>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">popular web series</td>\n" +
-            "        <td>8,700</td>\n" +
-            "        <td>350</td>\n" +
-            "        <td>4%</td>\n" +
-            "        <td>7.0</td>\n" +
-            "      </tr>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">2013 webapps</td>\n" +
-            "        <td>9,900</td>\n" +
-            "        <td>460</td>\n" +
-            "        <td>4.6%</td>\n" +
-            "        <td>11.5</td>\n" +
-            "      </tr>\n" +
-            "      <tr>\n" +
-            "        <td class=\"lalign\">ring bananaphone</td>\n" +
-            "        <td>10,500</td>\n" +
-            "        <td>748</td>\n" +
-            "        <td>7.1%</td>\n" +
-            "        <td>17.3</td>\n" +
-            "      </tr>\n" +
-            "    </tbody>\n" +
-            "  </table>\n" +
-            " </div>";
+            "    <tbody>";
+
+        String body1 = "";
+
+        String sponsors = getSponsorslogo(event.getTournament());
+
+        Integer length = getlengthFixture(event);
+        length = 1000;
+        Integer cont = 0;
+        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
+        for (EventCategory eventCategory : eventCategories) {
+            cont++;
+            if (cont == 1) {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td style=\"writing-mode: sideways-lr; \" rowspan=\"" +
+                    length +
+                    "\"><span>sponsors</span></td>\n" +
+                    "        <td colspan=\"5\"><h3>" +
+                    eventCategory.getCategory().getName() +
+                    "</h3></td>\n" +
+                    "        <td style=\"writing-mode: sideways-lr; \" rowspan=\"" +
+                    length +
+                    "\"><span>sponsors</span></td>\n" +
+                    "      </tr>\n";
+            } else {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td colspan=\"5\"><h3>" +
+                    eventCategory.getCategory().getName() +
+                    "</h3></td>\n" +
+                    "      </tr>\n";
+            }
+            List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "1");
+            for (Game game : games) {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    game.getTeamA().getName() +
+                    "</td>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    game.getPointsA().toString() +
+                    "</td>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    game.getPointsA().toString() +
+                    "</td>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    game.getTeamB().getName() +
+                    "</td>\n" +
+                    "      </tr>\n";
+            }
+        }
+        if (event.getStatus() == Status.DONE) {
+            for (EventCategory eventCategory : eventCategories) {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td colspan=\"5\"><h3>" +
+                    eventCategory.getCategory().getName() +
+                    "- Semifinales" +
+                    "</h3></td>\n" +
+                    "      </tr>\n";
+                List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "Semifinal");
+                for (Game game : games) {
+                    body1 =
+                        body1 +
+                        "      <tr>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamA().getName() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsA().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsB().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamB().getName() +
+                        "</td>\n" +
+                        "      </tr>\n";
+                }
+            }
+            for (EventCategory eventCategory : eventCategories) {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td colspan=\"5\"><h3>" +
+                    eventCategory.getCategory().getName() +
+                    "- 3er Puesto" +
+                    "</h3></td>\n" +
+                    "      </tr>\n";
+                List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "3er Puesto");
+                for (Game game : games) {
+                    body1 =
+                        body1 +
+                        "      <tr>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamA().getName() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsA().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsB().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamB().getName() +
+                        "</td>\n" +
+                        "      </tr>\n";
+                }
+            }
+            for (EventCategory eventCategory : eventCategories) {
+                body1 =
+                    body1 +
+                    "      <tr>\n" +
+                    "        <td colspan=\"5\"><h3>" +
+                    eventCategory.getCategory().getName() +
+                    "- Final" +
+                    "</h3></td>\n" +
+                    "      </tr>\n";
+                List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "Final");
+                for (Game game : games) {
+                    body1 =
+                        body1 +
+                        "      <tr>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamA().getName() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsA().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getPointsB().toString() +
+                        "</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                        game.getTeamB().getName() +
+                        "</td>\n" +
+                        "      </tr>\n";
+                }
+            }
+        }
+
+        String close = "    </tbody>\n" + "  </table>\n" + " </div>";
+
         htmlString = htmlString.replace("$title", title);
         htmlString = htmlString.replace("$scss", tempFileCss.toString());
-        htmlString = htmlString.replace("$body", body);
+        htmlString = htmlString.replace("$mainTitle", mainTitle);
+        htmlString = htmlString.replace("$tableHeader", tableHeader);
+        htmlString = htmlString.replace("$body", body1);
+        htmlString = htmlString.replace("$close", close);
 
         //        Files.copy(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.css").toURI()), tempFileCss, StandardCopyOption.REPLACE_EXISTING);
         Files.write(tempFile, htmlString.getBytes(StandardCharsets.UTF_8));

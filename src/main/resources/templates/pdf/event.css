@@ -40,7 +40,7 @@ $breakpoint-alpha: 480px;
 
   th,
   td {
-    text-align: left;
+    text-align: center;
 
     @media (min-width: $breakpoint-alpha) {
       display: table-cell;
