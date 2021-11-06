@@ -450,23 +450,23 @@ public class EventService {
         String mainTitle =
             "<div id=\\\"wrapper\\\">" +
             "  \n" +
-            "               <h1>" +
+            "               <h1 style=\"text-align: center\">" +
             tournamentName +
             "</h1>\n" +
-            "               <h2>" +
+            "               <h2 style=\"text-align: center\">" +
             eventName +
             "</h2>\n";
         String tableHeader =
-            "  <table id=\"keywords\" cellspacing=\"0\" cellpadding=\"0\">\n" +
+            "  <table id=\"keywords\" style =\"margin-left: auto; margin-right: auto\">\n" +
             "    <thead>\n" +
             "      <tr>\n" +
-            "        <th width=\"10%\"></th>\n" +
-            "        <th width=\"30%\"><span>EQUIPO A</span></th>\n" +
+            "        <th width=\"14%\"></th>\n" +
+            "        <th width=\"30%\"></th>\n" +
             "        <th width=\"5%\"></th>\n" +
-            "        <th width=\"10%\"></th>\n" +
+            "        <th width=\"2%\"></th>\n" +
             "        <th width=\"5%\"></th>\n" +
-            "        <th width=\"30%\"><span>EQUIPO B</span></th>\n" +
-            "        <th width=\"10%\"></th>\n" +
+            "        <th width=\"30%\"></th>\n" +
+            "        <th width=\"14%\"></th>\n" +
             "      </tr>\n" +
             "    </thead>\n" +
             "    <tbody>";
@@ -489,7 +489,7 @@ public class EventService {
                     "\">" +
                     sponsors +
                     "</td>\n" +
-                    "        <td colspan=\"5\"><h3>" +
+                    "        <td style=\"text-align: center\" colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
                     "</h3></td>\n" +
                     "        <td style=\"writing-mode: vertical-rl; \" rowspan=\"" +
@@ -502,7 +502,7 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td colspan=\"5\"><h3>" +
+                    "        <td style=\"text-align: center\" colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
                     "</h3></td>\n" +
                     "      </tr>\n";
@@ -518,9 +518,9 @@ public class EventService {
                     "        <td style=\"text-align: center; vertical-align: middle;\">" +
                     game.getPointsA().toString() +
                     "</td>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                    "        <td style=\"text-align: center; vertical-align: middle;\">-</td>\n" +
                     "        <td style=\"text-align: center; vertical-align: middle;\">" +
-                    game.getPointsA().toString() +
+                    game.getPointsB().toString() +
                     "</td>\n" +
                     "        <td style=\"text-align: center; vertical-align: middle;\">" +
                     game.getTeamB().getName() +
@@ -533,9 +533,9 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td colspan=\"5\"><h3>" +
+                    "        <td style=\"text-align: center\" colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
-                    "- Semifinales" +
+                    " - Semifinales" +
                     "</h3></td>\n" +
                     "      </tr>\n";
                 List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "Semifinal");
@@ -549,7 +549,7 @@ public class EventService {
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsA().toString() +
                         "</td>\n" +
-                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">-</td>\n" +
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsB().toString() +
                         "</td>\n" +
@@ -563,9 +563,9 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td colspan=\"5\"><h3>" +
+                    "        <td style=\"text-align: center\" colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
-                    "- 3er Puesto" +
+                    " - 3er Puesto" +
                     "</h3></td>\n" +
                     "      </tr>\n";
                 List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "3er Puesto");
@@ -579,7 +579,7 @@ public class EventService {
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsA().toString() +
                         "</td>\n" +
-                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">-</td>\n" +
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsB().toString() +
                         "</td>\n" +
@@ -593,9 +593,9 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td colspan=\"5\"><h3>" +
+                    "        <td style=\"text-align: center\" colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
-                    "- Final" +
+                    " - Final" +
                     "</h3></td>\n" +
                     "      </tr>\n";
                 List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "Final");
@@ -609,7 +609,7 @@ public class EventService {
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsA().toString() +
                         "</td>\n" +
-                        "        <td style=\"text-align: center; vertical-align: middle;\">vs</td>\n" +
+                        "        <td style=\"text-align: center; vertical-align: middle;\">-</td>\n" +
                         "        <td style=\"text-align: center; vertical-align: middle;\">" +
                         game.getPointsB().toString() +
                         "</td>\n" +
