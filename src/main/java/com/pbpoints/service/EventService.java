@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -422,11 +423,11 @@ public class EventService {
         for (Sponsor sponsor : sponsors) {
             result =
                 result +
-                "<img [src]=\"'data:'" +
+                "<img src='data:" +
                 sponsor.getLogoContentType() +
-                "';base64,'" +
-                sponsor.getLogo() +
-                " style=\"max-width: 10%\" alt=\"sponsor image\" />\n";
+                ";base64," +
+                Base64.getEncoder().encodeToString(sponsor.getLogo()) +
+                "' style=\"width: 75px; height: 75px\" alt=\"sponsor image\" />\n";
         }
         return result;
     }
@@ -473,7 +474,6 @@ public class EventService {
         String body1 = "";
 
         String sponsors = getSponsorslogo(event.getTournament());
-
         Integer length = getlengthFixture(event);
         length = 1000;
         Integer cont = 0;
@@ -484,15 +484,19 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td style=\"writing-mode: sideways-lr; \" rowspan=\"" +
+                    "        <td style=\"writing-mode: vertical-rl; \" rowspan=\"" +
                     length +
-                    "\"><span>sponsors</span></td>\n" +
+                    "\">" +
+                    sponsors +
+                    "</td>\n" +
                     "        <td colspan=\"5\"><h3>" +
                     eventCategory.getCategory().getName() +
                     "</h3></td>\n" +
-                    "        <td style=\"writing-mode: sideways-lr; \" rowspan=\"" +
+                    "        <td style=\"writing-mode: vertical-rl; \" rowspan=\"" +
                     length +
-                    "\"><span>sponsors</span></td>\n" +
+                    "\">" +
+                    sponsors +
+                    "</td>\n" +
                     "      </tr>\n";
             } else {
                 body1 =
