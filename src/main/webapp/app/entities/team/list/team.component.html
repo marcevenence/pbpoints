@@ -111,12 +111,22 @@
         <thead>
           <tr>
             <th scope="col">
-              <span jhiTranslate="pbpointsApp.mainRoster.team">Team</span>
+              <span jhiTranslate="pbpointsApp.team.logo">Logo</span>
+            </th>
+            <th scope="col">
+              <span jhiTranslate="pbpointsApp.team.name">Team</span>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let mainRoster of mainRosters; trackBy: trackMrId" data-cy="entityTablemr">
+            <td>
+              <img
+                [src]="'data:' + mainRoster.team?.logoContentType + ';base64,' + mainRoster.team?.logo"
+                style="max-height: 30px"
+                alt="team image"
+              />
+            </td>
             <td>{{ mainRoster.team?.name }}</td>
           </tr>
         </tbody>

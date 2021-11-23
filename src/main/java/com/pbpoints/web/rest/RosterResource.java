@@ -1,9 +1,6 @@
 package com.pbpoints.web.rest;
 
-import com.pbpoints.domain.EventCategory;
-import com.pbpoints.domain.Player;
-import com.pbpoints.domain.RosterWithPlayers;
-import com.pbpoints.domain.User;
+import com.pbpoints.domain.*;
 import com.pbpoints.service.PlayerService;
 import com.pbpoints.service.RosterQueryService;
 import com.pbpoints.service.RosterService;
@@ -193,10 +190,11 @@ public class RosterResource {
         return ResponseUtil.wrapOrNotFound(rosterDTO);
     }
 
-    @GetMapping("/rosters/check/{player}")
-    public ResponseEntity<Boolean> checkInRoster(@PathVariable PlayerDTO playerDTO) {
-        log.debug("Verificando en Rosters : {}", playerDTO);
-        return ResponseEntity.ok().body(playerService.validExistsOtherRoster(playerDTO));
+    @GetMapping("/rosters/check/{id}/{profile}")
+    public ResponseEntity<RosterDTO> checkInRoster(@PathVariable Long id, @PathVariable String profile) {
+        log.debug("Verificando en Rosters por UserExtraID y Profile : {} {}", id, profile);
+        Optional<RosterDTO> rosterDTO = rosterService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(rosterDTO);
     }
 
     /**

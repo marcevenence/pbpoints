@@ -61,6 +61,8 @@ public class PlayerResource {
 
     private final CategoryService categoryService;
 
+    private final RosterService rosterService;
+
     public PlayerResource(
         PlayerService playerService,
         PlayerRepository playerRepository,
@@ -69,6 +71,7 @@ public class PlayerResource {
         UserService userService,
         CategoryService categoryService,
         TournamentService tournamentService,
+        RosterService rosterService,
         TournamentMapper tournamentMapper
     ) {
         this.playerService = playerService;
@@ -78,6 +81,7 @@ public class PlayerResource {
         this.userService = userService;
         this.tournamentService = tournamentService;
         this.tournamentMapper = tournamentMapper;
+        this.rosterService = rosterService;
         this.categoryService = categoryService;
     }
 
@@ -93,6 +97,15 @@ public class PlayerResource {
         log.debug("REST request to save Player : {}", playerDTO);
         if (playerDTO.getId() != null) {
             throw new BadRequestAlertException("A new player cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (playerDTO.getProfile() == null) {
+            throw new BadRequestAlertException("Profile cant be Null", ENTITY_NAME, "nullProfile");
+        }
+        if (playerService.validExists(playerDTO)) {
+            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInRoster");
+        }
+        if (playerService.validExistsOtherRoster(playerDTO)) {
+            throw new BadRequestAlertException("Already Exists", ENTITY_NAME, "alreadyInOtherRoster");
         }
         PlayerDTO result = playerService.save(playerDTO);
         return ResponseEntity
@@ -240,5 +253,21 @@ public class PlayerResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
+    }
+
+    @GetMapping("/players/own/{id}")
+    public ResponseEntity<Long> checkOwner(@PathVariable Long id) {
+        log.debug("REST request to get Owner : {}", id);
+        Long owner = rosterService.checkOwner(id);
+        ResponseEntity<Long> resp = ResponseEntity.ok().body(owner);
+        return resp;
+    }
+
+    @GetMapping("/players/upd/{id}")
+    public ResponseEntity<Long> enableUpdate(@PathVariable Long id) {
+        log.debug("REST request to check if event is Closed or Inscripcion is Closed: {}", id);
+        Long result = rosterService.validRoster(id);
+        ResponseEntity<Long> resp = ResponseEntity.ok().body(result);
+        return resp;
     }
 }

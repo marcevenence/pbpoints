@@ -114,7 +114,7 @@ public class GameQueryService extends QueryService<Game> {
                 specification = specification.and(buildRangeSpecification(criteria.getUvuB(), Game_.uvuB));
             }
             if (criteria.getGroup() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getGroup(), Game_.group));
+                specification = specification.and(buildStringSpecification(criteria.getGroup(), Game_.group));
             }
             if (criteria.getClasif() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getClasif(), Game_.clasif));

@@ -58,7 +58,7 @@ public class GameDTO {
 
     @JacksonXmlProperty(localName = "GROUP")
     @NotNull
-    private Integer group;
+    private String group;
 
     public Long getId() {
         return id;
@@ -156,11 +156,11 @@ public class GameDTO {
         this.timeLeft = timeLeft;
     }
 
-    public Integer getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Integer group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 

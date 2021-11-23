@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
@@ -41,6 +41,19 @@ export class PlayerService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  validateCategory(id: number, tId: number, catId: number): Observable<HttpResponse<IPlayerPoint>> {
+    return this.http.get<IPlayerPoint>(`${this.resourceUrl}/validCategory/${id}/${tId}/${catId}`, { observe: 'response' });
+  }
+
+  findOwner(id: number): Observable<HttpResponse<number>> {
+    const options = createRequestOption(id);
+    return this.http.get<number>(`${this.resourceUrl}/own/${id}`, { params: options, observe: 'response' });
+  }
+
+  enableUpdate(id: number): Observable<HttpResponse<number>> {
+    const options = createRequestOption(id);
+    return this.http.get<number>(`${this.resourceUrl}/upd/${id}`, { params: options, observe: 'response' });
+  }
   addPlayerToCollectionIfMissing(playerCollection: IPlayer[], ...playersToCheck: (IPlayer | null | undefined)[]): IPlayer[] {
     const players: IPlayer[] = playersToCheck.filter(isPresent);
     if (players.length > 0) {

@@ -8,7 +8,7 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+        <div class="form-group" hidden>
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
@@ -66,7 +66,7 @@
 
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.game.group" for="field_group">Group</label>
-          <input type="number" class="form-control" name="group" id="field_group" data-cy="group" formControlName="group" />
+          <input type="text" class="form-control" name="group" id="field_group" data-cy="group" formControlName="group" />
         </div>
 
         <div class="form-group">

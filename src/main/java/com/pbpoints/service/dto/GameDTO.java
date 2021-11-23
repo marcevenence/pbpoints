@@ -31,7 +31,7 @@ public class GameDTO implements Serializable {
 
     private Integer uvuB;
 
-    private Integer group;
+    private String group;
 
     private String clasif;
 
@@ -121,11 +121,11 @@ public class GameDTO implements Serializable {
         this.uvuB = uvuB;
     }
 
-    public Integer getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Integer group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 

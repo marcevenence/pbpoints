@@ -32,6 +32,11 @@ export class RosterService {
     return this.http.put<IRoster>(`${this.resourceUrl}`, roster, { observe: 'response' });
   }
 
+  updateWithPlayers(players: IPlayer[], id: number): Observable<EntityResponseType> {
+    const data = { players, id };
+    return this.http.put<IRoster>(`${this.resourceUrl}/players`, data, { observe: 'response' });
+  }
+
   partialUpdate(roster: IRoster): Observable<EntityResponseType> {
     return this.http.patch<IRoster>(`${this.resourceUrl}/${getRosterIdentifier(roster) as number}`, roster, { observe: 'response' });
   }
@@ -52,6 +57,10 @@ export class RosterService {
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  checkinRosters(id: number, profile: string): Observable<HttpResponse<IPlayer>> {
+    return this.http.get<IRoster>(`${this.resourceUrl}/check/${id}/${profile}`, { observe: 'response' });
   }
 
   addRosterToCollectionIfMissing(rosterCollection: IRoster[], ...rostersToCheck: (IRoster | null | undefined)[]): IRoster[] {

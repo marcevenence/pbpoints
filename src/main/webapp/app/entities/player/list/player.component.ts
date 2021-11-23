@@ -86,9 +86,9 @@ export class PlayerComponent implements OnInit {
         );
     }
 
-    this.userExtraService.query({ size: 2000 }).subscribe(
+    this.userExtraService.query().subscribe(
       (res: HttpResponse<IUserExtra[]>) => {
-        this.onUserExtraSuccess(res.body);
+        this.userExtras = res.body ?? [];
       },
       () => {
         this.onError();
@@ -156,10 +156,6 @@ export class PlayerComponent implements OnInit {
       result.push('id');
     }
     return result;
-  }
-
-  protected onUserExtraSuccess(data: IUserExtra[] | null): void {
-    this.userExtras = data ?? [];
   }
 
   protected onError(): void {

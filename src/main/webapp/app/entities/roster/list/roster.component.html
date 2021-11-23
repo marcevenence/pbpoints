@@ -70,7 +70,8 @@
                   !isAllowed(
                     roster.team?.owner?.id!,
                     roster.eventCategory?.event?.status!,
-                    roster.eventCategory?.event?.endInscriptionDate!
+                    roster.eventCategory?.event?.endInscriptionDate!,
+                    roster.eventCategory?.event?.endDate!
                   )
                 "
                 type="submit"
@@ -83,11 +84,16 @@
               </button>
               <button
                 *ngIf="
-                  isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!, roster.eventCategory?.event?.endInscriptionDate!)
+                  isAllowed(
+                    roster.team?.owner?.id!,
+                    roster.eventCategory?.event?.status!,
+                    roster.eventCategory?.event?.endInscriptionDate!,
+                    roster.eventCategory?.event?.endDate!
+                  )
                 "
                 type="submit"
                 [routerLink]="['/roster/subs']"
-                [state]="{ roster: { teId: roster.team?.id, evCatId: roster.eventCategory?.id } }"
+                [state]="{ roster: { te: roster.team, evCatId: roster.eventCategory?.id, rId: roster.id } }"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -97,7 +103,12 @@
 
               <button
                 *ngIf="
-                  isAllowed(roster.team?.owner?.id!, roster.eventCategory?.event?.status!, roster.eventCategory?.event?.endInscriptionDate!)
+                  isAllowed(
+                    roster.team?.owner?.id!,
+                    roster.eventCategory?.event?.status!,
+                    roster.eventCategory?.event?.endInscriptionDate!,
+                    roster.eventCategory?.event?.endDate!
+                  )
                 "
                 type="submit"
                 (click)="delete(roster)"

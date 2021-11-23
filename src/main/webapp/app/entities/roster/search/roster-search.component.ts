@@ -65,7 +65,7 @@ export class RosterSearchComponent implements OnInit {
       })
       .subscribe(
         (res: HttpResponse<IRoster[]>) => {
-          this.onSuccess(res.body);
+          this.rosters = res.body ?? [];
         },
         () => {
           this.onError();
@@ -74,16 +74,16 @@ export class RosterSearchComponent implements OnInit {
 
     this.playerService.query({}).subscribe(
       (res: HttpResponse<IPlayer[]>) => {
-        this.onPlayerSuccess(res.body);
+        this.players = res.body ?? [];
       },
       () => {
         this.onError();
       }
     );
 
-    this.userExtraService.query({ size: 2000 }).subscribe(
+    this.userExtraService.query().subscribe(
       (res: HttpResponse<IUserExtra[]>) => {
-        this.onUserExtraSuccess(res.body);
+        this.userExtras = res.body ?? [];
       },
       () => {
         this.onError();
@@ -125,7 +125,8 @@ export class RosterSearchComponent implements OnInit {
     }
   }
   filterPlayerFunction(id: number): IPlayer[] {
-    return this.players!.filter(i => i.roster!.id === id);
+    const list = this.players!.filter(i => i.roster!.id === id);
+    return list;
   }
 
   filterUserExtraFunction(id: number): IUserExtra[] {
@@ -138,18 +139,6 @@ export class RosterSearchComponent implements OnInit {
       result.push('id');
     }
     return result;
-  }
-
-  protected onSuccess(data: IRoster[] | null): void {
-    this.rosters = data ?? [];
-  }
-
-  protected onPlayerSuccess(data: IPlayer[] | null): void {
-    this.players = data ?? [];
-  }
-
-  protected onUserExtraSuccess(data: IUserExtra[] | null): void {
-    this.userExtras = data ?? [];
   }
 
   protected onError(): void {

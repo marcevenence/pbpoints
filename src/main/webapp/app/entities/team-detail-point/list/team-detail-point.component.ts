@@ -24,6 +24,7 @@ export class TeamDetailPointComponent implements OnInit {
   ascending!: boolean;
   ngbPaginationPage = 1;
   evId: any;
+  tpId: any;
 
   constructor(
     protected teamDetailPointService: TeamDetailPointService,
@@ -55,27 +56,48 @@ export class TeamDetailPointComponent implements OnInit {
           }
         );
     } else {
-      this.teamDetailPointService
-        .query({
-          page: pageToLoad - 1,
-          size: this.itemsPerPage,
-          sort: this.sort(),
-        })
-        .subscribe(
-          (res: HttpResponse<ITeamDetailPoint[]>) => {
-            this.isLoading = false;
-            this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
-          },
-          () => {
-            this.isLoading = false;
-            this.onError();
-          }
-        );
+      if (this.tpId !== 0) {
+        this.teamDetailPointService
+          .query({
+            'teamPointId.equals': this.tpId,
+            page: pageToLoad - 1,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+          })
+          .subscribe(
+            (res: HttpResponse<ITeamDetailPoint[]>) => {
+              this.isLoading = false;
+              this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            },
+            () => {
+              this.isLoading = false;
+              this.onError();
+            }
+          );
+      } else {
+        this.teamDetailPointService
+          .query({
+            page: pageToLoad - 1,
+            size: this.itemsPerPage,
+            sort: this.sort(),
+          })
+          .subscribe(
+            (res: HttpResponse<ITeamDetailPoint[]>) => {
+              this.isLoading = false;
+              this.onSuccess(res.body, res.headers, pageToLoad, !dontNavigate);
+            },
+            () => {
+              this.isLoading = false;
+              this.onError();
+            }
+          );
+      }
     }
   }
 
   ngOnInit(): void {
     this.evId = history.state.evId ?? 0;
+    this.tpId = history.state.tpId ?? 0;
     this.handleNavigation();
   }
 

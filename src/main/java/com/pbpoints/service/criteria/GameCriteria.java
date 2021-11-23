@@ -62,7 +62,7 @@ public class GameCriteria implements Serializable, Criteria {
 
     private IntegerFilter uvuB;
 
-    private IntegerFilter group;
+    private StringFilter group;
 
     private StringFilter clasif;
 
@@ -247,18 +247,18 @@ public class GameCriteria implements Serializable, Criteria {
         this.uvuB = uvuB;
     }
 
-    public IntegerFilter getGroup() {
+    public StringFilter getGroup() {
         return group;
     }
 
-    public IntegerFilter group() {
+    public StringFilter group() {
         if (group == null) {
-            group = new IntegerFilter();
+            group = new StringFilter();
         }
         return group;
     }
 
-    public void setGroup(IntegerFilter group) {
+    public void setGroup(StringFilter group) {
         this.group = group;
     }
 
