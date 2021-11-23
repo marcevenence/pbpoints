@@ -34,15 +34,16 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "city",
-      "otherEntityRelationshipName": "event",
-      "relationshipName": "city"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tournament",
       "otherEntityRelationshipName": "event",
       "relationshipName": "tournament"
+    },
+    {
+      "relationshipName": "field",
+      "otherEntityName": "field",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "name"
     }
   ],
   "javadoc": "Event entity.\\n@author Marcelo Miño",

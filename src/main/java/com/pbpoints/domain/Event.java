@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -46,12 +47,13 @@ public class Event implements Serializable {
     private Instant updatedDate;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "province" }, allowSetters = true)
-    private City city;
-
-    @ManyToOne
     @JsonIgnoreProperties(value = { "events", "owner" }, allowSetters = true)
     private Tournament tournament;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "city" }, allowSetters = true)
+    private Field field;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -158,19 +160,6 @@ public class Event implements Serializable {
         this.updatedDate = updatedDate;
     }
 
-    public City getCity() {
-        return this.city;
-    }
-
-    public Event city(City city) {
-        this.setCity(city);
-        return this;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
-
     public Tournament getTournament() {
         return this.tournament;
     }
@@ -182,6 +171,19 @@ public class Event implements Serializable {
 
     public void setTournament(Tournament tournament) {
         this.tournament = tournament;
+    }
+
+    public Field getField() {
+        return this.field;
+    }
+
+    public Event field(Field field) {
+        this.setField(field);
+        return this;
+    }
+
+    public void setField(Field field) {
+        this.field = field;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

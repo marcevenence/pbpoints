@@ -21,7 +21,7 @@
     "event": {
       "tournament": "Tournament",
       "event": "Event",
-      "city": "City",
+      "city": "Field",
       "fromDate": "From Date",
       "endDate": "To Date",
       "endInscriptionDate": "Inscription Close at",

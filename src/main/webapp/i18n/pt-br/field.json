@@ -1,0 +1,25 @@
+{
+  "pbpointsApp": {
+    "field": {
+      "home": {
+        "title": "Fields",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Field",
+        "createOrEditLabel": "Criar ou editar Field",
+        "notFound": "Nenhum Field encontrado"
+      },
+      "created": "Um novo Field foi criado com o identificador {{ param }}",
+      "updated": "Um Field foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Field foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Field"
+      },
+      "id": "ID",
+      "name": "Name",
+      "city": "City"
+    }
+  }
+}

@@ -238,7 +238,7 @@ public class EventCategoryService {
                     log.debug("Game " + (i + 1) + ": ");
                     for (int j = 0; j < rondas[i].length; j++) {
                         Game game = new Game();
-                        game.setGroup(k + 1);
+                        game.setGroup(Integer.toString(k + 1));
                         /*Agrego Logica de Nro se Series*/
                         if (eventCategory.getSplitDeck()) {
                             cantSerie = cantSerie + 1;

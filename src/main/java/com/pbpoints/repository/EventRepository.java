@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Spring Data  repository for the Event entity.
+ * Spring Data SQL repository for the Event entity.
  */
 @SuppressWarnings("unused")
 @Repository

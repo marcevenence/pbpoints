@@ -46,7 +46,7 @@
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <!--<th scope="col" jhiSortBy="tournament.id"> <span jhiTranslate="pbpointsApp.event.tournament">Tournament</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col"><span jhiTranslate="pbpointsApp.event.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.event.city">City</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.event.field">Field</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.event.fromDate">From Date</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.event.endDate">End Date</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.event.endInscriptionDate">End Inscription Date</span></th>
@@ -65,7 +65,7 @@
         <tr *ngFor="let event of events; trackBy: trackId" data-cy="entityTable">
           <!--<td><a [routerLink]="['/event', event.id, 'view']">{{ event.id }}</a></td>-->
           <td>{{ event.name }}</td>
-          <td>{{ event.city?.name }}</td>
+          <td>{{ event.field?.name }},{{ event.field?.city?.name }}</td>
           <td>{{ event.fromDate | formatMediumDate }}</td>
           <td>{{ event.endDate | formatMediumDate }}</td>
           <td>{{ event.endInscriptionDate | formatMediumDate }}</td>

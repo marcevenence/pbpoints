@@ -42,16 +42,16 @@
         <dd>
           <span>{{ event.updatedDate | formatMediumDatetime }}</span>
         </dd>
-        <dt><span jhiTranslate="pbpointsApp.event.city">City</span></dt>
-        <dd>
-          <div *ngIf="event.city">
-            <a [routerLink]="['/city', event.city?.id, 'view']">{{ event.city?.id }}</a>
-          </div>
-        </dd>
         <dt><span jhiTranslate="pbpointsApp.event.tournament">Tournament</span></dt>
         <dd>
           <div *ngIf="event.tournament">
             <a [routerLink]="['/tournament', event.tournament?.id, 'view']">{{ event.tournament?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.event.field">Field</span></dt>
+        <dd>
+          <div *ngIf="event.field">
+            <a [routerLink]="['/field', event.field?.id, 'view']">{{ event.field?.name }}</a>
           </div>
         </dd>
       </dl>

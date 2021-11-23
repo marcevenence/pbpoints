@@ -1,0 +1,25 @@
+{
+  "pbpointsApp": {
+    "field": {
+      "home": {
+        "title": "Sedes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Field",
+        "createOrEditLabel": "Crear o editar Field",
+        "notFound": "Ningún Fields encontrado"
+      },
+      "created": "Un nuevo Field ha sido creado con el identificador {{ param }}",
+      "updated": "Un Field ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Field ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Sede"
+      },
+      "id": "ID",
+      "name": "Nombre",
+      "city": "Ciudad"
+    }
+  }
+}

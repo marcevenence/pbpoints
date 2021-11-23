@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { ICity } from 'app/entities/city/city.model';
+import { IField } from 'app/entities/field/field.model';
 import { ITournament } from 'app/entities/tournament/tournament.model';
 import { Status } from 'app/entities/enumerations/status.model';
 
@@ -12,7 +12,7 @@ export interface IEvent {
   status?: Status | null;
   createDate?: dayjs.Dayjs | null;
   updatedDate?: dayjs.Dayjs | null;
-  city?: ICity | null;
+  field?: IField | null;
   tournament?: ITournament | null;
 }
 
@@ -26,7 +26,7 @@ export class Event implements IEvent {
     public status?: Status | null,
     public createDate?: dayjs.Dayjs | null,
     public updatedDate?: dayjs.Dayjs | null,
-    public city?: ICity | null,
+    public field?: IField | null,
     public tournament?: ITournament | null
   ) {}
 }

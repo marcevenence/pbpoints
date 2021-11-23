@@ -81,6 +81,7 @@
         "country": "Country",
         "province": "Province",
         "city": "City",
+        "field": "Field",
         "docType": "Doc Type",
         "tournament": "Tournament",
         "event": "Event",

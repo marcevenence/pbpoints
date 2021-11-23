@@ -4,7 +4,7 @@ import com.pbpoints.domain.Event;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.service.EventQueryService;
 import com.pbpoints.service.EventService;
-import com.pbpoints.service.dto.EventCriteria;
+import com.pbpoints.service.criteria.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
@@ -195,6 +195,37 @@ public class EventResource {
     public ResponseEntity<?> write(@RequestParam(value = "file") MultipartFile multipartFile) throws Exception {
         log.debug("REST request to Import file: {}", multipartFile);
         return ResponseEntity.ok(eventService.submitXML(multipartFile));
+    }
+
+    @GetMapping("/events/generateScore/{id}")
+    public ResponseEntity<Void> generateScore(@PathVariable Long id) throws IOException, URISyntaxException {
+        log.debug("REST request to Generate a Score Sheets for: {}", id);
+        if (id == null) {
+            throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");
+        }
+        Optional<EventDTO> eventDTO = eventService.findOne(id);
+        if (eventDTO.isPresent()) {
+            Event event = eventMapper.toEntity(eventDTO.get());
+            log.debug("Event: {}" + event);
+            if (event.getStatus() == Status.valueOf("CANCEL")) throw new BadRequestAlertException(
+                "Event Cancelled",
+                ENTITY_NAME,
+                "EventCancelled"
+            );
+            if (event.getEndInscriptionDate().isAfter(LocalDate.now())) throw new BadRequestAlertException(
+                "Subscription Date no End",
+                ENTITY_NAME,
+                "inscrNotFinish"
+            );
+            if (!eventService.hasCategories(event)) throw new BadRequestAlertException(
+                "No EventCategories Found",
+                ENTITY_NAME,
+                "noEventCategoriesFound"
+            );
+            if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
+            eventService.generateScore(event);
+            return ResponseEntity.noContent().build();
+        } else throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
     }
 
     @GetMapping("/events/generatePDF/{id}")

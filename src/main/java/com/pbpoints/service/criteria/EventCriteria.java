@@ -60,9 +60,9 @@ public class EventCriteria implements Serializable, Criteria {
 
     private InstantFilter updatedDate;
 
-    private LongFilter cityId;
-
     private LongFilter tournamentId;
+
+    private LongFilter fieldId;
 
     public EventCriteria() {}
 
@@ -75,8 +75,8 @@ public class EventCriteria implements Serializable, Criteria {
         this.status = other.status == null ? null : other.status.copy();
         this.createDate = other.createDate == null ? null : other.createDate.copy();
         this.updatedDate = other.updatedDate == null ? null : other.updatedDate.copy();
-        this.cityId = other.cityId == null ? null : other.cityId.copy();
         this.tournamentId = other.tournamentId == null ? null : other.tournamentId.copy();
+        this.fieldId = other.fieldId == null ? null : other.fieldId.copy();
     }
 
     @Override
@@ -204,21 +204,6 @@ public class EventCriteria implements Serializable, Criteria {
         this.updatedDate = updatedDate;
     }
 
-    public LongFilter getCityId() {
-        return cityId;
-    }
-
-    public LongFilter cityId() {
-        if (cityId == null) {
-            cityId = new LongFilter();
-        }
-        return cityId;
-    }
-
-    public void setCityId(LongFilter cityId) {
-        this.cityId = cityId;
-    }
-
     public LongFilter getTournamentId() {
         return tournamentId;
     }
@@ -232,6 +217,21 @@ public class EventCriteria implements Serializable, Criteria {
 
     public void setTournamentId(LongFilter tournamentId) {
         this.tournamentId = tournamentId;
+    }
+
+    public LongFilter getFieldId() {
+        return fieldId;
+    }
+
+    public LongFilter fieldId() {
+        if (fieldId == null) {
+            fieldId = new LongFilter();
+        }
+        return fieldId;
+    }
+
+    public void setFieldId(LongFilter fieldId) {
+        this.fieldId = fieldId;
     }
 
     @Override
@@ -252,14 +252,14 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(status, that.status) &&
             Objects.equals(createDate, that.createDate) &&
             Objects.equals(updatedDate, that.updatedDate) &&
-            Objects.equals(cityId, that.cityId) &&
-            Objects.equals(tournamentId, that.tournamentId)
+            Objects.equals(tournamentId, that.tournamentId) &&
+            Objects.equals(fieldId, that.fieldId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, fromDate, endDate, endInscriptionDate, status, createDate, updatedDate, cityId, tournamentId);
+        return Objects.hash(id, name, fromDate, endDate, endInscriptionDate, status, createDate, updatedDate, tournamentId, fieldId);
     }
 
     // prettier-ignore
@@ -274,8 +274,8 @@ public class EventCriteria implements Serializable, Criteria {
             (status != null ? "status=" + status + ", " : "") +
             (createDate != null ? "createDate=" + createDate + ", " : "") +
             (updatedDate != null ? "updatedDate=" + updatedDate + ", " : "") +
-            (cityId != null ? "cityId=" + cityId + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
+            (fieldId != null ? "fieldId=" + fieldId + ", " : "") +
             "}";
     }
 }

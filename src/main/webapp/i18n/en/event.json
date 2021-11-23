@@ -26,7 +26,7 @@
       "createDate": "Create Date",
       "updatedDate": "Updated Date",
       "tournament": "Tournament",
-      "city": "City",
+      "field": "Field",
       "pdf": "Fixture",
       "xml": {
         "title": "Import File",

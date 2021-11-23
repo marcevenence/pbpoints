@@ -9,10 +9,10 @@ import { of, Subject } from 'rxjs';
 
 import { EventService } from '../service/event.service';
 import { IEvent, Event } from '../event.model';
-import { ICity } from 'app/entities/city/city.model';
-import { CityService } from 'app/entities/city/service/city.service';
 import { ITournament } from 'app/entities/tournament/tournament.model';
 import { TournamentService } from 'app/entities/tournament/service/tournament.service';
+import { IField } from 'app/entities/field/field.model';
+import { FieldService } from 'app/entities/field/service/field.service';
 
 import { EventUpdateComponent } from './event-update.component';
 
@@ -22,8 +22,8 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<EventUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let eventService: EventService;
-    let cityService: CityService;
     let tournamentService: TournamentService;
+    let fieldService: FieldService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -37,38 +37,19 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(EventUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       eventService = TestBed.inject(EventService);
-      cityService = TestBed.inject(CityService);
       tournamentService = TestBed.inject(TournamentService);
+      fieldService = TestBed.inject(FieldService);
 
       comp = fixture.componentInstance;
     });
 
     describe('ngOnInit', () => {
-      it('Should call City query and add missing value', () => {
-        const event: IEvent = { id: 456 };
-        const city: ICity = { id: 71215 };
-        event.city = city;
-
-        const cityCollection: ICity[] = [{ id: 92821 }];
-        spyOn(cityService, 'query').and.returnValue(of(new HttpResponse({ body: cityCollection })));
-        const additionalCities = [city];
-        const expectedCollection: ICity[] = [...additionalCities, ...cityCollection];
-        spyOn(cityService, 'addCityToCollectionIfMissing').and.returnValue(expectedCollection);
-
-        activatedRoute.data = of({ event });
-        comp.ngOnInit();
-
-        expect(cityService.query).toHaveBeenCalled();
-        expect(cityService.addCityToCollectionIfMissing).toHaveBeenCalledWith(cityCollection, ...additionalCities);
-        expect(comp.citiesSharedCollection).toEqual(expectedCollection);
-      });
-
       it('Should call Tournament query and add missing value', () => {
         const event: IEvent = { id: 456 };
-        const tournament: ITournament = { id: 546 };
+        const tournament: ITournament = { id: 54173 };
         event.tournament = tournament;
 
-        const tournamentCollection: ITournament[] = [{ id: 83403 }];
+        const tournamentCollection: ITournament[] = [{ id: 18619 }];
         spyOn(tournamentService, 'query').and.returnValue(of(new HttpResponse({ body: tournamentCollection })));
         const additionalTournaments = [tournament];
         const expectedCollection: ITournament[] = [...additionalTournaments, ...tournamentCollection];
@@ -82,19 +63,38 @@ describe('Component Tests', () => {
         expect(comp.tournamentsSharedCollection).toEqual(expectedCollection);
       });
 
+      it('Should call Field query and add missing value', () => {
+        const event: IEvent = { id: 456 };
+        const field: IField = { id: 59987 };
+        event.field = field;
+
+        const fieldCollection: IField[] = [{ id: 43233 }];
+        spyOn(fieldService, 'query').and.returnValue(of(new HttpResponse({ body: fieldCollection })));
+        const additionalFields = [field];
+        const expectedCollection: IField[] = [...additionalFields, ...fieldCollection];
+        spyOn(fieldService, 'addFieldToCollectionIfMissing').and.returnValue(expectedCollection);
+
+        activatedRoute.data = of({ event });
+        comp.ngOnInit();
+
+        expect(fieldService.query).toHaveBeenCalled();
+        expect(fieldService.addFieldToCollectionIfMissing).toHaveBeenCalledWith(fieldCollection, ...additionalFields);
+        expect(comp.fieldsSharedCollection).toEqual(expectedCollection);
+      });
+
       it('Should update editForm', () => {
         const event: IEvent = { id: 456 };
-        const city: ICity = { id: 24430 };
-        event.city = city;
-        const tournament: ITournament = { id: 51078 };
+        const tournament: ITournament = { id: 80570 };
         event.tournament = tournament;
+        const field: IField = { id: 34999 };
+        event.field = field;
 
         activatedRoute.data = of({ event });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(event));
-        expect(comp.citiesSharedCollection).toContain(city);
         expect(comp.tournamentsSharedCollection).toContain(tournament);
+        expect(comp.fieldsSharedCollection).toContain(field);
       });
     });
 
@@ -163,18 +163,18 @@ describe('Component Tests', () => {
     });
 
     describe('Tracking relationships identifiers', () => {
-      describe('trackCityById', () => {
-        it('Should return tracked City primary key', () => {
-          const entity = { id: 123 };
-          const trackResult = comp.trackCityById(0, entity);
-          expect(trackResult).toEqual(entity.id);
-        });
-      });
-
       describe('trackTournamentById', () => {
         it('Should return tracked Tournament primary key', () => {
           const entity = { id: 123 };
           const trackResult = comp.trackTournamentById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
+      });
+
+      describe('trackFieldById', () => {
+        it('Should return tracked Field primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackFieldById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });
       });

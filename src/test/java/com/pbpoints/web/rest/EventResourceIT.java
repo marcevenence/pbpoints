@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.pbpoints.IntegrationTest;
-import com.pbpoints.domain.City;
 import com.pbpoints.domain.Event;
+import com.pbpoints.domain.Field;
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.EventRepository;
@@ -98,6 +98,16 @@ class EventResourceIT {
             .status(DEFAULT_STATUS)
             .createDate(DEFAULT_CREATE_DATE)
             .updatedDate(DEFAULT_UPDATED_DATE);
+        // Add required entity
+        Field field;
+        if (TestUtil.findAll(em, Field.class).isEmpty()) {
+            field = FieldResourceIT.createEntity(em);
+            em.persist(field);
+            em.flush();
+        } else {
+            field = TestUtil.findAll(em, Field.class).get(0);
+        }
+        event.setField(field);
         return event;
     }
 
@@ -116,6 +126,16 @@ class EventResourceIT {
             .status(UPDATED_STATUS)
             .createDate(UPDATED_CREATE_DATE)
             .updatedDate(UPDATED_UPDATED_DATE);
+        // Add required entity
+        Field field;
+        if (TestUtil.findAll(em, Field.class).isEmpty()) {
+            field = FieldResourceIT.createUpdatedEntity(em);
+            em.persist(field);
+            em.flush();
+        } else {
+            field = TestUtil.findAll(em, Field.class).get(0);
+        }
+        event.setField(field);
         return event;
     }
 
@@ -774,25 +794,6 @@ class EventResourceIT {
 
     @Test
     @Transactional
-    void getAllEventsByCityIsEqualToSomething() throws Exception {
-        // Initialize the database
-        eventRepository.saveAndFlush(event);
-        City city = CityResourceIT.createEntity(em);
-        em.persist(city);
-        em.flush();
-        event.setCity(city);
-        eventRepository.saveAndFlush(event);
-        Long cityId = city.getId();
-
-        // Get all the eventList where city equals to cityId
-        defaultEventShouldBeFound("cityId.equals=" + cityId);
-
-        // Get all the eventList where city equals to (cityId + 1)
-        defaultEventShouldNotBeFound("cityId.equals=" + (cityId + 1));
-    }
-
-    @Test
-    @Transactional
     void getAllEventsByTournamentIsEqualToSomething() throws Exception {
         // Initialize the database
         eventRepository.saveAndFlush(event);
@@ -808,6 +809,25 @@ class EventResourceIT {
 
         // Get all the eventList where tournament equals to (tournamentId + 1)
         defaultEventShouldNotBeFound("tournamentId.equals=" + (tournamentId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByFieldIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+        Field field = FieldResourceIT.createEntity(em);
+        em.persist(field);
+        em.flush();
+        event.setField(field);
+        eventRepository.saveAndFlush(event);
+        Long fieldId = field.getId();
+
+        // Get all the eventList where field equals to fieldId
+        defaultEventShouldBeFound("fieldId.equals=" + fieldId);
+
+        // Get all the eventList where field equals to (fieldId + 1)
+        defaultEventShouldNotBeFound("fieldId.equals=" + (fieldId + 1));
     }
 
     /**

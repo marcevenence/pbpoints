@@ -10,10 +10,10 @@ import { DATE_TIME_FORMAT, DATE_FORMAT } from 'app/config/input.constants';
 
 import { IEvent, Event } from '../event.model';
 import { EventService } from '../service/event.service';
-import { ICity } from 'app/entities/city/city.model';
-import { CityService } from 'app/entities/city/service/city.service';
 import { ITournament } from 'app/entities/tournament/tournament.model';
 import { TournamentService } from 'app/entities/tournament/service/tournament.service';
+import { IField } from 'app/entities/field/field.model';
+import { FieldService } from 'app/entities/field/service/field.service';
 
 @Component({
   selector: 'jhi-event-update',
@@ -22,8 +22,8 @@ import { TournamentService } from 'app/entities/tournament/service/tournament.se
 export class EventUpdateComponent implements OnInit {
   isSaving = false;
 
-  citiesSharedCollection: ICity[] = [];
   tournamentsSharedCollection: ITournament[] = [];
+  fieldsSharedCollection: IField[] = [];
 
   editForm = this.fb.group(
     {
@@ -35,7 +35,7 @@ export class EventUpdateComponent implements OnInit {
       status: [],
       createDate: [],
       updatedDate: [],
-      city: [],
+      field: [null, Validators.required],
       tournament: [],
     },
     { validator: this.dateLessThan('fromDate', 'endDate', 'endInscriptionDate') }
@@ -43,7 +43,7 @@ export class EventUpdateComponent implements OnInit {
 
   constructor(
     protected eventService: EventService,
-    protected cityService: CityService,
+    protected fieldService: FieldService,
     protected tournamentService: TournamentService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -101,11 +101,11 @@ export class EventUpdateComponent implements OnInit {
     }
   }
 
-  trackCityById(index: number, item: ICity): number {
+  trackTournamentById(index: number, item: ITournament): number {
     return item.id!;
   }
 
-  trackTournamentById(index: number, item: ITournament): number {
+  trackFieldById(index: number, item: IField): number {
     return item.id!;
   }
 
@@ -138,11 +138,11 @@ export class EventUpdateComponent implements OnInit {
       status: event.status,
       createDate: event.createDate ? event.createDate.format(DATE_TIME_FORMAT) : null,
       updatedDate: event.updatedDate ? event.updatedDate.format(DATE_TIME_FORMAT) : null,
-      city: event.city,
+      field: event.field,
       tournament: event.tournament,
     });
 
-    this.citiesSharedCollection = this.cityService.addCityToCollectionIfMissing(this.citiesSharedCollection, event.city);
+    this.fieldsSharedCollection = this.fieldService.addFieldToCollectionIfMissing(this.fieldsSharedCollection, event.field);
     this.tournamentsSharedCollection = this.tournamentService.addTournamentToCollectionIfMissing(
       this.tournamentsSharedCollection,
       event.tournament
@@ -150,14 +150,6 @@ export class EventUpdateComponent implements OnInit {
   }
 
   protected loadRelationshipsOptions(): void {
-    this.cityService
-      .query({
-        sort: ['name,asc'],
-      })
-      .pipe(map((res: HttpResponse<ICity[]>) => res.body ?? []))
-      .pipe(map((cities: ICity[]) => this.cityService.addCityToCollectionIfMissing(cities, this.editForm.get('city')!.value)))
-      .subscribe((cities: ICity[]) => (this.citiesSharedCollection = cities));
-
     this.tournamentService
       .query({
         sort: ['name'],
@@ -169,6 +161,12 @@ export class EventUpdateComponent implements OnInit {
         )
       )
       .subscribe((tournaments: ITournament[]) => (this.tournamentsSharedCollection = tournaments));
+
+    this.fieldService
+      .query()
+      .pipe(map((res: HttpResponse<IField[]>) => res.body ?? []))
+      .pipe(map((fields: IField[]) => this.fieldService.addFieldToCollectionIfMissing(fields, this.editForm.get('field')!.value)))
+      .subscribe((fields: IField[]) => (this.fieldsSharedCollection = fields));
   }
 
   protected createFromForm(): IEvent {
@@ -186,7 +184,7 @@ export class EventUpdateComponent implements OnInit {
       updatedDate: this.editForm.get(['updatedDate'])!.value
         ? dayjs(this.editForm.get(['updatedDate'])!.value, DATE_TIME_FORMAT)
         : undefined,
-      city: this.editForm.get(['city'])!.value,
+      field: this.editForm.get(['field'])!.value,
       tournament: this.editForm.get(['tournament'])!.value,
     };
   }

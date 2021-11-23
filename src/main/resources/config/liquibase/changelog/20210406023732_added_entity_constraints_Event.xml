@@ -8,11 +8,11 @@
     -->
     <changeSet id="20210406023732-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="city_id"
+        <addForeignKeyConstraint baseColumnNames="field_id"
                                  baseTableName="event"
-                                 constraintName="fk_event__city_id"
+                                 constraintName="fk_event__field_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="city"/>
+                                 referencedTableName="field"/>
 
         <addForeignKeyConstraint baseColumnNames="tournament_id"
                                  baseTableName="event"

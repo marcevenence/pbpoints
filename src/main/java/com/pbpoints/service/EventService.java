@@ -1,5 +1,8 @@
 package com.pbpoints.service;
 
+import static java.nio.file.StandardOpenOption.*;
+import static java.nio.file.StandardOpenOption.DELETE_ON_CLOSE;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.pbpoints.domain.*;
@@ -11,10 +14,7 @@ import com.pbpoints.service.mapper.EventMapper;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.List;
@@ -106,6 +106,27 @@ public class EventService {
         Event event = eventMapper.toEntity(eventDTO);
         event = eventRepository.save(event);
         return eventMapper.toDto(event);
+    }
+
+    /**
+     * Partially update a event.
+     *
+     * @param eventDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<EventDTO> partialUpdate(EventDTO eventDTO) {
+        log.debug("Request to partially update Event : {}", eventDTO);
+
+        return eventRepository
+            .findById(eventDTO.getId())
+            .map(
+                existingEvent -> {
+                    eventMapper.partialUpdate(existingEvent, eventDTO);
+                    return existingEvent;
+                }
+            )
+            .map(eventRepository::save)
+            .map(eventMapper::toDto);
     }
 
     /**
@@ -432,6 +453,64 @@ public class EventService {
         return result;
     }
 
+    public void generateScore(Event event) throws IOException, URISyntaxException {
+        log.debug("*** Generando PDF Score ***");
+    }
+
+    public void generateTablePoint(Event event) throws IOException, URISyntaxException {
+        log.debug("*** Generando PDF Table Point ***");
+        Path tempFile = Files.createTempFile(null, ".html");
+        Path tempPDFFile = Files.createTempFile(null, ".pdf");
+        Path tempFileCss = Files.createTempFile(null, ".scs");
+        System.out.println(tempPDFFile);
+        System.out.println(tempFile);
+        System.out.println(tempFileCss);
+
+        String htmlString = Files.readString(Paths.get(ClassLoader.getSystemResource("templates/pdf/tablePoint.html").toURI()));
+        String title = event.getTournament().getName() + " - " + event.getName();
+        String tournamentName = event.getTournament().getName();
+        String eventName = event.getName();
+        String mainTitle =
+            "<div id=\\\"wrapper\\\">" +
+            "  \n" +
+            "               <h1 style=\"text-align: center\">" +
+            tournamentName +
+            "</h1>\n" +
+            "               <h2 style=\"text-align: center\">" +
+            eventName +
+            "</h2>\n";
+
+        String tableHeader =
+            "  <table id=\"keywords\" style =\"margin-left: auto; margin-right: auto\">\n" +
+            "    <thead>\n" +
+            "      <tr>\n" +
+            "        <th width=\"14%\"></th>\n" +
+            "        <th width=\"30%\"></th>\n" +
+            "        <th width=\"5%\"></th>\n" +
+            "        <th width=\"2%\"></th>\n" +
+            "        <th width=\"5%\"></th>\n" +
+            "        <th width=\"30%\"></th>\n" +
+            "        <th width=\"14%\"></th>\n" +
+            "      </tr>\n" +
+            "    </thead>\n" +
+            "    <tbody>";
+
+        String body = "";
+
+        String close = "    </tbody>\n" + "  </table>\n" + " </div>";
+
+        htmlString = htmlString.replace("$title", title);
+        htmlString = htmlString.replace("$scss", tempFileCss.toString());
+        htmlString = htmlString.replace("$mainTitle", mainTitle);
+        htmlString = htmlString.replace("$tableHeader", tableHeader);
+        htmlString = htmlString.replace("$body", body);
+        htmlString = htmlString.replace("$close", close);
+
+        //        Files.copy(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.css").toURI()), tempFileCss, StandardCopyOption.REPLACE_EXISTING);
+        Files.write(tempFile, htmlString.getBytes(StandardCharsets.UTF_8));
+        HtmlConverter.convertToPdf(new FileInputStream(tempFile.toString()), new FileOutputStream(tempPDFFile.toString()));
+    }
+
     public void generatePdf(Event event) throws IOException, URISyntaxException {
         log.debug("*** Generando PDF ***");
 
@@ -632,81 +711,18 @@ public class EventService {
 
         //        Files.copy(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.css").toURI()), tempFileCss, StandardCopyOption.REPLACE_EXISTING);
         Files.write(tempFile, htmlString.getBytes(StandardCharsets.UTF_8));
-
         HtmlConverter.convertToPdf(new FileInputStream(tempFile.toString()), new FileOutputStream(tempPDFFile.toString()));
-        //        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        //        PdfWriter.getInstance(
-        //            document,
-        //            new FileOutputStream(event.getTournament().getName().replace(' ', '_') + "_" + event.getName().replace(' ', '_') + ".pdf")
-        //        );
-        //        document.open();
-        //
-        //        Paragraph parrafo = new Paragraph(event.getName());
-        //        document.add(parrafo);
-        //
-        //        PdfPTable table = new PdfPTable(11);
-        //
-        //        PdfPCell celda;
-        //
-        //        List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
-        //        for (EventCategory eventCategory : eventCategories) {
-        //            celda = new PdfPCell(new Paragraph("Categoria: " + eventCategory.getCategory().getName()));
-        //            celda.setBorder(0);
-        //            celda.setColspan(11);
-        //            table.addCell(celda);
-        //            celda = new PdfPCell(new Paragraph(""));
-        //            celda.setBorder(0);
-        //            celda.setColspan(11);
-        //            table.addCell(celda);
-        //            List<Game> games = gameRepository.findByEventCategory(eventCategory);
-        //            for (Game game : games) {
-        //                celda = new PdfPCell(new Paragraph("Local"));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(game.getTeamA().getName()));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph("-"));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(""));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph(game.getTeamB().getName()));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //                celda = new PdfPCell(new Paragraph("Visitante"));
-        //                celda.setBorder(1);
-        //                table.addCell(celda);
-        //            }
-        //        }
-        //
-        //        document.add(table);
-        //        document.close();
     }
 
     @Scheduled(cron = "${application.cronEventStatus}")
     public void updateEventStatus() {
         log.info("*** Inicio de Cierre de Eventos ***");
+        log.info("Fecha Actual: " + LocalDate.now().toString());
         Optional<List<Event>> events = eventRepository.findByEndDate(LocalDate.now());
         if (events.isPresent()) {
             for (Event event : events.get()) {
                 event.setStatus(Status.DONE);
+                log.info("Evento: " + event.getName() + " Finalizado");
             }
         } else {
             log.info("no hay eventos a cerrar para el día actual");

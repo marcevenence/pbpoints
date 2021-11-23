@@ -1,12 +1,12 @@
 package com.pbpoints.service.dto;
 
-import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.enumeration.Status;
 import io.swagger.annotations.ApiModel;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.pbpoints.domain.Event} entity.
@@ -32,7 +32,7 @@ public class EventDTO implements Serializable {
 
     private TournamentDTO tournament;
 
-    private CityDTO city;
+    private FieldDTO field;
 
     public Long getId() {
         return id;
@@ -106,12 +106,12 @@ public class EventDTO implements Serializable {
         this.tournament = tournament;
     }
 
-    public CityDTO getCity() {
-        return city;
+    public FieldDTO getField() {
+        return field;
     }
 
-    public void setCity(CityDTO city) {
-        this.city = city;
+    public void setField(FieldDTO field) {
+        this.field = field;
     }
 
     @Override
@@ -119,54 +119,36 @@ public class EventDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof EventDTO)) {
             return false;
         }
 
         EventDTO eventDTO = (EventDTO) o;
-        if (eventDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), eventDTO.getId());
+        return Objects.equals(this.id, eventDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "EventDTO{" +
-            "id=" +
-            getId() +
-            ", name='" +
-            getName() +
-            "'" +
-            ", fromDate='" +
-            getFromDate() +
-            "'" +
-            ", endDate='" +
-            getEndDate() +
-            "'" +
-            ", endInscriptionDate='" +
-            getEndInscriptionDate() +
-            "'" +
-            ", status='" +
-            getStatus() +
-            "'" +
-            ", createDate='" +
-            getCreateDate() +
-            "'" +
-            ", updatedDate='" +
-            getUpdatedDate() +
-            "'" +
-            ", tournament=" +
-            getTournament() +
-            ", city=" +
-            getCity() +
-            "}"
-        );
+        return "EventDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", fromDate='" + getFromDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", endInscriptionDate='" + getEndInscriptionDate() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", createDate='" + getCreateDate() + "'" +
+            ", updatedDate='" + getUpdatedDate() + "'" +
+            ", tournament=" + getTournament() +
+            ", field=" + getField() +
+            "}";
     }
 }

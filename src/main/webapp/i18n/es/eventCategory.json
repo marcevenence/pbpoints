@@ -8,7 +8,7 @@
         "refreshListLabel": "Refrescar lista",
         "createLabel": "Agregar Categorias al Evento",
         "createOrEditLabel": "Categorias",
-        "notFound": "No hay Categorias seleccionadas"
+        "notFound": "No hay Categorias asignadas"
       },
       "created": "La Categoria {{ param }} ha sido agregada",
       "updated": "La Categoria {{ param }} ha sido actualizado",

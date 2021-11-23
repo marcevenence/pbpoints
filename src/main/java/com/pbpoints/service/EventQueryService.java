@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.Event;
 import com.pbpoints.repository.EventRepository;
-import com.pbpoints.service.dto.EventCriteria;
+import com.pbpoints.service.criteria.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import java.util.List;
@@ -84,7 +84,7 @@ public class EventQueryService extends QueryService<Event> {
         Specification<Event> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), Event_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), Event_.id));
             }
             if (criteria.getName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getName(), Event_.name));
@@ -116,10 +116,10 @@ public class EventQueryService extends QueryService<Event> {
                         )
                     );
             }
-            if (criteria.getCityId() != null) {
+            if (criteria.getFieldId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getCityId(), root -> root.join(Event_.city, JoinType.LEFT).get(City_.id))
+                        buildSpecification(criteria.getFieldId(), root -> root.join(Event_.field, JoinType.LEFT).get(Field_.id))
                     );
             }
         }

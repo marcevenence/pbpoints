@@ -81,6 +81,7 @@
         "country": "Paises",
         "province": "Provincias",
         "city": "Ciudades",
+        "field": "Sedes",
         "docType": "Tipos de Documentos",
         "tournament": "Torneos",
         "event": "Eventos",
@@ -101,6 +102,7 @@
         "suspension": "Suspension",
         "mainRoster": "Mis jogadores",
         "sponsor": "Mis Sponsors",
+        "tournamentGroup": "Tournament Group",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
