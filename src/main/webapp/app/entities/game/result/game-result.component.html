@@ -1,0 +1,78 @@
+<div>
+  <h2 id="page-heading" data-cy="GameHeading">
+    <span jhiTranslate="pbpointsApp.game.home.title">Games</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.game.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="games?.length === 0 && eventCategories?.length === 0">
+    <span jhiTranslate="pbpointsApp.game.home.notFound">No games found</span>
+  </div>
+
+  <table class="table table-striped" aria-describedby="page-heading">
+    <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+        <th colspan="10" scope="col"><h2 jhiTranslate="pbpointsApp.game.eventCategory">Category</h2></th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let eventCategory of eventCategories; trackBy: trackEventCategoryId" data-cy="entityTable">
+        <td colspan="10">
+          <h2>{{ eventCategory.category?.name }}</h2>
+        </td>
+        <tr>
+          <th></th>
+          <th><span jhiTranslate="pbpointsApp.game.clasif">Clasif</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.group">Group</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.teamA">Team A</span></th>
+          <th></th>
+          <th><span jhiTranslate="pbpointsApp.game.teamB">Team B</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.points">Points</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.timeLeft">Time Left</span></th>
+          <th><span jhiTranslate="pbpointsApp.game.status">Status</span></th>
+        </tr>
+        <tr *ngFor="let game of games; trackBy: trackId" data-cy="entityTable">
+          <ng-container *ngIf="eventCategory.id == game.eventCategory?.id">
+            <td></td>
+            <td>{{ game.clasif }}</td>
+            <td>{{ game.group }}</td>
+            <td>{{ game.splitDeckNum }}</td>
+            <td align="right">{{ game.teamA?.name }}</td>
+            <td align="center">Vs</td>
+            <td align="left">{{ game.teamB?.name }}</td>
+            <td>
+              {{ game.pointsA }}:{{ game.pointsB }}
+              <ng-container *ngIf="game.overtimeA">
+                ({{ game.overtimeA }}:{{ game.overtimeB }})
+                <ng-container *ngIf="game.uvuA"> ({{ game.uvuA }}:{{ game.uvuB }}) </ng-container>
+              </ng-container>
+            </td>
+            <td>{{ convertToTimeFormat(game.timeLeft) }}</td>
+            <td jhiTranslate="{{ 'pbpointsApp.Status.' + game.status }}">{{ game.status }}</td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

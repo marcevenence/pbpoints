@@ -1,0 +1,90 @@
+<div>
+  <h2 id="page-heading" data-cy="TournamentGroupHeading">
+    <span jhiTranslate="pbpointsApp.tournamentGroup.home.title">Tournament Groups</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.tournamentGroup.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-tournament-group"
+        [routerLink]="['/tournament-group/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.tournamentGroup.home.createLabel"> Create a new Tournament Group </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="tournamentGroups?.length === 0">
+    <span jhiTranslate="pbpointsApp.tournamentGroup.home.notFound">No tournamentGroups found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="tournamentGroups && tournamentGroups.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.tournamentGroup.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.tournamentGroup.tournamentA">Tournament A</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.tournamentGroup.tournamentB">Tournament B</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tournamentGroup of tournamentGroups; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/tournament-group', tournamentGroup.id, 'view']">{{ tournamentGroup.id }}</a>
+          </td>
+          <td>{{ tournamentGroup.name }}</td>
+          <td>
+            <div *ngIf="tournamentGroup.tournamentA">
+              <a [routerLink]="['/tournament', tournamentGroup.tournamentA?.id, 'view']">{{ tournamentGroup.tournamentA?.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="tournamentGroup.tournamentB">
+              <a [routerLink]="['/tournament', tournamentGroup.tournamentB?.id, 'view']">{{ tournamentGroup.tournamentB?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/tournament-group', tournamentGroup.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/tournament-group', tournamentGroup.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(tournamentGroup)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -52,7 +52,7 @@ public class Game implements Serializable {
     private Integer uvuB;
 
     @Column(name = "jhi_group")
-    private Integer group;
+    private String group;
 
     @Column(name = "clasif")
     private String clasif;
@@ -203,16 +203,16 @@ public class Game implements Serializable {
         this.uvuB = uvuB;
     }
 
-    public Integer getGroup() {
+    public String getGroup() {
         return this.group;
     }
 
-    public Game group(Integer group) {
+    public Game group(String group) {
         this.group = group;
         return this;
     }
 
-    public void setGroup(Integer group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 

@@ -26,6 +26,7 @@
             data-cy="eventCategory"
             name="eventCategory"
             formControlName="eventCategory"
+            readOnly="!getEdit()"
           >
             <!--<option *ngIf="!editForm.get('eventCategory')!.value" [ngValue]="null" selected></option>-->
             <option
@@ -35,6 +36,7 @@
                   : eventCategoryOption
               "
               *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
+              [disabled]="!getEdit()"
             >
               {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }}
             </option>
@@ -56,11 +58,12 @@
 
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.roster.team" for="field_team">Team</label>
-          <select class="form-control" id="field_team" data-cy="team" name="team" formControlName="team">
+          <select class="form-control" id="field_team" data-cy="team" name="team" formControlName="team" readOnly="!getEdit()">
             <!--<option *ngIf="!editForm.get('team')!.value" [ngValue]="null" selected></option>-->
             <option
               [ngValue]="teamOption.id === editForm.get('team')!.value?.id ? editForm.get('team')!.value : teamOption"
               *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+              [disabled]="!getEdit()"
             >
               {{ teamOption.name }}
             </option>
@@ -72,7 +75,6 @@
           </small>
         </div>
       </div>
-
       <div>
         <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>

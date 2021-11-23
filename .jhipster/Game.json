@@ -41,7 +41,7 @@
     },
     {
       "fieldName": "group",
-      "fieldType": "Integer"
+      "fieldType": "String"
     },
     {
       "fieldName": "clasif",

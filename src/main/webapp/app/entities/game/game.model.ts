@@ -13,7 +13,7 @@ export interface IGame {
   overtimeB?: number | null;
   uvuA?: number | null;
   uvuB?: number | null;
-  group?: number | null;
+  group?: string | null;
   clasif?: string | null;
   teamA?: ITeam;
   teamB?: ITeam;
@@ -32,7 +32,7 @@ export class Game implements IGame {
     public overtimeB?: number | null,
     public uvuA?: number | null,
     public uvuB?: number | null,
-    public group?: number | null,
+    public group?: string | null,
     public clasif?: string | null,
     public teamA?: ITeam,
     public teamB?: ITeam,

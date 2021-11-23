@@ -45,13 +45,24 @@
             </td>
             <td>{{ event.tournament?.name }}</td>
             <td>{{ event.name }}</td>
-            <td>{{ event.city?.name }}</td>
+            <td>{{ event.field?.name }}, {{ event.field?.city?.name }}</td>
             <td>{{ event.fromDate | formatMediumDate }}</td>
             <td>{{ event.endDate | formatMediumDate }}</td>
             <td>{{ event.endInscriptionDate | formatMediumDate }}</td>
             <td class="text-right">
               <div class="btn-group">
                 <div *ngIf="isAuthenticated()">
+                  <button
+                    *ngIf="live(event)"
+                    type="submit"
+                    [routerLink]="['/game/result']"
+                    [state]="{ evId: event.id }"
+                    class="btn btn-secondary btn-sm"
+                    data-toggle="tooltip"
+                    [title]="'global.menu.custom.view.results' | translate"
+                  >
+                    <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.results">Results</span>
+                  </button>
                   <button
                     type="submit"
                     [routerLink]="['/event-category']"
@@ -103,7 +114,7 @@
             </td>
             <td>{{ event.tournament?.name }}</td>
             <td>{{ event.name }}</td>
-            <td>{{ event.city?.name }}</td>
+            <td>{{ event.field?.name }}, {{ event.field?.city?.name }}</td>
             <td>{{ event.fromDate | formatMediumDate }}</td>
             <td>{{ event.endDate | formatMediumDate }}</td>
             <td class="text-right">

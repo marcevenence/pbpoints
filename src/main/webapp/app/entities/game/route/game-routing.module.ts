@@ -5,6 +5,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { GameComponent } from '../list/game.component';
 import { GameDetailComponent } from '../detail/game-detail.component';
 import { GameUpdateComponent } from '../update/game-update.component';
+import { GameResultComponent } from '../result/game-result.component';
 import { GameRoutingResolveService } from './game-routing-resolve.service';
 
 const gameRoute: Routes = [
@@ -32,6 +33,14 @@ const gameRoute: Routes = [
   {
     path: ':id/edit',
     component: GameUpdateComponent,
+    resolve: {
+      game: GameRoutingResolveService,
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
+    path: 'result',
+    component: GameResultComponent,
     resolve: {
       game: GameRoutingResolveService,
     },

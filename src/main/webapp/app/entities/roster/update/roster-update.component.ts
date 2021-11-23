@@ -21,6 +21,7 @@ export class RosterUpdateComponent implements OnInit {
   isSaving = false;
   currentAccount: any;
 
+  edit?: boolean;
   teId?: number;
   evCatId?: number;
   teamsSharedCollection: ITeam[] = [];
@@ -45,6 +46,12 @@ export class RosterUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.teId = history.state.roster.teId ?? 0;
     this.evCatId = history.state.roster.evCatId ?? 0;
+    if (history.state.roster.teId !== 0) {
+      this.edit = false;
+    } else {
+      this.edit = true;
+    }
+
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
@@ -52,6 +59,10 @@ export class RosterUpdateComponent implements OnInit {
       this.updateForm(roster);
       this.loadRelationshipsOptions();
     });
+  }
+
+  getEdit(): boolean {
+    return this.edit ?? false;
   }
 
   previousState(): void {

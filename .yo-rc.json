@@ -67,9 +67,11 @@
       "UserExtra",
       "Suspension",
       "MainRoster",
-      "Sponsor"
+      "Sponsor",
+      "Field",
+      "TournamentGroup"
     ],
-    "lastLiquibaseTimestamp": 1635451410000
+    "lastLiquibaseTimestamp": 1637449013000
   },
   "git-provider": "GitHub",
   "git-company": "marcevenence",

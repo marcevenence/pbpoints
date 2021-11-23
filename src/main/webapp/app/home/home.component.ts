@@ -7,7 +7,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
 
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-
+import * as dayjs from 'dayjs';
 import { IEvent } from 'app/entities/event/event.model';
 import { EventService } from 'app/entities/event/service/event.service';
 import { ITournament } from 'app/entities/tournament/tournament.model';
@@ -53,6 +53,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   isAuthenticated(): boolean {
     return this.accountService.isAuthenticated();
+  }
+
+  live(event: IEvent): boolean {
+    if (event.fromDate! <= dayjs().startOf('day') && event.endDate! >= dayjs().startOf('day')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   login(): void {

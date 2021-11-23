@@ -21,6 +21,7 @@ export class CityComponent implements OnInit {
   page: number;
   predicate: string;
   ascending: boolean;
+  prId = 0;
 
   constructor(protected cityService: CityService, protected modalService: NgbModal, protected parseLinks: ParseLinks) {
     this.cities = [];
@@ -36,21 +37,40 @@ export class CityComponent implements OnInit {
   loadAll(): void {
     this.isLoading = true;
 
-    this.cityService
-      .query({
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe(
-        (res: HttpResponse<ICity[]>) => {
-          this.isLoading = false;
-          this.paginateCities(res.body, res.headers);
-        },
-        () => {
-          this.isLoading = false;
-        }
-      );
+    if (this.prId !== 0) {
+      this.cityService
+        .query({
+          'provinceId.equals': this.prId,
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ICity[]>) => {
+            this.isLoading = false;
+            this.paginateCities(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    } else {
+      this.cityService
+        .query({
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort(),
+        })
+        .subscribe(
+          (res: HttpResponse<ICity[]>) => {
+            this.isLoading = false;
+            this.paginateCities(res.body, res.headers);
+          },
+          () => {
+            this.isLoading = false;
+          }
+        );
+    }
   }
 
   reset(): void {
@@ -65,6 +85,7 @@ export class CityComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.prId = history.state.prId ?? 0;
     this.loadAll();
   }
 

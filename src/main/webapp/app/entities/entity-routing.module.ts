@@ -20,6 +20,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./city/city.module').then(m => m.CityModule),
       },
       {
+        path: 'field',
+        data: { pageTitle: 'pbpointsApp.field.home.title' },
+        loadChildren: () => import('./field/field.module').then(m => m.FieldModule),
+      },
+      {
         path: 'country',
         data: { pageTitle: 'pbpointsApp.country.home.title' },
         loadChildren: () => import('./country/country.module').then(m => m.CountryModule),
@@ -103,6 +108,11 @@ import { RouterModule } from '@angular/router';
         path: 'tournament',
         data: { pageTitle: 'pbpointsApp.tournament.home.title' },
         loadChildren: () => import('./tournament/tournament.module').then(m => m.TournamentModule),
+      },
+      {
+        path: 'tournament-group',
+        data: { pageTitle: 'pbpointsApp.tournament.home.title' },
+        loadChildren: () => import('./tournament-group/tournament-group.module').then(m => m.TournamentGroupModule),
       },
       {
         path: 'user-extra',

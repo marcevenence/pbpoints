@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity TournamentGroup.
+    -->
+    <changeSet id="20211120225653-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tournamenta_id"
+                                 baseTableName="tournament_group"
+                                 constraintName="fk_tournament_group__tournamenta_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tournament"/>
+
+        <addForeignKeyConstraint baseColumnNames="tournamentb_id"
+                                 baseTableName="tournament_group"
+                                 constraintName="fk_tournament_group__tournamentb_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tournament"/>
+    </changeSet>
+</databaseChangeLog>

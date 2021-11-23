@@ -70,9 +70,8 @@ class GameResourceIT {
     private static final Integer UPDATED_UVU_B = 2;
     private static final Integer SMALLER_UVU_B = 1 - 1;
 
-    private static final Integer DEFAULT_GROUP = 1;
-    private static final Integer UPDATED_GROUP = 2;
-    private static final Integer SMALLER_GROUP = 1 - 1;
+    private static final String DEFAULT_GROUP = "AAAAAAAAAA";
+    private static final String UPDATED_GROUP = "BBBBBBBBBB";
 
     private static final String DEFAULT_CLASIF = "AAAAAAAAAA";
     private static final String UPDATED_CLASIF = "BBBBBBBBBB";
@@ -1260,54 +1259,28 @@ class GameResourceIT {
 
     @Test
     @Transactional
-    void getAllGamesByGroupIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllGamesByGroupContainsSomething() throws Exception {
         // Initialize the database
         gameRepository.saveAndFlush(game);
 
-        // Get all the gameList where group is greater than or equal to DEFAULT_GROUP
-        defaultGameShouldBeFound("group.greaterThanOrEqual=" + DEFAULT_GROUP);
+        // Get all the gameList where group contains DEFAULT_CLASIF
+        defaultGameShouldBeFound("group.contains=" + DEFAULT_GROUP);
 
-        // Get all the gameList where group is greater than or equal to UPDATED_GROUP
-        defaultGameShouldNotBeFound("group.greaterThanOrEqual=" + UPDATED_GROUP);
+        // Get all the gameList where group contains UPDATED_CLASIF
+        defaultGameShouldNotBeFound("group.contains=" + UPDATED_GROUP);
     }
 
     @Test
     @Transactional
-    void getAllGamesByGroupIsLessThanOrEqualToSomething() throws Exception {
+    void getAllGamesByGroupNotContainsSomething() throws Exception {
         // Initialize the database
         gameRepository.saveAndFlush(game);
 
-        // Get all the gameList where group is less than or equal to DEFAULT_GROUP
-        defaultGameShouldBeFound("group.lessThanOrEqual=" + DEFAULT_GROUP);
+        // Get all the gameList where group does not contain DEFAULT_CLASIF
+        defaultGameShouldNotBeFound("group.doesNotContain=" + DEFAULT_GROUP);
 
-        // Get all the gameList where group is less than or equal to SMALLER_GROUP
-        defaultGameShouldNotBeFound("group.lessThanOrEqual=" + SMALLER_GROUP);
-    }
-
-    @Test
-    @Transactional
-    void getAllGamesByGroupIsLessThanSomething() throws Exception {
-        // Initialize the database
-        gameRepository.saveAndFlush(game);
-
-        // Get all the gameList where group is less than DEFAULT_GROUP
-        defaultGameShouldNotBeFound("group.lessThan=" + DEFAULT_GROUP);
-
-        // Get all the gameList where group is less than UPDATED_GROUP
-        defaultGameShouldBeFound("group.lessThan=" + UPDATED_GROUP);
-    }
-
-    @Test
-    @Transactional
-    void getAllGamesByGroupIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        gameRepository.saveAndFlush(game);
-
-        // Get all the gameList where group is greater than DEFAULT_GROUP
-        defaultGameShouldNotBeFound("group.greaterThan=" + DEFAULT_GROUP);
-
-        // Get all the gameList where group is greater than SMALLER_GROUP
-        defaultGameShouldBeFound("group.greaterThan=" + SMALLER_GROUP);
+        // Get all the gameList where group does not contain UPDATED_CLASIF
+        defaultGameShouldBeFound("group.doesNotContain=" + UPDATED_GROUP);
     }
 
     @Test

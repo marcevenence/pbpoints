@@ -9,6 +9,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { IRoster, Roster } from 'app/entities/roster/roster.model';
 import { RosterService } from 'app/entities/roster/service/roster.service';
 import { IPlayer, Player } from 'app/entities/player/player.model';
+import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
 import { PlayerService } from 'app/entities/player/service/player.service';
 import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
 import { IUser } from 'app/entities/user/user.model';
@@ -41,6 +42,8 @@ export class RosterSubsComponent implements OnInit {
   roster?: IRoster;
   Nplayer?: IPlayer;
   user?: IUser;
+  validPlayer?: IPlayerPoint;
+  checked?: IPlayer;
 
   findForm = this.fb.group({
     eventCategory: [null, Validators.required],
@@ -118,6 +121,7 @@ export class RosterSubsComponent implements OnInit {
   loadPage(): void {
     // no hace nada pero necesario para mostrar datos
   }
+
   byteSize(base64String: string): string {
     return this.dataUtils.byteSize(base64String);
   }
@@ -151,9 +155,13 @@ export class RosterSubsComponent implements OnInit {
   }
 
   saveAll(): void {
-    this.subscribeToSaveResponseRoster(
-      this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
-    );
+    if (history.state.roster.rId !== 0) {
+      this.subscribeToSaveResponseRoster(this.rosterService.updateWithPlayers(this.playerNews!, history.state.roster.rId));
+    } else {
+      this.subscribeToSaveResponseRoster(
+        this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
+      );
+    }
     window.history.back();
   }
 
@@ -161,28 +169,77 @@ export class RosterSubsComponent implements OnInit {
     if (this.findForm.get('id')!.value === null || this.findForm.get('code')!.value === '') {
       alert('Debe ingresar id y codigo');
     } else {
-      this.userExtraService
-        .queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value)
-        .subscribe((res: HttpResponse<IUserExtra>) => {
-          this.newPlayer = res.body;
-          this.checkInRoster();
+      if (
+        this.findForm.get('id')!.value !== null &&
+        this.findForm.get('id')!.value !== undefined &&
+        this.eventCategory?.event?.tournament?.id !== undefined &&
+        this.eventCategory.category?.id !== undefined
+      ) {
+        if (this.eventCategory.event.tournament.categorize) {
           if (
-            this.findForm.get('profile')!.value.toString() !== '' &&
-            this.newPlayer?.code !== undefined &&
-            this.evCatId.toString() !== ''
+            !this.validateCategory(
+              this.findForm.get('id')!.value,
+              this.eventCategory.event.tournament.id,
+              this.eventCategory.category.id,
+              this.findForm.get('profile')!.value
+            )
           ) {
-            if (this.roster?.id === undefined) {
-              this.roster = this.createNewRoster();
-            }
-            const nPlayer = this.createNewPlayer();
-            const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
-            if (targetIdx === -1) {
-              this.playerNews!.push(nPlayer);
-            } else {
-              alert('No es posible agregar');
-            }
+            alert('El jugador pertenece a una categoria mas alta');
+          } else {
+            this.userExtraService
+              .queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value)
+              .subscribe((res: HttpResponse<IUserExtra>) => {
+                this.newPlayer = res.body;
+                if (!this.checkInRosters(this.findForm.get('id')!.value, this.findForm.get('profile')!.value)) {
+                  alert('El jugador esta inscripto en otro equipo');
+                } else {
+                  if (
+                    this.findForm.get('profile')!.value.toString() !== '' &&
+                    this.newPlayer?.code !== undefined &&
+                    this.evCatId.toString() !== ''
+                  ) {
+                    if (this.roster?.id === undefined) {
+                      this.roster = this.createNewRoster();
+                    }
+                    const nPlayer = this.createNewPlayer();
+                    const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
+                    if (targetIdx === -1) {
+                      this.playerNews!.push(nPlayer);
+                    } else {
+                      alert('No es posible agregar');
+                    }
+                  }
+                }
+              });
           }
-        });
+        }
+      } else {
+        this.userExtraService
+          .queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value)
+          .subscribe((res: HttpResponse<IUserExtra>) => {
+            this.newPlayer = res.body;
+            if (!this.checkInRosters(this.findForm.get('id')!.value, this.findForm.get('profile')!.value)) {
+              alert('El jugador esta inscripto en otro equipo');
+            } else {
+              if (
+                this.findForm.get('profile')!.value.toString() !== '' &&
+                this.newPlayer?.code !== undefined &&
+                this.evCatId.toString() !== ''
+              ) {
+                if (this.roster?.id === undefined) {
+                  this.roster = this.createNewRoster();
+                }
+                const nPlayer = this.createNewPlayer();
+                const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
+                if (targetIdx === -1) {
+                  this.playerNews!.push(nPlayer);
+                } else {
+                  alert('No es posible agregar');
+                }
+              }
+            }
+          });
+      }
     }
   }
 
@@ -222,20 +279,42 @@ export class RosterSubsComponent implements OnInit {
   addUserPlayer(user1: IUser): void {
     this.userExtraService.find(user1.id!).subscribe((res: HttpResponse<IUserExtra>) => {
       this.newPlayer = res.body;
-      if (!this.validateCategory(user1.id!, 1)) {
-        alert('El jugador pertenece a una categoria mas alta');
-      } else {
-        if (this.evCatId.toString() !== '') {
-          if (this.roster?.id === undefined) {
-            this.roster = this.createNewRoster();
-          }
-          const nPlayer = this.createNewPlayer();
-          nPlayer.profile = ProfileUser.PLAYER;
-          const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
-          if (targetIdx === -1) {
-            this.playerNews!.push(nPlayer);
+      if (
+        user1.id !== undefined &&
+        this.eventCategory?.event?.tournament?.id !== undefined &&
+        this.eventCategory.category?.id !== undefined
+      ) {
+        if (this.eventCategory.event.tournament.categorize) {
+          if (!this.validateCategory(user1.id, this.eventCategory.event.tournament.id, this.eventCategory.category.id, 'PLAYER')) {
+            alert('El jugador pertenece a una categoria mas alta');
           } else {
-            alert('No es posible agregar');
+            if (this.evCatId.toString() !== '') {
+              if (this.roster?.id === undefined) {
+                this.roster = this.createNewRoster();
+              }
+              const nPlayer = this.createNewPlayer();
+              nPlayer.profile = ProfileUser.PLAYER;
+              const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
+              if (targetIdx === -1) {
+                this.playerNews!.push(nPlayer);
+              } else {
+                alert('No es posible agregar');
+              }
+            }
+          }
+        } else {
+          if (this.evCatId.toString() !== '') {
+            if (this.roster?.id === undefined) {
+              this.roster = this.createNewRoster();
+            }
+            const nPlayer = this.createNewPlayer();
+            nPlayer.profile = ProfileUser.PLAYER;
+            const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(nPlayer.user?.login);
+            if (targetIdx === -1) {
+              this.playerNews!.push(nPlayer);
+            } else {
+              alert('No es posible agregar');
+            }
           }
         }
       }
@@ -304,10 +383,6 @@ export class RosterSubsComponent implements OnInit {
     }
   }
 
-  protected validateCategory(id: number, cat: number): boolean {
-    return false;
-  }
-
   protected sort(): string[] {
     const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -336,19 +411,48 @@ export class RosterSubsComponent implements OnInit {
     // Api for inheritance.
   }
 
-  protected checkInRoster(): void {
-    alert('Pendiente Chequeando en Rosters RosterResource.CheckInRoster');
+  protected validateCategory(id: number, tId: number, cat: number, profile: string): boolean {
+    if (profile !== 'STAFF') {
+      this.playerService.validateCategory(id, tId, cat).subscribe((res: HttpResponse<IPlayerPoint>) => {
+        this.validPlayer = res.body ?? {};
+        if (this.validPlayer.category?.id !== undefined && this.validPlayer.category.id > cat) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if (this.validPlayer?.id !== undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  protected checkInRosters(id: number, profile: string): boolean {
+    if (profile !== 'STAFF') {
+      this.rosterService.checkinRosters(id, profile).subscribe((res: HttpResponse<IPlayer>) => {
+        this.checked = res.body ?? {};
+        if (this.checked.id !== undefined) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    }
+    return true;
   }
 
   protected loadRelationshipsOptions(): void {
     if (this.currentAccount.authorities.includes('ROLE_ADMIN')) {
       this.teamService
-        .query({ size: 1000 })
+        .query()
         .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
         .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
         .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
     } else {
-      if (history.state.evCatId !== 0) {
+      if (history.state.evCatId !== 0 || history.state.roster.evCatId !== 0) {
         this.teamService
           .findNotAll(+this.currentAccount.id, history.state.evCatId ?? 0)
           .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
@@ -356,7 +460,7 @@ export class RosterSubsComponent implements OnInit {
           .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
       } else {
         this.teamService
-          .query({ size: 1000 })
+          .query()
           .pipe(map((res: HttpResponse<ITeam[]>) => res.body ?? []))
           .pipe(map((teams: ITeam[]) => this.teamService.addTeamToCollectionIfMissing(teams, this.findForm.get('team')!.value)))
           .subscribe((teams: ITeam[]) => (this.teamsSharedCollection = teams));
@@ -366,13 +470,19 @@ export class RosterSubsComponent implements OnInit {
 
   protected handleNavigation(): void {
     this.evCatId = history.state.evCatId ?? 0;
-    if (this.evCatId !== 0) {
-      this.eventCategoryService.find(this.evCatId).subscribe((res: HttpResponse<IEventCategory>) => this.paginateEventCategory(res.body));
+    if (this.evCatId === 0 && history.state.roster.evCatId !== 0) {
+      this.evCatId = history.state.roster.evCatId ?? 0;
+      if (history.state.roster.te !== undefined) {
+        this.findForm.patchValue({ team: history.state.roster.te });
+        this.onChange();
+        this.playerService.query({ 'rosterId.equals': history.state.roster.rId }).subscribe((res: HttpResponse<IPlayer[]>) => {
+          this.playerNews = res.body ?? [];
+        });
+      }
     }
-  }
-
-  protected paginateEventCategory(data: any): void {
-    this.eventCategory = data;
+    if (this.evCatId !== 0) {
+      this.eventCategoryService.find(this.evCatId).subscribe((res: HttpResponse<IEventCategory>) => (this.eventCategory = res.body ?? {}));
+    }
   }
 
   protected createNewRoster(): IRoster {

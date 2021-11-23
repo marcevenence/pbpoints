@@ -15,12 +15,11 @@
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.city.province" for="field_province">Province</label>
           <select class="form-control" id="field_province" data-cy="province" name="province" formControlName="province">
-            <option [ngValue]="null"></option>
             <option
               [ngValue]="provinceOption.id === editForm.get('province')!.value?.id ? editForm.get('province')!.value : provinceOption"
               *ngFor="let provinceOption of provincesSharedCollection; trackBy: trackProvinceById"
             >
-              {{ provinceOption.id }}
+              {{ provinceOption.name }}
             </option>
           </select>
         </div>

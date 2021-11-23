@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "tournamentGroup": {
+      "home": {
+        "title": "Tournament Groups",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Tournament Group",
+        "createOrEditLabel": "Crear o editar Tournament Group",
+        "notFound": "Ningún Tournament Groups encontrado"
+      },
+      "created": "Un nuevo Tournament Group ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tournament Group ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tournament Group ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tournament Group {{ id }}?"
+      },
+      "detail": {
+        "title": "Tournament Group"
+      },
+      "id": "ID",
+      "name": "Name",
+      "tournamentA": "Tournament A",
+      "tournamentB": "Tournament B"
+    }
+  }
+}
