@@ -69,9 +69,10 @@
       "MainRoster",
       "Sponsor",
       "Field",
-      "TournamentGroup"
+      "TournamentGroup",
+      "Equipment"
     ],
-    "lastLiquibaseTimestamp": 1637449013000
+    "lastLiquibaseTimestamp": 1637876315000
   },
   "git-provider": "GitHub",
   "git-company": "marcevenence",

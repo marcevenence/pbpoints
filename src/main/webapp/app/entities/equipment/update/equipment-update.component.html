@@ -1,0 +1,169 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-equipment-heading" data-cy="EquipmentCreateUpdateHeading" jhiTranslate="pbpointsApp.equipment.home.createOrEditLabel">
+        Create or edit a Equipment
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.brand" for="field_brand">Brand</label>
+          <input type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+          <div *ngIf="editForm.get('brand')!.invalid && (editForm.get('brand')!.dirty || editForm.get('brand')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('brand')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.model" for="field_model">Model</label>
+          <input type="text" class="form-control" name="model" id="field_model" data-cy="model" formControlName="model" />
+          <div *ngIf="editForm.get('model')!.invalid && (editForm.get('model')!.dirty || editForm.get('model')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('model')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.serial" for="field_serial">Serial</label>
+          <input type="text" class="form-control" name="serial" id="field_serial" data-cy="serial" formControlName="serial" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.picture1" for="field_picture1">Picture 1</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('picture1ContentType')!.value + ';base64,' + editForm.get('picture1')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('picture1')!.value"
+              alt="equipment image"
+            />
+            <div *ngIf="editForm.get('picture1')!.value" class="form-text text-danger clearfix">
+              <span class="pull-left"
+                >{{ editForm.get('picture1ContentType')!.value }}, {{ byteSize(editForm.get('picture1')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('picture1', 'picture1ContentType', 'file_picture1')"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_picture1"
+              data-cy="picture1"
+              (change)="setFileData($event, 'picture1', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="picture1" id="field_picture1" data-cy="picture1" formControlName="picture1" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="picture1ContentType"
+            id="field_picture1ContentType"
+            formControlName="picture1ContentType"
+          />
+          <div *ngIf="editForm.get('picture1')!.invalid && (editForm.get('picture1')!.dirty || editForm.get('picture1')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('picture1')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.picture2" for="field_picture2">Picture 2</label>
+          <div>
+            <img
+              [src]="'data:' + editForm.get('picture2ContentType')!.value + ';base64,' + editForm.get('picture2')!.value"
+              style="max-height: 100px"
+              *ngIf="editForm.get('picture2')!.value"
+              alt="equipment image"
+            />
+            <div *ngIf="editForm.get('picture2')!.value" class="form-text text-danger clearfix">
+              <span class="pull-left"
+                >{{ editForm.get('picture2ContentType')!.value }}, {{ byteSize(editForm.get('picture2')!.value) }}</span
+              >
+              <button
+                type="button"
+                (click)="clearInputImage('picture2', 'picture2ContentType', 'file_picture2')"
+                class="btn btn-secondary btn-xs pull-right"
+              >
+                <fa-icon icon="times"></fa-icon>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="file_picture2"
+              data-cy="picture2"
+              (change)="setFileData($event, 'picture2', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input type="hidden" class="form-control" name="picture2" id="field_picture2" data-cy="picture2" formControlName="picture2" />
+          <input
+            type="hidden"
+            class="form-control"
+            name="picture2ContentType"
+            id="field_picture2ContentType"
+            formControlName="picture2ContentType"
+          />
+          <div *ngIf="editForm.get('picture2')!.invalid && (editForm.get('picture2')!.dirty || editForm.get('picture2')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('picture2')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group" hidden>
+          <label class="form-control-label" jhiTranslate="pbpointsApp.equipment.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.login }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

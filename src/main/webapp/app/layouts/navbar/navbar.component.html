@@ -477,6 +477,18 @@
               <span jhiTranslate="global.menu.entities.tournamentGroup">Tournament Group</span>
             </a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="equipment"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="id-card-alt" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.equipment">Equipment</span>
+            </a>
+          </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
@@ -598,6 +610,18 @@
             >
               <fa-icon icon="id-card" [fixedWidth]="true"></fa-icon>
               <span jhiTranslate="global.menu.account.playerPoint">Player Point</span>
+            </a>
+          </li>
+          <li *ngSwitchCase="true">
+            <a
+              class="dropdown-item"
+              routerLink="equipment"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="id-card-alt" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.equipment">Equipment</span>
             </a>
           </li>
           <li *ngSwitchCase="true">

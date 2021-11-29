@@ -103,6 +103,7 @@
         "mainRoster": "Mis jugadores",
         "sponsor": "Mis Sponsors",
         "tournamentGroup": "Torneos Agrupados",
+        "equipment": "Marcadoras",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -269,5 +270,7 @@
       "not.image": "Se esperaba que el fichero fuera una imagen pero se encontro \"{{ fileType }}\""
     }
   },
+  "footer1": "PBPoints® ",
+  "footer2": ", Argentina.",
   "footer": "PBPoints® 2021, Argentina."
 }

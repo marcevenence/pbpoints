@@ -1,0 +1,70 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="equipment">
+      <h2 data-cy="equipmentDetailsHeading"><span jhiTranslate="pbpointsApp.equipment.detail.title">Equipment</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ equipment.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.brand">Brand</span></dt>
+        <dd>
+          <span>{{ equipment.brand }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.model">Model</span></dt>
+        <dd>
+          <span>{{ equipment.model }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.picture1">Picture 1</span></dt>
+        <dd>
+          <div *ngIf="equipment.picture1">
+            <a (click)="openFile(equipment.picture1, equipment.picture1ContentType)">
+              <img
+                [src]="'data:' + equipment.picture1ContentType + ';base64,' + equipment.picture1"
+                style="max-width: 100%"
+                alt="equipment image"
+              />
+            </a>
+            {{ equipment.picture1ContentType }}, {{ byteSize(equipment.picture1) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.picture2">Picture 2</span></dt>
+        <dd>
+          <div *ngIf="equipment.picture2">
+            <a (click)="openFile(equipment.picture2, equipment.picture2ContentType)">
+              <img
+                [src]="'data:' + equipment.picture2ContentType + ';base64,' + equipment.picture2"
+                style="max-width: 100%"
+                alt="equipment image"
+              />
+            </a>
+            {{ equipment.picture2ContentType }}, {{ byteSize(equipment.picture2) }}
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.serial">Serial</span></dt>
+        <dd>
+          <span>{{ equipment.serial }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.equipment.user">User</span></dt>
+        <dd>
+          <span>{{ equipment.user?.login }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/equipment', equipment.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

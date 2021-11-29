@@ -1,0 +1,106 @@
+<div>
+  <h2 id="page-heading" data-cy="EquipmentHeading">
+    <span jhiTranslate="pbpointsApp.equipment.home.title">Equipment</span>
+
+    <div class="d-flex justify-content-end">
+      <!--<button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="pbpointsApp.equipment.home.refreshListLabel">Refresh List</span>
+      </button>-->
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-equipment"
+        [routerLink]="['/equipment/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="pbpointsApp.equipment.home.createLabel"> Create a new Equipment </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="equipment?.length === 0">
+    <span jhiTranslate="pbpointsApp.equipment.home.notFound">No equipment found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="equipment && equipment.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <!--<th scope="col"><span jhiTranslate="global.field.id">ID</span></th>-->
+          <th scope="col"><span jhiTranslate="pbpointsApp.equipment.brand">Brand</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.equipment.model">Model</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.equipment.serial">Serial</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.equipment.picture1">Picture 1</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.equipment.picture2">Picture 2</span></th>
+          <!--<th scope="col"><span jhiTranslate="pbpointsApp.equipment.user">User</span></th>-->
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let equipment of equipment; trackBy: trackId" data-cy="entityTable">
+          <!--<td>
+            <a [routerLink]="['/equipment', equipment.id, 'view']">{{ equipment.id }}</a>
+          </td>-->
+          <td>{{ equipment.brand }}</td>
+          <td>{{ equipment.model }}</td>
+          <td>{{ equipment.serial }}</td>
+          <td>
+            <a *ngIf="equipment.picture1" (click)="openFile(equipment.picture1, equipment.picture1ContentType)">
+              <img
+                [src]="'data:' + equipment.picture1ContentType + ';base64,' + equipment.picture1"
+                style="max-height: 30px"
+                alt="equipment image"
+              />
+            </a>
+          </td>
+          <td>
+            <a *ngIf="equipment.picture2" (click)="openFile(equipment.picture2, equipment.picture2ContentType)">
+              <img
+                [src]="'data:' + equipment.picture2ContentType + ';base64,' + equipment.picture2"
+                style="max-height: 30px"
+                alt="equipment image"
+              />
+            </a>
+          </td>
+          <!--<td>
+            {{ equipment.user?.login }}
+          </td>-->
+          <td class="text-right">
+            <div class="btn-group">
+              <!--<button
+                type="submit"
+                [routerLink]="['/equipment', equipment.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>-->
+
+              <button
+                type="submit"
+                [routerLink]="['/equipment', equipment.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(equipment)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

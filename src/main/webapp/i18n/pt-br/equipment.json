@@ -1,0 +1,29 @@
+{
+  "pbpointsApp": {
+    "equipment": {
+      "home": {
+        "title": "Equipment",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Registrar novo Marcador",
+        "createOrEditLabel": "Registrar ou editar Marcador",
+        "notFound": "Nenhum Marcador encontrado"
+      },
+      "created": "Um novo Marcador foi registrado",
+      "updated": "Um Marcador foi atualizado",
+      "deleted": "Um Marcador foi excluído",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir um marcador?"
+      },
+      "detail": {
+        "title": "Marcadores"
+      },
+      "id": "ID",
+      "brand": "Marca",
+      "model": "Modelo",
+      "picture1": "Foto marcador",
+      "picture2": "Foto da numero de serie ",
+      "serial": "numero de serie",
+      "user": "usuario"
+    }
+  }
+}

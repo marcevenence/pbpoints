@@ -1,0 +1,29 @@
+{
+  "pbpointsApp": {
+    "equipment": {
+      "home": {
+        "title": "Paintball Gun Register",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Register a new Paintball Gun",
+        "createOrEditLabel": "Register or edit a Paintball Gun",
+        "notFound": "No Guns found"
+      },
+      "created": "A new Gun is registered",
+      "updated": "The gun is updated",
+      "deleted": "The Gun is deleted",
+      "delete": {
+        "question": "Are you sure you want to delete the register of the gun?"
+      },
+      "detail": {
+        "title": "Paintball Gun"
+      },
+      "id": "ID",
+      "brand": "Brand",
+      "model": "Model",
+      "picture1": "Picture",
+      "picture2": "Serial number picture",
+      "serial": "Serial",
+      "user": "User"
+    }
+  }
+}
