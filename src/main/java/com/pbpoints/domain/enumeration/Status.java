@@ -6,6 +6,7 @@ package com.pbpoints.domain.enumeration;
 public enum Status {
     CREATED,
     PENDING,
+    SUSPENDED,
     IN_PROGRESS,
     DONE,
     CANCEL,

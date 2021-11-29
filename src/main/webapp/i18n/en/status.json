@@ -4,6 +4,7 @@
       "null": "",
       "CREATED": "New",
       "PENDING": "Pending",
+      "SUSPENDED": "Suspended",
       "IN_PROGRESS": "In Progress",
       "DONE": "Done",
       "CANCEL": "Cancelled"
