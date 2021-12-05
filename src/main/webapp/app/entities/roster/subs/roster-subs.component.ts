@@ -258,7 +258,6 @@ export class RosterSubsComponent implements OnInit {
       } else {
         const pl = player1.user;
         const cat = player1.category;
-        player1 = {};
         player1.user = pl;
         player1.category = cat;
         player1.profile = ProfileUser.PLAYER;
@@ -267,7 +266,6 @@ export class RosterSubsComponent implements OnInit {
     } else {
       const pl = player1.user;
       const cat = player1.category;
-      player1 = {};
       player1.user = pl;
       player1.category = cat;
       player1.profile = ProfileUser.PLAYER;
