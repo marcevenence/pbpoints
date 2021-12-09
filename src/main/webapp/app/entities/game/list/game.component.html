@@ -50,11 +50,11 @@
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.splitDeckNum">Split Deck Num</span>
           </th>
-          <th scope="col">
+          <th scope="col" style="text-align: right">
             <span jhiTranslate="pbpointsApp.game.teamA">Team A</span>
           </th>
           <th scope="col"></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.game.teamB">Team B</span> <fa-icon icon="sort"></fa-icon></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.game.teamB">Team B</span></th>
           <th scope="col">
             <span jhiTranslate="pbpointsApp.game.points">Points</span>
           </th>
@@ -78,7 +78,11 @@
           <td align="right">{{ game.teamA?.name }}</td>
           <td align="center">Vs</td>
           <td align="left">{{ game.teamB?.name }}</td>
-          <td>{{ game.pointsA }}:{{ game.pointsB }} ({{ game.overtimeA }}:{{ game.overtimeB }}) ({{ game.uvuA }}:{{ game.uvuB }})</td>
+          <td>
+            {{ game.pointsA }}:{{ game.pointsB }}
+            <ng-container *ngIf="game.overtimeA"> ({{ game.overtimeA }}:{{ game.overtimeB }}) </ng-container>
+            <ng-container *ngIf="game.uvuA"> ({{ game.uvuA }}:{{ game.uvuB }}) </ng-container>
+          </td>
           <td>{{ convertToTimeFormat(game.timeLeft) }}</td>
           <td jhiTranslate="{{ 'pbpointsApp.Status.' + game.status }}">{{ game.status }}</td>
           <td class="text-right">

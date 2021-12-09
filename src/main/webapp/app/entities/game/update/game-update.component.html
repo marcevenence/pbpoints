@@ -69,61 +69,137 @@
           <input type="text" class="form-control" name="group" id="field_group" data-cy="group" formControlName="group" />
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamA" for="field_teamA">Team A</label>
-          <select class="form-control" id="field_teamA" data-cy="teamA" name="teamA" formControlName="teamA">
-            <option
-              [ngValue]="teamOption.id === editForm.get('teamA')!.value?.id ? editForm.get('teamA')!.value : teamOption"
-              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
-            >
-              {{ teamOption.name }}
-            </option>
-          </select>
-        </div>
+        <tbody>
+          <tr>
+            <div class="form-group">
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamA" for="field_teamA">Team A</label>
+                <select
+                  class="form-control"
+                  id="field_teamA"
+                  data-cy="teamA"
+                  name="teamA"
+                  formControlName="teamA"
+                  readOnly="editForm.get('id')!.value"
+                >
+                  <option
+                    [ngValue]="teamOption.id === editForm.get('teamA')!.value?.id ? editForm.get('teamA')!.value : teamOption"
+                    *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+                    [disabled]="editForm.get('id')!.value"
+                  >
+                    {{ teamOption.name }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsA" for="field_pointsA">Points A</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="pointsA"
+                  id="field_pointsA"
+                  data-cy="pointsA"
+                  formControlName="pointsA"
+                />
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeA" for="field_overtimeA">Overtime A</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="overtimeA"
+                  id="field_overtimeA"
+                  data-cy="overtimeA"
+                  formControlName="overtimeA"
+                />
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuA" for="field_uvuA">Uvu A</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="uvuA"
+                  id="field_uvuA"
+                  data-cy="uvuA"
+                  formControlName="uvuA"
+                />
+              </td>
+            </div>
+          </tr>
+        </tbody>
         <div *ngIf="editForm.get(['teamA'])!.invalid && (editForm.get(['teamA'])!.dirty || editForm.get(['teamA'])!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get(['teamA'])?.errors?.required" jhiTranslate="entity.validation.required">
             This field is required.
           </small>
         </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsA" for="field_pointsA">Points A</label>
-          <input type="number" class="form-control" name="pointsA" id="field_pointsA" data-cy="pointsA" formControlName="pointsA" />
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeA" for="field_overtimeA">Overtime A</label>
-          <input type="number" class="form-control" name="overtimeA" id="field_overtimeA" data-cy="overtimeA" formControlName="overtimeA" />
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuA" for="field_uvuA">Uvu A</label>
-          <input type="number" class="form-control" name="uvuA" id="field_uvuA" data-cy="uvuA" formControlName="uvuA" />
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamB" for="field_teamB">Team B</label>
-          <select class="form-control" id="field_teamB" data-cy="teamB" name="teamB" formControlName="teamB">
-            <option
-              [ngValue]="teamOption.id === editForm.get('teamB')!.value?.id ? editForm.get('teamB')!.value : teamOption"
-              *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
-            >
-              {{ teamOption.name }}
-            </option>
-          </select>
-        </div>
+        <tbody>
+          <tr>
+            <div class="form-group">
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.teamB" for="field_teamB">Team B</label>
+                <select
+                  class="form-control"
+                  id="field_teamB"
+                  data-cy="teamB"
+                  name="teamB"
+                  formControlName="teamB"
+                  readOnly="editForm.get('id')!.value"
+                >
+                  <option
+                    [ngValue]="teamOption.id === editForm.get('teamB')!.value?.id ? editForm.get('teamB')!.value : teamOption"
+                    *ngFor="let teamOption of teamsSharedCollection; trackBy: trackTeamById"
+                    [disabled]="editForm.get('id')!.value"
+                  >
+                    {{ teamOption.name }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsB" for="field_pointsB">Points B</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="pointsB"
+                  id="field_pointsB"
+                  data-cy="pointsB"
+                  formControlName="pointsB"
+                />
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeB" for="field_overtimeB">Overtime B</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="overtimeB"
+                  id="field_overtimeB"
+                  data-cy="overtimeB"
+                  formControlName="overtimeB"
+                />
+              </td>
+              <td>
+                <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuB" for="field_uvuB">Uvu B</label>
+                <input
+                  type="number"
+                  style="text-align: right"
+                  class="form-control"
+                  name="uvuB"
+                  id="field_uvuB"
+                  data-cy="uvuB"
+                  formControlName="uvuB"
+                />
+              </td>
+            </div>
+          </tr>
+        </tbody>
         <div *ngIf="editForm.get(['teamB'])!.invalid && (editForm.get(['teamB'])!.dirty || editForm.get(['teamB'])!.touched)">
           <small class="form-text text-danger" *ngIf="editForm.get(['teamB'])?.errors?.required" jhiTranslate="entity.validation.required">
             This field is required.
           </small>
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.pointsB" for="field_pointsB">Points B</label>
-          <input type="number" class="form-control" name="pointsB" id="field_pointsB" data-cy="pointsB" formControlName="pointsB" />
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.overtimeB" for="field_overtimeB">Overtime B</label>
-          <input type="number" class="form-control" name="overtimeB" id="field_overtimeB" data-cy="overtimeB" formControlName="overtimeB" />
-        </div>
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.game.uvuB" for="field_uvuB">Uvu B</label>
-          <input type="number" class="form-control" name="uvuB" id="field_uvuB" data-cy="uvuB" formControlName="uvuB" />
         </div>
         <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.game.timeLeft" for="field_timeLeft">Time Left</label>
