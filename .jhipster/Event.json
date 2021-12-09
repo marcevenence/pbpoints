@@ -29,6 +29,11 @@
     {
       "fieldName": "updatedDate",
       "fieldType": "Instant"
+    },
+    {
+      "fieldName": "endInscriptionPlayersDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [

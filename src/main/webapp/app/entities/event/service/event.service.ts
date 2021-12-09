@@ -99,6 +99,9 @@ export class EventService {
       endInscriptionDate: event.endInscriptionDate?.isValid() ? event.endInscriptionDate.format(DATE_FORMAT) : undefined,
       createDate: event.createDate?.isValid() ? event.createDate.toJSON() : undefined,
       updatedDate: event.updatedDate?.isValid() ? event.updatedDate.toJSON() : undefined,
+      endInscriptionPlayersDate: event.endInscriptionPlayersDate?.isValid()
+        ? event.endInscriptionPlayersDate.format(DATE_FORMAT)
+        : undefined,
     });
   }
 
@@ -109,6 +112,7 @@ export class EventService {
       res.body.endInscriptionDate = res.body.endInscriptionDate ? dayjs(res.body.endInscriptionDate) : undefined;
       res.body.createDate = res.body.createDate ? dayjs(res.body.createDate) : undefined;
       res.body.updatedDate = res.body.updatedDate ? dayjs(res.body.updatedDate) : undefined;
+      res.body.endInscriptionPlayersDate = res.body.endInscriptionPlayersDate ? dayjs(res.body.endInscriptionPlayersDate) : undefined;
     }
     return res;
   }
@@ -121,6 +125,7 @@ export class EventService {
         event.endInscriptionDate = event.endInscriptionDate ? dayjs(event.endInscriptionDate) : undefined;
         event.createDate = event.createDate ? dayjs(event.createDate) : undefined;
         event.updatedDate = event.updatedDate ? dayjs(event.updatedDate) : undefined;
+        event.endInscriptionPlayersDate = event.endInscriptionPlayersDate ? dayjs(event.endInscriptionPlayersDate) : undefined;
       });
     }
     return res;

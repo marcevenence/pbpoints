@@ -32,13 +32,14 @@ export class EventUpdateComponent implements OnInit {
       fromDate: ['', Validators.required],
       endDate: ['', Validators.required],
       endInscriptionDate: ['', Validators.required],
+      endInscriptionPlayersDate: [null, [Validators.required]],
       status: [],
       createDate: [],
       updatedDate: [],
       field: [null, Validators.required],
       tournament: [],
     },
-    { validator: this.dateLessThan('fromDate', 'endDate', 'endInscriptionDate') }
+    { validator: this.dateLessThan('fromDate', 'endDate', 'endInscriptionPlayersDate', 'endInscriptionDate') }
   );
 
   constructor(
@@ -49,10 +50,11 @@ export class EventUpdateComponent implements OnInit {
     protected fb: FormBuilder
   ) {}
 
-  dateLessThan(from: string, to: string, end: string): any {
+  dateLessThan(from: string, to: string, endP: string, end: string): any {
     return (group: FormGroup): { [key: string]: any } => {
       const f = group.controls[from];
       const t = group.controls[to];
+      const eP = group.controls[endP];
       const e = group.controls[end];
       if (f.value > t.value) {
         return {
@@ -62,6 +64,21 @@ export class EventUpdateComponent implements OnInit {
       if (f.value > e.value) {
         return {
           dates: 'Date from should be less than Inscription Date',
+        };
+      }
+      if (f.value > eP.value) {
+        return {
+          dates: 'Date from should be less than Inscription Player Date',
+        };
+      }
+      if (eP.value > t.value) {
+        return {
+          dates: 'Inscription Player Date should be less than Date To',
+        };
+      }
+      if (e.value > eP.value) {
+        return {
+          dates: 'Inscription Date should be less than Inscription player Date',
         };
       }
       if (e.value > t.value) {
@@ -134,6 +151,7 @@ export class EventUpdateComponent implements OnInit {
       name: event.name,
       fromDate: event.fromDate ? event.fromDate.format(DATE_FORMAT) : null,
       endDate: event.endDate ? event.endDate.format(DATE_FORMAT) : null,
+      endInscriptionPlayersDate: event.endInscriptionPlayersDate ? event.endInscriptionPlayersDate.format(DATE_FORMAT) : null,
       endInscriptionDate: event.endInscriptionDate ? event.endInscriptionDate.format(DATE_FORMAT) : null,
       status: event.status,
       createDate: event.createDate ? event.createDate.format(DATE_TIME_FORMAT) : null,
@@ -178,6 +196,9 @@ export class EventUpdateComponent implements OnInit {
       endDate: this.editForm.get(['endDate'])!.value ? dayjs(this.editForm.get(['endDate'])!.value, DATE_FORMAT) : undefined,
       endInscriptionDate: this.editForm.get(['endInscriptionDate'])!.value
         ? dayjs(this.editForm.get(['endInscriptionDate'])!.value, DATE_FORMAT)
+        : undefined,
+      endInscriptionPlayersDate: this.editForm.get(['endInscriptionPlayersDate'])!.value
+        ? dayjs(this.editForm.get(['endInscriptionPlayersDate'])!.value, DATE_FORMAT)
         : undefined,
       status: this.editForm.get(['status'])!.value,
       createDate: this.editForm.get(['createDate'])!.value ? dayjs(this.editForm.get(['createDate'])!.value, DATE_FORMAT) : undefined,

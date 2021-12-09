@@ -35,32 +35,19 @@
             <column name="updated_date" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
-            <column name="field_id" type="bigint">
+            <column name="end_inscription_players_date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="tournament_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="field_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="event" columnName="create_date" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="event" columnName="updated_date" columnDataType="${datetimeType}"/>
-        <loadData
-                  file="config/liquibase/data/event.csv"
-                  separator=";"
-                  tableName="event">
-            <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
-            <column name="from_date" type="date"/>
-            <column name="end_date" type="date"/>
-            <column name="end_inscription_date" type="date"/>
-            <column name="status" type="string"/>
-            <column name="create_date" type="datetime"/>
-            <column name="updated_date" type="datetime"/>
-            <column name="tournament_id" type="numeric"/>
-            <column name="field_id" type="numeric"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
-        </loadData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -86,6 +73,7 @@
             <column name="status" type="string"/>
             <column name="create_date" type="${datetimeType}"/>
             <column name="updated_date" type="${datetimeType}"/>
+            <column name="end_inscription_players_date" type="date"/>
             <column name="field_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

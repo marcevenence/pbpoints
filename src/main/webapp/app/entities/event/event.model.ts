@@ -13,6 +13,7 @@ export interface IEvent {
   createDate?: dayjs.Dayjs | null;
   updatedDate?: dayjs.Dayjs | null;
   field?: IField | null;
+  endInscriptionPlayersDate?: dayjs.Dayjs;
   tournament?: ITournament | null;
 }
 
@@ -26,8 +27,9 @@ export class Event implements IEvent {
     public status?: Status | null,
     public createDate?: dayjs.Dayjs | null,
     public updatedDate?: dayjs.Dayjs | null,
-    public field?: IField | null,
-    public tournament?: ITournament | null
+    public endInscriptionPlayersDate?: dayjs.Dayjs,
+    public tournament?: ITournament | null,
+    public field?: IField | null
   ) {}
 }
 

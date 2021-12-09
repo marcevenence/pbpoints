@@ -60,6 +60,8 @@ public class EventCriteria implements Serializable, Criteria {
 
     private InstantFilter updatedDate;
 
+    private LocalDateFilter endInscriptionPlayersDate;
+
     private LongFilter tournamentId;
 
     private LongFilter fieldId;
@@ -75,6 +77,7 @@ public class EventCriteria implements Serializable, Criteria {
         this.status = other.status == null ? null : other.status.copy();
         this.createDate = other.createDate == null ? null : other.createDate.copy();
         this.updatedDate = other.updatedDate == null ? null : other.updatedDate.copy();
+        this.endInscriptionPlayersDate = other.endInscriptionPlayersDate == null ? null : other.endInscriptionPlayersDate.copy();
         this.tournamentId = other.tournamentId == null ? null : other.tournamentId.copy();
         this.fieldId = other.fieldId == null ? null : other.fieldId.copy();
     }
@@ -204,6 +207,21 @@ public class EventCriteria implements Serializable, Criteria {
         this.updatedDate = updatedDate;
     }
 
+    public LocalDateFilter getEndInscriptionPlayersDate() {
+        return endInscriptionPlayersDate;
+    }
+
+    public LocalDateFilter endInscriptionPlayersDate() {
+        if (endInscriptionPlayersDate == null) {
+            endInscriptionPlayersDate = new LocalDateFilter();
+        }
+        return endInscriptionPlayersDate;
+    }
+
+    public void setEndInscriptionPlayersDate(LocalDateFilter endInscriptionPlayersDate) {
+        this.endInscriptionPlayersDate = endInscriptionPlayersDate;
+    }
+
     public LongFilter getTournamentId() {
         return tournamentId;
     }
@@ -252,6 +270,7 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(status, that.status) &&
             Objects.equals(createDate, that.createDate) &&
             Objects.equals(updatedDate, that.updatedDate) &&
+            Objects.equals(endInscriptionPlayersDate, that.endInscriptionPlayersDate) &&
             Objects.equals(tournamentId, that.tournamentId) &&
             Objects.equals(fieldId, that.fieldId)
         );
@@ -259,7 +278,19 @@ public class EventCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, fromDate, endDate, endInscriptionDate, status, createDate, updatedDate, tournamentId, fieldId);
+        return Objects.hash(
+            id,
+            name,
+            fromDate,
+            endDate,
+            endInscriptionDate,
+            status,
+            createDate,
+            updatedDate,
+            endInscriptionPlayersDate,
+            tournamentId,
+            fieldId
+        );
     }
 
     // prettier-ignore
@@ -274,6 +305,7 @@ public class EventCriteria implements Serializable, Criteria {
             (status != null ? "status=" + status + ", " : "") +
             (createDate != null ? "createDate=" + createDate + ", " : "") +
             (updatedDate != null ? "updatedDate=" + updatedDate + ", " : "") +
+            (endInscriptionPlayersDate != null ? "endInscriptionPlayersDate=" + endInscriptionPlayersDate + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
             (fieldId != null ? "fieldId=" + fieldId + ", " : "") +
             "}";

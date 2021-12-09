@@ -25,6 +25,7 @@
       "status": "Doença",
       "createDate": "Create Date",
       "updatedDate": "Updated Date",
+      "endInscriptionPlayersDate": "End Inscription Players Date",
       "tournament": "Torneio",
       "field": "Field",
       "pdf": "Fixture",

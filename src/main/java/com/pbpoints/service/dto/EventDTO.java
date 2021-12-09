@@ -30,6 +30,9 @@ public class EventDTO implements Serializable {
 
     private Instant updatedDate;
 
+    @NotNull
+    private LocalDate endInscriptionPlayersDate;
+
     private TournamentDTO tournament;
 
     private FieldDTO field;
@@ -98,6 +101,14 @@ public class EventDTO implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    public LocalDate getEndInscriptionPlayersDate() {
+        return endInscriptionPlayersDate;
+    }
+
+    public void setEndInscriptionPlayersDate(LocalDate endInscriptionPlayersDate) {
+        this.endInscriptionPlayersDate = endInscriptionPlayersDate;
+    }
+
     public TournamentDTO getTournament() {
         return tournament;
     }
@@ -147,6 +158,7 @@ public class EventDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", createDate='" + getCreateDate() + "'" +
             ", updatedDate='" + getUpdatedDate() + "'" +
+            ", endInscriptionPlayersDate='" + getEndInscriptionPlayersDate() + "'" +
             ", tournament=" + getTournament() +
             ", field=" + getField() +
             "}";

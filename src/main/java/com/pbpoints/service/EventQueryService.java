@@ -107,6 +107,10 @@ public class EventQueryService extends QueryService<Event> {
             if (criteria.getUpdatedDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedDate(), Event_.updatedDate));
             }
+            if (criteria.getEndInscriptionPlayersDate() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getEndInscriptionPlayersDate(), Event_.endInscriptionPlayersDate));
+            }
             if (criteria.getTournamentId() != null) {
                 specification =
                     specification.and(

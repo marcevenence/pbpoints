@@ -34,6 +34,7 @@ describe('Service Tests', () => {
         status: Status.CREATED,
         createDate: currentDate,
         updatedDate: currentDate,
+        endInscriptionPlayersDate: currentDate,
       };
     });
 
@@ -46,6 +47,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate.format(DATE_FORMAT),
             createDate: currentDate.format(DATE_TIME_FORMAT),
             updatedDate: currentDate.format(DATE_TIME_FORMAT),
+            endInscriptionPlayersDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -66,6 +68,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate.format(DATE_FORMAT),
             createDate: currentDate.format(DATE_TIME_FORMAT),
             updatedDate: currentDate.format(DATE_TIME_FORMAT),
+            endInscriptionPlayersDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -77,6 +80,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate,
             createDate: currentDate,
             updatedDate: currentDate,
+            endInscriptionPlayersDate: currentDate,
           },
           returnedFromService
         );
@@ -99,6 +103,7 @@ describe('Service Tests', () => {
             status: 'BBBBBB',
             createDate: currentDate.format(DATE_TIME_FORMAT),
             updatedDate: currentDate.format(DATE_TIME_FORMAT),
+            endInscriptionPlayersDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -110,6 +115,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate,
             createDate: currentDate,
             updatedDate: currentDate,
+            endInscriptionPlayersDate: currentDate,
           },
           returnedFromService
         );
@@ -128,6 +134,7 @@ describe('Service Tests', () => {
             endDate: currentDate.format(DATE_FORMAT),
             status: 'BBBBBB',
             createDate: currentDate.format(DATE_TIME_FORMAT),
+            endInscriptionPlayersDate: currentDate.format(DATE_FORMAT),
           },
           new Event()
         );
@@ -141,6 +148,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate,
             createDate: currentDate,
             updatedDate: currentDate,
+            endInscriptionPlayersDate: currentDate,
           },
           returnedFromService
         );
@@ -163,6 +171,7 @@ describe('Service Tests', () => {
             status: 'BBBBBB',
             createDate: currentDate.format(DATE_TIME_FORMAT),
             updatedDate: currentDate.format(DATE_TIME_FORMAT),
+            endInscriptionPlayersDate: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -174,6 +183,7 @@ describe('Service Tests', () => {
             endInscriptionDate: currentDate,
             createDate: currentDate,
             updatedDate: currentDate,
+            endInscriptionPlayersDate: currentDate,
           },
           returnedFromService
         );
@@ -223,7 +233,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Event to an array', () => {
-          const eventArray: IEvent[] = [{ id: 123 }, { id: 456 }, { id: 77471 }];
+          const eventArray: IEvent[] = [{ id: 123 }, { id: 456 }, { id: 49927 }];
           const eventCollection: IEvent[] = [{ id: 123 }];
           expectedResult = service.addEventToCollectionIfMissing(eventCollection, ...eventArray);
           expect(expectedResult).toHaveLength(3);

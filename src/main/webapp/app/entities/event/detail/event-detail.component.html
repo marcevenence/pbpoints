@@ -42,6 +42,10 @@
         <dd>
           <span>{{ event.updatedDate | formatMediumDatetime }}</span>
         </dd>
+        <dt><span jhiTranslate="pbpointsApp.event.endInscriptionPlayersDate">End Inscription Players Date</span></dt>
+        <dd>
+          <span>{{ event.endInscriptionPlayersDate | formatMediumDate }}</span>
+        </dd>
         <dt><span jhiTranslate="pbpointsApp.event.tournament">Tournament</span></dt>
         <dd>
           <div *ngIf="event.tournament">

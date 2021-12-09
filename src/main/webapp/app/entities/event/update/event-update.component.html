@@ -100,6 +100,28 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.event.endInscriptionPlayersDate" for="field_endInscriptionPlayersDate"
+            >End Inscription Players Date</label
+          >
+          <div class="input-group">
+            <input
+              id="field_endInscriptionPlayersDate"
+              data-cy="endInscriptionPlayersDate"
+              type="date"
+              class="form-control"
+              name="endInscriptionPlayersDate"
+              formControlName="endInscriptionPlayersDate"
+              placeholder="YYYY-MM-DD"
+            />
+            <!--<span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="endInscriptionDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>-->
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.event.status" for="field_status">Status</label>
           <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
             <option value="CREATED">{{ 'pbpointsApp.Status.CREATED' | translate }}</option>

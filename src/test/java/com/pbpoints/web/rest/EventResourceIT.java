@@ -63,6 +63,10 @@ class EventResourceIT {
     private static final Instant DEFAULT_UPDATED_DATE = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATED_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
+    private static final LocalDate DEFAULT_END_INSCRIPTION_PLAYERS_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_INSCRIPTION_PLAYERS_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_END_INSCRIPTION_PLAYERS_DATE = LocalDate.ofEpochDay(-1L);
+
     private static final String ENTITY_API_URL = "/api/events";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -97,7 +101,8 @@ class EventResourceIT {
             .endInscriptionDate(DEFAULT_END_INSCRIPTION_DATE)
             .status(DEFAULT_STATUS)
             .createDate(DEFAULT_CREATE_DATE)
-            .updatedDate(DEFAULT_UPDATED_DATE);
+            .updatedDate(DEFAULT_UPDATED_DATE)
+            .endInscriptionPlayersDate(DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
         // Add required entity
         Field field;
         if (TestUtil.findAll(em, Field.class).isEmpty()) {
@@ -125,7 +130,8 @@ class EventResourceIT {
             .endInscriptionDate(UPDATED_END_INSCRIPTION_DATE)
             .status(UPDATED_STATUS)
             .createDate(UPDATED_CREATE_DATE)
-            .updatedDate(UPDATED_UPDATED_DATE);
+            .updatedDate(UPDATED_UPDATED_DATE)
+            .endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
         // Add required entity
         Field field;
         if (TestUtil.findAll(em, Field.class).isEmpty()) {
@@ -165,6 +171,7 @@ class EventResourceIT {
         assertThat(testEvent.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testEvent.getCreateDate()).isEqualTo(DEFAULT_CREATE_DATE);
         assertThat(testEvent.getUpdatedDate()).isEqualTo(DEFAULT_UPDATED_DATE);
+        assertThat(testEvent.getEndInscriptionPlayersDate()).isEqualTo(DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
     }
 
     @Test
@@ -188,6 +195,24 @@ class EventResourceIT {
 
     @Test
     @Transactional
+    void checkEndInscriptionPlayersDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = eventRepository.findAll().size();
+        // set the field null
+        event.setEndInscriptionPlayersDate(null);
+
+        // Create the Event, which fails.
+        EventDTO eventDTO = eventMapper.toDto(event);
+
+        restEventMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(eventDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Event> eventList = eventRepository.findAll();
+        assertThat(eventList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllEvents() throws Exception {
         // Initialize the database
         eventRepository.saveAndFlush(event);
@@ -204,7 +229,8 @@ class EventResourceIT {
             .andExpect(jsonPath("$.[*].endInscriptionDate").value(hasItem(DEFAULT_END_INSCRIPTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].updatedDate").value(hasItem(DEFAULT_UPDATED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].updatedDate").value(hasItem(DEFAULT_UPDATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endInscriptionPlayersDate").value(hasItem(DEFAULT_END_INSCRIPTION_PLAYERS_DATE.toString())));
     }
 
     @Test
@@ -225,7 +251,8 @@ class EventResourceIT {
             .andExpect(jsonPath("$.endInscriptionDate").value(DEFAULT_END_INSCRIPTION_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.createDate").value(DEFAULT_CREATE_DATE.toString()))
-            .andExpect(jsonPath("$.updatedDate").value(DEFAULT_UPDATED_DATE.toString()));
+            .andExpect(jsonPath("$.updatedDate").value(DEFAULT_UPDATED_DATE.toString()))
+            .andExpect(jsonPath("$.endInscriptionPlayersDate").value(DEFAULT_END_INSCRIPTION_PLAYERS_DATE.toString()));
     }
 
     @Test
@@ -794,6 +821,112 @@ class EventResourceIT {
 
     @Test
     @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate equals to DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.equals=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate equals to UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.equals=" + UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate not equals to DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.notEquals=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate not equals to UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.notEquals=" + UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate in DEFAULT_END_INSCRIPTION_PLAYERS_DATE or UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound(
+            "endInscriptionPlayersDate.in=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE + "," + UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        );
+
+        // Get all the eventList where endInscriptionPlayersDate equals to UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.in=" + UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate is not null
+        defaultEventShouldBeFound("endInscriptionPlayersDate.specified=true");
+
+        // Get all the eventList where endInscriptionPlayersDate is null
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate is greater than or equal to DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.greaterThanOrEqual=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate is greater than or equal to UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.greaterThanOrEqual=" + UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate is less than or equal to DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.lessThanOrEqual=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate is less than or equal to SMALLER_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.lessThanOrEqual=" + SMALLER_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate is less than DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.lessThan=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate is less than UPDATED_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.lessThan=" + UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsByEndInscriptionPlayersDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+
+        // Get all the eventList where endInscriptionPlayersDate is greater than DEFAULT_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldNotBeFound("endInscriptionPlayersDate.greaterThan=" + DEFAULT_END_INSCRIPTION_PLAYERS_DATE);
+
+        // Get all the eventList where endInscriptionPlayersDate is greater than SMALLER_END_INSCRIPTION_PLAYERS_DATE
+        defaultEventShouldBeFound("endInscriptionPlayersDate.greaterThan=" + SMALLER_END_INSCRIPTION_PLAYERS_DATE);
+    }
+
+    @Test
+    @Transactional
     void getAllEventsByTournamentIsEqualToSomething() throws Exception {
         // Initialize the database
         eventRepository.saveAndFlush(event);
@@ -845,7 +978,8 @@ class EventResourceIT {
             .andExpect(jsonPath("$.[*].endInscriptionDate").value(hasItem(DEFAULT_END_INSCRIPTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].createDate").value(hasItem(DEFAULT_CREATE_DATE.toString())))
-            .andExpect(jsonPath("$.[*].updatedDate").value(hasItem(DEFAULT_UPDATED_DATE.toString())));
+            .andExpect(jsonPath("$.[*].updatedDate").value(hasItem(DEFAULT_UPDATED_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endInscriptionPlayersDate").value(hasItem(DEFAULT_END_INSCRIPTION_PLAYERS_DATE.toString())));
 
         // Check, that the count call also returns 1
         restEventMockMvc
@@ -900,7 +1034,8 @@ class EventResourceIT {
             .endInscriptionDate(UPDATED_END_INSCRIPTION_DATE)
             .status(UPDATED_STATUS)
             .createDate(UPDATED_CREATE_DATE)
-            .updatedDate(UPDATED_UPDATED_DATE);
+            .updatedDate(UPDATED_UPDATED_DATE)
+            .endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
         EventDTO eventDTO = eventMapper.toDto(updatedEvent);
 
         restEventMockMvc
@@ -922,6 +1057,7 @@ class EventResourceIT {
         assertThat(testEvent.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testEvent.getCreateDate()).isEqualTo(UPDATED_CREATE_DATE);
         assertThat(testEvent.getUpdatedDate()).isEqualTo(UPDATED_UPDATED_DATE);
+        assertThat(testEvent.getEndInscriptionPlayersDate()).isEqualTo(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
     }
 
     @Test
@@ -1001,7 +1137,12 @@ class EventResourceIT {
         Event partialUpdatedEvent = new Event();
         partialUpdatedEvent.setId(event.getId());
 
-        partialUpdatedEvent.name(UPDATED_NAME).endDate(UPDATED_END_DATE).status(UPDATED_STATUS).createDate(UPDATED_CREATE_DATE);
+        partialUpdatedEvent
+            .name(UPDATED_NAME)
+            .endDate(UPDATED_END_DATE)
+            .status(UPDATED_STATUS)
+            .createDate(UPDATED_CREATE_DATE)
+            .endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
 
         restEventMockMvc
             .perform(
@@ -1022,6 +1163,7 @@ class EventResourceIT {
         assertThat(testEvent.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testEvent.getCreateDate()).isEqualTo(UPDATED_CREATE_DATE);
         assertThat(testEvent.getUpdatedDate()).isEqualTo(DEFAULT_UPDATED_DATE);
+        assertThat(testEvent.getEndInscriptionPlayersDate()).isEqualTo(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
     }
 
     @Test
@@ -1043,7 +1185,8 @@ class EventResourceIT {
             .endInscriptionDate(UPDATED_END_INSCRIPTION_DATE)
             .status(UPDATED_STATUS)
             .createDate(UPDATED_CREATE_DATE)
-            .updatedDate(UPDATED_UPDATED_DATE);
+            .updatedDate(UPDATED_UPDATED_DATE)
+            .endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
 
         restEventMockMvc
             .perform(
@@ -1064,6 +1207,7 @@ class EventResourceIT {
         assertThat(testEvent.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testEvent.getCreateDate()).isEqualTo(UPDATED_CREATE_DATE);
         assertThat(testEvent.getUpdatedDate()).isEqualTo(UPDATED_UPDATED_DATE);
+        assertThat(testEvent.getEndInscriptionPlayersDate()).isEqualTo(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
     }
 
     @Test

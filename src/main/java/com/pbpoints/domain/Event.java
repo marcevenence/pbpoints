@@ -46,6 +46,10 @@ public class Event implements Serializable {
     @Column(name = "updated_date")
     private Instant updatedDate;
 
+    @NotNull
+    @Column(name = "end_inscription_players_date", nullable = false)
+    private LocalDate endInscriptionPlayersDate;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "events", "owner" }, allowSetters = true)
     private Tournament tournament;
@@ -160,6 +164,19 @@ public class Event implements Serializable {
         this.updatedDate = updatedDate;
     }
 
+    public LocalDate getEndInscriptionPlayersDate() {
+        return this.endInscriptionPlayersDate;
+    }
+
+    public Event endInscriptionPlayersDate(LocalDate endInscriptionPlayersDate) {
+        this.endInscriptionPlayersDate = endInscriptionPlayersDate;
+        return this;
+    }
+
+    public void setEndInscriptionPlayersDate(LocalDate endInscriptionPlayersDate) {
+        this.endInscriptionPlayersDate = endInscriptionPlayersDate;
+    }
+
     public Tournament getTournament() {
         return this.tournament;
     }
@@ -217,6 +234,7 @@ public class Event implements Serializable {
             ", status='" + getStatus() + "'" +
             ", createDate='" + getCreateDate() + "'" +
             ", updatedDate='" + getUpdatedDate() + "'" +
+            ", endInscriptionPlayersDate='" + getEndInscriptionPlayersDate() + "'" +
             "}";
     }
 }
