@@ -8,6 +8,10 @@ import { IEventCategory } from '../event-category.model';
 
 import { IEvent } from 'app/entities/event/event.model';
 import { EventService } from 'app/entities/event/service/event.service';
+
+import { IRoster } from 'app/entities/roster/roster.model';
+import { RosterService } from 'app/entities/roster/service/roster.service';
+
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { EventCategoryService } from '../service/event-category.service';
 import { EventCategoryDeleteDialogComponent } from '../delete/event-category-delete-dialog.component';
@@ -31,10 +35,12 @@ export class EventCategoryComponent implements OnInit {
   tId = 0;
   updateAllow = true;
   enableNew = false;
+  rosters?: IRoster[];
 
   constructor(
     protected eventCategoryService: EventCategoryService,
     protected eventService: EventService,
+    protected rosterService: RosterService,
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService,
     protected router: Router,
@@ -126,6 +132,20 @@ export class EventCategoryComponent implements OnInit {
 
   Cancel(): void {
     window.history.back();
+  }
+
+  getQtyRosters(evCatId: number): number {
+    if (this.rosters === undefined) {
+      this.rosterService
+        .query({
+          'eventCategoryId.equals': evCatId,
+        })
+        .subscribe((res: HttpResponse<IEventCategory[]>) => {
+          this.rosters = res.body ?? [];
+          return this.rosters.length;
+        });
+    }
+    return this.rosters!.length;
   }
 
   protected sort(): string[] {

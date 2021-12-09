@@ -56,6 +56,9 @@
           <th scope="col">
             <span jhiTranslate="pbpointsApp.eventCategory.splitDeck">Split Deck</span>
           </th>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.eventCategory.inscripted">Inscripted</span>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -81,6 +84,9 @@
           <td>
             <div *ngIf="eventCategory.splitDeck"><span jhiTranslate="pbpointsApp.eventCategory.yes">Yes</span></div>
             <div *ngIf="!eventCategory.splitDeck"><span jhiTranslate="pbpointsApp.eventCategory.no">No</span></div>
+          </td>
+          <td>
+            <div>{{ getQtyRosters(eventCategory.id!) }}</div>
           </td>
           <td class="text-right">
             <div class="btn-group">

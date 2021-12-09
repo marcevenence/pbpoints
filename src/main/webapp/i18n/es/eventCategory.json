@@ -25,7 +25,8 @@
       "roster": "Roster",
       "event": "Evento",
       "category": "Categoria",
-      "format": "Formato"
+      "format": "Formato",
+      "inscripted": "Equipos Inscriptos"
     }
   }
 }
