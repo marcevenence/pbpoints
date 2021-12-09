@@ -249,7 +249,7 @@ public class Tournament implements Serializable {
             ", closeInscrDays=" + getCloseInscrDays() +
             ", status='" + getStatus() + "'" +
             ", categorize='" + getCategorize() + "'" +
-            ", logo='" + getLogo() + "'" +
+            ", logo=''" +
             ", logoContentType='" + getLogoContentType() + "'" +
             ", cantPlayersNextCategory=" + getCantPlayersNextCategory() +
             ", qtyTeamGroups=" + getQtyTeamGroups() +

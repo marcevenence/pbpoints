@@ -140,7 +140,7 @@ public class Team implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
-            ", logo='" + getLogo() + "'" +
+            ", logo=''" +
             ", logoContentType='" + getLogoContentType() + "'" +
             "}";
     }

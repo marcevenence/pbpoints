@@ -142,7 +142,7 @@ public class Sponsor implements Serializable {
     public String toString() {
         return "Sponsor{" +
             "id=" + getId() +
-            ", logo='" + getLogo() + "'" +
+            ", logo=''" +
             ", logoContentType='" + getLogoContentType() + "'" +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +

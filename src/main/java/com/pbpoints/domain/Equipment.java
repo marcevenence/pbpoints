@@ -192,9 +192,9 @@ public class Equipment implements Serializable {
             "id=" + getId() +
             ", brand='" + getBrand() + "'" +
             ", model='" + getModel() + "'" +
-            ", picture1='" + getPicture1() + "'" +
+            ", picture1=''" +
             ", picture1ContentType='" + getPicture1ContentType() + "'" +
-            ", picture2='" + getPicture2() + "'" +
+            ", picture2=''" +
             ", picture2ContentType='" + getPicture2ContentType() + "'" +
             ", serial='" + getSerial() + "'" +
             "}";
