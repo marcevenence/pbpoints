@@ -72,10 +72,10 @@
               <br />
               <span jhiTranslate="pbpointsApp.roster.search.team">Team</span>
               <a style="height: 20%; text-align: left">: {{ roster.team?.name }}</a>
-              <tr *ngFor="let player of filterPlayerFunction(roster.id!); trackBy: trackPlayerId">
+              <tr *ngFor="let player of players; trackBy: trackPlayerId">
                 <ng-container *ngIf="roster.id == player.roster?.id">
                   <!--<td style="height: 20%; text-align: left">{{ roster.eventCategory?.category?.name }}</td>-->
-                  <ng-container *ngFor="let userextra of filterUserExtraFunction(player.user?.id!); trackBy: trackUserExtraId">
+                  <ng-container *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
                     <ng-container *ngIf="player.user?.id == userextra.id">
                       <td style="height: 20%; text-align: left">
                         <ng-container *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">

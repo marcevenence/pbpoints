@@ -9,6 +9,6 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = { ProvinceMapper.class })
 public interface LocationMapper extends EntityMapper<LocationDTO, Location> {
-    @Mapping(target = "province", source = "province", qualifiedByName = "id")
+    @Mapping(target = "province", source = "province")
     LocationDTO toDto(Location s);
 }
