@@ -69,6 +69,8 @@ public class EventService {
 
     private final EventMapper eventMapper;
 
+    private final PlayerPointService playerPointService;
+
     public EventService(
         EventRepository eventRepository,
         EventCategoryRepository eventCategoryRepository,
@@ -80,7 +82,8 @@ public class EventService {
         GameRepository gameRepository,
         RosterRepository rosterRepository,
         SponsorRepository sponsorRepository,
-        EventMapper eventMapper
+        EventMapper eventMapper,
+        PlayerPointService playerPointService
     ) {
         this.eventRepository = eventRepository;
         this.eventCategoryRepository = eventCategoryRepository;
@@ -93,6 +96,7 @@ public class EventService {
         this.rosterRepository = rosterRepository;
         this.sponsorRepository = sponsorRepository;
         this.eventMapper = eventMapper;
+        this.playerPointService = playerPointService;
     }
 
     /**
@@ -200,12 +204,6 @@ public class EventService {
             ownerId.appendChild(document.createTextNode(event.getTournament().getOwner().getId().toString()));
             root.appendChild(ownerId);
 
-            log.info("*** Creando element HASH", event);
-
-            Element hash = document.createElement("HASH");
-            hash.appendChild(document.createTextNode(event.getTournament().getOwner().getPassword()));
-            root.appendChild(hash);
-
             log.info("*** Creando element SETUP", event);
 
             Element setup = document.createElement("SETUP");
@@ -257,44 +255,55 @@ public class EventService {
             Element fixture = document.createElement("FIXTURE");
             root.appendChild(fixture);
 
-            Element categoryf = document.createElement("CATEGORY");
-            fixture.appendChild(categoryf);
-
             for (EventCategory eventCategory : eventCategories) {
-                Element name = document.createElement("NAME");
-                name.appendChild(document.createTextNode(eventCategory.getCategory().getName()));
-                categoryf.appendChild(name);
-
                 Element gamesxml = document.createElement("GAMES");
-                categoryf.appendChild(gamesxml);
+                fixture.appendChild(gamesxml);
 
                 List<Game> games = gameRepository.findByEventCategory(eventCategory);
                 if (!games.isEmpty()) {
                     log.info("*** Recorriendo Games ***");
                     for (Game gameloop : games) {
                         log.info("*** Recorriendo Game {}", gameloop);
-                        Element gamexml = document.createElement("GAME");
-                        gamesxml.appendChild(gamexml);
+
+                        Element category = document.createElement("CATEGORY_ID");
+                        category.appendChild(document.createTextNode(eventCategory.getCategory().getId().toString()));
+                        gamesxml.appendChild(category);
 
                         Element gameid = document.createElement("ID");
                         gameid.appendChild(document.createTextNode(gameloop.getId().toString()));
-                        gamexml.appendChild(gameid);
+                        gamesxml.appendChild(gameid);
 
                         Element spid = document.createElement("SD_ID");
                         spid.appendChild(document.createTextNode(gameloop.getSplitDeckNum().toString()));
-                        gamexml.appendChild(spid);
+                        gamesxml.appendChild(spid);
 
                         Element clasif = document.createElement("CLASIF");
                         clasif.appendChild(document.createTextNode("1"));
-                        gamexml.appendChild(clasif);
+                        gamesxml.appendChild(clasif);
+
+                        Element teamIda = document.createElement("TEAM_ID_A");
+                        teamIda.appendChild(document.createTextNode(gameloop.getTeamA().getId().toString()));
+                        gamesxml.appendChild(teamIda);
 
                         Element teama = document.createElement("TEAM_A");
                         teama.appendChild(document.createTextNode(gameloop.getTeamA().getName()));
-                        gamexml.appendChild(teama);
+                        gamesxml.appendChild(teama);
+
+                        Element pointsa = document.createElement("POINTS_A");
+                        pointsa.appendChild(document.createTextNode(gameloop.getPointsA().toString()));
+                        gamesxml.appendChild(pointsa);
+
+                        Element teamIdb = document.createElement("TEAM_ID_B");
+                        teamIdb.appendChild(document.createTextNode(gameloop.getTeamB().getId().toString()));
+                        gamesxml.appendChild(teamIdb);
 
                         Element teamb = document.createElement("TEAM_B");
                         teamb.appendChild(document.createTextNode(gameloop.getTeamB().getName()));
-                        gamexml.appendChild(teamb);
+                        gamesxml.appendChild(teamb);
+
+                        Element pointsb = document.createElement("POINTS_B");
+                        pointsb.appendChild(document.createTextNode(gameloop.getPointsB().toString()));
+                        gamesxml.appendChild(pointsb);
                     }
                 }
             }
@@ -361,14 +370,14 @@ public class EventService {
             GameResultDTO gameResultDTO = xmlMapper.readValue(file.getBytes(), GameResultDTO.class);
             log.debug(gameResultDTO.toString());
             // Validaciones de entidades
-            UserExtra userExtra = userExtraRepository
+            /*UserExtra userExtra = userExtraRepository
                 .findById(gameResultDTO.getOwner_id())
-                .orElseThrow(() -> new IllegalArgumentException("No existe un Usuario con el ID " + gameResultDTO.getOwner_id()));
+                .orElseThrow(() -> new IllegalArgumentException("No existe un Usuario con el ID " + gameResultDTO.getOwner_id()));*/
             Event event = eventRepository
                 .findById(gameResultDTO.getEvent_id())
                 .orElseThrow(() -> new IllegalArgumentException("No existe un evento con ID: " + gameResultDTO.getEvent_id()));
             Category category = categoryRepository
-                .findByName(gameResultDTO.getFixtureDTO().getCategoryDTO().getName())
+                .findById(gameResultDTO.getFixtureDTO().getCategoryDTO().getId())
                 .orElseThrow(
                     () ->
                         new IllegalArgumentException(
@@ -383,9 +392,9 @@ public class EventService {
                             "No existe la combinacion de Evento-Categoria " + event.toString() + " - " + category.toString()
                         )
                 );
-            if (!event.getTournament().getOwner().equals(userExtra.getUser())) {
+            /*if (!event.getTournament().getOwner().equals(userExtra.getUser())) {
                 throw new IllegalArgumentException(("El usuario " + userExtra.getUser().getLogin() + " no es el " + "owner del torneo"));
-            }
+            }*/
             //Cargo los Games
             List<Game> games = gameResultDTO
                 .getFixtureDTO()
@@ -395,6 +404,8 @@ public class EventService {
                 .map(gameService::findByXML)
                 .collect(Collectors.toList());
             gameRepository.saveAll(games);
+
+            log.info(gameResultDTO.getPositions().toString());
 
             //Cargo los Team Points
             List<TeamPoint> teamPoints = gameResultDTO.getPositions().stream().map(gameService::findPosByXML).collect(Collectors.toList());
@@ -413,6 +424,8 @@ public class EventService {
                 teamPointDetail.setEvent(event);
             }
             teamPointDetailRepository.saveAll(teamDetailPoints);
+
+            playerPointService.distPoints(gameResultDTO.getPositions(), event);
 
             // parseo el dto a mi modelo de datos
             log.info("** Parseo terminado");
@@ -591,17 +604,17 @@ public class EventService {
                 body1 =
                     body1 +
                     "      <tr>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    "        <td>" +
                     game.getTeamA().getName() +
                     "</td>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    "        <td>" +
                     game.getPointsA().toString() +
                     "</td>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">-</td>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    "        <td>-</td>\n" +
+                    "        <td>" +
                     game.getPointsB().toString() +
                     "</td>\n" +
-                    "        <td style=\"text-align: center; vertical-align: middle;\">" +
+                    "        <td>" +
                     game.getTeamB().getName() +
                     "</td>\n" +
                     "      </tr>\n";
