@@ -1,8 +1,6 @@
 {
   "pbpointsApp": {
     "tournament": {
-      "yes": "Si",
-      "no": "No",
       "home": {
         "title": "Torneio",
         "refreshListLabel": "Atualizar lista",
@@ -27,6 +25,8 @@
       "logo": "Logo",
       "cantPlayersNextCategory": "Número de jogadores na próxima categoria",
       "qtyTeamGroups": "Número de equipes por grupo",
+      "startSeason": "Start Season",
+      "endSeason": "End Season",
       "event": "Evento",
       "owner": "Proprietário"
     }

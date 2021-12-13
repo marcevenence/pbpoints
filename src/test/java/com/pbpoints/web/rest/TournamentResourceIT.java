@@ -14,6 +14,8 @@ import com.pbpoints.repository.TournamentRepository;
 import com.pbpoints.service.criteria.TournamentCriteria;
 import com.pbpoints.service.dto.TournamentDTO;
 import com.pbpoints.service.mapper.TournamentMapper;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -62,6 +64,14 @@ class TournamentResourceIT {
     private static final Integer UPDATED_QTY_TEAM_GROUPS = 2;
     private static final Integer SMALLER_QTY_TEAM_GROUPS = 1 - 1;
 
+    private static final LocalDate DEFAULT_START_SEASON = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_SEASON = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_START_SEASON = LocalDate.ofEpochDay(-1L);
+
+    private static final LocalDate DEFAULT_END_SEASON = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_SEASON = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_END_SEASON = LocalDate.ofEpochDay(-1L);
+
     private static final String ENTITY_API_URL = "/api/tournaments";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -97,7 +107,9 @@ class TournamentResourceIT {
             .logo(DEFAULT_LOGO)
             .logoContentType(DEFAULT_LOGO_CONTENT_TYPE)
             .cantPlayersNextCategory(DEFAULT_CANT_PLAYERS_NEXT_CATEGORY)
-            .qtyTeamGroups(DEFAULT_QTY_TEAM_GROUPS);
+            .qtyTeamGroups(DEFAULT_QTY_TEAM_GROUPS)
+            .startSeason(DEFAULT_START_SEASON)
+            .endSeason(DEFAULT_END_SEASON);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -121,7 +133,9 @@ class TournamentResourceIT {
             .logo(UPDATED_LOGO)
             .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .cantPlayersNextCategory(UPDATED_CANT_PLAYERS_NEXT_CATEGORY)
-            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS);
+            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS)
+            .startSeason(UPDATED_START_SEASON)
+            .endSeason(UPDATED_END_SEASON);
         // Add required entity
         User user = UserResourceIT.createEntity(em);
         em.persist(user);
@@ -157,6 +171,8 @@ class TournamentResourceIT {
         assertThat(testTournament.getLogoContentType()).isEqualTo(DEFAULT_LOGO_CONTENT_TYPE);
         assertThat(testTournament.getCantPlayersNextCategory()).isEqualTo(DEFAULT_CANT_PLAYERS_NEXT_CATEGORY);
         assertThat(testTournament.getQtyTeamGroups()).isEqualTo(DEFAULT_QTY_TEAM_GROUPS);
+        assertThat(testTournament.getStartSeason()).isEqualTo(DEFAULT_START_SEASON);
+        assertThat(testTournament.getEndSeason()).isEqualTo(DEFAULT_END_SEASON);
     }
 
     @Test
@@ -180,6 +196,42 @@ class TournamentResourceIT {
 
     @Test
     @Transactional
+    void checkStartSeasonIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tournamentRepository.findAll().size();
+        // set the field null
+        tournament.setStartSeason(null);
+
+        // Create the Tournament, which fails.
+        TournamentDTO tournamentDTO = tournamentMapper.toDto(tournament);
+
+        restTournamentMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tournamentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Tournament> tournamentList = tournamentRepository.findAll();
+        assertThat(tournamentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkEndSeasonIsRequired() throws Exception {
+        int databaseSizeBeforeTest = tournamentRepository.findAll().size();
+        // set the field null
+        tournament.setEndSeason(null);
+
+        // Create the Tournament, which fails.
+        TournamentDTO tournamentDTO = tournamentMapper.toDto(tournament);
+
+        restTournamentMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tournamentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Tournament> tournamentList = tournamentRepository.findAll();
+        assertThat(tournamentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllTournaments() throws Exception {
         // Initialize the database
         tournamentRepository.saveAndFlush(tournament);
@@ -197,7 +249,9 @@ class TournamentResourceIT {
             .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))))
             .andExpect(jsonPath("$.[*].cantPlayersNextCategory").value(hasItem(DEFAULT_CANT_PLAYERS_NEXT_CATEGORY)))
-            .andExpect(jsonPath("$.[*].qtyTeamGroups").value(hasItem(DEFAULT_QTY_TEAM_GROUPS)));
+            .andExpect(jsonPath("$.[*].qtyTeamGroups").value(hasItem(DEFAULT_QTY_TEAM_GROUPS)))
+            .andExpect(jsonPath("$.[*].startSeason").value(hasItem(DEFAULT_START_SEASON.toString())))
+            .andExpect(jsonPath("$.[*].endSeason").value(hasItem(DEFAULT_END_SEASON.toString())));
     }
 
     @Test
@@ -219,7 +273,9 @@ class TournamentResourceIT {
             .andExpect(jsonPath("$.logoContentType").value(DEFAULT_LOGO_CONTENT_TYPE))
             .andExpect(jsonPath("$.logo").value(Base64Utils.encodeToString(DEFAULT_LOGO)))
             .andExpect(jsonPath("$.cantPlayersNextCategory").value(DEFAULT_CANT_PLAYERS_NEXT_CATEGORY))
-            .andExpect(jsonPath("$.qtyTeamGroups").value(DEFAULT_QTY_TEAM_GROUPS));
+            .andExpect(jsonPath("$.qtyTeamGroups").value(DEFAULT_QTY_TEAM_GROUPS))
+            .andExpect(jsonPath("$.startSeason").value(DEFAULT_START_SEASON.toString()))
+            .andExpect(jsonPath("$.endSeason").value(DEFAULT_END_SEASON.toString()));
     }
 
     @Test
@@ -738,6 +794,214 @@ class TournamentResourceIT {
 
     @Test
     @Transactional
+    void getAllTournamentsByStartSeasonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason equals to DEFAULT_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.equals=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason equals to UPDATED_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.equals=" + UPDATED_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason not equals to DEFAULT_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.notEquals=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason not equals to UPDATED_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.notEquals=" + UPDATED_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsInShouldWork() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason in DEFAULT_START_SEASON or UPDATED_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.in=" + DEFAULT_START_SEASON + "," + UPDATED_START_SEASON);
+
+        // Get all the tournamentList where startSeason equals to UPDATED_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.in=" + UPDATED_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason is not null
+        defaultTournamentShouldBeFound("startSeason.specified=true");
+
+        // Get all the tournamentList where startSeason is null
+        defaultTournamentShouldNotBeFound("startSeason.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason is greater than or equal to DEFAULT_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.greaterThanOrEqual=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason is greater than or equal to UPDATED_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.greaterThanOrEqual=" + UPDATED_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason is less than or equal to DEFAULT_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.lessThanOrEqual=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason is less than or equal to SMALLER_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.lessThanOrEqual=" + SMALLER_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsLessThanSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason is less than DEFAULT_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.lessThan=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason is less than UPDATED_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.lessThan=" + UPDATED_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByStartSeasonIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where startSeason is greater than DEFAULT_START_SEASON
+        defaultTournamentShouldNotBeFound("startSeason.greaterThan=" + DEFAULT_START_SEASON);
+
+        // Get all the tournamentList where startSeason is greater than SMALLER_START_SEASON
+        defaultTournamentShouldBeFound("startSeason.greaterThan=" + SMALLER_START_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason equals to DEFAULT_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.equals=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason equals to UPDATED_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.equals=" + UPDATED_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason not equals to DEFAULT_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.notEquals=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason not equals to UPDATED_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.notEquals=" + UPDATED_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsInShouldWork() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason in DEFAULT_END_SEASON or UPDATED_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.in=" + DEFAULT_END_SEASON + "," + UPDATED_END_SEASON);
+
+        // Get all the tournamentList where endSeason equals to UPDATED_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.in=" + UPDATED_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason is not null
+        defaultTournamentShouldBeFound("endSeason.specified=true");
+
+        // Get all the tournamentList where endSeason is null
+        defaultTournamentShouldNotBeFound("endSeason.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason is greater than or equal to DEFAULT_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.greaterThanOrEqual=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason is greater than or equal to UPDATED_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.greaterThanOrEqual=" + UPDATED_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason is less than or equal to DEFAULT_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.lessThanOrEqual=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason is less than or equal to SMALLER_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.lessThanOrEqual=" + SMALLER_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsLessThanSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason is less than DEFAULT_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.lessThan=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason is less than UPDATED_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.lessThan=" + UPDATED_END_SEASON);
+    }
+
+    @Test
+    @Transactional
+    void getAllTournamentsByEndSeasonIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        tournamentRepository.saveAndFlush(tournament);
+
+        // Get all the tournamentList where endSeason is greater than DEFAULT_END_SEASON
+        defaultTournamentShouldNotBeFound("endSeason.greaterThan=" + DEFAULT_END_SEASON);
+
+        // Get all the tournamentList where endSeason is greater than SMALLER_END_SEASON
+        defaultTournamentShouldBeFound("endSeason.greaterThan=" + SMALLER_END_SEASON);
+    }
+
+    @Test
+    @Transactional
     void getAllTournamentsByEventIsEqualToSomething() throws Exception {
         // Initialize the database
         tournamentRepository.saveAndFlush(tournament);
@@ -790,7 +1054,9 @@ class TournamentResourceIT {
             .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))))
             .andExpect(jsonPath("$.[*].cantPlayersNextCategory").value(hasItem(DEFAULT_CANT_PLAYERS_NEXT_CATEGORY)))
-            .andExpect(jsonPath("$.[*].qtyTeamGroups").value(hasItem(DEFAULT_QTY_TEAM_GROUPS)));
+            .andExpect(jsonPath("$.[*].qtyTeamGroups").value(hasItem(DEFAULT_QTY_TEAM_GROUPS)))
+            .andExpect(jsonPath("$.[*].startSeason").value(hasItem(DEFAULT_START_SEASON.toString())))
+            .andExpect(jsonPath("$.[*].endSeason").value(hasItem(DEFAULT_END_SEASON.toString())));
 
         // Check, that the count call also returns 1
         restTournamentMockMvc
@@ -846,7 +1112,9 @@ class TournamentResourceIT {
             .logo(UPDATED_LOGO)
             .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .cantPlayersNextCategory(UPDATED_CANT_PLAYERS_NEXT_CATEGORY)
-            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS);
+            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS)
+            .startSeason(UPDATED_START_SEASON)
+            .endSeason(UPDATED_END_SEASON);
         TournamentDTO tournamentDTO = tournamentMapper.toDto(updatedTournament);
 
         restTournamentMockMvc
@@ -869,6 +1137,8 @@ class TournamentResourceIT {
         assertThat(testTournament.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
         assertThat(testTournament.getCantPlayersNextCategory()).isEqualTo(UPDATED_CANT_PLAYERS_NEXT_CATEGORY);
         assertThat(testTournament.getQtyTeamGroups()).isEqualTo(UPDATED_QTY_TEAM_GROUPS);
+        assertThat(testTournament.getStartSeason()).isEqualTo(UPDATED_START_SEASON);
+        assertThat(testTournament.getEndSeason()).isEqualTo(UPDATED_END_SEASON);
     }
 
     @Test
@@ -953,7 +1223,9 @@ class TournamentResourceIT {
             .status(UPDATED_STATUS)
             .categorize(UPDATED_CATEGORIZE)
             .cantPlayersNextCategory(UPDATED_CANT_PLAYERS_NEXT_CATEGORY)
-            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS);
+            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS)
+            .startSeason(UPDATED_START_SEASON)
+            .endSeason(UPDATED_END_SEASON);
 
         restTournamentMockMvc
             .perform(
@@ -975,6 +1247,8 @@ class TournamentResourceIT {
         assertThat(testTournament.getLogoContentType()).isEqualTo(DEFAULT_LOGO_CONTENT_TYPE);
         assertThat(testTournament.getCantPlayersNextCategory()).isEqualTo(UPDATED_CANT_PLAYERS_NEXT_CATEGORY);
         assertThat(testTournament.getQtyTeamGroups()).isEqualTo(UPDATED_QTY_TEAM_GROUPS);
+        assertThat(testTournament.getStartSeason()).isEqualTo(UPDATED_START_SEASON);
+        assertThat(testTournament.getEndSeason()).isEqualTo(UPDATED_END_SEASON);
     }
 
     @Test
@@ -997,7 +1271,9 @@ class TournamentResourceIT {
             .logo(UPDATED_LOGO)
             .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .cantPlayersNextCategory(UPDATED_CANT_PLAYERS_NEXT_CATEGORY)
-            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS);
+            .qtyTeamGroups(UPDATED_QTY_TEAM_GROUPS)
+            .startSeason(UPDATED_START_SEASON)
+            .endSeason(UPDATED_END_SEASON);
 
         restTournamentMockMvc
             .perform(
@@ -1019,6 +1295,8 @@ class TournamentResourceIT {
         assertThat(testTournament.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
         assertThat(testTournament.getCantPlayersNextCategory()).isEqualTo(UPDATED_CANT_PLAYERS_NEXT_CATEGORY);
         assertThat(testTournament.getQtyTeamGroups()).isEqualTo(UPDATED_QTY_TEAM_GROUPS);
+        assertThat(testTournament.getStartSeason()).isEqualTo(UPDATED_START_SEASON);
+        assertThat(testTournament.getEndSeason()).isEqualTo(UPDATED_END_SEASON);
     }
 
     @Test

@@ -10,6 +10,10 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ tournament.id }}</span>
+        </dd>
         <dt><span jhiTranslate="pbpointsApp.tournament.name">Name</span></dt>
         <dd>
           <span>{{ tournament.name }}</span>
@@ -46,6 +50,14 @@
         <dt><span jhiTranslate="pbpointsApp.tournament.qtyTeamGroups">Qty Team Groups</span></dt>
         <dd>
           <span>{{ tournament.qtyTeamGroups }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.startSeason">Start Season</span></dt>
+        <dd>
+          <span>{{ tournament.startSeason | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.tournament.endSeason">End Season</span></dt>
+        <dd>
+          <span>{{ tournament.endSeason | formatMediumDate }}</span>
         </dd>
         <dt><span jhiTranslate="pbpointsApp.tournament.owner">Owner</span></dt>
         <dd>

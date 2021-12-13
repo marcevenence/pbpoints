@@ -3,6 +3,7 @@ package com.pbpoints.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pbpoints.domain.enumeration.Status;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -50,9 +51,17 @@ public class Tournament implements Serializable {
     @Column(name = "qty_team_groups")
     private Integer qtyTeamGroups;
 
+    @NotNull
+    @Column(name = "start_season", nullable = false)
+    private LocalDate startSeason;
+
+    @NotNull
+    @Column(name = "end_season", nullable = false)
+    private LocalDate endSeason;
+
     @OneToMany(mappedBy = "tournament")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "city", "tournament" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "tournament", "field" }, allowSetters = true)
     private Set<Event> events = new HashSet<>();
 
     @ManyToOne(optional = false)
@@ -177,6 +186,32 @@ public class Tournament implements Serializable {
         this.qtyTeamGroups = qtyTeamGroups;
     }
 
+    public LocalDate getStartSeason() {
+        return this.startSeason;
+    }
+
+    public Tournament startSeason(LocalDate startSeason) {
+        this.startSeason = startSeason;
+        return this;
+    }
+
+    public void setStartSeason(LocalDate startSeason) {
+        this.startSeason = startSeason;
+    }
+
+    public LocalDate getEndSeason() {
+        return this.endSeason;
+    }
+
+    public Tournament endSeason(LocalDate endSeason) {
+        this.endSeason = endSeason;
+        return this;
+    }
+
+    public void setEndSeason(LocalDate endSeason) {
+        this.endSeason = endSeason;
+    }
+
     public Set<Event> getEvents() {
         return this.events;
     }
@@ -253,6 +288,8 @@ public class Tournament implements Serializable {
             ", logoContentType='" + getLogoContentType() + "'" +
             ", cantPlayersNextCategory=" + getCantPlayersNextCategory() +
             ", qtyTeamGroups=" + getQtyTeamGroups() +
+            ", startSeason='" + getStartSeason() + "'" +
+            ", endSeason='" + getEndSeason() + "'" +
             "}";
     }
 }

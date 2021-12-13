@@ -101,7 +101,7 @@
           />
         </div>
 
-        <div class="form-group" *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.qtyTeamGroups" for="field_qtyTeamGroups"
             >Qty Team Groups</label
           >
@@ -113,6 +113,54 @@
             data-cy="qtyTeamGroups"
             formControlName="qtyTeamGroups"
           />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.startSeason" for="field_startSeason">Start Season</label>
+          <div class="input-group">
+            <input
+              id="field_startSeason"
+              data-cy="startSeason"
+              type="date"
+              class="form-control"
+              name="startSeason"
+              formControlName="startSeason"
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
+          <div *ngIf="editForm.get('startSeason')!.invalid && (editForm.get('startSeason')!.dirty || editForm.get('startSeason')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startSeason')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.tournament.endSeason" for="field_endSeason">End Season</label>
+          <div class="input-group">
+            <input
+              id="field_endSeason"
+              data-cy="endSeason"
+              type="date"
+              class="form-control"
+              name="endSeason"
+              formControlName="endSeason"
+              placeholder="YYYY-MM-DD"
+            />
+          </div>
+          <div *ngIf="editForm.get('endSeason')!.invalid && (editForm.get('endSeason')!.dirty || editForm.get('endSeason')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endSeason')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
         </div>
 
         <div class="form-group">

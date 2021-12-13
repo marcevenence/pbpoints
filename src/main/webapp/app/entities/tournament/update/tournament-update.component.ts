@@ -32,7 +32,9 @@ export class TournamentUpdateComponent implements OnInit {
     logoContentType: [],
     cantPlayersNextCategory: [],
     qtyTeamGroups: [],
-    owner: [Validators.required],
+    startSeason: [null, [Validators.required]],
+    endSeason: [null, [Validators.required]],
+    owner: [null, Validators.required],
   });
 
   constructor(
@@ -128,6 +130,8 @@ export class TournamentUpdateComponent implements OnInit {
       logoContentType: tournament.logoContentType,
       cantPlayersNextCategory: tournament.cantPlayersNextCategory,
       qtyTeamGroups: tournament.qtyTeamGroups,
+      startSeason: tournament.startSeason,
+      endSeason: tournament.endSeason,
       owner: tournament.owner,
     });
 
@@ -154,6 +158,8 @@ export class TournamentUpdateComponent implements OnInit {
       logo: this.editForm.get(['logo'])!.value,
       cantPlayersNextCategory: this.editForm.get(['cantPlayersNextCategory'])!.value,
       qtyTeamGroups: this.editForm.get(['qtyTeamGroups'])!.value,
+      startSeason: this.editForm.get(['startSeason'])!.value,
+      endSeason: this.editForm.get(['endSeason'])!.value,
       owner: this.editForm.get(['owner'])!.value,
     };
   }

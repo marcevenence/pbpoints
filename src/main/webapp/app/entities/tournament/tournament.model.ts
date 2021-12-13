@@ -1,3 +1,4 @@
+import * as dayjs from 'dayjs';
 import { IEvent } from 'app/entities/event/event.model';
 import { IUser } from 'app/entities/user/user.model';
 import { Status } from 'app/entities/enumerations/status.model';
@@ -12,6 +13,8 @@ export interface ITournament {
   logo?: string | null;
   cantPlayersNextCategory?: number | null;
   qtyTeamGroups?: number | null;
+  startSeason?: dayjs.Dayjs;
+  endSeason?: dayjs.Dayjs;
   events?: IEvent[] | null;
   owner?: IUser;
 }
@@ -27,6 +30,8 @@ export class Tournament implements ITournament {
     public logo?: string | null,
     public cantPlayersNextCategory?: number | null,
     public qtyTeamGroups?: number | null,
+    public startSeason?: dayjs.Dayjs,
+    public endSeason?: dayjs.Dayjs,
     public events?: IEvent[] | null,
     public owner?: IUser
   ) {

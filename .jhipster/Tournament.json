@@ -30,6 +30,16 @@
     {
       "fieldName": "qtyTeamGroups",
       "fieldType": "Integer"
+    },
+    {
+      "fieldName": "startSeason",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "endSeason",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [

@@ -60,6 +60,27 @@ public class TournamentService {
     }
 
     /**
+     * Partially update a tournament.
+     *
+     * @param tournamentDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<TournamentDTO> partialUpdate(TournamentDTO tournamentDTO) {
+        log.debug("Request to partially update Tournament : {}", tournamentDTO);
+
+        return tournamentRepository
+            .findById(tournamentDTO.getId())
+            .map(
+                existingTournament -> {
+                    tournamentMapper.partialUpdate(existingTournament, tournamentDTO);
+                    return existingTournament;
+                }
+            )
+            .map(tournamentRepository::save)
+            .map(tournamentMapper::toDto);
+    }
+
+    /**
      * Get all the tournaments.
      *
      * @param pageable the pagination information.

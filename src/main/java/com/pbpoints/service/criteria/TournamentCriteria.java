@@ -9,6 +9,7 @@ import tech.jhipster.service.filter.DoubleFilter;
 import tech.jhipster.service.filter.Filter;
 import tech.jhipster.service.filter.FloatFilter;
 import tech.jhipster.service.filter.IntegerFilter;
+import tech.jhipster.service.filter.LocalDateFilter;
 import tech.jhipster.service.filter.LongFilter;
 import tech.jhipster.service.filter.StringFilter;
 
@@ -56,6 +57,10 @@ public class TournamentCriteria implements Serializable, Criteria {
 
     private IntegerFilter qtyTeamGroups;
 
+    private LocalDateFilter startSeason;
+
+    private LocalDateFilter endSeason;
+
     private LongFilter eventId;
 
     private LongFilter ownerId;
@@ -70,6 +75,8 @@ public class TournamentCriteria implements Serializable, Criteria {
         this.categorize = other.categorize == null ? null : other.categorize.copy();
         this.cantPlayersNextCategory = other.cantPlayersNextCategory == null ? null : other.cantPlayersNextCategory.copy();
         this.qtyTeamGroups = other.qtyTeamGroups == null ? null : other.qtyTeamGroups.copy();
+        this.startSeason = other.startSeason == null ? null : other.startSeason.copy();
+        this.endSeason = other.endSeason == null ? null : other.endSeason.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.ownerId = other.ownerId == null ? null : other.ownerId.copy();
     }
@@ -184,6 +191,36 @@ public class TournamentCriteria implements Serializable, Criteria {
         this.qtyTeamGroups = qtyTeamGroups;
     }
 
+    public LocalDateFilter getStartSeason() {
+        return startSeason;
+    }
+
+    public LocalDateFilter startSeason() {
+        if (startSeason == null) {
+            startSeason = new LocalDateFilter();
+        }
+        return startSeason;
+    }
+
+    public void setStartSeason(LocalDateFilter startSeason) {
+        this.startSeason = startSeason;
+    }
+
+    public LocalDateFilter getEndSeason() {
+        return endSeason;
+    }
+
+    public LocalDateFilter endSeason() {
+        if (endSeason == null) {
+            endSeason = new LocalDateFilter();
+        }
+        return endSeason;
+    }
+
+    public void setEndSeason(LocalDateFilter endSeason) {
+        this.endSeason = endSeason;
+    }
+
     public LongFilter getEventId() {
         return eventId;
     }
@@ -231,6 +268,8 @@ public class TournamentCriteria implements Serializable, Criteria {
             Objects.equals(categorize, that.categorize) &&
             Objects.equals(cantPlayersNextCategory, that.cantPlayersNextCategory) &&
             Objects.equals(qtyTeamGroups, that.qtyTeamGroups) &&
+            Objects.equals(startSeason, that.startSeason) &&
+            Objects.equals(endSeason, that.endSeason) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(ownerId, that.ownerId)
         );
@@ -238,7 +277,19 @@ public class TournamentCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, closeInscrDays, status, categorize, cantPlayersNextCategory, qtyTeamGroups, eventId, ownerId);
+        return Objects.hash(
+            id,
+            name,
+            closeInscrDays,
+            status,
+            categorize,
+            cantPlayersNextCategory,
+            qtyTeamGroups,
+            startSeason,
+            endSeason,
+            eventId,
+            ownerId
+        );
     }
 
     // prettier-ignore
@@ -252,6 +303,8 @@ public class TournamentCriteria implements Serializable, Criteria {
             (categorize != null ? "categorize=" + categorize + ", " : "") +
             (cantPlayersNextCategory != null ? "cantPlayersNextCategory=" + cantPlayersNextCategory + ", " : "") +
             (qtyTeamGroups != null ? "qtyTeamGroups=" + qtyTeamGroups + ", " : "") +
+            (startSeason != null ? "startSeason=" + startSeason + ", " : "") +
+            (endSeason != null ? "endSeason=" + endSeason + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (ownerId != null ? "ownerId=" + ownerId + ", " : "") +
             "}";
