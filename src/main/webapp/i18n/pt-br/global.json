@@ -226,7 +226,11 @@
       "open": "Abrir",
       "save": "Salvar",
       "view": "Visualizar",
-      "find": "Buscar"
+      "find": "Buscar",
+      "submit": "Importar"
+    },
+    "import": {
+      "title": "Importar archivo"
     },
     "detail": {
       "field": "Campo",

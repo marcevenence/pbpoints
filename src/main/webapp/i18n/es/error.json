@@ -22,6 +22,8 @@
     "noEventCategoriesFound": "No hay categorias asignadas",
     "idexists": "Este ID no existe",
     "EventCancelled": "Evento Cancelado",
-    "inscrNotFinish": "Inscripcion no finalizada"
+    "inscrNotFinish": "Inscripcion no finalizada",
+    "XMLerrorReading": "Error al leer Resultados",
+    "XMLerrorWriting": "Error al generar Archivo"
   }
 }

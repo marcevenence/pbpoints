@@ -7,6 +7,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { EventService } from '../service/event.service';
 import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.component';
+import { EventSubmitDialogComponent } from '../submit/event-submit-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 
 @Component({
@@ -151,7 +152,6 @@ export class EventComponent implements OnInit {
       this.tourId = history.state.tourId;
     }
     localStorage.setItem('TOURNAMENTID', this.tourId.toString());
-
     this.loadAll();
   }
 
@@ -184,6 +184,12 @@ export class EventComponent implements OnInit {
     this.eventService.generateXML(id).subscribe(() => {
       alert('XML Generado con exito');
     });
+  }
+
+  submitFile(): void {
+    const modalRef = this.modalService.open(EventSubmitDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.event = event;
+    modalRef.closed.subscribe();
   }
 
   protected sort(): string[] {

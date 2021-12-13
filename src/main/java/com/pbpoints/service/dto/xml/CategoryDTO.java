@@ -12,6 +12,10 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CategoryDTO {
 
+    @JacksonXmlProperty(localName = "ID")
+    @NotBlank
+    private Long id;
+
     @JacksonXmlProperty(localName = "NAME")
     @NotBlank
     private String name;
@@ -20,6 +24,14 @@ public class CategoryDTO {
     @Valid
     @NotNull
     private List<GameDTO> games;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -39,6 +51,6 @@ public class CategoryDTO {
 
     @Override
     public String toString() {
-        return "CategoryDTO{" + "name='" + name + '\'' + ", games=" + games + '}';
+        return "CategoryDTO{" + "id=" + id + ", name='" + name + '\'' + ", games=" + games + '}';
     }
 }

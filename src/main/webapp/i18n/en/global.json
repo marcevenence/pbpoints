@@ -225,7 +225,11 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "find": "Find"
+      "find": "Find",
+      "submit": "Import"
+    },
+    "import": {
+      "title": "Import file"
     },
     "detail": {
       "field": "Field",

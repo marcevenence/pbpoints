@@ -194,7 +194,11 @@ public class EventResource {
     @PostMapping(value = "/events/importXML", consumes = { "multipart/form-data" })
     public ResponseEntity<?> write(@RequestParam(value = "file") MultipartFile multipartFile) throws Exception {
         log.debug("REST request to Import file: {}", multipartFile);
-        return ResponseEntity.ok(eventService.submitXML(multipartFile));
+        if (eventService.submitXML(multipartFile)) {
+            return ResponseEntity.noContent().build();
+        } else {
+            throw new BadRequestAlertException("Error when try to generate XML", ENTITY_NAME, "XMLerrorWriting");
+        }
     }
 
     @GetMapping("/events/generateScore/{id}")

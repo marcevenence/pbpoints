@@ -1,0 +1,29 @@
+<form name="submitForm" (ngSubmit)="upload()">
+  <div class="modal-header">
+    <h4 class="modal-title" data-cy="eventSubmitDialogHeading" jhiTranslate="entity.import.title">Confirm operation</h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+
+    <div class="row">
+      <div class="col-8">
+        <label class="btn btn-default p-0">
+          <input type="file" (change)="selectFile($event)" />
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+      <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+    </button>
+
+    <button id="jhi-confirm-submit-event" data-cy="entityConfirmSubmitButton" type="submit" class="btn btn-danger">
+      <fa-icon icon="file-upload"></fa-icon>&nbsp;<span jhiTranslate="entity.action.submit">Submit</span>
+    </button>
+  </div>
+</form>

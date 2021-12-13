@@ -9,7 +9,11 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PositionDTO {
 
-    @JacksonXmlProperty(localName = "CATEGORY")
+    @JacksonXmlProperty(localName = "CATEGORY_ID")
+    @NotNull
+    private Long categoryId;
+
+    @JacksonXmlProperty(localName = "CATEGORY_NAME")
     @NotNull
     private String category;
 
@@ -24,6 +28,14 @@ public class PositionDTO {
     @JacksonXmlProperty(localName = "POINTS")
     @NotNull
     private Float points;
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public String getCategory() {
         return category;
@@ -59,6 +71,20 @@ public class PositionDTO {
 
     @Override
     public String toString() {
-        return "PositionDTO{" + "position=" + position + ", teamId='" + teamId + '\'' + ", points=" + points + '}';
+        return (
+            "PositionDTO{" +
+            "categoryId=" +
+            categoryId +
+            ", category='" +
+            category +
+            '\'' +
+            ", position=" +
+            position +
+            ", teamId=" +
+            teamId +
+            ", points=" +
+            points +
+            '}'
+        );
     }
 }

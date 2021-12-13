@@ -1,6 +1,7 @@
 package com.pbpoints.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import javax.persistence.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -133,15 +134,24 @@ public class Team implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "Team{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", active='" + getActive() + "'" +
-            ", logo=''" +
-            ", logoContentType='" + getLogoContentType() + "'" +
-            "}";
+        return (
+            "Team{" +
+            "id=" +
+            id +
+            ", name='" +
+            name +
+            '\'' +
+            ", active=" +
+            active +
+            ", logo= ''" +
+            ", logoContentType='" +
+            logoContentType +
+            '\'' +
+            ", owner=" +
+            owner +
+            '}'
+        );
     }
 }

@@ -1,8 +1,11 @@
 package com.pbpoints.service;
 
+import com.pbpoints.domain.Event;
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.User;
 import com.pbpoints.service.dto.PlayerPointDTO;
+import com.pbpoints.service.dto.xml.PositionDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +46,6 @@ public interface PlayerPointService {
     void delete(Long id);
 
     Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament);
+
+    public void distPoints(List<PositionDTO> positions, Event event);
 }

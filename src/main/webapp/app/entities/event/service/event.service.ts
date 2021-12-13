@@ -92,6 +92,12 @@ export class EventService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
+  submit(file: File): Observable<HttpResponse<any>> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    return this.http.post<IEvent>(`${this.resourceUrl}/importXML`, formData, { observe: 'response' });
+  }
+
   protected convertDateFromClient(event: IEvent): IEvent {
     return Object.assign({}, event, {
       fromDate: event.fromDate?.isValid() ? event.fromDate.format(DATE_FORMAT) : undefined,

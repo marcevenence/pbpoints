@@ -20,6 +20,8 @@
     "noEventCategoriesFound": "Não há categorias atribuídas",
     "idexists": "Este ID não existe",
     "EventCancelled": "Evento Cancelado",
-    "inscrNotFinish": "Registro não completado"
+    "inscrNotFinish": "Registro não completado",
+    "XMLerrorReading": "Error al leer Resultados",
+    "XMLerrorWriting": "Error al generar Archivo"
   }
 }

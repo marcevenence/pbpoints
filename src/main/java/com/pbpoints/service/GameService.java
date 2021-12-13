@@ -119,13 +119,21 @@ public class GameService {
     @Transactional(readOnly = true)
     public TeamPoint findPosByXML(com.pbpoints.service.dto.xml.PositionDTO positionDTO) {
         log.info("Transformando TeamPoint entity");
-        TeamPoint teamPoint = teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get());
-        log.info("TeamPointId encontrado: {}" + teamPoint.getId());
-        if (teamPoint.getId() == null) {
-            teamPoint.setTeam(teamRepository.findById(positionDTO.getTeamId()).get());
-            teamPoint.setPoints(positionDTO.getPoints());
-        } else {
+        TeamPoint teamPoint = new TeamPoint();
+        try {
+            teamPoint = teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get());
+            log.info("TeamPointId encontrado: {}" + teamPoint.getId());
             teamPoint.setPoints(teamPoint.getPoints() + positionDTO.getPoints());
+        } catch (Exception e) {
+            log.info("TeamPoint no encontrado");
+            teamPoint = new TeamPoint();
+            log.info("Team ID: {}", positionDTO.getTeamId().toString());
+            log.info("Team: {}", teamRepository.findById(positionDTO.getTeamId()).get());
+            teamPoint.setTeam(teamRepository.findById(positionDTO.getTeamId()).get());
+            log.info("TeamPoint Set team OK");
+            teamPoint.setPoints(positionDTO.getPoints());
+            log.info("TeamPoint Set Points OK");
+            log.info("TeamPoint nuevo");
         }
         return teamPoint;
     }
@@ -136,6 +144,7 @@ public class GameService {
         TeamDetailPoint teamDetailPoint = new TeamDetailPoint();
         teamDetailPoint.setTeamPoint(teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get()));
         teamDetailPoint.setPoints(positionDTO.getPoints());
+        teamDetailPoint.setPosition(positionDTO.getPosition());
         return teamDetailPoint;
     }
 
@@ -153,12 +162,11 @@ public class GameService {
                     .orElseThrow(() -> new IllegalArgumentException("No existe un Game con el ID: " + gameDTO.getId()));
             log.debug("Buscando Team A");
             Team teamA = teamRepository
-                .findByName(gameDTO.getTeamA())
+                .findById(gameDTO.getTeamAId())
                 .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamA()));
-            log.debug("Buscando Team A");
             log.debug("Buscando Team B");
             Team teamB = teamRepository
-                .findByName(gameDTO.getTeamB())
+                .findById(gameDTO.getTeamBId())
                 .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamB()));
             if (!game.getTeamA().equals(teamA)) {
                 throw new IllegalArgumentException("El Team - " + teamA.getName() + " - no pertenece al Game informado");
@@ -170,26 +178,25 @@ public class GameService {
             log.debug("No se encontro Game");
             log.debug("Buscando Team A");
             Team teamA = teamRepository
-                .findByName(gameDTO.getTeamA())
+                .findById(gameDTO.getTeamAId())
                 .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamA()));
-            log.debug("Buscando Team A");
             log.debug("Buscando Team B");
             Team teamB = teamRepository
-                .findByName(gameDTO.getTeamB())
+                .findById(gameDTO.getTeamBId())
                 .orElseThrow(() -> new IllegalArgumentException("No existe el team " + gameDTO.getTeamB()));
         }
 
-        if (!game.getStatus().equals(Status.CREATED)) {
+        if (!game.getStatus().equals(Status.CREATED) && !game.getStatus().equals(Status.IN_PROGRESS)) {
             throw new IllegalArgumentException(
                 "El game está en estado - " + game.getStatus() + " -, por lo que no se pueden modificar los datos"
             );
         }
 
         // actualizo los datos
-        game.setSplitDeckNum(gameDTO.getSplitDeckNum());
+        //game.setSplitDeckNum(gameDTO.getSplitDeckNum());
         game.setTimeLeft(gameDTO.getTimeLeft());
-        game.setClasif(gameDTO.getClasification());
-        game.setGroup(gameDTO.getGroup());
+        //game.setClasif(gameDTO.getClasification());
+        //game.setGroup(gameDTO.getGroup());
         game.setPointsA(gameDTO.getPointsA());
         game.setOvertimeA(gameDTO.getOvertimeA());
         game.setUvuA(gameDTO.getUvuA());

@@ -22,6 +22,10 @@ public class GameDTO {
     @NotNull
     private String clasification;
 
+    @JacksonXmlProperty(localName = "TEAM_A_ID")
+    @NotBlank
+    private Long teamAId;
+
     @JacksonXmlProperty(localName = "TEAM_A")
     @NotBlank
     private String teamA;
@@ -37,6 +41,10 @@ public class GameDTO {
     @JacksonXmlProperty(localName = "UVU_A")
     @NotNull
     private Integer uvuA;
+
+    @JacksonXmlProperty(localName = "TEAM_B_ID")
+    @NotBlank
+    private Long teamBId;
 
     @JacksonXmlProperty(localName = "TEAM_B")
     @NotBlank
@@ -164,6 +172,22 @@ public class GameDTO {
         this.group = group;
     }
 
+    public Long getTeamAId() {
+        return teamAId;
+    }
+
+    public void setTeamAId(Long teamAId) {
+        this.teamAId = teamAId;
+    }
+
+    public Long getTeamBId() {
+        return teamBId;
+    }
+
+    public void setTeamBId(Long teamBId) {
+        this.teamBId = teamBId;
+    }
+
     @Override
     public String toString() {
         return (
@@ -175,6 +199,8 @@ public class GameDTO {
             ", clasification='" +
             clasification +
             '\'' +
+            ", teamAId=" +
+            teamAId +
             ", teamA='" +
             teamA +
             '\'' +
@@ -184,6 +210,8 @@ public class GameDTO {
             overtimeA +
             ", uvuA=" +
             uvuA +
+            ", teamBId=" +
+            teamBId +
             ", teamB='" +
             teamB +
             '\'' +
@@ -195,8 +223,9 @@ public class GameDTO {
             uvuB +
             ", timeLeft=" +
             timeLeft +
-            ", group=" +
+            ", group='" +
             group +
+            '\'' +
             '}'
         );
     }

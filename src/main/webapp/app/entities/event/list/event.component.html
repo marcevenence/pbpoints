@@ -93,6 +93,16 @@
                             <fa-icon [icon]="'download'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
                         </button>-->
+              <button
+                *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
+                type="submit"
+                (click)="submitFile()"
+                class="btn btn-danger btn-sm"
+                data-cy="entitySubmitButton"
+              >
+                <fa-icon icon="file-upload"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.submit">Submit</span>
+              </button>
               <ng-container *ngIf="canGenerate(event.status!)">
                 <button type="submit" (click)="generatePDF(event.id!)" class="btn btn-primary btn-sm" data-cy="entityPDFButton">
                   <fa-icon [icon]="'file-pdf'"></fa-icon>
@@ -107,7 +117,7 @@
                 [title]="'global.menu.custom.xml.export' | translate"
               >
                 <!--<fa-icon [icon]="'download'"></fa-icon>-->
-                <fa-icon [icon]="'file-alt'"></fa-icon>
+                <fa-icon [icon]="'download'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
               </button>
               <button
