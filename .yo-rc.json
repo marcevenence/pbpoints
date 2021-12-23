@@ -70,9 +70,10 @@
       "Sponsor",
       "Field",
       "TournamentGroup",
-      "Equipment"
+      "Equipment",
+      "TeamCategoryPoint"
     ],
-    "lastLiquibaseTimestamp": 1637876315000
+    "lastLiquibaseTimestamp": 1640268783000
   },
   "git-provider": "GitHub",
   "git-company": "marcevenence",

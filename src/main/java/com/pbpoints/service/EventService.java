@@ -384,7 +384,7 @@ public class EventService {
                             "No existe una Categoria con el nombre: " + gameResultDTO.getFixtureDTO().getCategoryDTO().getName()
                         )
                 );
-            eventCategoryRepository
+            EventCategory eventCategory = eventCategoryRepository
                 .findByEventAndCategory(event, category)
                 .orElseThrow(
                     () ->
@@ -424,6 +424,20 @@ public class EventService {
                 teamPointDetail.setEvent(event);
             }
             teamPointDetailRepository.saveAll(teamDetailPoints);
+
+            for (TeamDetailPoint teamPointDetail : teamDetailPoints) {
+                //Cargo los Team Category Points
+                List<TeamCategoryPoint> teamCategoryPoints = gameResultDTO
+                    .getPositions()
+                    .stream()
+                    .map(gameService::findPosCatByXML)
+                    .collect(Collectors.toList());
+                for (TeamCategoryPoint teamCategoryPoint : teamCategoryPoints) {
+                    teamCategoryPoint.setEventCategory(eventCategory);
+                    teamCategoryPoint.setTeamDetailPoint(teamPointDetail);
+                }
+                teamPointDetailRepository.saveAll(teamDetailPoints);
+            }
 
             playerPointService.distPoints(gameResultDTO.getPositions(), event);
 

@@ -1,0 +1,26 @@
+{
+  "pbpointsApp": {
+    "teamCategoryPoint": {
+      "home": {
+        "title": "Team Category Points",
+        "refreshListLabel": "Atualizar lista",
+        "createLabel": "Criar novo Team Category Point",
+        "createOrEditLabel": "Criar ou editar Team Category Point",
+        "notFound": "Nenhum Team Category Point encontrado"
+      },
+      "created": "Um novo Team Category Point foi criado com o identificador {{ param }}",
+      "updated": "Um Team Category Point foi atualizado com o identificador {{ param }}",
+      "deleted": "Um Team Category Point foi excluído com o identificador {{ param }}",
+      "delete": {
+        "question": "Tem certeza de que deseja excluir Team Category Point {{ id }}?"
+      },
+      "detail": {
+        "title": "Team Category Point"
+      },
+      "id": "ID",
+      "points": "Points",
+      "teamDetailPoint": "Team Detail Point",
+      "eventCategory": "Event Category"
+    }
+  }
+}

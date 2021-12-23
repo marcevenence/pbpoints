@@ -1,0 +1,33 @@
+{
+  "fields": [
+    {
+      "fieldName": "points",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipName": "teamDetailPoint",
+      "otherEntityName": "teamDetailPoint",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipName": "eventCategory",
+      "otherEntityName": "eventCategory",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    }
+  ],
+  "service": "serviceClass",
+  "dto": "mapstruct",
+  "jpaMetamodelFiltering": true,
+  "readOnly": false,
+  "pagination": "no",
+  "name": "TeamCategoryPoint",
+  "changelogDate": "20211223141303"
+}

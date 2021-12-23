@@ -1,9 +1,6 @@
 package com.pbpoints.service;
 
-import com.pbpoints.domain.Game;
-import com.pbpoints.domain.Team;
-import com.pbpoints.domain.TeamDetailPoint;
-import com.pbpoints.domain.TeamPoint;
+import com.pbpoints.domain.*;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.GameRepository;
 import com.pbpoints.repository.TeamPointRepository;
@@ -144,8 +141,15 @@ public class GameService {
         TeamDetailPoint teamDetailPoint = new TeamDetailPoint();
         teamDetailPoint.setTeamPoint(teamPointRepository.findByTeam(teamRepository.findById(positionDTO.getTeamId()).get()));
         teamDetailPoint.setPoints(positionDTO.getPoints());
-        teamDetailPoint.setPosition(positionDTO.getPosition());
         return teamDetailPoint;
+    }
+
+    @Transactional(readOnly = true)
+    public TeamCategoryPoint findPosCatByXML(com.pbpoints.service.dto.xml.PositionDTO positionDTO) {
+        log.info("Transformando TeamCategoryPoint entity");
+        TeamCategoryPoint teamCategoryPoint = new TeamCategoryPoint();
+        teamCategoryPoint.setPoints(positionDTO.getPoints());
+        return teamCategoryPoint;
     }
 
     @Transactional(readOnly = true)

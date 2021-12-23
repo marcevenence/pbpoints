@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity TeamCategoryPoint.
+    -->
+    <changeSet id="20211223141303-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="team_detail_point_id"
+                                 baseTableName="team_category_point"
+                                 constraintName="fk_team_category_point__team_detail_point_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="team_detail_point"/>
+
+        <addForeignKeyConstraint baseColumnNames="event_category_id"
+                                 baseTableName="team_category_point"
+                                 constraintName="fk_team_category_point__event_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event_category"/>
+    </changeSet>
+</databaseChangeLog>

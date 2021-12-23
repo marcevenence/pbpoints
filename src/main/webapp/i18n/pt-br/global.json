@@ -104,6 +104,8 @@
         "sponsor": "Mis Sponsors",
         "tournamentGroup": "Tournament Group",
         "equipment": "Equipment",
+        "teamCategoryPoint": "Detalle Puntos por Categoria",
+        "location": "Location",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -103,6 +103,9 @@
         "mainRoster": "My Players",
         "sponsor": "My Sponsors",
         "equipment": "Equipment",
+        "teamCategoryPoint": "Team Category Point",
+        "location": "Location",
+        "tournamentGroup": "Tournament Group",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
