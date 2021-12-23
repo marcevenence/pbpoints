@@ -5,12 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { AccountService } from 'app/core/auth/account.service';
-import { IRoster } from '../roster.model';
-import { RosterService } from '../service/roster.service';
-import { IPlayer } from 'app/entities/player/player.model';
-import { PlayerService } from 'app/entities/player/service/player.service';
-import { IUserExtra } from 'app/entities/user-extra/user-extra.model';
-import { UserExtraService } from 'app/entities/user-extra/service/user-extra.service';
+import { IRosterEvent } from '../roster-event.model';
+import { RosterEventService } from '../service/roster-event.service';
 import { IEventCategory } from 'app/entities/event-category/event-category.model';
 import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
 
@@ -19,10 +15,8 @@ import { EventCategoryService } from 'app/entities/event-category/service/event-
   templateUrl: './roster-search.component.html',
 })
 export class RosterSearchComponent implements OnInit {
-  rosters?: IRoster[];
-  players?: IPlayer[];
+  rosters?: IRosterEvent[];
   currentAccount: any;
-  userExtras?: IUserExtra[];
   eventCategoriesSharedCollection: IEventCategory[] = [];
   predicate!: string;
   ascending!: boolean;
@@ -32,9 +26,7 @@ export class RosterSearchComponent implements OnInit {
   });
 
   constructor(
-    protected rosterService: RosterService,
-    protected playerService: PlayerService,
-    protected userExtraService: UserExtraService,
+    protected rosterEventService: RosterEventService,
     protected eventCategoryService: EventCategoryService,
     protected activatedRoute: ActivatedRoute,
     protected dataUtils: DataUtils,
@@ -45,7 +37,6 @@ export class RosterSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.rosters = [];
-    this.players = [];
     this.accountService.identity().subscribe(account => {
       this.currentAccount = account;
     });
@@ -59,31 +50,9 @@ export class RosterSearchComponent implements OnInit {
   }
 
   onChange(): void {
-    this.rosterService
-      .query({
-        'eventCategoryId.equals': this.findForm.get(['eventCategory'])!.value?.id,
-      })
-      .subscribe(
-        (res: HttpResponse<IRoster[]>) => {
-          this.rosters = res.body ?? [];
-        },
-        () => {
-          this.onError();
-        }
-      );
-
-    this.playerService.query({}).subscribe(
-      (res: HttpResponse<IPlayer[]>) => {
-        this.players = res.body ?? [];
-      },
-      () => {
-        this.onError();
-      }
-    );
-
-    this.userExtraService.query().subscribe(
-      (res: HttpResponse<IUserExtra[]>) => {
-        this.userExtras = res.body ?? [];
+    this.rosterEventService.query(this.findForm.get(['eventCategory'])!.value?.id).subscribe(
+      (res: HttpResponse<IRosterEvent[]>) => {
+        this.rosters = res.body ?? [];
       },
       () => {
         this.onError();
@@ -102,17 +71,9 @@ export class RosterSearchComponent implements OnInit {
     return this.dataUtils.openFile(base64String, contentType);
   }
 
-  trackRosterId(index: number, item: IRoster): number {
+  trackRosterEventId(index: number, item: IRosterEvent): string {
     return item.id!;
   }
-  trackPlayerId(index: number, item: IPlayer): number {
-    return item.id!;
-  }
-
-  trackUserExtraId(index: number, item: IUserExtra): number {
-    return item.id!;
-  }
-
   trackEventCategoryById(index: number, item: IEventCategory): number {
     return item.id!;
   }
@@ -123,14 +84,6 @@ export class RosterSearchComponent implements OnInit {
     } else {
       return this.eventCategoriesSharedCollection;
     }
-  }
-  filterPlayerFunction(id: number): IPlayer[] {
-    const list = this.players!.filter(i => i.roster!.id === id);
-    return list;
-  }
-
-  filterUserExtraFunction(id: number): IUserExtra[] {
-    return this.userExtras!.filter(i => i.id === id);
   }
 
   protected sort(): string[] {
@@ -143,6 +96,7 @@ export class RosterSearchComponent implements OnInit {
 
   protected onError(): void {
     // Api for inheritance.
+    alert('error');
   }
 
   protected loadRelationshipsOptions(): void {

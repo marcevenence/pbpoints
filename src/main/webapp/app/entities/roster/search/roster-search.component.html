@@ -53,9 +53,9 @@
               <!--<th scope="col" style="height: 20%">
                 <span jhiTranslate="pbpointsApp.roster.search.category">Category</span>
               </th>-->
-              <!--<th scope="col" style="height: 20%">
+              <th scope="col" style="height: 20%">
                 <span jhiTranslate="pbpointsApp.roster.search.team">Team</span>
-              </th>-->
+              </th>
               <th scope="col" style="height: 20%">
                 <span jhiTranslate="pbpointsApp.roster.search.picture">Picture</span>
               </th>
@@ -65,34 +65,29 @@
               <th scope="col" style="height: 20%">
                 <span jhiTranslate="pbpointsApp.roster.search.category">Category</span>
               </th>
+              <th scope="col" style="height: 20%">
+                <span jhiTranslate="pbpointsApp.roster.search.profile">Profile</span>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <ng-container *ngFor="let roster of rosters; trackBy: trackRosterId" data-cy="entityTable">
-              <br />
-              <span jhiTranslate="pbpointsApp.roster.search.team">Team</span>
-              <a style="height: 20%; text-align: left">: {{ roster.team?.name }}</a>
-              <tr *ngFor="let player of players; trackBy: trackPlayerId">
-                <ng-container *ngIf="roster.id == player.roster?.id">
-                  <!--<td style="height: 20%; text-align: left">{{ roster.eventCategory?.category?.name }}</td>-->
-                  <ng-container *ngFor="let userextra of userExtras; trackBy: trackUserExtraId">
-                    <ng-container *ngIf="player.user?.id == userextra.id">
-                      <td style="height: 20%; text-align: left">
-                        <ng-container *ngIf="userextra.picture" (click)="openFile(userextra.picture, userextra.pictureContentType)">
-                          <img
-                            [src]="'data:' + userextra.pictureContentType + ';base64,' + userextra.picture"
-                            style="max-height: 70px"
-                            alt="userextra image"
-                          />
-                        </ng-container>
-                      </td>
-                    </ng-container>
-                  </ng-container>
-                  <td style="height: 20%; text-align: left">{{ player.user?.lastName }}, {{ player.user?.firstName }}</td>
-                  <td style="height: 20%; text-align: left">{{ player.category?.name }}</td>
+            <tr *ngFor="let roster of rosters; trackBy: trackRosterEventId" data-cy="entityTable">
+              <td style="height: 20%; text-align: left">{{ roster.teamName }}</td>
+              <td style="height: 20%; text-align: left">
+                <ng-container *ngIf="roster.playerPicture" (click)="openFile(roster.playerPicture, roster.playerPictureContentType)">
+                  <img
+                    [src]="'data:' + roster.playerPictureContentType + ';base64,' + roster.playerPicture"
+                    style="max-height: 70px"
+                    alt="player image"
+                  />
                 </ng-container>
-              </tr>
-            </ng-container>
+              </td>
+              <td style="height: 20%; text-align: left">{{ roster.playerName }}</td>
+              <td style="height: 20%; text-align: left">{{ roster.playerCategory }}</td>
+              <td style="height: 20%; text-align: left" jhiTranslate="{{ 'pbpointsApp.ProfileUser.' + roster.playerProfile }}">
+                {{ roster.playerProfile }}
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
