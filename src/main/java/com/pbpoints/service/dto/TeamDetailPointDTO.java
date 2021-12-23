@@ -14,8 +14,6 @@ public class TeamDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private Integer position;
-
     private TeamPointDTO teamPoint;
 
     private EventDTO event;
@@ -34,14 +32,6 @@ public class TeamDetailPointDTO implements Serializable {
 
     public void setPoints(Float points) {
         this.points = points;
-    }
-
-    public Integer getPosition() {
-        return position;
-    }
-
-    public void setPosition(Integer position) {
-        this.position = position;
     }
 
     public TeamPointDTO getTeamPoint() {
@@ -87,7 +77,6 @@ public class TeamDetailPointDTO implements Serializable {
         return "TeamDetailPointDTO{" +
             "id=" + getId() +
             ", points=" + getPoints() +
-            ", position=" + getPosition() +
             ", teamPoint=" + getTeamPoint() +
             ", event=" + getEvent() +
             "}";

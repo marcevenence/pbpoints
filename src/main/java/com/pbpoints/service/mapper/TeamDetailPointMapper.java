@@ -12,4 +12,9 @@ public interface TeamDetailPointMapper extends EntityMapper<TeamDetailPointDTO, 
     @Mapping(target = "teamPoint", source = "teamPoint")
     @Mapping(target = "event", source = "event")
     TeamDetailPointDTO toDto(TeamDetailPoint s);
+
+    @Named("id")
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(target = "id", source = "id")
+    TeamDetailPointDTO toDtoId(TeamDetailPoint teamDetailPoint);
 }

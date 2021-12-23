@@ -89,9 +89,6 @@ public class TeamDetailPointQueryService extends QueryService<TeamDetailPoint> {
             if (criteria.getPoints() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPoints(), TeamDetailPoint_.points));
             }
-            if (criteria.getPosition() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getPosition(), TeamDetailPoint_.position));
-            }
             if (criteria.getTeamPointId() != null) {
                 specification =
                     specification.and(

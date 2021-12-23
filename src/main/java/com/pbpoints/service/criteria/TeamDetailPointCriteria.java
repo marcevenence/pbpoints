@@ -28,8 +28,6 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
 
     private FloatFilter points;
 
-    private IntegerFilter position;
-
     private LongFilter teamPointId;
 
     private LongFilter eventId;
@@ -39,7 +37,6 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
     public TeamDetailPointCriteria(TeamDetailPointCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.points = other.points == null ? null : other.points.copy();
-        this.position = other.position == null ? null : other.position.copy();
         this.teamPointId = other.teamPointId == null ? null : other.teamPointId.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
     }
@@ -77,21 +74,6 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
 
     public void setPoints(FloatFilter points) {
         this.points = points;
-    }
-
-    public IntegerFilter getPosition() {
-        return position;
-    }
-
-    public IntegerFilter position() {
-        if (position == null) {
-            position = new IntegerFilter();
-        }
-        return position;
-    }
-
-    public void setPosition(IntegerFilter position) {
-        this.position = position;
     }
 
     public LongFilter getTeamPointId() {
@@ -136,7 +118,6 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(points, that.points) &&
-            Objects.equals(position, that.position) &&
             Objects.equals(teamPointId, that.teamPointId) &&
             Objects.equals(eventId, that.eventId)
         );
@@ -144,7 +125,7 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, points, position, teamPointId, eventId);
+        return Objects.hash(id, points, teamPointId, eventId);
     }
 
     // prettier-ignore
@@ -153,7 +134,6 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
         return "TeamDetailPointCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (points != null ? "points=" + points + ", " : "") +
-            (position != null ? "position=" + position + ", " : "") +
             (teamPointId != null ? "teamPointId=" + teamPointId + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             "}";

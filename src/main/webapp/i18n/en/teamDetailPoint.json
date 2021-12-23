@@ -21,8 +21,7 @@
       "points": "Points",
       "teamPoint": "Team Point",
       "event": "Event",
-      "tournament": "Tournament",
-      "position": "Position"
+      "tournament": "Tournament"
     }
   }
 }

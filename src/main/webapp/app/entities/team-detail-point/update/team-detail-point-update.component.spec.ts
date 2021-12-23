@@ -65,10 +65,10 @@ describe('Component Tests', () => {
 
       it('Should call Event query and add missing value', () => {
         const teamDetailPoint: ITeamDetailPoint = { id: 456 };
-        const event: IEvent = { id: 21472 };
+        const event: IEvent = { id: 86794 };
         teamDetailPoint.event = event;
 
-        const eventCollection: IEvent[] = [{ id: 18829 }];
+        const eventCollection: IEvent[] = [{ id: 35940 }];
         spyOn(eventService, 'query').and.returnValue(of(new HttpResponse({ body: eventCollection })));
         const additionalEvents = [event];
         const expectedCollection: IEvent[] = [...additionalEvents, ...eventCollection];
@@ -86,7 +86,7 @@ describe('Component Tests', () => {
         const teamDetailPoint: ITeamDetailPoint = { id: 456 };
         const teamPoint: ITeamPoint = { id: 76798 };
         teamDetailPoint.teamPoint = teamPoint;
-        const event: IEvent = { id: 94855 };
+        const event: IEvent = { id: 54364 };
         teamDetailPoint.event = event;
 
         activatedRoute.data = of({ teamDetailPoint });

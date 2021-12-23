@@ -43,10 +43,9 @@
   <div class="table-responsive" id="entities" *ngIf="teamDetailPoints && teamDetailPoints.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
-        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+        <tr>
           <!--<th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>-->
           <th scope="col"><span jhiTranslate="pbpointsApp.teamDetailPoint.event">Event</span></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.teamDetailPoint.position">Position</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.teamDetailPoint.teamPoint">Team Point</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.teamDetailPoint.points">Points</span></th>
           <th scope="col"></th>
@@ -56,7 +55,6 @@
         <tr *ngFor="let teamDetailPoint of teamDetailPoints; trackBy: trackId" data-cy="entityTable">
           <!--<td>{{ teamDetailPoint.id }}</td>-->
           <td>{{ teamDetailPoint.event?.name }}</td>
-          <td>{{ teamDetailPoint.position }}</td>
           <td>{{ teamDetailPoint.teamPoint?.team?.name }}</td>
           <td>{{ teamDetailPoint.points }}</td>
           <td class="text-right">
@@ -99,22 +97,4 @@
       </tbody>
     </table>
   </div>
-
-  <!--<div *ngIf="teamDetailPoints && teamDetailPoints.length > 0">
-    <div class="row justify-content-center">
-      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-    </div>
-
-    <div class="row justify-content-center">
-      <ngb-pagination
-        [collectionSize]="totalItems"
-        [(page)]="ngbPaginationPage"
-        [pageSize]="itemsPerPage"
-        [maxSize]="5"
-        [rotate]="true"
-        [boundaryLinks]="true"
-        (pageChange)="loadPage($event)"
-      ></ngb-pagination>
-    </div>
-  </div>-->
 </div>
