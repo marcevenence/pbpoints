@@ -24,6 +24,7 @@
     "EventCancelled": "Evento Cancelado",
     "inscrNotFinish": "Inscripcion no finalizada",
     "XMLerrorReading": "Error al leer Resultados",
-    "XMLerrorWriting": "Error al generar Archivo"
+    "XMLerrorWriting": "Error al generar Archivo",
+    "playerPointCategoryError": "No se puede agregar al Player porque no cumple con los requisitos de la categoría"
   }
 }

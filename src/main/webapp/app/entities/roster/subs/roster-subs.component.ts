@@ -177,15 +177,13 @@ export class RosterSubsComponent implements OnInit {
       ) {
         if (this.eventCategory.event.tournament.categorize) {
           if (
-            !this.validateCategory(
+            this.validateCategory(
               this.findForm.get('id')!.value,
               this.eventCategory.event.tournament.id,
               this.eventCategory.category.id,
               this.findForm.get('profile')!.value
             )
           ) {
-            alert('El jugador pertenece a una categoria mas alta');
-          } else {
             this.userExtraService
               .queryOneByIdAndCode(this.findForm.get('id')!.value, this.findForm.get('code')!.value)
               .subscribe((res: HttpResponse<IUserExtra>) => {
@@ -283,9 +281,7 @@ export class RosterSubsComponent implements OnInit {
         this.eventCategory.category?.id !== undefined
       ) {
         if (this.eventCategory.event.tournament.categorize) {
-          if (!this.validateCategory(user1.id, this.eventCategory.event.tournament.id, this.eventCategory.category.id, 'PLAYER')) {
-            alert('El jugador pertenece a una categoria mas alta');
-          } else {
+          if (this.validateCategory(user1.id, this.eventCategory.event.tournament.id, this.eventCategory.category.id, 'PLAYER')) {
             if (this.evCatId.toString() !== '') {
               if (this.roster?.id === undefined) {
                 this.roster = this.createNewRoster();
@@ -413,17 +409,8 @@ export class RosterSubsComponent implements OnInit {
     if (profile !== 'STAFF') {
       this.playerService.validateCategory(id, tId, cat).subscribe((res: HttpResponse<IPlayerPoint>) => {
         this.validPlayer = res.body ?? {};
-        if (this.validPlayer.category?.id !== undefined && this.validPlayer.category.id > cat) {
-          return false;
-        } else {
-          return true;
-        }
+        return this.validPlayer.id !== undefined;
       });
-      if (this.validPlayer?.id !== undefined) {
-        return true;
-      } else {
-        return false;
-      }
     }
     return true;
   }

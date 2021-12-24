@@ -55,12 +55,6 @@ public class PlayerResource {
 
     private final UserService userService;
 
-    private final TournamentService tournamentService;
-
-    private final TournamentMapper tournamentMapper;
-
-    private final CategoryService categoryService;
-
     private final RosterService rosterService;
 
     public PlayerResource(
@@ -79,10 +73,7 @@ public class PlayerResource {
         this.playerQueryService = playerQueryService;
         this.playerPointService = playerPointService;
         this.userService = userService;
-        this.tournamentService = tournamentService;
-        this.tournamentMapper = tournamentMapper;
         this.rosterService = rosterService;
-        this.categoryService = categoryService;
     }
 
     /**
@@ -117,7 +108,7 @@ public class PlayerResource {
     /**
      * {@code PUT  /players/:id} : Updates an existing player.
      *
-     * @param id the id of the playerDTO to save.
+     * @param id        the id of the playerDTO to save.
      * @param playerDTO the playerDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDTO,
      * or with status {@code 400 (Bad Request)} if the playerDTO is not valid,
@@ -151,19 +142,18 @@ public class PlayerResource {
     /**
      * {@code PATCH  /players/:id} : Partial updates given fields of an existing player, field will ignore if it is null
      *
-     * @param id the id of the playerDTO to save.
+     * @param id        the id of the playerDTO to save.
      * @param playerDTO the playerDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDTO,
      * or with status {@code 400 (Bad Request)} if the playerDTO is not valid,
      * or with status {@code 404 (Not Found)} if the playerDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the playerDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/players/{id}", consumes = "application/merge-patch+json")
     public ResponseEntity<PlayerDTO> partialUpdatePlayer(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody PlayerDTO playerDTO
-    ) throws URISyntaxException {
+        @Valid @RequestBody PlayerDTO playerDTO
+    ) {
         log.debug("REST request to partial update Player partially : {}, {}", id, playerDTO);
         if (playerDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -227,16 +217,7 @@ public class PlayerResource {
     @GetMapping("/players/validCategory/{id}/{tId}/{catId}")
     public ResponseEntity<PlayerPointDTO> getPlayer(@PathVariable Long id, @PathVariable Long tId, @PathVariable Long catId) {
         log.debug("REST request to get Player ID and Category ID : {} {} {}", id, tId, catId);
-        Optional<CategoryDTO> categoryDTO = categoryService.findOne(catId);
-        Optional<PlayerPointDTO> playerPointDTO = playerPointService.findByUserAndTournament(
-            userService.getUser(id).get(),
-            tournamentMapper.toEntity(tournamentService.findOne(tId).get())
-        );
-        if (categoryDTO.get().getOrder() <= playerPointDTO.get().getCategory().getOrder()) {
-            log.debug("La categoria es mas alta");
-            log.debug("REST OK {} {}", categoryDTO.get().getOrder(), playerPointDTO.get().getCategory().getOrder());
-        }
-        return ResponseUtil.wrapOrNotFound(playerPointDTO);
+        return ResponseEntity.ok().body(playerPointService.findByUserAndTournament(id, tId, catId));
     }
 
     /**
@@ -259,15 +240,13 @@ public class PlayerResource {
     public ResponseEntity<Long> checkOwner(@PathVariable Long id) {
         log.debug("REST request to get Owner : {}", id);
         Long owner = rosterService.checkOwner(id);
-        ResponseEntity<Long> resp = ResponseEntity.ok().body(owner);
-        return resp;
+        return ResponseEntity.ok().body(owner);
     }
 
     @GetMapping("/players/upd/{id}")
     public ResponseEntity<Long> enableUpdate(@PathVariable Long id) {
         log.debug("REST request to check if event is Closed or Inscripcion is Closed: {}", id);
         Long result = rosterService.validRoster(id);
-        ResponseEntity<Long> resp = ResponseEntity.ok().body(result);
-        return resp;
+        return ResponseEntity.ok().body(result);
     }
 }

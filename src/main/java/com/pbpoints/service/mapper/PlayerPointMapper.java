@@ -13,9 +13,9 @@ import org.mapstruct.Mapping;
     uses = { com.pbpoints.service.mapper.TournamentMapper.class, UserMapper.class, com.pbpoints.service.mapper.CategoryMapper.class }
 )
 public interface PlayerPointMapper extends com.pbpoints.service.mapper.EntityMapper<PlayerPointDTO, PlayerPoint> {
-    @Mapping(source = "tournament", target = "tournament")
+    @Mapping(source = "tournament.id", target = "tournament.id")
     @Mapping(source = "user", target = "user")
-    @Mapping(source = "category", target = "category")
+    @Mapping(source = "category.id", target = "category.id")
     PlayerPointDTO toDto(PlayerPoint playerPoint);
 
     @Mapping(source = "tournament", target = "tournament")
