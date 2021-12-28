@@ -1,19 +1,28 @@
 package com.pbpoints.service.impl;
 
 import com.pbpoints.domain.*;
+import com.pbpoints.domain.PlayerPoint;
 import com.pbpoints.repository.*;
+import com.pbpoints.repository.PlayerPointRepository;
+import com.pbpoints.service.CategoryService;
 import com.pbpoints.service.PlayerPointService;
+import com.pbpoints.service.TournamentService;
+import com.pbpoints.service.UserService;
+import com.pbpoints.service.dto.CategoryDTO;
 import com.pbpoints.service.dto.PlayerPointDTO;
+import com.pbpoints.service.dto.TournamentDTO;
 import com.pbpoints.service.dto.xml.PositionDTO;
 import com.pbpoints.service.mapper.PlayerPointMapper;
+import com.pbpoints.service.mapper.TournamentMapper;
+import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.text.Position;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,8 +35,11 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     private final Logger log = LoggerFactory.getLogger(PlayerPointServiceImpl.class);
 
     private final PlayerPointRepository playerPointRepository;
-
     private final PlayerPointMapper playerPointMapper;
+    private final CategoryService categoryService;
+    private final UserService userService;
+    private final TournamentService tournamentService;
+    private final TournamentMapper tournamentMapper;
 
     private final RosterRepository rosterRepository;
 
@@ -44,6 +56,10 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     public PlayerPointServiceImpl(
         PlayerPointRepository playerPointRepository,
         PlayerPointMapper playerPointMapper,
+        CategoryService categoryService,
+        UserService userService,
+        TournamentService tournamentService,
+        TournamentMapper tournamentMapper,
         RosterRepository rosterRepository,
         TeamRepository teamRepository,
         EventCategoryRepository eventCategoryRepository,
@@ -53,6 +69,10 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     ) {
         this.playerPointRepository = playerPointRepository;
         this.playerPointMapper = playerPointMapper;
+        this.categoryService = categoryService;
+        this.userService = userService;
+        this.tournamentService = tournamentService;
+        this.tournamentMapper = tournamentMapper;
         this.rosterRepository = rosterRepository;
         this.teamRepository = teamRepository;
         this.eventCategoryRepository = eventCategoryRepository;
@@ -68,6 +88,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
      * @return the persisted entity.
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public PlayerPointDTO save(PlayerPointDTO playerPointDTO) {
         log.debug("Request to save PlayerPoint : {}", playerPointDTO);
         PlayerPoint playerPoint = playerPointMapper.toEntity(playerPointDTO);
@@ -101,10 +122,54 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         return playerPointRepository.findById(id).map(playerPointMapper::toDto);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament) {
-        log.debug("Request to get PlayerPoint : {}", user);
-        return Optional.of(playerPointMapper.toDto(playerPointRepository.findByUserAndTournament(user, tournament)));
+    @Transactional
+    public PlayerPointDTO findByUserAndTournament(Long userId, Long tournamentId, Long categoryId) throws BadRequestAlertException {
+        log.debug("Request to get PlayerPoint : UserId: {}, TournamentId: {}, CategoryId: {}", userId, tournamentId, categoryId);
+
+        // Busco los datos que me pasaron por request
+        Optional<CategoryDTO> categoryDTO = categoryService.findOne(categoryId);
+        Optional<User> user = userService.getUser(userId);
+        Optional<TournamentDTO> tournamentDTO = tournamentService.findOne(tournamentId);
+
+        // Valido los datos
+        if (tournamentDTO.isEmpty()) {
+            throw new BadRequestAlertException("No se encontró el torneo", "TOURNAMENT", "playerPointCategoryError");
+        }
+        if (categoryDTO.isEmpty()) {
+            throw new BadRequestAlertException("No se encontró la categoria", "CATEGORY", "playerPointCategoryError");
+        }
+        if (user.isEmpty()) {
+            throw new BadRequestAlertException("No se encontró al usuario", "USER", "playerPointCategoryError");
+        }
+
+        // Paso el torneo a entidad
+        Tournament tournament = tournamentMapper.toEntity(tournamentDTO.get());
+
+        // Busco al usuario para ese torneo
+        PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament);
+
+        // Si no encuentro al playerPoint, es porque es la primera vez que entra.. lo creo
+        if (playerPoint == null) {
+            Category category = categoryRepository.LastCategoryByTournamentId(tournamentId);
+            playerPoint = new PlayerPoint();
+            playerPoint.setTournament(tournament);
+            playerPoint.setPoints((float) 0);
+            playerPoint.setUser(user.get());
+            playerPoint.setCategory(category);
+
+            playerPoint = playerPointRepository.save(playerPoint);
+        }
+
+        // valido si el usuario, puede participar de la categoria del torneo
+        if (playerPoint.getCategory().getOrder() >= categoryDTO.get().getOrder()) {
+            log.debug(
+                "Categoria validada --> PlayerCategory: {}, Category{}",
+                playerPoint.getCategory().getOrder(),
+                categoryDTO.get().getOrder()
+            );
+            return playerPointMapper.toDto(playerPoint);
+        }
+        throw new BadRequestAlertException("Categoría no válida para el player", "PLAYER_POINT", "playerPointCategoryError");
     }
 
     /**
