@@ -32,8 +32,8 @@ public class TeamDetailPoint implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "tournament", "field" }, allowSetters = true)
-    private Event event;
+    @JsonIgnoreProperties(value = { "games", "rosters", "event", "category", "format" }, allowSetters = true)
+    private EventCategory eventCategory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -75,17 +75,17 @@ public class TeamDetailPoint implements Serializable {
         this.teamPoint = teamPoint;
     }
 
-    public Event getEvent() {
-        return this.event;
+    public EventCategory getEventCategory() {
+        return this.eventCategory;
     }
 
-    public TeamDetailPoint event(Event event) {
-        this.setEvent(event);
+    public TeamDetailPoint eventCategory(EventCategory eventCategory) {
+        this.setEventCategory(eventCategory);
         return this;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventCategory(EventCategory eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

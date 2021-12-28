@@ -26,10 +26,10 @@
             <a [routerLink]="['/team-point', teamDetailPoint.teamPoint?.id, 'view']">{{ teamDetailPoint.teamPoint?.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="pbpointsApp.teamDetailPoint.event">Event</span></dt>
+        <dt><span jhiTranslate="pbpointsApp.teamDetailPoint.eventCategory">Event Category</span></dt>
         <dd>
-          <div *ngIf="teamDetailPoint.event">
-            <a [routerLink]="['/event', teamDetailPoint.event?.id, 'view']">{{ teamDetailPoint.event?.name }}</a>
+          <div *ngIf="teamDetailPoint.eventCategory">
+            <a [routerLink]="['/event-category', teamDetailPoint.eventCategory?.id, 'view']">{{ teamDetailPoint.eventCategory?.id }}</a>
           </div>
         </dd>
       </dl>

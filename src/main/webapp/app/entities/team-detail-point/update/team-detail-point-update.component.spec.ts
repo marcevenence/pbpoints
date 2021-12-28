@@ -11,8 +11,8 @@ import { TeamDetailPointService } from '../service/team-detail-point.service';
 import { ITeamDetailPoint, TeamDetailPoint } from '../team-detail-point.model';
 import { ITeamPoint } from 'app/entities/team-point/team-point.model';
 import { TeamPointService } from 'app/entities/team-point/service/team-point.service';
-import { IEvent } from 'app/entities/event/event.model';
-import { EventService } from 'app/entities/event/service/event.service';
+import { IEventCategory } from 'app/entities/event-category/event-category.model';
+import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
 
 import { TeamDetailPointUpdateComponent } from './team-detail-point-update.component';
 
@@ -23,7 +23,7 @@ describe('Component Tests', () => {
     let activatedRoute: ActivatedRoute;
     let teamDetailPointService: TeamDetailPointService;
     let teamPointService: TeamPointService;
-    let eventService: EventService;
+    let eventCategoryService: EventCategoryService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -38,7 +38,7 @@ describe('Component Tests', () => {
       activatedRoute = TestBed.inject(ActivatedRoute);
       teamDetailPointService = TestBed.inject(TeamDetailPointService);
       teamPointService = TestBed.inject(TeamPointService);
-      eventService = TestBed.inject(EventService);
+      eventCategoryService = TestBed.inject(EventCategoryService);
 
       comp = fixture.componentInstance;
     });
@@ -63,38 +63,41 @@ describe('Component Tests', () => {
         expect(comp.teamPointsSharedCollection).toEqual(expectedCollection);
       });
 
-      it('Should call Event query and add missing value', () => {
+      it('Should call EventCategory query and add missing value', () => {
         const teamDetailPoint: ITeamDetailPoint = { id: 456 };
-        const event: IEvent = { id: 86794 };
-        teamDetailPoint.event = event;
+        const eventCategory: IEventCategory = { id: 99043 };
+        teamDetailPoint.eventCategory = eventCategory;
 
-        const eventCollection: IEvent[] = [{ id: 35940 }];
-        spyOn(eventService, 'query').and.returnValue(of(new HttpResponse({ body: eventCollection })));
-        const additionalEvents = [event];
-        const expectedCollection: IEvent[] = [...additionalEvents, ...eventCollection];
-        spyOn(eventService, 'addEventToCollectionIfMissing').and.returnValue(expectedCollection);
+        const eventCategoryCollection: IEventCategory[] = [{ id: 71329 }];
+        spyOn(eventCategoryService, 'query').and.returnValue(of(new HttpResponse({ body: eventCategoryCollection })));
+        const additionalEventCategories = [eventCategory];
+        const expectedCollection: IEventCategory[] = [...additionalEventCategories, ...eventCategoryCollection];
+        spyOn(eventCategoryService, 'addEventCategoryToCollectionIfMissing').and.returnValue(expectedCollection);
 
         activatedRoute.data = of({ teamDetailPoint });
         comp.ngOnInit();
 
-        expect(eventService.query).toHaveBeenCalled();
-        expect(eventService.addEventToCollectionIfMissing).toHaveBeenCalledWith(eventCollection, ...additionalEvents);
-        expect(comp.eventsSharedCollection).toEqual(expectedCollection);
+        expect(eventCategoryService.query).toHaveBeenCalled();
+        expect(eventCategoryService.addEventCategoryToCollectionIfMissing).toHaveBeenCalledWith(
+          eventCategoryCollection,
+          ...additionalEventCategories
+        );
+        expect(comp.eventCategoriesSharedCollection).toEqual(expectedCollection);
       });
 
       it('Should update editForm', () => {
         const teamDetailPoint: ITeamDetailPoint = { id: 456 };
         const teamPoint: ITeamPoint = { id: 76798 };
         teamDetailPoint.teamPoint = teamPoint;
-        const event: IEvent = { id: 54364 };
-        teamDetailPoint.event = event;
+        const eventCategory: IEventCategory = { id: 95340 };
+        teamDetailPoint.eventCategory = eventCategory;
 
         activatedRoute.data = of({ teamDetailPoint });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(teamDetailPoint));
         expect(comp.teamPointsSharedCollection).toContain(teamPoint);
-        expect(comp.eventsSharedCollection).toContain(event);
+        expect(comp.eventCategoriesSharedCollection).toContain(eventCategory);
       });
     });
 
@@ -171,10 +174,10 @@ describe('Component Tests', () => {
         });
       });
 
-      describe('trackEventById', () => {
-        it('Should return tracked Event primary key', () => {
+      describe('trackEventCategoryById', () => {
+        it('Should return tracked EventCategory primary key', () => {
           const entity = { id: 123 };
-          const trackResult = comp.trackEventById(0, entity);
+          const trackResult = comp.trackEventCategoryById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });
       });

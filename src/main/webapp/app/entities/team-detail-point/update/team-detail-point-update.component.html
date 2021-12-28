@@ -53,19 +53,39 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.event" for="field_event">Event</label>
-          <select class="form-control" id="field_event" data-cy="event" name="event" formControlName="event">
-            <option *ngIf="!editForm.get('event')!.value" [ngValue]="null" selected></option>
+          <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.eventCategory" for="field_eventCategory"
+            >Event Category</label
+          >
+          <select
+            class="form-control"
+            id="field_eventCategory"
+            data-cy="eventCategory"
+            name="eventCategory"
+            formControlName="eventCategory"
+          >
+            <option *ngIf="!editForm.get('eventCategory')!.value" [ngValue]="null" selected></option>
             <option
-              [ngValue]="eventOption.id === editForm.get('event')!.value?.id ? editForm.get('event')!.value : eventOption"
-              *ngFor="let eventOption of eventsSharedCollection; trackBy: trackEventById"
+              [ngValue]="
+                eventCategoryOption.id === editForm.get('eventCategory')!.value?.id
+                  ? editForm.get('eventCategory')!.value
+                  : eventCategoryOption
+              "
+              *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
             >
-              {{ eventOption.name }}
+              {{ eventCategoryOption.id }}
             </option>
           </select>
         </div>
-        <div *ngIf="editForm.get(['event'])!.invalid && (editForm.get(['event'])!.dirty || editForm.get(['event'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['event'])?.errors?.required" jhiTranslate="entity.validation.required">
+        <div
+          *ngIf="
+            editForm.get(['eventCategory'])!.invalid && (editForm.get(['eventCategory'])!.dirty || editForm.get(['eventCategory'])!.touched)
+          "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['eventCategory'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
             This field is required.
           </small>
         </div>

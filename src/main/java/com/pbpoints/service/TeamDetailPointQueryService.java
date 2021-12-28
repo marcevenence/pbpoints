@@ -98,10 +98,13 @@ public class TeamDetailPointQueryService extends QueryService<TeamDetailPoint> {
                         )
                     );
             }
-            if (criteria.getEventId() != null) {
+            if (criteria.getEventCategoryId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getEventId(), root -> root.join(TeamDetailPoint_.event, JoinType.LEFT).get(Event_.id))
+                        buildSpecification(
+                            criteria.getEventCategoryId(),
+                            root -> root.join(TeamDetailPoint_.eventCategory, JoinType.LEFT).get(EventCategory_.id)
+                        )
                     );
             }
         }

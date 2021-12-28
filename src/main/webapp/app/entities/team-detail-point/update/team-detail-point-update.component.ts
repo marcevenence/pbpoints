@@ -9,8 +9,8 @@ import { ITeamDetailPoint, TeamDetailPoint } from '../team-detail-point.model';
 import { TeamDetailPointService } from '../service/team-detail-point.service';
 import { ITeamPoint } from 'app/entities/team-point/team-point.model';
 import { TeamPointService } from 'app/entities/team-point/service/team-point.service';
-import { IEvent } from 'app/entities/event/event.model';
-import { EventService } from 'app/entities/event/service/event.service';
+import { IEventCategory } from 'app/entities/event-category/event-category.model';
+import { EventCategoryService } from 'app/entities/event-category/service/event-category.service';
 
 @Component({
   selector: 'jhi-team-detail-point-update',
@@ -20,19 +20,19 @@ export class TeamDetailPointUpdateComponent implements OnInit {
   isSaving = false;
 
   teamPointsSharedCollection: ITeamPoint[] = [];
-  eventsSharedCollection: IEvent[] = [];
+  eventCategoriesSharedCollection: IEventCategory[] = [];
 
   editForm = this.fb.group({
     id: [],
     points: [null, [Validators.required]],
     teamPoint: [null, Validators.required],
-    event: [null, Validators.required],
+    eventCategory: [null, Validators.required],
   });
 
   constructor(
     protected teamDetailPointService: TeamDetailPointService,
     protected teamPointService: TeamPointService,
-    protected eventService: EventService,
+    protected eventCategoryService: EventCategoryService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -63,7 +63,7 @@ export class TeamDetailPointUpdateComponent implements OnInit {
     return item.id!;
   }
 
-  trackEventById(index: number, item: IEvent): number {
+  trackEventCategoryById(index: number, item: IEventCategory): number {
     return item.id!;
   }
 
@@ -91,14 +91,17 @@ export class TeamDetailPointUpdateComponent implements OnInit {
       id: teamDetailPoint.id,
       points: teamDetailPoint.points,
       teamPoint: teamDetailPoint.teamPoint,
-      event: teamDetailPoint.event,
+      eventCategory: teamDetailPoint.eventCategory,
     });
 
     this.teamPointsSharedCollection = this.teamPointService.addTeamPointToCollectionIfMissing(
       this.teamPointsSharedCollection,
       teamDetailPoint.teamPoint
     );
-    this.eventsSharedCollection = this.eventService.addEventToCollectionIfMissing(this.eventsSharedCollection, teamDetailPoint.event);
+    this.eventCategoriesSharedCollection = this.eventCategoryService.addEventCategoryToCollectionIfMissing(
+      this.eventCategoriesSharedCollection,
+      teamDetailPoint.eventCategory
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -112,11 +115,15 @@ export class TeamDetailPointUpdateComponent implements OnInit {
       )
       .subscribe((teamPoints: ITeamPoint[]) => (this.teamPointsSharedCollection = teamPoints));
 
-    this.eventService
+    this.eventCategoryService
       .query()
-      .pipe(map((res: HttpResponse<IEvent[]>) => res.body ?? []))
-      .pipe(map((events: IEvent[]) => this.eventService.addEventToCollectionIfMissing(events, this.editForm.get('event')!.value)))
-      .subscribe((events: IEvent[]) => (this.eventsSharedCollection = events));
+      .pipe(map((res: HttpResponse<IEventCategory[]>) => res.body ?? []))
+      .pipe(
+        map((eventCategories: IEventCategory[]) =>
+          this.eventCategoryService.addEventCategoryToCollectionIfMissing(eventCategories, this.editForm.get('eventCategory')!.value)
+        )
+      )
+      .subscribe((eventCategories: IEventCategory[]) => (this.eventCategoriesSharedCollection = eventCategories));
   }
 
   protected createFromForm(): ITeamDetailPoint {
@@ -125,7 +132,7 @@ export class TeamDetailPointUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       points: this.editForm.get(['points'])!.value,
       teamPoint: this.editForm.get(['teamPoint'])!.value,
-      event: this.editForm.get(['event'])!.value,
+      eventCategory: this.editForm.get(['eventCategory'])!.value,
     };
   }
 }

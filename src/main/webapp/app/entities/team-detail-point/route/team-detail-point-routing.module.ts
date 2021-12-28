@@ -11,9 +11,6 @@ const teamDetailPointRoute: Routes = [
   {
     path: '',
     component: TeamDetailPointComponent,
-    data: {
-      defaultSort: 'id,asc',
-    },
     canActivate: [UserRouteAccessService],
   },
   {

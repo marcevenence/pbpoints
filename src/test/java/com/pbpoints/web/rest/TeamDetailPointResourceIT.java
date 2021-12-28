@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.pbpoints.IntegrationTest;
-import com.pbpoints.domain.Event;
+import com.pbpoints.domain.EventCategory;
 import com.pbpoints.domain.TeamDetailPoint;
 import com.pbpoints.domain.TeamPoint;
 import com.pbpoints.repository.TeamDetailPointRepository;
@@ -77,15 +77,15 @@ class TeamDetailPointResourceIT {
         }
         teamDetailPoint.setTeamPoint(teamPoint);
         // Add required entity
-        Event event;
-        if (TestUtil.findAll(em, Event.class).isEmpty()) {
-            event = EventResourceIT.createEntity(em);
-            em.persist(event);
+        EventCategory eventCategory;
+        if (TestUtil.findAll(em, EventCategory.class).isEmpty()) {
+            eventCategory = EventCategoryResourceIT.createEntity(em);
+            em.persist(eventCategory);
             em.flush();
         } else {
-            event = TestUtil.findAll(em, Event.class).get(0);
+            eventCategory = TestUtil.findAll(em, EventCategory.class).get(0);
         }
-        teamDetailPoint.setEvent(event);
+        teamDetailPoint.setEventCategory(eventCategory);
         return teamDetailPoint;
     }
 
@@ -108,15 +108,15 @@ class TeamDetailPointResourceIT {
         }
         teamDetailPoint.setTeamPoint(teamPoint);
         // Add required entity
-        Event event;
-        if (TestUtil.findAll(em, Event.class).isEmpty()) {
-            event = EventResourceIT.createUpdatedEntity(em);
-            em.persist(event);
+        EventCategory eventCategory;
+        if (TestUtil.findAll(em, EventCategory.class).isEmpty()) {
+            eventCategory = EventCategoryResourceIT.createUpdatedEntity(em);
+            em.persist(eventCategory);
             em.flush();
         } else {
-            event = TestUtil.findAll(em, Event.class).get(0);
+            eventCategory = TestUtil.findAll(em, EventCategory.class).get(0);
         }
-        teamDetailPoint.setEvent(event);
+        teamDetailPoint.setEventCategory(eventCategory);
         return teamDetailPoint;
     }
 
@@ -358,21 +358,21 @@ class TeamDetailPointResourceIT {
 
     @Test
     @Transactional
-    void getAllTeamDetailPointsByEventIsEqualToSomething() throws Exception {
+    void getAllTeamDetailPointsByEventCategoryIsEqualToSomething() throws Exception {
         // Initialize the database
         teamDetailPointRepository.saveAndFlush(teamDetailPoint);
-        Event event = EventResourceIT.createEntity(em);
-        em.persist(event);
+        EventCategory eventCategory = EventCategoryResourceIT.createEntity(em);
+        em.persist(eventCategory);
         em.flush();
-        teamDetailPoint.setEvent(event);
+        teamDetailPoint.setEventCategory(eventCategory);
         teamDetailPointRepository.saveAndFlush(teamDetailPoint);
-        Long eventId = event.getId();
+        Long eventCategoryId = eventCategory.getId();
 
-        // Get all the teamDetailPointList where event equals to eventId
-        defaultTeamDetailPointShouldBeFound("eventId.equals=" + eventId);
+        // Get all the teamDetailPointList where eventCategory equals to eventCategoryId
+        defaultTeamDetailPointShouldBeFound("eventCategoryId.equals=" + eventCategoryId);
 
-        // Get all the teamDetailPointList where event equals to (eventId + 1)
-        defaultTeamDetailPointShouldNotBeFound("eventId.equals=" + (eventId + 1));
+        // Get all the teamDetailPointList where eventCategory equals to (eventCategoryId + 1)
+        defaultTeamDetailPointShouldNotBeFound("eventCategoryId.equals=" + (eventCategoryId + 1));
     }
 
     /**

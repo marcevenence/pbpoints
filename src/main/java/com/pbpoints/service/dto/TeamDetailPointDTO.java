@@ -16,7 +16,7 @@ public class TeamDetailPointDTO implements Serializable {
 
     private TeamPointDTO teamPoint;
 
-    private EventDTO event;
+    private EventCategoryDTO eventCategory;
 
     public Long getId() {
         return id;
@@ -42,12 +42,12 @@ public class TeamDetailPointDTO implements Serializable {
         this.teamPoint = teamPoint;
     }
 
-    public EventDTO getEvent() {
-        return event;
+    public EventCategoryDTO getEventCategory() {
+        return eventCategory;
     }
 
-    public void setEvent(EventDTO event) {
-        this.event = event;
+    public void setEventCategory(EventCategoryDTO eventCategory) {
+        this.eventCategory = eventCategory;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TeamDetailPointDTO implements Serializable {
             "id=" + getId() +
             ", points=" + getPoints() +
             ", teamPoint=" + getTeamPoint() +
-            ", event=" + getEvent() +
+            ", eventCategory=" + getEventCategory() +
             "}";
     }
 }

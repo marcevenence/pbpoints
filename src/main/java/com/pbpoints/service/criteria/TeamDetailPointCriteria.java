@@ -30,7 +30,7 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
 
     private LongFilter teamPointId;
 
-    private LongFilter eventId;
+    private LongFilter eventCategoryId;
 
     public TeamDetailPointCriteria() {}
 
@@ -38,7 +38,7 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.points = other.points == null ? null : other.points.copy();
         this.teamPointId = other.teamPointId == null ? null : other.teamPointId.copy();
-        this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.eventCategoryId = other.eventCategoryId == null ? null : other.eventCategoryId.copy();
     }
 
     @Override
@@ -91,19 +91,19 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
         this.teamPointId = teamPointId;
     }
 
-    public LongFilter getEventId() {
-        return eventId;
+    public LongFilter getEventCategoryId() {
+        return eventCategoryId;
     }
 
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
+    public LongFilter eventCategoryId() {
+        if (eventCategoryId == null) {
+            eventCategoryId = new LongFilter();
         }
-        return eventId;
+        return eventCategoryId;
     }
 
-    public void setEventId(LongFilter eventId) {
-        this.eventId = eventId;
+    public void setEventCategoryId(LongFilter eventCategoryId) {
+        this.eventCategoryId = eventCategoryId;
     }
 
     @Override
@@ -119,13 +119,13 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(points, that.points) &&
             Objects.equals(teamPointId, that.teamPointId) &&
-            Objects.equals(eventId, that.eventId)
+            Objects.equals(eventCategoryId, that.eventCategoryId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, points, teamPointId, eventId);
+        return Objects.hash(id, points, teamPointId, eventCategoryId);
     }
 
     // prettier-ignore
@@ -135,7 +135,7 @@ public class TeamDetailPointCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (points != null ? "points=" + points + ", " : "") +
             (teamPointId != null ? "teamPointId=" + teamPointId + ", " : "") +
-            (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (eventCategoryId != null ? "eventCategoryId=" + eventCategoryId + ", " : "") +
             "}";
     }
 }

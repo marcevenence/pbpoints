@@ -20,6 +20,7 @@
       "id": "ID",
       "points": "Points",
       "teamPoint": "Team Point",
+      "eventCategory": "Event Category",
       "event": "Event",
       "tournament": "Tournament"
     }

@@ -16,12 +16,11 @@
       "relationshipName": "teamPoint"
     },
     {
+      "relationshipName": "eventCategory",
+      "otherEntityName": "eventCategory",
       "relationshipType": "many-to-one",
-      "otherEntityName": "event",
-      "otherEntityRelationshipName": "teamDetailPoint",
-      "relationshipValidateRules": "required",
-      "relationshipName": "event",
-      "otherEntityField": "name"
+      "relationshipValidateRules": ["required"],
+      "otherEntityField": "id"
     }
   ],
   "entityTableName": "team_detail_point",
