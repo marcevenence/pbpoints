@@ -35,6 +35,14 @@
     <include file="config/liquibase/changelog/20210406023736_added_entity_Game.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023727_added_entity_Bracket.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023735_added_entity_Formula.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211106105922_added_entity_Field.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210406023737_added_entity_Location.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210916003404_added_entity_Suspension.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210928221453_added_entity_MainRoster.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211028200330_added_entity_Sponsor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211106105922_added_entity_Field.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211120225653_added_entity_TournamentGroup.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211125213835_added_entity_Equipment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210406023741_added_entity_constraints_Province.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023729_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
@@ -53,8 +61,14 @@
     <include file="config/liquibase/changelog/20210406023736_added_entity_constraints_Game.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023734_added_entity_constraints_Format.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023735_added_entity_constraints_Formula.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210406023737_added_entity_constraints_Location.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210916003404_added_entity_constraints_Suspension.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210928221453_added_entity_constraints_MainRoster.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211028200330_added_entity_constraints_Sponsor.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211106105922_added_entity_constraints_Field.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211120225653_added_entity_constraints_TournamentGroup.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20211125213835_added_entity_constraints_Equipment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200401220000_update_user.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210921212100_update_team.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

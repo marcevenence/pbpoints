@@ -38,24 +38,17 @@
             <column name="qty_team_groups" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="start_season" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="end_season" type="date">
+                <constraints nullable="false" />
+            </column>
             <column name="owner_id" type="bigint">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <loadData
-                  file="config/liquibase/data/tournament.csv"
-                  separator=";"
-                  tableName="tournament">
-            <column name="id" type="numeric"/>
-            <column name="name" type="string"/>
-            <column name="close_inscr_days" type="numeric"/>
-            <column name="status" type="string"/>
-            <column name="categorize" type="boolean"/>
-            <column name="owner_id" type="numeric"/>
-            <column name="cant_players_next_category" type="integer"/>
-            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
-        </loadData>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -82,6 +75,8 @@
             <column name="logo_content_type" type="string"/>
             <column name="cant_players_next_category" type="numeric"/>
             <column name="qty_team_groups" type="numeric"/>
+            <column name="start_season" type="date"/>
+            <column name="end_season" type="date"/>
             <column name="owner_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

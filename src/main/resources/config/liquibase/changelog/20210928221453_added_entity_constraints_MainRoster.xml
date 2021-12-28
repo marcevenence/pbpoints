@@ -14,10 +14,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="team"/>
 
-        <addForeignKeyConstraint baseColumnNames="player_id"
+        <addForeignKeyConstraint baseColumnNames="user_extra_id"
                                  baseTableName="main_roster"
-                                 constraintName="fk_main_roster__player_id"
+                                 constraintName="fk_main_roster__user_extra_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="player"/>
+                                 referencedTableName="user_extra"/>
     </changeSet>
 </databaseChangeLog>

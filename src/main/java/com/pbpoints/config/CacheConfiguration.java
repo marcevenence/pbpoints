@@ -75,6 +75,12 @@ public class CacheConfiguration {
             createCache(cm, com.pbpoints.domain.Tournament.class.getName());
             createCache(cm, com.pbpoints.domain.Tournament.class.getName() + ".events");
             createCache(cm, com.pbpoints.domain.UserExtra.class.getName());
+            createCache(cm, com.pbpoints.domain.Field.class.getName());
+            createCache(cm, com.pbpoints.domain.Suspension.class.getName());
+            createCache(cm, com.pbpoints.domain.MainRoster.class.getName());
+            createCache(cm, com.pbpoints.domain.Sponsor.class.getName());
+            createCache(cm, com.pbpoints.domain.TournamentGroup.class.getName());
+            createCache(cm, com.pbpoints.domain.Equipment.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

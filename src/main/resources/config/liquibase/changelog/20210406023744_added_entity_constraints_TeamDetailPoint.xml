@@ -14,10 +14,10 @@
                                  referencedColumnNames="id"
                                  referencedTableName="team_point"/>
 
-        <addForeignKeyConstraint baseColumnNames="event_id"
+        <addForeignKeyConstraint baseColumnNames="event_category_id"
                                  baseTableName="team_detail_point"
-                                 constraintName="fk_team_detail_point__event_id"
+                                 constraintName="fk_team_detail_point__event_category_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event"/>
+                                 referencedTableName="event_category"/>
     </changeSet>
 </databaseChangeLog>
