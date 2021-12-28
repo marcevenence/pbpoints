@@ -17,6 +17,9 @@
             <column name="points" type="${floatType}">
                 <constraints nullable="false" />
             </column>
+            <column name="position" type="integer">
+                <constraints nullable="false" />
+            </column>
             <column name="team_point_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -44,6 +47,7 @@
                   tableName="team_detail_point">
             <column name="id" type="numeric"/>
             <column name="points" type="numeric"/>
+            <column name="position" type="numeric"/>
             <column name="team_point_id" type="numeric"/>
             <column name="event_category_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

@@ -106,7 +106,6 @@
         "equipment": "Marcadoras",
         "teamCategoryPoint": "Detalle Puntos por Categoria",
         "location": "Location",
-        "teamCategoryPoint": "Team Category Point",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

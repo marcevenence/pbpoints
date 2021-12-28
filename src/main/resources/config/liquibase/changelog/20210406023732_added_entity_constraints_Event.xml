@@ -8,16 +8,16 @@
     -->
     <changeSet id="20210406023732-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="field_id"
-                                 baseTableName="event"
-                                 constraintName="fk_event__field_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="field"/>
-
         <addForeignKeyConstraint baseColumnNames="tournament_id"
                                  baseTableName="event"
                                  constraintName="fk_event__tournament_id"
                                  referencedColumnNames="id"
                                  referencedTableName="tournament"/>
+
+        <addForeignKeyConstraint baseColumnNames="field_id"
+                                 baseTableName="event"
+                                 constraintName="fk_event__field_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="field"/>
     </changeSet>
 </databaseChangeLog>
