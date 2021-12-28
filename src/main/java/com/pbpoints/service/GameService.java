@@ -145,14 +145,6 @@ public class GameService {
     }
 
     @Transactional(readOnly = true)
-    public TeamCategoryPoint findPosCatByXML(com.pbpoints.service.dto.xml.PositionDTO positionDTO) {
-        log.info("Transformando TeamCategoryPoint entity");
-        TeamCategoryPoint teamCategoryPoint = new TeamCategoryPoint();
-        teamCategoryPoint.setPoints(positionDTO.getPoints());
-        return teamCategoryPoint;
-    }
-
-    @Transactional(readOnly = true)
     public Game findByXML(com.pbpoints.service.dto.xml.GameDTO gameDTO) {
         log.info("Transformando Game entity");
         // validaciones de entidades
