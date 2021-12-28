@@ -29,7 +29,7 @@ export class TournamentService {
   update(tournament: ITournament): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(tournament);
     return this.http
-      .put<ITournament>(`${this.resourceUrl}/${getTournamentIdentifier(tournament) as number}`, copy, { observe: 'response' })
+      .put<ITournament>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

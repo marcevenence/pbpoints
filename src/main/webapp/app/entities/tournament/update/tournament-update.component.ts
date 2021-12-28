@@ -1,9 +1,11 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import * as dayjs from 'dayjs';
+import { DATE_FORMAT } from 'app/config/input.constants';
 
 import { ITournament, Tournament } from '../tournament.model';
 import { TournamentService } from '../service/tournament.service';
@@ -22,20 +24,23 @@ export class TournamentUpdateComponent implements OnInit {
 
   usersSharedCollection: IUser[] = [];
 
-  editForm = this.fb.group({
-    id: [],
-    name: [],
-    closeInscrDays: [],
-    status: [],
-    categorize: [],
-    logo: [],
-    logoContentType: [],
-    cantPlayersNextCategory: [],
-    qtyTeamGroups: [],
-    startSeason: [null, [Validators.required]],
-    endSeason: [null, [Validators.required]],
-    owner: [null, Validators.required],
-  });
+  editForm = this.fb.group(
+    {
+      id: [],
+      name: [],
+      closeInscrDays: [],
+      status: [],
+      categorize: [],
+      logo: [],
+      logoContentType: [],
+      cantPlayersNextCategory: [],
+      qtyTeamGroups: [],
+      startSeason: [null, [Validators.required]],
+      endSeason: [null, [Validators.required]],
+      owner: [null, Validators.required],
+    },
+    { validator: this.dateLessThan('startSeason', 'endSeason') }
+  );
 
   constructor(
     protected dataUtils: DataUtils,
@@ -46,6 +51,19 @@ export class TournamentUpdateComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
+
+  dateLessThan(from: string, to: string): any {
+    return (group: FormGroup): { [key: string]: any } => {
+      const f = group.controls[from];
+      const t = group.controls[to];
+      if (f.value > t.value) {
+        return {
+          dates: 'Date from should be less than Date to',
+        };
+      }
+      return {};
+    };
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tournament }) => {
@@ -130,8 +148,8 @@ export class TournamentUpdateComponent implements OnInit {
       logoContentType: tournament.logoContentType,
       cantPlayersNextCategory: tournament.cantPlayersNextCategory,
       qtyTeamGroups: tournament.qtyTeamGroups,
-      startSeason: tournament.startSeason,
-      endSeason: tournament.endSeason,
+      startSeason: tournament.startSeason ? tournament.startSeason.format(DATE_FORMAT) : null,
+      endSeason: tournament.endSeason ? tournament.endSeason.format(DATE_FORMAT) : null,
       owner: tournament.owner,
     });
 
@@ -158,8 +176,8 @@ export class TournamentUpdateComponent implements OnInit {
       logo: this.editForm.get(['logo'])!.value,
       cantPlayersNextCategory: this.editForm.get(['cantPlayersNextCategory'])!.value,
       qtyTeamGroups: this.editForm.get(['qtyTeamGroups'])!.value,
-      startSeason: this.editForm.get(['startSeason'])!.value,
-      endSeason: this.editForm.get(['endSeason'])!.value,
+      startSeason: this.editForm.get(['startSeason'])!.value ? dayjs(this.editForm.get(['startSeason'])!.value, DATE_FORMAT) : undefined,
+      endSeason: this.editForm.get(['endSeason'])!.value ? dayjs(this.editForm.get(['endSeason'])!.value, DATE_FORMAT) : undefined,
       owner: this.editForm.get(['owner'])!.value,
     };
   }

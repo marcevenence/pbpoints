@@ -28,7 +28,9 @@
       "cantPlayersNextCategory": "Cantidad Jugadores Categoria Superior",
       "qtyTeamGroups": "Cantidad de Equipos por Grupo",
       "event": "Evento",
-      "owner": "Propietario"
+      "owner": "Propietario",
+      "startSeason": "Inicio Temporada",
+      "endSeason": "Fin Temporada"
     }
   }
 }

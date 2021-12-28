@@ -1,11 +1,11 @@
-id;name;close_inscr_days;status;categorize;logo;logo_content_type;cant_players_next_category;qty_team_groups;owner_id
-1;Niger;10506;DONE;true;../fake-data/blob/hipster.png;image/png;63503;74987;1
-2;Fantástico Usabilidad;90095;CREATED;true;../fake-data/blob/hipster.png;image/png;76802;98837;2
-3;auxiliary invoice Perseverando;19305;IN_PROGRESS;true;../fake-data/blob/hipster.png;image/png;45701;25744;2
-4;payment open-source monitor;540;DONE;true;../fake-data/blob/hipster.png;image/png;20481;77006;2
-5;interactive Madagascar;7666;IN_PROGRESS;true;../fake-data/blob/hipster.png;image/png;88612;80876;1
-6;streamline Negro;30707;PENDING;false;../fake-data/blob/hipster.png;image/png;58153;23918;1
-7;Fantástico;60512;CREATED;false;../fake-data/blob/hipster.png;image/png;93081;32179;1
-8;Algodón;53362;PENDING;false;../fake-data/blob/hipster.png;image/png;95581;21628;1
-9;Web estandardización;78223;PENDING;false;../fake-data/blob/hipster.png;image/png;10744;4740;1
-10;calculating state Usabilidad;68367;CREATED;true;../fake-data/blob/hipster.png;image/png;88594;62921;2
+id;name;close_inscr_days;status;categorize;logo;logo_content_type;cant_players_next_category;qty_team_groups;start_season;end_season;owner_id
+1;Niger;10506;DONE;true;../fake-data/blob/hipster.png;image/png;63503;74987;2021-04-05;2021-04-06;1
+2;conjunto Usabilidad;90095;CREATED;true;../fake-data/blob/hipster.png;image/png;76802;98837;2021-04-05;2021-04-05;2
+3;reintermediate;24649;PENDING;true;../fake-data/blob/hipster.png;image/png;42089;19305;2021-04-05;2021-04-05;2
+4;el monitor;67549;CANCEL;true;../fake-data/blob/hipster.png;image/png;73773;6277;2021-04-06;2021-04-05;1
+5;Verde interactive Madagascar;7666;IN_PROGRESS;true;../fake-data/blob/hipster.png;image/png;88612;80876;2021-04-05;2021-04-05;2
+6;Caserio;89132;PENDING;false;../fake-data/blob/hipster.png;image/png;26422;58153;2021-04-05;2021-04-05;2
+7;synergistic;11585;CREATED;true;../fake-data/blob/hipster.png;image/png;32179;7092;2021-04-05;2021-04-05;2
+8;Groenlandia Implementación;94547;DONE;true;../fake-data/blob/hipster.png;image/png;32713;86420;2021-04-06;2021-04-05;2
+9;Pescado drive;94404;CANCEL;true;../fake-data/blob/hipster.png;image/png;95882;86722;2021-04-05;2021-04-05;2
+10;THX Morado connecting;84276;PENDING;false;../fake-data/blob/hipster.png;image/png;23326;41598;2021-04-05;2021-04-05;1
