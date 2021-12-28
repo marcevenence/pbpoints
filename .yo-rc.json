@@ -70,8 +70,7 @@
       "Sponsor",
       "Field",
       "TournamentGroup",
-      "Equipment",
-      "TeamCategoryPoint"
+      "Equipment"
     ],
     "lastLiquibaseTimestamp": 1640268783000
   },
