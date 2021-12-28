@@ -263,47 +263,50 @@ public class EventService {
                 if (!games.isEmpty()) {
                     log.info("*** Recorriendo Games ***");
                     for (Game gameloop : games) {
+                        Element game = document.createElement("GAME");
+                        gamesxml.appendChild(game);
+
                         log.info("*** Recorriendo Game {}", gameloop);
 
                         Element category = document.createElement("CATEGORY_ID");
                         category.appendChild(document.createTextNode(eventCategory.getCategory().getId().toString()));
-                        gamesxml.appendChild(category);
+                        game.appendChild(category);
 
                         Element gameid = document.createElement("ID");
                         gameid.appendChild(document.createTextNode(gameloop.getId().toString()));
-                        gamesxml.appendChild(gameid);
+                        game.appendChild(gameid);
 
                         Element spid = document.createElement("SD_ID");
                         spid.appendChild(document.createTextNode(gameloop.getSplitDeckNum().toString()));
-                        gamesxml.appendChild(spid);
+                        game.appendChild(spid);
 
                         Element clasif = document.createElement("CLASIF");
                         clasif.appendChild(document.createTextNode("1"));
-                        gamesxml.appendChild(clasif);
+                        game.appendChild(clasif);
 
                         Element teamIda = document.createElement("TEAM_ID_A");
                         teamIda.appendChild(document.createTextNode(gameloop.getTeamA().getId().toString()));
-                        gamesxml.appendChild(teamIda);
+                        game.appendChild(teamIda);
 
                         Element teama = document.createElement("TEAM_A");
                         teama.appendChild(document.createTextNode(gameloop.getTeamA().getName()));
-                        gamesxml.appendChild(teama);
+                        game.appendChild(teama);
 
                         Element pointsa = document.createElement("POINTS_A");
                         pointsa.appendChild(document.createTextNode(gameloop.getPointsA().toString()));
-                        gamesxml.appendChild(pointsa);
+                        game.appendChild(pointsa);
 
                         Element teamIdb = document.createElement("TEAM_ID_B");
                         teamIdb.appendChild(document.createTextNode(gameloop.getTeamB().getId().toString()));
-                        gamesxml.appendChild(teamIdb);
+                        game.appendChild(teamIdb);
 
                         Element teamb = document.createElement("TEAM_B");
                         teamb.appendChild(document.createTextNode(gameloop.getTeamB().getName()));
-                        gamesxml.appendChild(teamb);
+                        game.appendChild(teamb);
 
                         Element pointsb = document.createElement("POINTS_B");
                         pointsb.appendChild(document.createTextNode(gameloop.getPointsB().toString()));
-                        gamesxml.appendChild(pointsb);
+                        game.appendChild(pointsb);
                     }
                 }
             }
@@ -421,23 +424,9 @@ public class EventService {
                 .map(gameService::findPosDetByXML)
                 .collect(Collectors.toList());
             for (TeamDetailPoint teamPointDetail : teamDetailPoints) {
-                teamPointDetail.setEvent(event);
+                teamPointDetail.setEventCategory(eventCategory);
             }
             teamPointDetailRepository.saveAll(teamDetailPoints);
-
-            for (TeamDetailPoint teamPointDetail : teamDetailPoints) {
-                //Cargo los Team Category Points
-                List<TeamCategoryPoint> teamCategoryPoints = gameResultDTO
-                    .getPositions()
-                    .stream()
-                    .map(gameService::findPosCatByXML)
-                    .collect(Collectors.toList());
-                for (TeamCategoryPoint teamCategoryPoint : teamCategoryPoints) {
-                    teamCategoryPoint.setEventCategory(eventCategory);
-                    teamCategoryPoint.setTeamDetailPoint(teamPointDetail);
-                }
-                teamPointDetailRepository.saveAll(teamDetailPoints);
-            }
 
             playerPointService.distPoints(gameResultDTO.getPositions(), event);
 

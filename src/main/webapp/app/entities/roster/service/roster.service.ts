@@ -63,6 +63,11 @@ export class RosterService {
     return this.http.get<IRoster>(`${this.resourceUrl}/check/${id}/${profile}`, { observe: 'response' });
   }
 
+  count(req?: any): Observable<HttpResponse<number>> {
+    const options = createRequestOption(req);
+    return this.http.get<number>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
   addRosterToCollectionIfMissing(rosterCollection: IRoster[], ...rostersToCheck: (IRoster | null | undefined)[]): IRoster[] {
     const rosters: IRoster[] = rostersToCheck.filter(isPresent);
     if (rosters.length > 0) {

@@ -46,7 +46,8 @@
         "picture": "Foto",
         "player": "Jugador",
         "players": "Jugadores",
-        "category": "Categoria"
+        "category": "Categoria",
+        "profile": "Perfil"
       }
     }
   }

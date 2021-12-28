@@ -1,11 +1,11 @@
-id;name;active
-1;Namibia;false
-2;Borders Islas Técnico;true
-3;por;false
-4;Gorro;true
-5;Artesanal;true
-6;niches cutting-edge;false
-7;Comunidad;false
-8;Rioja;false
-9;monitorizar asimétrica;true
-10;Kiribati Funcionario;true
+id;name;active;logo;logo_content_type
+1;Namibia;false;../fake-data/blob/hipster.png;image/png
+2;Borders Islas Técnico;true;../fake-data/blob/hipster.png;image/png
+3;por;false;../fake-data/blob/hipster.png;image/png
+4;Gorro;true;../fake-data/blob/hipster.png;image/png
+5;Artesanal;true;../fake-data/blob/hipster.png;image/png
+6;niches cutting-edge;false;../fake-data/blob/hipster.png;image/png
+7;Comunidad;false;../fake-data/blob/hipster.png;image/png
+8;Rioja;false;../fake-data/blob/hipster.png;image/png
+9;monitorizar asimétrica;true;../fake-data/blob/hipster.png;image/png
+10;Kiribati Funcionario;true;../fake-data/blob/hipster.png;image/png

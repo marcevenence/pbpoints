@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as dayjs from 'dayjs';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
@@ -86,13 +86,13 @@ export class PlayerSearchComponent implements OnInit {
     if (this.searchForm.get(['id'])!.value) {
       this.userExtraService
         .query({
-          'id.equals': this.searchForm.get(['id'])!.value,
+          'userId.equals': this.searchForm.get(['id'])!.value,
           page: this.page,
           size: this.itemsPerPage,
           sort: this.sort(),
         })
         .subscribe((res: HttpResponse<IUserExtra[]>) => {
-          this.paginateUserExtras(res.body, res.headers);
+          this.userExtras = res.body ?? [];
         });
 
       this.teamService
@@ -120,7 +120,7 @@ export class PlayerSearchComponent implements OnInit {
           sort: this.sort(),
         })
         .subscribe((res: HttpResponse<IPlayer[]>) => {
-          this.paginatePlayers(res.body, res.headers);
+          this.players = res.body ?? [];
         });
 
       this.playerPointService
@@ -131,7 +131,7 @@ export class PlayerSearchComponent implements OnInit {
           sort: this.sort(),
         })
         .subscribe((res: HttpResponse<IPlayerPoint[]>) => {
-          this.paginatePlayerPoints(res.body, res.headers);
+          this.playerPoints = res.body ?? [];
         });
     }
   }
@@ -195,33 +195,6 @@ export class PlayerSearchComponent implements OnInit {
       result.push('id');
     }
     return result;
-  }
-
-  protected paginateUserExtras(data: IUserExtra[] | null, headers: HttpHeaders): void {
-    this.links = this.parseLinks.parse(headers.get('link') ?? '');
-    if (data) {
-      for (const d of data) {
-        this.userExtras?.push(d);
-      }
-    }
-  }
-
-  protected paginatePlayers(data: IPlayer[] | null, headers: HttpHeaders): void {
-    this.links = this.parseLinks.parse(headers.get('link') ?? '');
-    if (data) {
-      for (const d of data) {
-        this.players?.push(d);
-      }
-    }
-  }
-
-  protected paginatePlayerPoints(data: IPlayerPoint[] | null, headers: HttpHeaders): void {
-    this.links = this.parseLinks.parse(headers.get('link') ?? '');
-    if (data) {
-      for (const d of data) {
-        this.playerPoints?.push(d);
-      }
-    }
   }
 
   protected onSaveSuccess(): void {
