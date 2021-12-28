@@ -23,6 +23,7 @@ describe('Service Tests', () => {
       elemDefault = {
         id: 0,
         points: 0,
+        position: 0,
       };
     });
 
@@ -59,6 +60,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             points: 1,
+            position: 1,
           },
           elemDefault
         );
@@ -76,6 +78,7 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             points: 1,
+            position: 1,
           },
           new TeamDetailPoint()
         );
@@ -96,6 +99,7 @@ describe('Service Tests', () => {
           {
             id: 1,
             points: 1,
+            position: 1,
           },
           elemDefault
         );
@@ -147,7 +151,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique TeamDetailPoint to an array', () => {
-          const teamDetailPointArray: ITeamDetailPoint[] = [{ id: 123 }, { id: 456 }, { id: 72844 }];
+          const teamDetailPointArray: ITeamDetailPoint[] = [{ id: 123 }, { id: 456 }, { id: 42169 }];
           const teamDetailPointCollection: ITeamDetailPoint[] = [{ id: 123 }];
           expectedResult = service.addTeamDetailPointToCollectionIfMissing(teamDetailPointCollection, ...teamDetailPointArray);
           expect(expectedResult).toHaveLength(3);

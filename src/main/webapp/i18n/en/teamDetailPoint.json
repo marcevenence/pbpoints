@@ -22,7 +22,8 @@
       "teamPoint": "Team Point",
       "eventCategory": "Event Category",
       "event": "Event",
-      "tournament": "Tournament"
+      "tournament": "Tournament",
+      "position": "Position"
     }
   }
 }

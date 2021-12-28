@@ -38,6 +38,10 @@ class TeamDetailPointResourceIT {
     private static final Float UPDATED_POINTS = 2F;
     private static final Float SMALLER_POINTS = 1F - 1F;
 
+    private static final Integer DEFAULT_POSITION = 1;
+    private static final Integer UPDATED_POSITION = 2;
+    private static final Integer SMALLER_POSITION = 1 - 1;
+
     private static final String ENTITY_API_URL = "/api/team-detail-points";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -65,7 +69,7 @@ class TeamDetailPointResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TeamDetailPoint createEntity(EntityManager em) {
-        TeamDetailPoint teamDetailPoint = new TeamDetailPoint().points(DEFAULT_POINTS);
+        TeamDetailPoint teamDetailPoint = new TeamDetailPoint().points(DEFAULT_POINTS).position(DEFAULT_POSITION);
         // Add required entity
         TeamPoint teamPoint;
         if (TestUtil.findAll(em, TeamPoint.class).isEmpty()) {
@@ -96,7 +100,7 @@ class TeamDetailPointResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static TeamDetailPoint createUpdatedEntity(EntityManager em) {
-        TeamDetailPoint teamDetailPoint = new TeamDetailPoint().points(UPDATED_POINTS);
+        TeamDetailPoint teamDetailPoint = new TeamDetailPoint().points(UPDATED_POINTS).position(UPDATED_POSITION);
         // Add required entity
         TeamPoint teamPoint;
         if (TestUtil.findAll(em, TeamPoint.class).isEmpty()) {
@@ -142,6 +146,7 @@ class TeamDetailPointResourceIT {
         assertThat(teamDetailPointList).hasSize(databaseSizeBeforeCreate + 1);
         TeamDetailPoint testTeamDetailPoint = teamDetailPointList.get(teamDetailPointList.size() - 1);
         assertThat(testTeamDetailPoint.getPoints()).isEqualTo(DEFAULT_POINTS);
+        assertThat(testTeamDetailPoint.getPosition()).isEqualTo(DEFAULT_POSITION);
     }
 
     @Test
@@ -187,6 +192,26 @@ class TeamDetailPointResourceIT {
 
     @Test
     @Transactional
+    void checkPositionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = teamDetailPointRepository.findAll().size();
+        // set the field null
+        teamDetailPoint.setPosition(null);
+
+        // Create the TeamDetailPoint, which fails.
+        TeamDetailPointDTO teamDetailPointDTO = teamDetailPointMapper.toDto(teamDetailPoint);
+
+        restTeamDetailPointMockMvc
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(teamDetailPointDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<TeamDetailPoint> teamDetailPointList = teamDetailPointRepository.findAll();
+        assertThat(teamDetailPointList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllTeamDetailPoints() throws Exception {
         // Initialize the database
         teamDetailPointRepository.saveAndFlush(teamDetailPoint);
@@ -197,7 +222,8 @@ class TeamDetailPointResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(teamDetailPoint.getId().intValue())))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
     }
 
     @Test
@@ -212,7 +238,8 @@ class TeamDetailPointResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(teamDetailPoint.getId().intValue()))
-            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.doubleValue()));
+            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.doubleValue()))
+            .andExpect(jsonPath("$.position").value(DEFAULT_POSITION));
     }
 
     @Test
@@ -339,6 +366,110 @@ class TeamDetailPointResourceIT {
 
     @Test
     @Transactional
+    void getAllTeamDetailPointsByPositionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position equals to DEFAULT_POSITION
+        defaultTeamDetailPointShouldBeFound("position.equals=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position equals to UPDATED_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.equals=" + UPDATED_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position not equals to DEFAULT_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.notEquals=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position not equals to UPDATED_POSITION
+        defaultTeamDetailPointShouldBeFound("position.notEquals=" + UPDATED_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsInShouldWork() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position in DEFAULT_POSITION or UPDATED_POSITION
+        defaultTeamDetailPointShouldBeFound("position.in=" + DEFAULT_POSITION + "," + UPDATED_POSITION);
+
+        // Get all the teamDetailPointList where position equals to UPDATED_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.in=" + UPDATED_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position is not null
+        defaultTeamDetailPointShouldBeFound("position.specified=true");
+
+        // Get all the teamDetailPointList where position is null
+        defaultTeamDetailPointShouldNotBeFound("position.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position is greater than or equal to DEFAULT_POSITION
+        defaultTeamDetailPointShouldBeFound("position.greaterThanOrEqual=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position is greater than or equal to UPDATED_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.greaterThanOrEqual=" + UPDATED_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position is less than or equal to DEFAULT_POSITION
+        defaultTeamDetailPointShouldBeFound("position.lessThanOrEqual=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position is less than or equal to SMALLER_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.lessThanOrEqual=" + SMALLER_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsLessThanSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position is less than DEFAULT_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.lessThan=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position is less than UPDATED_POSITION
+        defaultTeamDetailPointShouldBeFound("position.lessThan=" + UPDATED_POSITION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTeamDetailPointsByPositionIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        teamDetailPointRepository.saveAndFlush(teamDetailPoint);
+
+        // Get all the teamDetailPointList where position is greater than DEFAULT_POSITION
+        defaultTeamDetailPointShouldNotBeFound("position.greaterThan=" + DEFAULT_POSITION);
+
+        // Get all the teamDetailPointList where position is greater than SMALLER_POSITION
+        defaultTeamDetailPointShouldBeFound("position.greaterThan=" + SMALLER_POSITION);
+    }
+
+    @Test
+    @Transactional
     void getAllTeamDetailPointsByTeamPointIsEqualToSomething() throws Exception {
         // Initialize the database
         teamDetailPointRepository.saveAndFlush(teamDetailPoint);
@@ -384,7 +515,8 @@ class TeamDetailPointResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(teamDetailPoint.getId().intValue())))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION)));
 
         // Check, that the count call also returns 1
         restTeamDetailPointMockMvc
@@ -432,7 +564,7 @@ class TeamDetailPointResourceIT {
         TeamDetailPoint updatedTeamDetailPoint = teamDetailPointRepository.findById(teamDetailPoint.getId()).get();
         // Disconnect from session so that the updates on updatedTeamDetailPoint are not directly saved in db
         em.detach(updatedTeamDetailPoint);
-        updatedTeamDetailPoint.points(UPDATED_POINTS);
+        updatedTeamDetailPoint.points(UPDATED_POINTS).position(UPDATED_POSITION);
         TeamDetailPointDTO teamDetailPointDTO = teamDetailPointMapper.toDto(updatedTeamDetailPoint);
 
         restTeamDetailPointMockMvc
@@ -448,6 +580,7 @@ class TeamDetailPointResourceIT {
         assertThat(teamDetailPointList).hasSize(databaseSizeBeforeUpdate);
         TeamDetailPoint testTeamDetailPoint = teamDetailPointList.get(teamDetailPointList.size() - 1);
         assertThat(testTeamDetailPoint.getPoints()).isEqualTo(UPDATED_POINTS);
+        assertThat(testTeamDetailPoint.getPosition()).isEqualTo(UPDATED_POSITION);
     }
 
     @Test
@@ -529,7 +662,7 @@ class TeamDetailPointResourceIT {
         TeamDetailPoint partialUpdatedTeamDetailPoint = new TeamDetailPoint();
         partialUpdatedTeamDetailPoint.setId(teamDetailPoint.getId());
 
-        partialUpdatedTeamDetailPoint.points(UPDATED_POINTS);
+        partialUpdatedTeamDetailPoint.points(UPDATED_POINTS).position(UPDATED_POSITION);
 
         restTeamDetailPointMockMvc
             .perform(
@@ -544,6 +677,7 @@ class TeamDetailPointResourceIT {
         assertThat(teamDetailPointList).hasSize(databaseSizeBeforeUpdate);
         TeamDetailPoint testTeamDetailPoint = teamDetailPointList.get(teamDetailPointList.size() - 1);
         assertThat(testTeamDetailPoint.getPoints()).isEqualTo(UPDATED_POINTS);
+        assertThat(testTeamDetailPoint.getPosition()).isEqualTo(UPDATED_POSITION);
     }
 
     @Test
@@ -558,7 +692,7 @@ class TeamDetailPointResourceIT {
         TeamDetailPoint partialUpdatedTeamDetailPoint = new TeamDetailPoint();
         partialUpdatedTeamDetailPoint.setId(teamDetailPoint.getId());
 
-        partialUpdatedTeamDetailPoint.points(UPDATED_POINTS);
+        partialUpdatedTeamDetailPoint.points(UPDATED_POINTS).position(UPDATED_POSITION);
 
         restTeamDetailPointMockMvc
             .perform(
@@ -573,6 +707,7 @@ class TeamDetailPointResourceIT {
         assertThat(teamDetailPointList).hasSize(databaseSizeBeforeUpdate);
         TeamDetailPoint testTeamDetailPoint = teamDetailPointList.get(teamDetailPointList.size() - 1);
         assertThat(testTeamDetailPoint.getPoints()).isEqualTo(UPDATED_POINTS);
+        assertThat(testTeamDetailPoint.getPosition()).isEqualTo(UPDATED_POSITION);
     }
 
     @Test

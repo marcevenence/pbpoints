@@ -5,6 +5,11 @@
       "fieldName": "points",
       "fieldType": "Float",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
     }
   ],
   "relationships": [

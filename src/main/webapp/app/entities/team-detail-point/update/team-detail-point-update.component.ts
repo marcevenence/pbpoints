@@ -25,6 +25,7 @@ export class TeamDetailPointUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     points: [null, [Validators.required]],
+    position: [null, [Validators.required]],
     teamPoint: [null, Validators.required],
     eventCategory: [null, Validators.required],
   });
@@ -90,6 +91,7 @@ export class TeamDetailPointUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: teamDetailPoint.id,
       points: teamDetailPoint.points,
+      position: teamDetailPoint.position,
       teamPoint: teamDetailPoint.teamPoint,
       eventCategory: teamDetailPoint.eventCategory,
     });
@@ -131,6 +133,7 @@ export class TeamDetailPointUpdateComponent implements OnInit {
       ...new TeamDetailPoint(),
       id: this.editForm.get(['id'])!.value,
       points: this.editForm.get(['points'])!.value,
+      position: this.editForm.get(['position'])!.value,
       teamPoint: this.editForm.get(['teamPoint'])!.value,
       eventCategory: this.editForm.get(['eventCategory'])!.value,
     };

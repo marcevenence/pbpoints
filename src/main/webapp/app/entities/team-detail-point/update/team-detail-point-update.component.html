@@ -31,6 +31,27 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.position" for="field_position">Position</label>
+          <input type="number" class="form-control" name="position" id="field_position" data-cy="position" formControlName="position" />
+          <div *ngIf="editForm.get('position')!.invalid && (editForm.get('position')!.dirty || editForm.get('position')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('position')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('position')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="pbpointsApp.teamDetailPoint.teamPoint" for="field_teamPoint">Team Point</label>
           <select class="form-control" id="field_teamPoint" data-cy="teamPoint" name="teamPoint" formControlName="teamPoint">
             <option *ngIf="!editForm.get('teamPoint')!.value" [ngValue]="null" selected></option>
