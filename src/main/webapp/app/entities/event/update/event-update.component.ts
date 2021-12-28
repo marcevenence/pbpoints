@@ -61,14 +61,14 @@ export class EventUpdateComponent implements OnInit {
           dates: 'Date from should be less than Date to',
         };
       }
-      if (f.value > e.value) {
+      if (f.value < e.value) {
         return {
-          dates: 'Date from should be less than Inscription Date',
+          dates: 'Date from should be higher than Inscription Date',
         };
       }
-      if (f.value > eP.value) {
+      if (f.value < eP.value) {
         return {
-          dates: 'Date from should be less than Inscription Player Date',
+          dates: 'Date from should be Higher than Inscription Player Date',
         };
       }
       if (eP.value > t.value) {
@@ -76,9 +76,9 @@ export class EventUpdateComponent implements OnInit {
           dates: 'Inscription Player Date should be less than Date To',
         };
       }
-      if (e.value > eP.value) {
+      if (e.value < eP.value) {
         return {
-          dates: 'Inscription Date should be less than Inscription player Date',
+          dates: 'Inscription Date should be higher than Inscription player Date',
         };
       }
       if (e.value > t.value) {
