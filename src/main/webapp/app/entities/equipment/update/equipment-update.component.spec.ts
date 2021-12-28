@@ -43,10 +43,10 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call User query and add missing value', () => {
         const equipment: IEquipment = { id: 456 };
-        const user: IUser = { id: 27699 };
+        const user: IUser = { id: 16859 };
         equipment.user = user;
 
-        const userCollection: IUser[] = [{ id: 87926 }];
+        const userCollection: IUser[] = [{ id: 42898 }];
         spyOn(userService, 'query').and.returnValue(of(new HttpResponse({ body: userCollection })));
         const additionalUsers = [user];
         const expectedCollection: IUser[] = [...additionalUsers, ...userCollection];
@@ -62,7 +62,7 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const equipment: IEquipment = { id: 456 };
-        const user: IUser = { id: 47918 };
+        const user: IUser = { id: 34856 };
         equipment.user = user;
 
         activatedRoute.data = of({ equipment });

@@ -1,11 +1,11 @@
-id;brand;model;picture_1;picture_1_content_type;picture_2;picture_2_content_type
-1;Galicia monitor;Atún;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-2;Grupo Bacon Futuro;estatica;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-3;SMS interfaces;payment;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-4;Regional Pollo hibrida;Soporte AI;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-5;Algodón firewall Andalucía;e-commerce;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-6;Ergonómico del Fantástico;Account Maldivas Teclado;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-7;Raton Metal;Zapatos Peso Pollo;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-8;Cambridgeshire ADP;navigating invoice e-business;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-9;Comunicaciones;Global;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
-10;navigate Director;Director Algodón;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png
+id;brand;model;picture_1;picture_1_content_type;picture_2;picture_2_content_type;serial
+1;Galicia monitor;Atún;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Grupo Bacon Futuro
+2;estatica;SMS interfaces;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;payment
+3;Regional Pollo hibrida;Soporte AI;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Algodón firewall Andalucía
+4;e-commerce;Ergonómico del Fantástico;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Account Maldivas Teclado
+5;Raton Metal;Zapatos Peso Pollo;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Cambridgeshire ADP
+6;navigating invoice e-business;Comunicaciones;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Global
+7;navigate Director;Director Algodón;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Gris
+8;Mercados;Nakfa Coche Account;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Electrónica
+9;Música Hogar Dinánmico;SQL;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;synergize systems
+10;Intercambiable Lempira reboot;Salud;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.png;image/png;Guyana Auto
