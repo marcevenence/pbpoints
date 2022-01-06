@@ -4,6 +4,7 @@ import com.pbpoints.domain.*;
 import com.pbpoints.domain.enumeration.ProfileUser;
 import com.pbpoints.repository.*;
 import com.pbpoints.service.dto.PlayerDTO;
+import com.pbpoints.service.dto.RosterDTO;
 import com.pbpoints.service.mapper.PlayerMapper;
 import java.util.List;
 import java.util.Optional;
@@ -215,7 +216,7 @@ public class PlayerService {
         for (Roster roster : rs) {
             log.debug("Verificando en Roster: {}", roster);
             Optional<Player> player = this.findPlayer(userId, roster);
-            if (player.isPresent() && player.get().getProfile() == ProfileUser.PLAYER) {
+            if (player.isPresent() && player.get().getProfile().equals(ProfileUser.PLAYER)) {
                 return player;
             }
         }

@@ -34,8 +34,8 @@ export class RosterService {
   }
 
   updateWithPlayers(players: IPlayer[], id: number): Observable<EntityResponseType> {
-    const data = { players, id };
-    return this.http.put<IRoster>(`${this.resourceUrl}/players`, data, { observe: 'response' });
+    /* const data = { players };*/
+    return this.http.put<IRoster>(`${this.resourceUrl}/players/${id}`, players, { observe: 'response' });
   }
 
   partialUpdate(roster: IRoster): Observable<EntityResponseType> {

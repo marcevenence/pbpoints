@@ -160,17 +160,13 @@ export class RosterSubsComponent implements OnInit {
   }
 
   saveAll(): void {
-    /*alert(this.rosterParam.rId);
     if (this.rosterParam.rId !== 0 && this.rosterParam.rId !== undefined) {
       this.subscribeToSaveResponseRoster(this.rosterService.updateWithPlayers(this.playerNews!, this.rosterParam.rId));
     } else {
       this.subscribeToSaveResponseRoster(
         this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
       );
-    }*/
-    this.subscribeToSaveResponseRoster(
-      this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
-    );
+    }
     window.history.back();
   }
 

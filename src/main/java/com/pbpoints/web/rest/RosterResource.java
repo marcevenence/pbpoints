@@ -193,6 +193,43 @@ public class RosterResource {
     }
 
     /**
+     * {@code PUT  /rosters/players} : Updates an existing roster.
+     *
+     * @param players the rosterDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rosterDTO,
+     * or with status {@code 400 (Bad Request)} if the rosterDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the rosterDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/rosters/players/{id}")
+    public ResponseEntity<RosterDTO> updateRosterWithPlayers(@PathVariable Long id, @Valid @RequestBody List<PlayerDTO> players)
+        throws URISyntaxException {
+        log.debug("REST request to update Roster : {}", id);
+        log.debug("With Players : {}", players);
+        if (id == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        RosterDTO result = rosterService.findOne(id).get();
+        PlayerDTO result2 = new PlayerDTO();
+        for (PlayerDTO playerDTO : players) {
+            if (playerDTO.getId() == null) {
+                playerDTO.setRoster(result);
+                result2 = playerService.save(playerDTO);
+            } else {
+                Optional<PlayerDTO> pl = playerService.findOne(playerDTO.getId());
+                if (!pl.isPresent()) {
+                    playerDTO.setRoster(result);
+                    result2 = playerService.save(playerDTO);
+                }
+            }
+        }
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
      * {@code GET  /rosters} : get all the rosters.
      *
 
