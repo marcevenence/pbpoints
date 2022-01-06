@@ -10,18 +10,16 @@
   "relationships": [
     {
       "relationshipType": "many-to-one",
-      "otherEntityName": "event",
-      "otherEntityRelationshipName": "playerDetailPoint",
-      "relationshipValidateRules": "required",
-      "relationshipName": "event",
-      "otherEntityField": "name"
-    },
-    {
-      "relationshipType": "many-to-one",
       "otherEntityName": "playerPoint",
       "otherEntityRelationshipName": "playerDetailPoint",
       "relationshipValidateRules": "required",
       "relationshipName": "playerPoint"
+    },
+    {
+      "relationshipName": "eventCategory",
+      "otherEntityName": "eventCategory",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
     }
   ],
   "entityTableName": "player_detail_point",

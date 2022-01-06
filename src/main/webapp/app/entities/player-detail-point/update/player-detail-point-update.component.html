@@ -16,21 +16,18 @@
           <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
           <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
         </div>
+
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.event" for="field_event">Event</label>
-          <select class="form-control" id="field_event" data-cy="event" name="event" formControlName="event">
-            <option
-              [ngValue]="eventOption.id === editForm.get('event')!.value?.id ? editForm.get('event')!.value : eventOption"
-              *ngFor="let eventOption of eventsSharedCollection; trackBy: trackEventById"
-            >
-              {{ eventOption.name }}
-            </option>
-          </select>
-        </div>
-        <div *ngIf="editForm.get(['event'])!.invalid && (editForm.get(['event'])!.dirty || editForm.get(['event'])!.touched)">
-          <small class="form-text text-danger" *ngIf="editForm.get(['event'])?.errors?.required" jhiTranslate="entity.validation.required">
-            This field is required.
-          </small>
+          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.points" for="field_points">Points</label>
+          <input type="number" class="form-control" name="points" id="field_points" data-cy="points" formControlName="points" />
+          <div *ngIf="editForm.get('points')!.invalid && (editForm.get('points')!.dirty || editForm.get('points')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('points')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('points')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
         </div>
 
         <div class="form-group">
@@ -38,6 +35,7 @@
             >Player Point</label
           >
           <select class="form-control" id="field_playerPoint" data-cy="playerPoint" name="playerPoint" formControlName="playerPoint">
+            <option *ngIf="!editForm.get('playerPoint')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="
                 playerPointOption.id === editForm.get('playerPoint')!.value?.id ? editForm.get('playerPoint')!.value : playerPointOption
@@ -61,16 +59,28 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.points" for="field_points">Points</label>
-          <input type="number" class="form-control" name="points" id="field_points" data-cy="points" formControlName="points" />
-          <div *ngIf="editForm.get('points')!.invalid && (editForm.get('points')!.dirty || editForm.get('points')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('points')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('points')?.errors?.number" jhiTranslate="entity.validation.number">
-              This field should be a number.
-            </small>
-          </div>
+          <label class="form-control-label" jhiTranslate="pbpointsApp.playerDetailPoint.eventCategory" for="field_eventCategory"
+            >Event Category</label
+          >
+          <select
+            class="form-control"
+            id="field_eventCategory"
+            data-cy="eventCategory"
+            name="eventCategory"
+            formControlName="eventCategory"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                eventCategoryOption.id === editForm.get('eventCategory')!.value?.id
+                  ? editForm.get('eventCategory')!.value
+                  : eventCategoryOption
+              "
+              *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
+            >
+              {{ eventCategoryOption.id }}
+            </option>
+          </select>
         </div>
       </div>
 
