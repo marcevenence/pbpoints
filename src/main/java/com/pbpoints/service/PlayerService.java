@@ -5,6 +5,7 @@ import com.pbpoints.domain.enumeration.ProfileUser;
 import com.pbpoints.repository.*;
 import com.pbpoints.service.dto.PlayerDTO;
 import com.pbpoints.service.mapper.PlayerMapper;
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,7 +210,10 @@ public class PlayerService {
 
     public Optional<Player> findByUserAndEventCategory(Long userId, EventCategory eventCategory) {
         log.debug("Buscando User en EventoCategoria: {}, {}", userId, eventCategory);
-        for (Roster roster : eventCategory.getRosters()) {
+        log.debug("Entrando en Loop Roster");
+        List<Roster> rs = rosterRepository.findByEventCategory(eventCategory);
+        for (Roster roster : rs) {
+            log.debug("Verificando en Roster: {}", roster);
             Optional<Player> player = this.findPlayer(userId, roster);
             if (player.isPresent() && player.get().getProfile() == ProfileUser.PLAYER) {
                 return player;
