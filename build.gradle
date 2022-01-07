@@ -156,14 +156,15 @@ project.ext.diffChangelogFile = "src/main/resources/config/liquibase/changelog/"
 liquibase {
     activities {
         main {
-            driver "org.h2.Driver"
-            url "jdbc:h2:file:./build/h2db/db/pbpoints"
+            driver "com.mysql.jdbc.Driver"
+            url "jdbc:mysql://pbpoints.net:3306/pbpoints?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC"
             username "pbpoints"
-            password ""
-            changeLogFile "src/main/resources/config/liquibase/master.xml"
+            password "qazwsx1234"
+            changeLogFile "src/main/resources/config/liquibase/dump_new_version.xml"
             defaultSchemaName ""
             logLevel "debug"
             classpath "src/main/resources/"
+            dataOutputDirectory "newdata"
         }
         diffLog {
             driver "org.h2.Driver"
