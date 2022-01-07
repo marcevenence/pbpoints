@@ -99,7 +99,6 @@ public class TeamDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
-            ", logo='" + getLogo() + "'" +
             ", owner=" + getOwner() +
             "}";
     }

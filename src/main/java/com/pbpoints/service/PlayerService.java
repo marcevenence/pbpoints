@@ -6,6 +6,7 @@ import com.pbpoints.repository.*;
 import com.pbpoints.service.dto.PlayerDTO;
 import com.pbpoints.service.dto.RosterDTO;
 import com.pbpoints.service.mapper.PlayerMapper;
+import com.pbpoints.service.mapper.RosterMapper;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -28,6 +29,8 @@ public class PlayerService {
 
     private final PlayerMapper playerMapper;
 
+    private final RosterMapper rosterMapper;
+
     private final RosterRepository rosterRepository;
 
     private final EventCategoryRepository eventCategoryRepository;
@@ -41,6 +44,7 @@ public class PlayerService {
     public PlayerService(
         PlayerRepository playerRepository,
         PlayerMapper playerMapper,
+        RosterMapper rosterMapper,
         RosterRepository rosterRepository,
         EventCategoryRepository eventCategoryRepository,
         TournamentRepository tournamentRepository,
@@ -49,6 +53,7 @@ public class PlayerService {
     ) {
         this.playerRepository = playerRepository;
         this.playerMapper = playerMapper;
+        this.rosterMapper = rosterMapper;
         this.rosterRepository = rosterRepository;
         this.eventCategoryRepository = eventCategoryRepository;
         this.tournamentRepository = tournamentRepository;
@@ -238,5 +243,21 @@ public class PlayerService {
             }
         }
         return Optional.empty();
+    }
+
+    public void deleteFromRoster(RosterDTO roster, List<PlayerDTO> players) {
+        List<Player> pp = playerRepository.findByRoster(rosterMapper.toEntity(roster));
+        Boolean exists;
+        for (Player p : pp) {
+            exists = false;
+            for (PlayerDTO pDTO : players) {
+                if (p.getUser().equals(pDTO.getUser()) && p.getProfile().equals(pDTO.getProfile())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                playerRepository.deleteById(p.getId());
+            }
+        }
     }
 }

@@ -98,7 +98,6 @@ public class SponsorDTO implements Serializable {
     public String toString() {
         return "SponsorDTO{" +
             "id=" + getId() +
-            ", logo='" + getLogo() + "'" +
             ", name='" + getName() + "'" +
             ", active='" + getActive() + "'" +
             ", tournament=" + getTournament() +

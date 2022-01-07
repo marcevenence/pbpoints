@@ -134,7 +134,6 @@ public class UserExtraDTO implements Serializable {
             ", numDoc='" + getNumDoc() + "'" +
             ", phone='" + getPhone() + "'" +
             ", bornDate='" + getBornDate() + "'" +
-            ", picture='" + getPicture() + "'" +
             ", code='" + getCode() + "'" +
             ", user=" + getUser() +
             ", docType=" + getDocType() +

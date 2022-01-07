@@ -166,7 +166,6 @@ public class TournamentDTO implements Serializable {
             ", closeInscrDays=" + getCloseInscrDays() +
             ", status='" + getStatus() + "'" +
             ", categorize='" + isCategorize() + "'" +
-            ", logo=''" +
             ", cantPlayersNextCategory=" + getCantPlayersNextCategory() +
             ", qtyTeamGroups=" + getQtyTeamGroups() +
             ", startSeason='" + getStartSeason() + "'" +

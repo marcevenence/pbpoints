@@ -131,8 +131,6 @@ public class EquipmentDTO implements Serializable {
             "id=" + getId() +
             ", brand='" + getBrand() + "'" +
             ", model='" + getModel() + "'" +
-            ", picture1='" + getPicture1() + "'" +
-            ", picture2='" + getPicture2() + "'" +
             ", serial='" + getSerial() + "'" +
             ", user=" + getUser() +
             "}";
