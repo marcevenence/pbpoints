@@ -7,6 +7,7 @@ import { finalize, map } from 'rxjs/operators';
 import { DataUtils } from 'app/core/util/data-util.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { IRoster, Roster } from 'app/entities/roster/roster.model';
+import { IRosterSubs } from 'app/entities/roster/roster-subs.model';
 import { RosterService } from 'app/entities/roster/service/roster.service';
 import { IPlayer, Player } from 'app/entities/player/player.model';
 import { IPlayerPoint } from 'app/entities/player-point/player-point.model';
@@ -44,6 +45,9 @@ export class RosterSubsComponent implements OnInit {
   user?: IUser;
   validPlayer?: IPlayerPoint;
   checked?: IPlayer;
+  rosterSubs?: IRosterSubs;
+  returnPlayer?: IPlayer;
+  rosterParam?: any;
 
   findForm = this.fb.group({
     eventCategory: [null, Validators.required],
@@ -71,6 +75,7 @@ export class RosterSubsComponent implements OnInit {
     this.roster = {};
     this.newPlayer = {};
     this.Nplayer = {};
+    this.rosterSubs = {};
   }
 
   ngOnInit(): void {
@@ -155,8 +160,8 @@ export class RosterSubsComponent implements OnInit {
   }
 
   saveAll(): void {
-    if (history.state.roster.rId !== 0) {
-      this.subscribeToSaveResponseRoster(this.rosterService.updateWithPlayers(this.playerNews!, history.state.roster.rId));
+    if (this.rosterParam.rId !== 0 && this.rosterParam.rId !== undefined) {
+      this.subscribeToSaveResponseRoster(this.rosterService.updateWithPlayers(this.playerNews!, this.rosterParam.rId));
     } else {
       this.subscribeToSaveResponseRoster(
         this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
@@ -175,6 +180,29 @@ export class RosterSubsComponent implements OnInit {
         this.eventCategory?.event?.tournament?.id !== undefined &&
         this.eventCategory.category?.id !== undefined
       ) {
+        if (this.roster?.id === undefined) {
+          this.roster = this.createNewRoster();
+        }
+        this.rosterSubs!.id = this.findForm.get('id')!.value;
+        this.rosterSubs!.code = this.findForm.get('code')!.value;
+        this.rosterSubs!.profile = this.findForm.get('profile')!.value;
+        this.rosterSubs!.eventCategoryId = this.eventCategory.id;
+        this.rosterSubs!.roster = this.roster;
+        this.rosterSubs!.players = this.playerNews;
+
+        this.rosterService.validatePlayer(this.rosterSubs!).subscribe((res: HttpResponse<IPlayer>) => {
+          this.Nplayer = res.body!;
+          const targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(this.Nplayer.user?.login);
+          if (targetIdx === -1) {
+            this.playerNews!.push(this.Nplayer);
+          } else {
+            alert('No es posible agregar');
+          }
+        });
+      }
+    }
+  }
+  /*
         if (this.eventCategory.event.tournament.categorize) {
           if (
             this.validateCategory(
@@ -239,7 +267,7 @@ export class RosterSubsComponent implements OnInit {
           });
       }
     }
-  }
+  }*/
 
   addPlayer(player1: IPlayer): void {
     let targetIdx = this.playerNews!.map(item => item.user?.login).indexOf(player1.user?.login);
@@ -455,12 +483,13 @@ export class RosterSubsComponent implements OnInit {
 
   protected handleNavigation(): void {
     this.evCatId = history.state.evCatId ?? 0;
-    if (this.evCatId === 0 && history.state.roster.evCatId !== 0) {
-      this.evCatId = history.state.roster.evCatId ?? 0;
-      if (history.state.roster.te !== undefined) {
-        this.findForm.patchValue({ team: history.state.roster.te });
+    this.rosterParam = history.state.roster;
+    if (this.evCatId === 0 && this.rosterParam.evCatId !== 0) {
+      this.evCatId = this.rosterParam.evCatId ?? 0;
+      if (this.rosterParam.te !== undefined) {
+        this.findForm.patchValue({ team: this.rosterParam.te });
         this.onChange();
-        this.playerService.query({ 'rosterId.equals': history.state.roster.rId }).subscribe((res: HttpResponse<IPlayer[]>) => {
+        this.playerService.query({ 'rosterId.equals': this.rosterParam.rId }).subscribe((res: HttpResponse<IPlayer[]>) => {
           this.playerNews = res.body ?? [];
         });
       }

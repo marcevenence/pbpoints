@@ -6,6 +6,7 @@ import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IRoster, getRosterIdentifier } from '../roster.model';
+import { IRosterSubs } from '../roster-subs.model';
 import { IPlayer } from 'app/entities/player/player.model';
 import { IEventCategory } from 'app/entities/event-category/event-category.model';
 import { ITeam } from 'app/entities/team/team.model';
@@ -33,8 +34,8 @@ export class RosterService {
   }
 
   updateWithPlayers(players: IPlayer[], id: number): Observable<EntityResponseType> {
-    const data = { players, id };
-    return this.http.put<IRoster>(`${this.resourceUrl}/players`, data, { observe: 'response' });
+    /* const data = { players };*/
+    return this.http.put<IRoster>(`${this.resourceUrl}/players/${id}`, players, { observe: 'response' });
   }
 
   partialUpdate(roster: IRoster): Observable<EntityResponseType> {
@@ -66,6 +67,10 @@ export class RosterService {
   count(req?: any): Observable<HttpResponse<number>> {
     const options = createRequestOption(req);
     return this.http.get<number>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  validatePlayer(rosterSubs: IRosterSubs): Observable<EntityResponseType> {
+    return this.http.put<IRosterSubs>(`${this.resourceUrl}/validatePlayer`, rosterSubs, { observe: 'response' });
   }
 
   addRosterToCollectionIfMissing(rosterCollection: IRoster[], ...rostersToCheck: (IRoster | null | undefined)[]): IRoster[] {

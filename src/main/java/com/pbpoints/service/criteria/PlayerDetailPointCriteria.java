@@ -28,17 +28,17 @@ public class PlayerDetailPointCriteria implements Serializable, Criteria {
 
     private FloatFilter points;
 
-    private LongFilter eventId;
-
     private LongFilter playerPointId;
+
+    private LongFilter eventCategoryId;
 
     public PlayerDetailPointCriteria() {}
 
     public PlayerDetailPointCriteria(PlayerDetailPointCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.points = other.points == null ? null : other.points.copy();
-        this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.playerPointId = other.playerPointId == null ? null : other.playerPointId.copy();
+        this.eventCategoryId = other.eventCategoryId == null ? null : other.eventCategoryId.copy();
     }
 
     @Override
@@ -76,21 +76,6 @@ public class PlayerDetailPointCriteria implements Serializable, Criteria {
         this.points = points;
     }
 
-    public LongFilter getEventId() {
-        return eventId;
-    }
-
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
-        }
-        return eventId;
-    }
-
-    public void setEventId(LongFilter eventId) {
-        this.eventId = eventId;
-    }
-
     public LongFilter getPlayerPointId() {
         return playerPointId;
     }
@@ -106,6 +91,21 @@ public class PlayerDetailPointCriteria implements Serializable, Criteria {
         this.playerPointId = playerPointId;
     }
 
+    public LongFilter getEventCategoryId() {
+        return eventCategoryId;
+    }
+
+    public LongFilter eventCategoryId() {
+        if (eventCategoryId == null) {
+            eventCategoryId = new LongFilter();
+        }
+        return eventCategoryId;
+    }
+
+    public void setEventCategoryId(LongFilter eventCategoryId) {
+        this.eventCategoryId = eventCategoryId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -118,14 +118,14 @@ public class PlayerDetailPointCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(points, that.points) &&
-            Objects.equals(eventId, that.eventId) &&
-            Objects.equals(playerPointId, that.playerPointId)
+            Objects.equals(playerPointId, that.playerPointId) &&
+            Objects.equals(eventCategoryId, that.eventCategoryId)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, points, eventId, playerPointId);
+        return Objects.hash(id, points, playerPointId, eventCategoryId);
     }
 
     // prettier-ignore
@@ -134,8 +134,8 @@ public class PlayerDetailPointCriteria implements Serializable, Criteria {
         return "PlayerDetailPointCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (points != null ? "points=" + points + ", " : "") +
-            (eventId != null ? "eventId=" + eventId + ", " : "") +
             (playerPointId != null ? "playerPointId=" + playerPointId + ", " : "") +
+            (eventCategoryId != null ? "eventCategoryId=" + eventCategoryId + ", " : "") +
             "}";
     }
 }

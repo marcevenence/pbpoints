@@ -123,7 +123,13 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     }
 
     @Transactional
-    public PlayerPointDTO findByUserAndTournament(Long userId, Long tournamentId, Long categoryId) throws BadRequestAlertException {
+    public PlayerPointDTO findByUserAndTournament(User user, Tournament tournament) throws BadRequestAlertException {
+        return playerPointMapper.toDto(playerPointRepository.findByUserAndTournament(user, tournament));
+    }
+
+    @Transactional
+    public PlayerPointDTO findByUserAndTournamentAndCategory(Long userId, Long tournamentId, Long categoryId)
+        throws BadRequestAlertException {
         log.debug("Request to get PlayerPoint : UserId: {}, TournamentId: {}, CategoryId: {}", userId, tournamentId, categoryId);
 
         // Busco los datos que me pasaron por request
@@ -214,7 +220,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
                 PlayerDetailPoint playerDetailPoint = new PlayerDetailPoint();
                 playerDetailPoint.setPlayerPoint(playerPoint);
                 playerDetailPoint.setPoints(pos.getPoints());
-                playerDetailPoint.setEvent(event);
+                playerDetailPoint.setEventCategory(eventCategory);
                 playerDetailPointRepository.save(playerDetailPoint);
             }
         }

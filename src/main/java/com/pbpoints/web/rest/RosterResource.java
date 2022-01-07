@@ -1,18 +1,22 @@
 package com.pbpoints.web.rest;
 
 import com.pbpoints.domain.*;
-import com.pbpoints.service.PlayerService;
-import com.pbpoints.service.RosterQueryService;
-import com.pbpoints.service.RosterService;
-import com.pbpoints.service.dto.PlayerDTO;
-import com.pbpoints.service.dto.RosterCriteria;
-import com.pbpoints.service.dto.RosterDTO;
-import com.pbpoints.service.dto.RosterWithPlayersDTO;
+import com.pbpoints.domain.enumeration.ProfileUser;
+import com.pbpoints.repository.CategoryRepository;
+import com.pbpoints.repository.PlayerPointRepository;
+import com.pbpoints.repository.UserRepository;
+import com.pbpoints.service.*;
+import com.pbpoints.service.dto.*;
+import com.pbpoints.service.mapper.EventCategoryMapper;
+import com.pbpoints.service.mapper.PlayerPointMapper;
+import com.pbpoints.service.mapper.TournamentMapper;
+import com.pbpoints.service.mapper.UserMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.NoResultException;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +49,52 @@ public class RosterResource {
 
     private final PlayerService playerService;
 
+    private final PlayerPointService playerPointService;
+
     private final RosterQueryService rosterQueryService;
 
-    public RosterResource(RosterService rosterService, RosterQueryService rosterQueryService, PlayerService playerService) {
+    private final UserExtraService userExtraService;
+
+    private final UserRepository userRepository;
+
+    private final EventCategoryMapper eventCategoryMapper;
+
+    private final EventCategoryService eventCategoryService;
+
+    private final TournamentMapper tournamentMapper;
+
+    private final CategoryRepository categoryRepository;
+
+    private final PlayerPointRepository playerPointRepository;
+
+    private final PlayerPointMapper playerPointMapper;
+
+    public RosterResource(
+        RosterService rosterService,
+        RosterQueryService rosterQueryService,
+        PlayerService playerService,
+        PlayerPointService playerPointService,
+        UserExtraService userExtraService,
+        UserRepository userRepository,
+        EventCategoryService eventCategoryService,
+        TournamentMapper tournamentMapper,
+        CategoryRepository categoryRepository,
+        PlayerPointRepository playerPointRepository,
+        PlayerPointMapper playerPointMapper,
+        EventCategoryMapper eventCategoryMapper
+    ) {
         this.rosterService = rosterService;
         this.rosterQueryService = rosterQueryService;
         this.playerService = playerService;
+        this.playerPointService = playerPointService;
+        this.userExtraService = userExtraService;
+        this.userRepository = userRepository;
+        this.eventCategoryMapper = eventCategoryMapper;
+        this.eventCategoryService = eventCategoryService;
+        this.tournamentMapper = tournamentMapper;
+        this.categoryRepository = categoryRepository;
+        this.playerPointRepository = playerPointRepository;
+        this.playerPointMapper = playerPointMapper;
     }
 
     /**
@@ -149,6 +193,43 @@ public class RosterResource {
     }
 
     /**
+     * {@code PUT  /rosters/players} : Updates an existing roster.
+     *
+     * @param players the rosterDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated rosterDTO,
+     * or with status {@code 400 (Bad Request)} if the rosterDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the rosterDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PutMapping("/rosters/players/{id}")
+    public ResponseEntity<RosterDTO> updateRosterWithPlayers(@PathVariable Long id, @Valid @RequestBody List<PlayerDTO> players)
+        throws URISyntaxException {
+        log.debug("REST request to update Roster : {}", id);
+        log.debug("With Players : {}", players);
+        if (id == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        RosterDTO result = rosterService.findOne(id).get();
+        PlayerDTO result2 = new PlayerDTO();
+        for (PlayerDTO playerDTO : players) {
+            if (playerDTO.getId() == null) {
+                playerDTO.setRoster(result);
+                result2 = playerService.save(playerDTO);
+            } else {
+                Optional<PlayerDTO> pl = playerService.findOne(playerDTO.getId());
+                if (!pl.isPresent()) {
+                    playerDTO.setRoster(result);
+                    result2 = playerService.save(playerDTO);
+                }
+            }
+        }
+        return ResponseEntity
+            .ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
      * {@code GET  /rosters} : get all the rosters.
      *
 
@@ -240,5 +321,138 @@ public class RosterResource {
         }
         Optional<List<RosterDTO>> rostersDTO = rosterService.findAvailableByEventCategory(idEventCategory);
         return ResponseUtil.wrapOrNotFound(rostersDTO);
+    }
+
+    @PutMapping("/rosters/validatePlayer")
+    public ResponseEntity<PlayerDTO> validatePlayer(@Valid @RequestBody RosterSubsDTO rosterSubsDTO) throws URISyntaxException {
+        log.debug("validatePlayer with Params: {}", rosterSubsDTO.toString());
+        PlayerDTO playerd = new PlayerDTO();
+
+        Optional<EventCategoryDTO> eventCategoryDTO = eventCategoryService.findOne(rosterSubsDTO.getEventCategoryId());
+
+        Optional<UserExtraDTO> userExtraDTO = userExtraService.findOneByIdAndCode(rosterSubsDTO.getId(), rosterSubsDTO.getCode());
+        if (!userExtraDTO.isPresent()) {
+            throw new BadRequestAlertException("No se encontro un User Extra", ENTITY_NAME, "idexists");
+        } else {
+            log.debug("UserExtra Found: {}", userExtraDTO.get());
+            User user = userRepository.findOneById(userExtraDTO.get().getId());
+            log.debug("User Found: {}", user);
+            UserMapper um = new UserMapper();
+            playerd.setUser(um.userToUserDTO(user));
+            playerd.setRoster(rosterSubsDTO.getRoster());
+
+            if (rosterSubsDTO.getProfile().equals("STAFF")) {
+                log.debug("STAFF");
+                playerd.setProfile(ProfileUser.STAFF);
+            }
+            if (rosterSubsDTO.getProfile().equals("PLAYER")) {
+                log.debug("PLAYER");
+                playerd.setProfile(ProfileUser.PLAYER);
+            }
+        }
+        log.debug("PlayerD: {}", playerd);
+        log.debug("Valido la categoria segun el playerPoint");
+        log.debug("Roster: {}", rosterSubsDTO.getRoster());
+        log.debug("User: {}", userRepository.findOneById(rosterSubsDTO.getId()));
+        log.debug("Tournament: {}", tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament()));
+
+        Optional<PlayerPointDTO> ppdto = Optional.of(
+            playerPointService.findByUserAndTournament(
+                userRepository.findOneById(rosterSubsDTO.getId()),
+                tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
+            )
+        );
+        log.debug("AA");
+        log.debug("PPDTO: {}", ppdto.get());
+        if (!ppdto.isPresent()) {
+            Category category = categoryRepository.LastCategoryByTournamentId(
+                rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament().getId()
+            );
+            PlayerPoint playerPoint = new PlayerPoint();
+            playerPoint.setTournament(tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament()));
+            playerPoint.setPoints((float) 0);
+            playerPoint.setUser(userRepository.findOneById(rosterSubsDTO.getId()));
+            playerPoint.setCategory(category);
+
+            playerPoint = playerPointRepository.save(playerPoint);
+            ppdto = Optional.of(playerPointMapper.toDto(playerPoint));
+        }
+        log.debug("PPDTO: {}", ppdto);
+
+        playerd.setCategory(ppdto.get().getCategory());
+        log.debug("PlayerD: {}", playerd);
+
+        if (rosterSubsDTO.getProfile().equals(ProfileUser.STAFF.toString())) {
+            log.debug("Es STAFF");
+        } else {
+            log.debug("Es Jugador");
+            if (eventCategoryDTO.get().getEvent().getTournament().isCategorize()) {
+                /*Valido si es una categoria mas alta, que no haya otros jugadores de esa categoria*/
+                if (ppdto.get().getCategory().getOrder() >= rosterSubsDTO.getRoster().getEventCategory().getCategory().getOrder()) {
+                    log.debug(
+                        "Categoria validada --> PlayerCategory: {}, Category{}",
+                        ppdto.get().getCategory().getOrder(),
+                        rosterSubsDTO.getRoster().getEventCategory().getCategory().getOrder()
+                    );
+                } else {
+                    if (ppdto.get().getCategory().getOrder() == rosterSubsDTO.getRoster().getEventCategory().getCategory().getOrder() - 1) {
+                        /*Verificar si no hay otro jugador en el roster con misma categoria, Si hay tiro error*/
+                        Integer qty = rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament().getCantPlayersNextCategory();
+                        if (qty == 0 || qty == null) {
+                            log.debug("No se permiten jugadores de una categoria mas alta");
+                            throw new BadRequestAlertException(
+                                "Categoría no válida para el player",
+                                "PLAYER_POINT",
+                                "playerPointCategoryError"
+                            );
+                        }
+                        Integer qtyEx = 0;
+                        for (PlayerDTO playerDTO : rosterSubsDTO.getPlayers()) {
+                            PlayerPoint pp = playerPointRepository.findByUserAndTournament(
+                                userRepository.findById(playerDTO.getUser().getId()).get(),
+                                tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
+                            );
+                            if (pp.getCategory().getOrder() == ppdto.get().getCategory().getOrder()) {
+                                qtyEx++;
+                            }
+                        }
+                        if (qty < qtyEx + 1) {
+                            throw new BadRequestAlertException(
+                                "Categoría no válida para el player",
+                                "PLAYER_POINT",
+                                "playerPointCategoryError"
+                            );
+                        }
+                        log.debug("Unico jugador con una categoria mas alta");
+                    } else {
+                        throw new BadRequestAlertException(
+                            "Categoría no válida para el player",
+                            "PLAYER_POINT",
+                            "playerPointCategoryError"
+                        );
+                    }
+                }
+            }
+        }
+        /*Valido que el jugador no este en otro equipo*/
+        try {
+            Optional<Player> player = playerService.findByUserAndEventCategory(
+                rosterSubsDTO.getId(),
+                eventCategoryMapper.toEntity(eventCategoryDTO.get())
+            );
+            if (player.isPresent()) {
+                log.debug("Player Encontrado. Valido: {}", player.get());
+                log.debug("Player Profile vs rosterSubs.Profile: {}", player.get().getProfile().toString());
+                log.debug("Player Profile vs rosterSubs.Profile: {}", rosterSubsDTO.getProfile());
+                if (player.get().getProfile().toString().equals(rosterSubsDTO.getProfile())) {
+                    throw new BadRequestAlertException("alreadyInOtherRoster", ENTITY_NAME, "alreadyInOtherRoster");
+                }
+            }
+        } catch (NoResultException e) {
+            log.debug("Player No encontrado en otro roster");
+        } catch (BadRequestAlertException e) {
+            throw new BadRequestAlertException("alreadyInOtherRoster", ENTITY_NAME, "alreadyInOtherRoster");
+        }
+        return ResponseEntity.ok().body(playerd);
     }
 }

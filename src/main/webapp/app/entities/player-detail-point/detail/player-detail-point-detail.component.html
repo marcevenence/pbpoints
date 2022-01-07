@@ -20,16 +20,16 @@
         <dd>
           <span>{{ playerDetailPoint.points }}</span>
         </dd>
-        <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.event">Event</span></dt>
-        <dd>
-          <div *ngIf="playerDetailPoint.event">
-            <a [routerLink]="['/event', playerDetailPoint.event?.id, 'view']">{{ playerDetailPoint.event?.name }}</a>
-          </div>
-        </dd>
         <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.playerPoint">Player Point</span></dt>
         <dd>
           <div *ngIf="playerDetailPoint.playerPoint">
             <a [routerLink]="['/player-point', playerDetailPoint.playerPoint?.id, 'view']">{{ playerDetailPoint.playerPoint?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerDetailPoint.eventCategory">Event Category</span></dt>
+        <dd>
+          <div *ngIf="playerDetailPoint.eventCategory">
+            <a [routerLink]="['/event-category', playerDetailPoint.eventCategory?.id, 'view']">{{ playerDetailPoint.eventCategory?.id }}</a>
           </div>
         </dd>
       </dl>

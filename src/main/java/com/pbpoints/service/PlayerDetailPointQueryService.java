@@ -3,7 +3,7 @@ package com.pbpoints.service;
 import com.pbpoints.domain.*; // for static metamodels
 import com.pbpoints.domain.PlayerDetailPoint;
 import com.pbpoints.repository.PlayerDetailPointRepository;
-import com.pbpoints.service.dto.PlayerDetailPointCriteria;
+import com.pbpoints.service.criteria.PlayerDetailPointCriteria;
 import com.pbpoints.service.dto.PlayerDetailPointDTO;
 import com.pbpoints.service.mapper.PlayerDetailPointMapper;
 import java.util.List;
@@ -87,16 +87,10 @@ public class PlayerDetailPointQueryService extends QueryService<PlayerDetailPoin
         Specification<PlayerDetailPoint> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildSpecification(criteria.getId(), PlayerDetailPoint_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), PlayerDetailPoint_.id));
             }
             if (criteria.getPoints() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPoints(), PlayerDetailPoint_.points));
-            }
-            if (criteria.getEventId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getEventId(), root -> root.join(PlayerDetailPoint_.event, JoinType.LEFT).get(Event_.id))
-                    );
             }
             if (criteria.getPlayerPointId() != null) {
                 specification =
@@ -104,6 +98,15 @@ public class PlayerDetailPointQueryService extends QueryService<PlayerDetailPoin
                         buildSpecification(
                             criteria.getPlayerPointId(),
                             root -> root.join(PlayerDetailPoint_.playerPoint, JoinType.LEFT).get(PlayerPoint_.id)
+                        )
+                    );
+            }
+            if (criteria.getEventCategoryId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getEventCategoryId(),
+                            root -> root.join(PlayerDetailPoint_.eventCategory, JoinType.LEFT).get(EventCategory_.id)
                         )
                     );
             }

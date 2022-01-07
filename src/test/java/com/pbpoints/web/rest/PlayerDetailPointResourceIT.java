@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.pbpoints.IntegrationTest;
-import com.pbpoints.domain.Event;
+import com.pbpoints.domain.EventCategory;
 import com.pbpoints.domain.PlayerDetailPoint;
 import com.pbpoints.domain.PlayerPoint;
 import com.pbpoints.repository.PlayerDetailPointRepository;
@@ -67,16 +67,6 @@ class PlayerDetailPointResourceIT {
     public static PlayerDetailPoint createEntity(EntityManager em) {
         PlayerDetailPoint playerDetailPoint = new PlayerDetailPoint().points(DEFAULT_POINTS);
         // Add required entity
-        Event event;
-        if (TestUtil.findAll(em, Event.class).isEmpty()) {
-            event = EventResourceIT.createEntity(em);
-            em.persist(event);
-            em.flush();
-        } else {
-            event = TestUtil.findAll(em, Event.class).get(0);
-        }
-        playerDetailPoint.setEvent(event);
-        // Add required entity
         PlayerPoint playerPoint;
         if (TestUtil.findAll(em, PlayerPoint.class).isEmpty()) {
             playerPoint = PlayerPointResourceIT.createEntity(em);
@@ -97,16 +87,6 @@ class PlayerDetailPointResourceIT {
      */
     public static PlayerDetailPoint createUpdatedEntity(EntityManager em) {
         PlayerDetailPoint playerDetailPoint = new PlayerDetailPoint().points(UPDATED_POINTS);
-        // Add required entity
-        Event event;
-        if (TestUtil.findAll(em, Event.class).isEmpty()) {
-            event = EventResourceIT.createUpdatedEntity(em);
-            em.persist(event);
-            em.flush();
-        } else {
-            event = TestUtil.findAll(em, Event.class).get(0);
-        }
-        playerDetailPoint.setEvent(event);
         // Add required entity
         PlayerPoint playerPoint;
         if (TestUtil.findAll(em, PlayerPoint.class).isEmpty()) {
@@ -345,25 +325,6 @@ class PlayerDetailPointResourceIT {
 
     @Test
     @Transactional
-    void getAllPlayerDetailPointsByEventIsEqualToSomething() throws Exception {
-        // Initialize the database
-        playerDetailPointRepository.saveAndFlush(playerDetailPoint);
-        Event event = EventResourceIT.createEntity(em);
-        em.persist(event);
-        em.flush();
-        playerDetailPoint.setEvent(event);
-        playerDetailPointRepository.saveAndFlush(playerDetailPoint);
-        Long eventId = event.getId();
-
-        // Get all the playerDetailPointList where event equals to eventId
-        defaultPlayerDetailPointShouldBeFound("eventId.equals=" + eventId);
-
-        // Get all the playerDetailPointList where event equals to (eventId + 1)
-        defaultPlayerDetailPointShouldNotBeFound("eventId.equals=" + (eventId + 1));
-    }
-
-    @Test
-    @Transactional
     void getAllPlayerDetailPointsByPlayerPointIsEqualToSomething() throws Exception {
         // Initialize the database
         playerDetailPointRepository.saveAndFlush(playerDetailPoint);
@@ -379,6 +340,25 @@ class PlayerDetailPointResourceIT {
 
         // Get all the playerDetailPointList where playerPoint equals to (playerPointId + 1)
         defaultPlayerDetailPointShouldNotBeFound("playerPointId.equals=" + (playerPointId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllPlayerDetailPointsByEventCategoryIsEqualToSomething() throws Exception {
+        // Initialize the database
+        playerDetailPointRepository.saveAndFlush(playerDetailPoint);
+        EventCategory eventCategory = EventCategoryResourceIT.createEntity(em);
+        em.persist(eventCategory);
+        em.flush();
+        playerDetailPoint.setEventCategory(eventCategory);
+        playerDetailPointRepository.saveAndFlush(playerDetailPoint);
+        Long eventCategoryId = eventCategory.getId();
+
+        // Get all the playerDetailPointList where eventCategory equals to eventCategoryId
+        defaultPlayerDetailPointShouldBeFound("eventCategoryId.equals=" + eventCategoryId);
+
+        // Get all the playerDetailPointList where eventCategory equals to (eventCategoryId + 1)
+        defaultPlayerDetailPointShouldNotBeFound("eventCategoryId.equals=" + (eventCategoryId + 1));
     }
 
     /**

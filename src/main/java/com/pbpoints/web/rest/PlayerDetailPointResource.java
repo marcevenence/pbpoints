@@ -1,21 +1,25 @@
 package com.pbpoints.web.rest;
 
+import com.pbpoints.repository.PlayerDetailPointRepository;
 import com.pbpoints.service.PlayerDetailPointQueryService;
 import com.pbpoints.service.PlayerDetailPointService;
-import com.pbpoints.service.dto.PlayerDetailPointCriteria;
+import com.pbpoints.service.criteria.PlayerDetailPointCriteria;
 import com.pbpoints.service.dto.PlayerDetailPointDTO;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -39,13 +43,17 @@ public class PlayerDetailPointResource {
 
     private final PlayerDetailPointService playerDetailPointService;
 
+    private final PlayerDetailPointRepository playerDetailPointRepository;
+
     private final PlayerDetailPointQueryService playerDetailPointQueryService;
 
     public PlayerDetailPointResource(
         PlayerDetailPointService playerDetailPointService,
+        PlayerDetailPointRepository playerDetailPointRepository,
         PlayerDetailPointQueryService playerDetailPointQueryService
     ) {
         this.playerDetailPointService = playerDetailPointService;
+        this.playerDetailPointRepository = playerDetailPointRepository;
         this.playerDetailPointQueryService = playerDetailPointQueryService;
     }
 
@@ -71,21 +79,32 @@ public class PlayerDetailPointResource {
     }
 
     /**
-     * {@code PUT  /player-detail-points} : Updates an existing playerDetailPoint.
+     * {@code PUT  /player-detail-points/:id} : Updates an existing playerDetailPoint.
      *
+     * @param id the id of the playerDetailPointDTO to save.
      * @param playerDetailPointDTO the playerDetailPointDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDetailPointDTO,
      * or with status {@code 400 (Bad Request)} if the playerDetailPointDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the playerDetailPointDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/player-detail-points")
-    public ResponseEntity<PlayerDetailPointDTO> updatePlayerDetailPoint(@Valid @RequestBody PlayerDetailPointDTO playerDetailPointDTO)
-        throws URISyntaxException {
-        log.debug("REST request to update PlayerDetailPoint : {}", playerDetailPointDTO);
+    @PutMapping("/player-detail-points/{id}")
+    public ResponseEntity<PlayerDetailPointDTO> updatePlayerDetailPoint(
+        @PathVariable(value = "id", required = false) final Long id,
+        @Valid @RequestBody PlayerDetailPointDTO playerDetailPointDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to update PlayerDetailPoint : {}, {}", id, playerDetailPointDTO);
         if (playerDetailPointDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (!Objects.equals(id, playerDetailPointDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!playerDetailPointRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
         PlayerDetailPointDTO result = playerDetailPointService.save(playerDetailPointDTO);
         return ResponseEntity
             .ok()
@@ -94,11 +113,45 @@ public class PlayerDetailPointResource {
     }
 
     /**
+     * {@code PATCH  /player-detail-points/:id} : Partial updates given fields of an existing playerDetailPoint, field will ignore if it is null
+     *
+     * @param id the id of the playerDetailPointDTO to save.
+     * @param playerDetailPointDTO the playerDetailPointDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated playerDetailPointDTO,
+     * or with status {@code 400 (Bad Request)} if the playerDetailPointDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the playerDetailPointDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the playerDetailPointDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PatchMapping(value = "/player-detail-points/{id}", consumes = "application/merge-patch+json")
+    public ResponseEntity<PlayerDetailPointDTO> partialUpdatePlayerDetailPoint(
+        @PathVariable(value = "id", required = false) final Long id,
+        @NotNull @RequestBody PlayerDetailPointDTO playerDetailPointDTO
+    ) throws URISyntaxException {
+        log.debug("REST request to partial update PlayerDetailPoint partially : {}, {}", id, playerDetailPointDTO);
+        if (playerDetailPointDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
+        }
+        if (!Objects.equals(id, playerDetailPointDTO.getId())) {
+            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
+        }
+
+        if (!playerDetailPointRepository.existsById(id)) {
+            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
+        }
+
+        Optional<PlayerDetailPointDTO> result = playerDetailPointService.partialUpdate(playerDetailPointDTO);
+
+        return ResponseUtil.wrapOrNotFound(
+            result,
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, playerDetailPointDTO.getId().toString())
+        );
+    }
+
+    /**
      * {@code GET  /player-detail-points} : get all the playerDetailPoints.
      *
-
      * @param pageable the pagination information.
-
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of playerDetailPoints in body.
      */

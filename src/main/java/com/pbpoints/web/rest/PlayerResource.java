@@ -217,7 +217,7 @@ public class PlayerResource {
     @GetMapping("/players/validCategory/{id}/{tId}/{catId}")
     public ResponseEntity<PlayerPointDTO> getPlayer(@PathVariable Long id, @PathVariable Long tId, @PathVariable Long catId) {
         log.debug("REST request to get Player ID and Category ID : {} {} {}", id, tId, catId);
-        return ResponseEntity.ok().body(playerPointService.findByUserAndTournament(id, tId, catId));
+        return ResponseEntity.ok().body(playerPointService.findByUserAndTournamentAndCategory(id, tId, catId));
     }
 
     /**

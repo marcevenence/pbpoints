@@ -48,12 +48,22 @@ public class PlayerDetailPointServiceImpl implements PlayerDetailPointService {
         return playerDetailPointMapper.toDto(playerDetailPoint);
     }
 
-    /**
-     * Get all the playerDetailPoints.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
+    @Override
+    public Optional<PlayerDetailPointDTO> partialUpdate(PlayerDetailPointDTO playerDetailPointDTO) {
+        log.debug("Request to partially update PlayerDetailPoint : {}", playerDetailPointDTO);
+
+        return playerDetailPointRepository
+            .findById(playerDetailPointDTO.getId())
+            .map(
+                existingPlayerDetailPoint -> {
+                    playerDetailPointMapper.partialUpdate(existingPlayerDetailPoint, playerDetailPointDTO);
+                    return existingPlayerDetailPoint;
+                }
+            )
+            .map(playerDetailPointRepository::save)
+            .map(playerDetailPointMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Page<PlayerDetailPointDTO> findAll(Pageable pageable) {

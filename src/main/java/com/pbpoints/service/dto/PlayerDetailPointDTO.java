@@ -1,6 +1,5 @@
 package com.pbpoints.service.dto;
 
-import com.pbpoints.domain.PlayerPoint;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.validation.constraints.*;
@@ -15,9 +14,9 @@ public class PlayerDetailPointDTO implements Serializable {
     @NotNull
     private Float points;
 
-    private EventDTO event;
-
     private PlayerPointDTO playerPoint;
+
+    private EventCategoryDTO eventCategory;
 
     public Long getId() {
         return id;
@@ -35,14 +34,6 @@ public class PlayerDetailPointDTO implements Serializable {
         this.points = points;
     }
 
-    public EventDTO getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventDTO event) {
-        this.event = event;
-    }
-
     public PlayerPointDTO getPlayerPoint() {
         return playerPoint;
     }
@@ -51,41 +42,43 @@ public class PlayerDetailPointDTO implements Serializable {
         this.playerPoint = playerPoint;
     }
 
+    public EventCategoryDTO getEventCategory() {
+        return eventCategory;
+    }
+
+    public void setEventCategory(EventCategoryDTO eventCategory) {
+        this.eventCategory = eventCategory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof PlayerDetailPointDTO)) {
             return false;
         }
 
         PlayerDetailPointDTO playerDetailPointDTO = (PlayerDetailPointDTO) o;
-        if (playerDetailPointDTO.getId() == null || getId() == null) {
+        if (this.id == null) {
             return false;
         }
-        return Objects.equals(getId(), playerDetailPointDTO.getId());
+        return Objects.equals(this.id, playerDetailPointDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getId());
+        return Objects.hash(this.id);
     }
 
+    // prettier-ignore
     @Override
     public String toString() {
-        return (
-            "PlayerDetailPointDTO{" +
-            "id=" +
-            getId() +
-            ", points=" +
-            getPoints() +
-            ", event=" +
-            getEvent() +
-            "'" +
-            ", playerPoint=" +
-            getPlayerPoint() +
-            "}"
-        );
+        return "PlayerDetailPointDTO{" +
+            "id=" + getId() +
+            ", points=" + getPoints() +
+            ", playerPoint=" + getPlayerPoint() +
+            ", eventCategory=" + getEventCategory() +
+            "}";
     }
 }

@@ -56,8 +56,8 @@
             <a [routerLink]="['/player-detail-point', playerDetailPoint.id, 'view']">{{ playerDetailPoint.id }}</a>
           </td>-->
           <td>
-            <div *ngIf="playerDetailPoint.event">
-              <div>{{ playerDetailPoint.event?.tournament?.name }} - {{ playerDetailPoint.event?.name }}</div>
+            <div *ngIf="playerDetailPoint.eventCategory">
+              <div>{{ playerDetailPoint.eventCategory?.event?.tournament?.name }} - {{ playerDetailPoint.eventCategory?.event?.name }}</div>
             </div>
           </td>
           <td>{{ playerDetailPoint.points }}</td>
