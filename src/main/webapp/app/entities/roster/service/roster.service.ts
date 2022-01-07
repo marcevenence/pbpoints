@@ -7,6 +7,7 @@ import { ApplicationConfigService } from 'app/core/config/application-config.ser
 import { createRequestOption } from 'app/core/request/request-util';
 import { IRoster, getRosterIdentifier } from '../roster.model';
 import { IRosterSubs } from '../roster-subs.model';
+import { IRosterSubsPl } from '../roster-subs-pl.model';
 import { IPlayer } from 'app/entities/player/player.model';
 import { IEventCategory } from 'app/entities/event-category/event-category.model';
 import { ITeam } from 'app/entities/team/team.model';
@@ -71,6 +72,10 @@ export class RosterService {
 
   validatePlayer(rosterSubs: IRosterSubs): Observable<EntityResponseType> {
     return this.http.put<IRosterSubs>(`${this.resourceUrl}/validatePlayer`, rosterSubs, { observe: 'response' });
+  }
+
+  validatePlayer2(rosterSubsPl: IRosterSubsPl): Observable<EntityResponseType> {
+    return this.http.put<IRosterSubsPl>(`${this.resourceUrl}/validatePlayer2`, rosterSubsPl, { observe: 'response' });
   }
 
   addRosterToCollectionIfMissing(rosterCollection: IRoster[], ...rostersToCheck: (IRoster | null | undefined)[]): IRoster[] {
