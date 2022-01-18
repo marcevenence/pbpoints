@@ -80,6 +80,14 @@ spring:
 server:
   port: 8080
 
+#server:
+#  port: 443
+#  ssl:
+#    key-alias: pbpoints.com.ar (sectigo rsa domain validation secure server ca)
+#    key-store: classpath:pbpointsB.p12
+#    key-store-password: pbpoints
+#    key-password: pbpoints
+
 # ===================================================================
 # JHipster specific properties
 #
@@ -126,6 +134,8 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
-#   cronFixture: 0 0/2 * 1/1 * ?
-#   cronEventStatus: 0 0/2 * 1/1 * ?
+application:
+  #cronFixture: 0 0 * * * ?
+  #cronEventStatus: 0 0 * * * ?
+  #cronDataExport: 0 0 * * * ?
+  #cronCloseSeason: 0 0/5 * * * ?
