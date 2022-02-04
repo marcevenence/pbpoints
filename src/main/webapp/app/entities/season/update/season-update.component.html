@@ -1,0 +1,86 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-season-heading" data-cy="SeasonCreateUpdateHeading" jhiTranslate="pbpointsApp.season.home.createOrEditLabel">
+        Create or edit a Season
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.season.anio" for="field_anio">Anio</label>
+          <input type="number" class="form-control" name="anio" id="field_anio" data-cy="anio" formControlName="anio" />
+          <div *ngIf="editForm.get('anio')!.invalid && (editForm.get('anio')!.dirty || editForm.get('anio')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('anio')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('anio')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.season.status" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'pbpointsApp.status.null' | translate }}</option>
+            <option *ngFor="let status of statusValues" [value]="status">{{ 'pbpointsApp.status.' + status | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.season.tournament" for="field_tournament">Tournament</label>
+          <select class="form-control" id="field_tournament" data-cy="tournament" name="tournament" formControlName="tournament">
+            <option *ngIf="!editForm.get('tournament')!.value" [ngValue]="null" selected></option>
+            <option
+              [ngValue]="
+                tournamentOption.id === editForm.get('tournament')!.value?.id ? editForm.get('tournament')!.value : tournamentOption
+              "
+              *ngFor="let tournamentOption of tournamentsSharedCollection; trackBy: trackTournamentById"
+            >
+              {{ tournamentOption.name }}
+            </option>
+          </select>
+        </div>
+        <div
+          *ngIf="editForm.get(['tournament'])!.invalid && (editForm.get(['tournament'])!.dirty || editForm.get(['tournament'])!.touched)"
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get(['tournament'])?.errors?.required"
+            jhiTranslate="entity.validation.required"
+          >
+            This field is required.
+          </small>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

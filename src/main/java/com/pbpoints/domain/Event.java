@@ -22,6 +22,7 @@ public class Event implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
@@ -59,18 +60,24 @@ public class Event implements Serializable {
     @JsonIgnoreProperties(value = { "city" }, allowSetters = true)
     private Field field;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "tournament" }, allowSetters = true)
+    private Season season;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
     public Long getId() {
-        return id;
+        return this.id;
+    }
+
+    public Event id(Long id) {
+        this.setId(id);
+        return this;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Event id(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getName() {
@@ -78,7 +85,7 @@ public class Event implements Serializable {
     }
 
     public Event name(String name) {
-        this.name = name;
+        this.setName(name);
         return this;
     }
 
@@ -91,7 +98,7 @@ public class Event implements Serializable {
     }
 
     public Event fromDate(LocalDate fromDate) {
-        this.fromDate = fromDate;
+        this.setFromDate(fromDate);
         return this;
     }
 
@@ -104,7 +111,7 @@ public class Event implements Serializable {
     }
 
     public Event endDate(LocalDate endDate) {
-        this.endDate = endDate;
+        this.setEndDate(endDate);
         return this;
     }
 
@@ -117,7 +124,7 @@ public class Event implements Serializable {
     }
 
     public Event endInscriptionDate(LocalDate endInscriptionDate) {
-        this.endInscriptionDate = endInscriptionDate;
+        this.setEndInscriptionDate(endInscriptionDate);
         return this;
     }
 
@@ -130,7 +137,7 @@ public class Event implements Serializable {
     }
 
     public Event status(Status status) {
-        this.status = status;
+        this.setStatus(status);
         return this;
     }
 
@@ -143,7 +150,7 @@ public class Event implements Serializable {
     }
 
     public Event createDate(Instant createDate) {
-        this.createDate = createDate;
+        this.setCreateDate(createDate);
         return this;
     }
 
@@ -156,7 +163,7 @@ public class Event implements Serializable {
     }
 
     public Event updatedDate(Instant updatedDate) {
-        this.updatedDate = updatedDate;
+        this.setUpdatedDate(updatedDate);
         return this;
     }
 
@@ -169,7 +176,7 @@ public class Event implements Serializable {
     }
 
     public Event endInscriptionPlayersDate(LocalDate endInscriptionPlayersDate) {
-        this.endInscriptionPlayersDate = endInscriptionPlayersDate;
+        this.setEndInscriptionPlayersDate(endInscriptionPlayersDate);
         return this;
     }
 
@@ -194,13 +201,26 @@ public class Event implements Serializable {
         return this.field;
     }
 
+    public void setField(Field field) {
+        this.field = field;
+    }
+
     public Event field(Field field) {
         this.setField(field);
         return this;
     }
 
-    public void setField(Field field) {
-        this.field = field;
+    public Season getSeason() {
+        return this.season;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public Event season(Season season) {
+        this.setSeason(season);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

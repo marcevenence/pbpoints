@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.pbpoints.IntegrationTest;
 import com.pbpoints.domain.Event;
 import com.pbpoints.domain.Field;
+import com.pbpoints.domain.Season;
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.EventRepository;
@@ -113,6 +114,16 @@ class EventResourceIT {
             field = TestUtil.findAll(em, Field.class).get(0);
         }
         event.setField(field);
+        // Add required entity
+        Season season;
+        if (TestUtil.findAll(em, Season.class).isEmpty()) {
+            season = SeasonResourceIT.createEntity(em);
+            em.persist(season);
+            em.flush();
+        } else {
+            season = TestUtil.findAll(em, Season.class).get(0);
+        }
+        event.setSeason(season);
         return event;
     }
 
@@ -142,6 +153,16 @@ class EventResourceIT {
             field = TestUtil.findAll(em, Field.class).get(0);
         }
         event.setField(field);
+        // Add required entity
+        Season season;
+        if (TestUtil.findAll(em, Season.class).isEmpty()) {
+            season = SeasonResourceIT.createUpdatedEntity(em);
+            em.persist(season);
+            em.flush();
+        } else {
+            season = TestUtil.findAll(em, Season.class).get(0);
+        }
+        event.setSeason(season);
         return event;
     }
 
@@ -930,7 +951,14 @@ class EventResourceIT {
     void getAllEventsByTournamentIsEqualToSomething() throws Exception {
         // Initialize the database
         eventRepository.saveAndFlush(event);
-        Tournament tournament = TournamentResourceIT.createEntity(em);
+        Tournament tournament;
+        if (TestUtil.findAll(em, Tournament.class).isEmpty()) {
+            tournament = TournamentResourceIT.createEntity(em);
+            em.persist(tournament);
+            em.flush();
+        } else {
+            tournament = TestUtil.findAll(em, Tournament.class).get(0);
+        }
         em.persist(tournament);
         em.flush();
         event.setTournament(tournament);
@@ -949,7 +977,14 @@ class EventResourceIT {
     void getAllEventsByFieldIsEqualToSomething() throws Exception {
         // Initialize the database
         eventRepository.saveAndFlush(event);
-        Field field = FieldResourceIT.createEntity(em);
+        Field field;
+        if (TestUtil.findAll(em, Field.class).isEmpty()) {
+            field = FieldResourceIT.createEntity(em);
+            em.persist(field);
+            em.flush();
+        } else {
+            field = TestUtil.findAll(em, Field.class).get(0);
+        }
         em.persist(field);
         em.flush();
         event.setField(field);
@@ -961,6 +996,32 @@ class EventResourceIT {
 
         // Get all the eventList where field equals to (fieldId + 1)
         defaultEventShouldNotBeFound("fieldId.equals=" + (fieldId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllEventsBySeasonIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventRepository.saveAndFlush(event);
+        Season season;
+        if (TestUtil.findAll(em, Season.class).isEmpty()) {
+            season = SeasonResourceIT.createEntity(em);
+            em.persist(season);
+            em.flush();
+        } else {
+            season = TestUtil.findAll(em, Season.class).get(0);
+        }
+        em.persist(season);
+        em.flush();
+        event.setSeason(season);
+        eventRepository.saveAndFlush(event);
+        Long seasonId = season.getId();
+
+        // Get all the eventList where season equals to seasonId
+        defaultEventShouldBeFound("seasonId.equals=" + seasonId);
+
+        // Get all the eventList where season equals to (seasonId + 1)
+        defaultEventShouldNotBeFound("seasonId.equals=" + (seasonId + 1));
     }
 
     /**
@@ -1137,12 +1198,7 @@ class EventResourceIT {
         Event partialUpdatedEvent = new Event();
         partialUpdatedEvent.setId(event.getId());
 
-        partialUpdatedEvent
-            .name(UPDATED_NAME)
-            .endDate(UPDATED_END_DATE)
-            .status(UPDATED_STATUS)
-            .createDate(UPDATED_CREATE_DATE)
-            .endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
+        partialUpdatedEvent.fromDate(UPDATED_FROM_DATE).endInscriptionPlayersDate(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
 
         restEventMockMvc
             .perform(
@@ -1156,12 +1212,12 @@ class EventResourceIT {
         List<Event> eventList = eventRepository.findAll();
         assertThat(eventList).hasSize(databaseSizeBeforeUpdate);
         Event testEvent = eventList.get(eventList.size() - 1);
-        assertThat(testEvent.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testEvent.getFromDate()).isEqualTo(DEFAULT_FROM_DATE);
-        assertThat(testEvent.getEndDate()).isEqualTo(UPDATED_END_DATE);
+        assertThat(testEvent.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testEvent.getFromDate()).isEqualTo(UPDATED_FROM_DATE);
+        assertThat(testEvent.getEndDate()).isEqualTo(DEFAULT_END_DATE);
         assertThat(testEvent.getEndInscriptionDate()).isEqualTo(DEFAULT_END_INSCRIPTION_DATE);
-        assertThat(testEvent.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testEvent.getCreateDate()).isEqualTo(UPDATED_CREATE_DATE);
+        assertThat(testEvent.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testEvent.getCreateDate()).isEqualTo(DEFAULT_CREATE_DATE);
         assertThat(testEvent.getUpdatedDate()).isEqualTo(DEFAULT_UPDATED_DATE);
         assertThat(testEvent.getEndInscriptionPlayersDate()).isEqualTo(UPDATED_END_INSCRIPTION_PLAYERS_DATE);
     }

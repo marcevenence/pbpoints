@@ -1,16 +1,17 @@
 package com.pbpoints.service.mapper;
 
-import com.pbpoints.domain.*;
+import com.pbpoints.domain.Event;
 import com.pbpoints.service.dto.EventDTO;
 import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Event} and its DTO {@link EventDTO}.
  */
-@Mapper(componentModel = "spring", uses = { TournamentMapper.class, FieldMapper.class })
+@Mapper(componentModel = "spring", uses = { TournamentMapper.class, FieldMapper.class, SeasonMapper.class })
 public interface EventMapper extends EntityMapper<EventDTO, Event> {
     @Mapping(target = "tournament", source = "tournament")
     @Mapping(target = "field", source = "field")
+    @Mapping(target = "season", source = "season")
     EventDTO toDto(Event s);
 
     @Named("name")

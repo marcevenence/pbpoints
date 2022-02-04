@@ -36,7 +36,8 @@
           "label": "Select File",
           "placeholder": "File"
         }
-      }
+      },
+      "season": "Season"
     }
   }
 }

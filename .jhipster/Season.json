@@ -1,0 +1,31 @@
+{
+  "changelogDate": "20220204012313",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "anio",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "status",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CANCEL,CREATED,PENDING,SUSPENDED,IN_PROGRESS,DONE"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Season",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "tournament",
+      "relationshipName": "tournament",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceClass"
+}

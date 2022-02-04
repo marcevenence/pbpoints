@@ -1,6 +1,7 @@
 import * as dayjs from 'dayjs';
 import { IField } from 'app/entities/field/field.model';
 import { ITournament } from 'app/entities/tournament/tournament.model';
+import { ISeason } from 'app/entities/season/season.model';
 import { Status } from 'app/entities/enumerations/status.model';
 
 export interface IEvent {
@@ -15,6 +16,7 @@ export interface IEvent {
   field?: IField | null;
   endInscriptionPlayersDate?: dayjs.Dayjs;
   tournament?: ITournament | null;
+  season?: ISeason | null;
 }
 
 export class Event implements IEvent {
@@ -29,7 +31,8 @@ export class Event implements IEvent {
     public updatedDate?: dayjs.Dayjs | null,
     public endInscriptionPlayersDate?: dayjs.Dayjs,
     public tournament?: ITournament | null,
-    public field?: IField | null
+    public field?: IField | null,
+    public season?: ISeason | null
   ) {}
 }
 

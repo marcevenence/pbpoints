@@ -66,6 +66,10 @@ public class EventCriteria implements Serializable, Criteria {
 
     private LongFilter fieldId;
 
+    private LongFilter seasonId;
+
+    private Boolean distinct;
+
     public EventCriteria() {}
 
     public EventCriteria(EventCriteria other) {
@@ -80,6 +84,8 @@ public class EventCriteria implements Serializable, Criteria {
         this.endInscriptionPlayersDate = other.endInscriptionPlayersDate == null ? null : other.endInscriptionPlayersDate.copy();
         this.tournamentId = other.tournamentId == null ? null : other.tournamentId.copy();
         this.fieldId = other.fieldId == null ? null : other.fieldId.copy();
+        this.seasonId = other.seasonId == null ? null : other.seasonId.copy();
+        this.distinct = other.distinct;
     }
 
     @Override
@@ -252,6 +258,29 @@ public class EventCriteria implements Serializable, Criteria {
         this.fieldId = fieldId;
     }
 
+    public LongFilter getSeasonId() {
+        return seasonId;
+    }
+
+    public LongFilter seasonId() {
+        if (seasonId == null) {
+            seasonId = new LongFilter();
+        }
+        return seasonId;
+    }
+
+    public void setSeasonId(LongFilter seasonId) {
+        this.seasonId = seasonId;
+    }
+
+    public Boolean getDistinct() {
+        return distinct;
+    }
+
+    public void setDistinct(Boolean distinct) {
+        this.distinct = distinct;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -272,7 +301,9 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(updatedDate, that.updatedDate) &&
             Objects.equals(endInscriptionPlayersDate, that.endInscriptionPlayersDate) &&
             Objects.equals(tournamentId, that.tournamentId) &&
-            Objects.equals(fieldId, that.fieldId)
+            Objects.equals(fieldId, that.fieldId) &&
+            Objects.equals(seasonId, that.seasonId) &&
+            Objects.equals(distinct, that.distinct)
         );
     }
 
@@ -289,7 +320,9 @@ public class EventCriteria implements Serializable, Criteria {
             updatedDate,
             endInscriptionPlayersDate,
             tournamentId,
-            fieldId
+            fieldId,
+            seasonId,
+            distinct
         );
     }
 
@@ -308,6 +341,8 @@ public class EventCriteria implements Serializable, Criteria {
             (endInscriptionPlayersDate != null ? "endInscriptionPlayersDate=" + endInscriptionPlayersDate + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
             (fieldId != null ? "fieldId=" + fieldId + ", " : "") +
+            (seasonId != null ? "seasonId=" + seasonId + ", " : "") +
+            (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }
 }

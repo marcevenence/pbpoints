@@ -1,7 +1,7 @@
 package com.pbpoints.service.dto;
 
 import com.pbpoints.domain.enumeration.Status;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 /**
  * A DTO for the {@link com.pbpoints.domain.Event} entity.
  */
-@ApiModel(description = "Event entity.\n@author Marcelo Miño")
+@Schema(description = "Event entity.\n@author Marcelo Miño")
 public class EventDTO implements Serializable {
 
     private Long id;
@@ -36,6 +36,8 @@ public class EventDTO implements Serializable {
     private TournamentDTO tournament;
 
     private FieldDTO field;
+
+    private SeasonDTO season;
 
     public Long getId() {
         return id;
@@ -125,6 +127,14 @@ public class EventDTO implements Serializable {
         this.field = field;
     }
 
+    public SeasonDTO getSeason() {
+        return season;
+    }
+
+    public void setSeason(SeasonDTO season) {
+        this.season = season;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -161,6 +171,7 @@ public class EventDTO implements Serializable {
             ", endInscriptionPlayersDate='" + getEndInscriptionPlayersDate() + "'" +
             ", tournament=" + getTournament() +
             ", field=" + getField() +
+            ", season=" + getSeason() +
             "}";
     }
 }

@@ -58,6 +58,12 @@
             <a [routerLink]="['/field', event.field?.id, 'view']">{{ event.field?.name }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="pbpointsApp.event.season">Season</span></dt>
+        <dd>
+          <div *ngIf="event.season">
+            <a [routerLink]="['/season', event.season?.id, 'view']">{{ event.season?.anio }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

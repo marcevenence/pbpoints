@@ -14,6 +14,9 @@ import { ITournament } from 'app/entities/tournament/tournament.model';
 import { TournamentService } from 'app/entities/tournament/service/tournament.service';
 import { IField } from 'app/entities/field/field.model';
 import { FieldService } from 'app/entities/field/service/field.service';
+import { ISeason } from 'app/entities/season/season.model';
+import { SeasonService } from 'app/entities/season/service/season.service';
+import { Status } from 'app/entities/enumerations/status.model';
 
 @Component({
   selector: 'jhi-event-update',
@@ -21,9 +24,11 @@ import { FieldService } from 'app/entities/field/service/field.service';
 })
 export class EventUpdateComponent implements OnInit {
   isSaving = false;
+  statusValues = Object.keys(Status);
 
   tournamentsSharedCollection: ITournament[] = [];
   fieldsSharedCollection: IField[] = [];
+  seasonsSharedCollection: ISeason[] = [];
 
   editForm = this.fb.group(
     {
@@ -38,14 +43,16 @@ export class EventUpdateComponent implements OnInit {
       updatedDate: [],
       field: [null, Validators.required],
       tournament: [],
+      season: [null, Validators.required],
     },
     { validator: this.dateLessThan('fromDate', 'endDate', 'endInscriptionPlayersDate', 'endInscriptionDate') }
   );
 
   constructor(
     protected eventService: EventService,
-    protected fieldService: FieldService,
     protected tournamentService: TournamentService,
+    protected fieldService: FieldService,
+    protected seasonService: SeasonService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
   ) {}
@@ -126,6 +133,10 @@ export class EventUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  trackSeasonById(index: number, item: ISeason): number {
+    return item.id!;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEvent>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -158,6 +169,7 @@ export class EventUpdateComponent implements OnInit {
       updatedDate: event.updatedDate ? event.updatedDate.format(DATE_TIME_FORMAT) : null,
       field: event.field,
       tournament: event.tournament,
+      season: event.season,
     });
 
     this.fieldsSharedCollection = this.fieldService.addFieldToCollectionIfMissing(this.fieldsSharedCollection, event.field);
@@ -165,6 +177,7 @@ export class EventUpdateComponent implements OnInit {
       this.tournamentsSharedCollection,
       event.tournament
     );
+    this.seasonsSharedCollection = this.seasonService.addSeasonToCollectionIfMissing(this.seasonsSharedCollection, event.season);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -185,6 +198,12 @@ export class EventUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IField[]>) => res.body ?? []))
       .pipe(map((fields: IField[]) => this.fieldService.addFieldToCollectionIfMissing(fields, this.editForm.get('field')!.value)))
       .subscribe((fields: IField[]) => (this.fieldsSharedCollection = fields));
+
+    this.seasonService
+      .query({ 'tournamentId.equals': +localStorage.getItem('TOURNAMENTID')!, 'status.equals': Status.CREATED })
+      .pipe(map((res: HttpResponse<ISeason[]>) => res.body ?? []))
+      .pipe(map((seasons: ISeason[]) => this.seasonService.addSeasonToCollectionIfMissing(seasons, this.editForm.get('season')!.value)))
+      .subscribe((seasons: ISeason[]) => (this.seasonsSharedCollection = seasons));
   }
 
   protected createFromForm(): IEvent {
@@ -207,6 +226,7 @@ export class EventUpdateComponent implements OnInit {
         : undefined,
       field: this.editForm.get(['field'])!.value,
       tournament: this.editForm.get(['tournament'])!.value,
+      season: this.editForm.get(['season'])!.value,
     };
   }
 }

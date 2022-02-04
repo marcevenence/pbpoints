@@ -4,6 +4,7 @@
     "browsehappy": "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=es\">actualice su navegador</a> para mejorar su experiencia.",
     "menu": {
       "home": "Inicio",
+      "help": "Ayuda",
       "software": "Descargar Software",
       "back": "Volver",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
@@ -106,6 +107,7 @@
         "equipment": "Marcadoras",
         "teamCategoryPoint": "Detalle Puntos por Categoria",
         "location": "Location",
+        "season": "Season",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

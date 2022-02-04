@@ -10,7 +10,7 @@ import { EventService } from '../service/event.service';
 export class EventDeleteDialogComponent {
   event?: IEvent;
 
-  constructor(protected eventService: EventService, public activeModal: NgbActiveModal) {}
+  constructor(protected eventService: EventService, protected activeModal: NgbActiveModal) {}
 
   cancel(): void {
     this.activeModal.dismiss();
