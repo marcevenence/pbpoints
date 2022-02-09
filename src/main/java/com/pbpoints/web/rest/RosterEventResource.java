@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
 /**
- * REST controller for managing {@link com.pbpoints.domain.Roster}.
+ * REST controller for managing {@link com.pbpoints.domain.RosterEvent}.
  */
 @RestController
 @RequestMapping("/api")

@@ -49,5 +49,5 @@ public interface PlayerPointService {
 
     PlayerPointDTO findByUserAndTournamentAndCategory(Long userId, Long tournamentId, Long categoryId);
 
-    public void distPoints(List<PositionDTO> positions, Event event);
+    void distPoints(List<PositionDTO> positions, Event event);
 }

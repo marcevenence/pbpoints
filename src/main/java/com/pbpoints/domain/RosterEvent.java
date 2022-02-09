@@ -1,13 +1,7 @@
 package com.pbpoints.domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
@@ -19,6 +13,9 @@ public class RosterEvent implements Serializable {
 
     @Id
     private String id;
+
+    @Column(insertable = false, updatable = false, name = "tournament_id")
+    private Long tournamentId;
 
     @Column(insertable = false, updatable = false, name = "event_id")
     private Long eventId;
@@ -38,12 +35,18 @@ public class RosterEvent implements Serializable {
     @Column(insertable = false, updatable = false, name = "team_name")
     private String teamName;
 
+    @Column(insertable = false, updatable = false, name = "anio")
+    private Integer anio;
+
     @Lob
     @Column(insertable = false, updatable = false, name = "team_logo")
     private byte[] teamLogo;
 
     @Column(insertable = false, updatable = false, name = "team_logo_content_type")
     private String teamLogoContentType;
+
+    @Column(insertable = false, updatable = false, name = "player_id")
+    private Long playerId;
 
     @Column(insertable = false, updatable = false, name = "pbpointid")
     private Long pbPointId;
@@ -67,6 +70,14 @@ public class RosterEvent implements Serializable {
     @Column(insertable = false, updatable = false, name = "player_doc")
     private String playerDoc;
 
+    public Long getTournamentId() {
+        return tournamentId;
+    }
+
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
+    }
+
     public String getId() {
         return id;
     }
@@ -77,6 +88,14 @@ public class RosterEvent implements Serializable {
 
     public String getEventName() {
         return eventName;
+    }
+
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Integer anio) {
+        this.anio = anio;
     }
 
     public Long getEvCatId() {
@@ -101,6 +120,14 @@ public class RosterEvent implements Serializable {
 
     public String getTeamLogoContentType() {
         return teamLogoContentType;
+    }
+
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public Long getPbPointId() {
@@ -137,10 +164,14 @@ public class RosterEvent implements Serializable {
             "RosterEvent{" +
             "id=" +
             id +
+            ", tournamentId=" +
+            tournamentId +
             ", eventId=" +
             eventId +
             ", eventName='" +
             eventName +
+            ", anio='" +
+            anio +
             '\'' +
             ", evCatId=" +
             evCatId +
@@ -153,6 +184,8 @@ public class RosterEvent implements Serializable {
             ", teamName='" +
             teamName +
             '\'' +
+            ", playerId=" +
+            playerId +
             ", pbPointId=" +
             pbPointId +
             ", playerName='" +

@@ -17,6 +17,8 @@ public class ApplicationProperties {
 
     public String cronDataExport;
 
+    public String cronCloseSeason;
+
     public String getCronFixture() {
         return cronFixture;
     }
@@ -41,6 +43,14 @@ public class ApplicationProperties {
         this.cronDataExport = cronDataExport;
     }
 
+    public String getCronCloseSeason() {
+        return cronCloseSeason;
+    }
+
+    public void setCronCloseSeason(String cronCloseSeason) {
+        this.cronCloseSeason = cronCloseSeason;
+    }
+
     @Override
     public String toString() {
         return (
@@ -53,6 +63,9 @@ public class ApplicationProperties {
             '\'' +
             ", cronDataExport='" +
             cronDataExport +
+            '\'' +
+            ", cronCloseSeason='" +
+            cronCloseSeason +
             '\'' +
             '}'
         );

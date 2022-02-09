@@ -1,6 +1,7 @@
 package com.pbpoints.repository;
 
 import com.pbpoints.domain.Category;
+import com.pbpoints.domain.Tournament;
 import java.util.Optional;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
@@ -18,4 +19,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long>, JpaSp
     Category LastCategoryByTournamentId(Long tournamentId);
 
     Optional<Category> findByName(String name);
+
+    Category findByTournamentAndOrder(Tournament tournament, Integer order);
 }

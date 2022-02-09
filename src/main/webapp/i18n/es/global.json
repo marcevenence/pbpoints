@@ -108,6 +108,7 @@
         "teamCategoryPoint": "Detalle Puntos por Categoria",
         "location": "Location",
         "season": "Temporadas",
+        "help": "Ayuda",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

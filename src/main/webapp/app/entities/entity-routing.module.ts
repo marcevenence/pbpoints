@@ -139,6 +139,16 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'pbpointsApp.equipment.home.title' },
         loadChildren: () => import('./equipment/equipment.module').then(m => m.EquipmentModule),
       },
+      {
+        path: 'help',
+        data: { pageTitle: 'pbpointsApp.help.title' },
+        loadChildren: () => import('./help/help.module').then(m => m.HelpModule),
+      },
+      {
+        path: 'season',
+        data: { pageTitle: 'pbpointsApp.season.home.title' },
+        loadChildren: () => import('./season/season.module').then(m => m.SeasonModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

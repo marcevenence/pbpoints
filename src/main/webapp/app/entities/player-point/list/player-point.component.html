@@ -113,9 +113,9 @@
           <th scope="col">
             <span jhiTranslate="pbpointsApp.playerPoint.category">Category</span>
           </th>
-          <th scope="col">
+          <!--<th scope="col">
             <span jhiTranslate="pbpointsApp.playerPoint.points">Points</span>
-          </th>
+          </th>-->
           <th scope="col"></th>
         </tr>
       </thead>
@@ -125,7 +125,7 @@
           <td>{{ playerPoint.tournament?.name }}</td>
           <td>{{ playerPoint.user?.login }}</td>
           <td>{{ playerPoint.category?.name }}</td>
-          <td>{{ playerPoint.points }}</td>
+          <!--<td>{{ playerPoint.points }}</td>-->
           <td class="text-right">
             <div class="btn-group">
               <button
@@ -138,7 +138,6 @@
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.view.playerDetailPoints">View Details</span>
               </button>
-
               <button
                 *jhiHasAnyAuthority="'ROLE_ADMIN'"
                 type="submit"

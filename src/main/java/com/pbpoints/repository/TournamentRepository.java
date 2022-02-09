@@ -18,4 +18,7 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long>, J
     List<Tournament> findByOwnerIsCurrentUser();
 
     Tournament findByEvents(Event event);
+
+    @Query("select tournament from Tournament tournament where day(tournament.endSeason) = ?1 and month(tournament.endSeason) = ?2")
+    List<Tournament> findByEndSeasonDate(Integer day, Integer month);
 }
