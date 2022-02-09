@@ -5,12 +5,11 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import ch.qos.logback.core.status.Status;
 import com.pbpoints.IntegrationTest;
 import com.pbpoints.domain.Season;
 import com.pbpoints.domain.Tournament;
-import com.pbpoints.domain.enumeration.status;
 import com.pbpoints.repository.SeasonRepository;
-import com.pbpoints.service.criteria.SeasonCriteria;
 import com.pbpoints.service.dto.SeasonDTO;
 import com.pbpoints.service.mapper.SeasonMapper;
 import java.util.List;
@@ -38,8 +37,8 @@ class SeasonResourceIT {
     private static final Integer UPDATED_ANIO = 2;
     private static final Integer SMALLER_ANIO = 1 - 1;
 
-    private static final status DEFAULT_STATUS = status.CANCEL;
-    private static final status UPDATED_STATUS = status.CREATED;
+    private static final Status DEFAULT_STATUS = Status.CANCEL;
+    private static final Status UPDATED_STATUS = Status.CREATED;
 
     private static final String ENTITY_API_URL = "/api/seasons";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";

@@ -1,6 +1,7 @@
 package com.pbpoints.repository;
 
 import com.pbpoints.domain.Season;
+import com.pbpoints.domain.Tournament;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SeasonRepository extends JpaRepository<Season, Long>, JpaSpecificationExecutor<Season> {}
+public interface SeasonRepository extends JpaRepository<Season, Long>, JpaSpecificationExecutor<Season> {
+    Season findByTournamentAndAnio(Tournament tournament, Integer anio);
+}

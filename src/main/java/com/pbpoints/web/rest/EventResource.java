@@ -4,8 +4,10 @@ import com.pbpoints.domain.Event;
 import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.service.EventQueryService;
 import com.pbpoints.service.EventService;
+import com.pbpoints.service.SeasonService;
 import com.pbpoints.service.criteria.EventCriteria;
 import com.pbpoints.service.dto.EventDTO;
+import com.pbpoints.service.dto.SeasonDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.io.IOException;
@@ -43,14 +45,21 @@ public class EventResource {
     private final EventService eventService;
     private final EventQueryService eventQueryService;
     private final EventMapper eventMapper;
+    private final SeasonService seasonService;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public EventResource(EventService eventService, EventQueryService eventQueryService, EventMapper eventMapper) {
+    public EventResource(
+        EventService eventService,
+        EventQueryService eventQueryService,
+        EventMapper eventMapper,
+        SeasonService seasonService
+    ) {
         this.eventService = eventService;
         this.eventQueryService = eventQueryService;
         this.eventMapper = eventMapper;
+        this.seasonService = seasonService;
     }
 
     /**
@@ -65,6 +74,17 @@ public class EventResource {
         log.debug("REST request to save Event : {}", eventDTO);
         if (eventDTO.getId() != null) {
             throw new BadRequestAlertException("A new event cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        /*Verifico que haya un Season para este evento*/
+        Optional<SeasonDTO> season = seasonService.findByTournamentAndAnio(eventDTO.getTournament(), eventDTO.getFromDate().getYear());
+        if (season.isPresent()) {
+            eventDTO.setSeason(season.get());
+        } else {
+            SeasonDTO seasonDTO = new SeasonDTO();
+            seasonDTO.setAnio(eventDTO.getFromDate().getYear());
+            seasonDTO.setStatus(Status.CREATED);
+            seasonDTO.setTournament(eventDTO.getTournament());
+            seasonService.save(seasonDTO);
         }
         EventDTO result = eventService.save(eventDTO);
         return ResponseEntity

@@ -3,7 +3,9 @@ package com.pbpoints.service;
 import com.pbpoints.domain.Season;
 import com.pbpoints.repository.SeasonRepository;
 import com.pbpoints.service.dto.SeasonDTO;
+import com.pbpoints.service.dto.TournamentDTO;
 import com.pbpoints.service.mapper.SeasonMapper;
+import com.pbpoints.service.mapper.TournamentMapper;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +28,12 @@ public class SeasonService {
 
     private final SeasonMapper seasonMapper;
 
-    public SeasonService(SeasonRepository seasonRepository, SeasonMapper seasonMapper) {
+    private final TournamentMapper tournamentMapper;
+
+    public SeasonService(SeasonRepository seasonRepository, SeasonMapper seasonMapper, TournamentMapper tournamentMapper) {
         this.seasonRepository = seasonRepository;
         this.seasonMapper = seasonMapper;
+        this.tournamentMapper = tournamentMapper;
     }
 
     /**
@@ -87,6 +92,12 @@ public class SeasonService {
     public Optional<SeasonDTO> findOne(Long id) {
         log.debug("Request to get Season : {}", id);
         return seasonRepository.findById(id).map(seasonMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<SeasonDTO> findByTournamentAndAnio(TournamentDTO tournament, Integer anio) {
+        log.debug("Request to get Season by Tournament and Year : {}", tournament, anio);
+        return Optional.of(seasonMapper.toDto(seasonRepository.findByTournamentAndAnio(tournamentMapper.toEntity(tournament), anio)));
     }
 
     /**
