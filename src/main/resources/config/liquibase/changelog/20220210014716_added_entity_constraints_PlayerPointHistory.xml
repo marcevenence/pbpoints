@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity PlayerPointHistory.
+    -->
+    <changeSet id="20220210014716-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="player_point_id"
+                                 baseTableName="player_point_history"
+                                 constraintName="fk_player_point_history__player_point_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="player_point"/>
+
+        <addForeignKeyConstraint baseColumnNames="category_id"
+                                 baseTableName="player_point_history"
+                                 constraintName="fk_player_point_history__category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="category"/>
+
+        <addForeignKeyConstraint baseColumnNames="season_id"
+                                 baseTableName="player_point_history"
+                                 constraintName="fk_player_point_history__season_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="season"/>
+    </changeSet>
+</databaseChangeLog>

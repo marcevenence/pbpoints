@@ -1,0 +1,27 @@
+{
+  "pbpointsApp": {
+    "playerPointHistory": {
+      "home": {
+        "title": "Player Point Histories",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Player Point History",
+        "createOrEditLabel": "Crear o editar Player Point History",
+        "notFound": "Ningún Player Point Histories encontrado"
+      },
+      "created": "Un nuevo Player Point History ha sido creado con el identificador {{ param }}",
+      "updated": "Un Player Point History ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Player Point History ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Player Point History {{ id }}?"
+      },
+      "detail": {
+        "title": "Player Point History"
+      },
+      "id": "ID",
+      "points": "Points",
+      "playerPoint": "Player Point",
+      "category": "Category",
+      "season": "Season"
+    }
+  }
+}

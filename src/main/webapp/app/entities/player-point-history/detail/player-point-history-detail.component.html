@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="playerPointHistory">
+      <h2 data-cy="playerPointHistoryDetailsHeading">
+        <span jhiTranslate="pbpointsApp.playerPointHistory.detail.title">Player Point History</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ playerPointHistory.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerPointHistory.points">Points</span></dt>
+        <dd>
+          <span>{{ playerPointHistory.points }}</span>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerPointHistory.playerPoint">Player Point</span></dt>
+        <dd>
+          <div *ngIf="playerPointHistory.playerPoint">
+            <a [routerLink]="['/player-point', playerPointHistory.playerPoint?.id, 'view']">{{ playerPointHistory.playerPoint?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerPointHistory.category">Category</span></dt>
+        <dd>
+          <div *ngIf="playerPointHistory.category">
+            <a [routerLink]="['/category', playerPointHistory.category?.id, 'view']">{{ playerPointHistory.category?.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="pbpointsApp.playerPointHistory.season">Season</span></dt>
+        <dd>
+          <div *ngIf="playerPointHistory.season">
+            <a [routerLink]="['/season', playerPointHistory.season?.id, 'view']">{{ playerPointHistory.season?.anio }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/player-point-history', playerPointHistory.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -109,6 +109,7 @@
         "location": "Location",
         "season": "Temporadas",
         "help": "Ayuda",
+        "playerPointHistory": "Player Point History",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

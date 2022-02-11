@@ -108,6 +108,7 @@
         "location": "Location",
         "tournamentGroup": "Tournament Group",
         "season": "Season",
+        "playerPointHistory": "Player Point History",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

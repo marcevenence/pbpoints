@@ -513,6 +513,18 @@
               <span jhiTranslate="global.menu.entities.season">Season</span>
             </a>
           </li>
+          <li>
+            <a
+              class="dropdown-item"
+              routerLink="player-point-history"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="collapseNavbar()"
+            >
+              <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+              <span jhiTranslate="global.menu.entities.playerPointHistory">Player Point History</span>
+            </a>
+          </li>
           <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
         </ul>
       </li>
@@ -594,6 +606,19 @@
             >
           </li>
         </ul>
+      </li>
+      <li>
+        <a
+          class="nav-link dropdown-item"
+          routerLink="help"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="collapseNavbar()"
+        >
+          <span>
+            <span jhiTranslate="global.menu.entities.help">Help</span>
+          </span>
+        </a>
       </li>
       <li
         ngbDropdown
