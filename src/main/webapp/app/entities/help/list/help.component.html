@@ -1,0 +1,136 @@
+<div>
+  <h2 id="page-heading" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.title">Help</span>
+    <div class="d-flex justify-content-end">
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-event"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
+      </button>
+    </div>
+  </h2>
+  <br />
+  <h3 id="page-first-home" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.home">Home</span>
+  </h3>
+  <br />
+  <h4 id="page-first-main-screen" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.mainScreen">Main Screen</span>
+  </h4>
+  <br />
+  <img [src]="'../../../content/images/help/main.png'" style="max-height: 400px" alt="main image" />
+  <h4 id="page-first-create-account" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.createAccount">Create Account</span>
+  </h4>
+  <br />
+  <h4 id="page-first-logging" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.login">Log In</span>
+  </h4>
+  <h4 id="page-first-forgot-password" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.forgotPassword">Forgot Password</span>
+  </h4>
+  <br />
+  <h3 id="page-menu" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.menu">Menu</span>
+  </h3>
+  <br />
+  <h4 id="page-menu-newTeam" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.newTeam">New Team</span>
+  </h4>
+  <h4 id="page-menu-manage-tournaments" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.managetournaments">Tournaments</span>
+  </h4>
+  <h5 id="page-menu-tournament-config" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.tournamentsConfig">Tournaments Config</span>
+  </h5>
+  <h5 id="page-menu-event-config" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.eventsConfig">Events Config</span>
+  </h5>
+  <h6 id="page-menu-importResults" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.importResults">Import Results</span>
+  </h6>
+  <h6 id="page-menu-export" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.export">Export File</span>
+  </h6>
+  <h5 id="page-menu-category-config" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.categoriesConfig">Categories Config</span>
+  </h5>
+  <h5 id="page-menu-format-config" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.formatsConfig">Formats Config</span>
+  </h5>
+  <h4 id="page-menu-manage-sponsors" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.manageSponsors">Sponsors</span>
+  </h4>
+  <h4 id="page-menu-view-rosters" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.viewRosters">View Rosters</span>
+  </h4>
+  <h4 id="page-menu-search-player" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.searchPlayer">Search Player</span>
+  </h4>
+  <h4 id="page-menu-language" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.language">Language</span>
+  </h4>
+  <h4 id="page-body2" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.account">Account</span>
+  </h4>
+  <h5 id="page-menu-myTeams" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.myTeams">My Teams</span>
+  </h5>
+  <h6 id="page-menu-editTeam" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.editTeam">Edit Teams</span>
+  </h6>
+  <h5 id="page-menu-myProfile" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.myProfile">My Profile</span>
+  </h5>
+  <h5 id="page-menu-marker" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.marker">Paintball Guns</span>
+  </h5>
+  <h5 id="page-menu-setting" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.setting">Setting</span>
+  </h5>
+  <h5 id="page-menu-password" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.password">Password</span>
+  </h5>
+  <br />
+  <h3 id="page-event" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.event">Events</span>
+  </h3>
+  <br />
+  <h4 id="page-subs" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.subscribe">Subscription</span>
+  </h4>
+  <h4 id="page-edit-subs" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.editRoster">Edit Roster</span>
+  </h4>
+  <h4 id="page-subs-players" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.subscribePlayers">Player Subscription</span>
+  </h4>
+  <h4 id="page-games" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.games">games</span>
+  </h4>
+  <h4 id="page-fixture" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.fixture">Fixture</span>
+  </h4>
+  <h4 id="page-viewResults" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.viewResults">View Results</span>
+  </h4>
+  <br />
+  <h3 id="page-body5" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.points">Points</span>
+  </h3>
+  <br />
+  <h4 id="page-viewTeamPoints" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.viewTeamPoints">View Team Points</span>
+  </h4>
+  <h4 id="page-viewPlayerPoints" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.viewPlayerPoints">View Player Points</span>
+  </h4>
+  <h5 id="page-viewPlayerHistoryPoints" data-cy="HelpHeading">
+    <span jhiTranslate="pbpointsApp.help.viewPlayerHistoryPoints">View Player History Points</span>
+  </h5>
+</div>
