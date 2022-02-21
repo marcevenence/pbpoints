@@ -92,10 +92,10 @@
         "player": "Jugadores",
         "userExtra": "User Extra",
         "format": "Formatos",
-        "playerPoint": "Puntos",
-        "playerDetailPoint": "Detalle Puntos",
-        "teamPoint": "Puntos",
-        "teamDetailPoint": "Detalle Puntos",
+        "playerPoint": "Puntos Jugador",
+        "playerDetailPoint": "Detalle Puntos Jugador",
+        "teamPoint": "Puntos Equipo",
+        "teamDetailPoint": "Detalle Puntos Equipo",
         "eventCategory": "Categorias asignadas",
         "game": "Partidos",
         "bracket": "Bracket",
@@ -109,7 +109,7 @@
         "location": "Location",
         "season": "Temporadas",
         "help": "Ayuda",
-        "playerPointHistory": "Player Point History",
+        "playerPointHistory": "Historial Puntos Jugador",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

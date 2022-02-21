@@ -3,11 +3,6 @@
     <span jhiTranslate="pbpointsApp.mainRoster.home.title">Main Rosters</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="reset()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="pbpointsApp.mainRoster.home.refreshListLabel">Refresh List</span>
-      </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -16,6 +11,16 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.mainRoster.home.createLabel"> Create a new Main Roster </span>
+      </button>
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>

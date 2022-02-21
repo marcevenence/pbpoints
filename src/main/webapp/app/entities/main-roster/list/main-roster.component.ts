@@ -72,6 +72,10 @@ export class MainRosterComponent implements OnInit {
     return item.id!;
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   delete(mainRoster: IMainRoster): void {
     const modalRef = this.modalService.open(MainRosterDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.mainRoster = mainRoster;

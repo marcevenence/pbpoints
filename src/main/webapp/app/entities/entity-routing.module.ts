@@ -149,6 +149,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'pbpointsApp.season.home.title' },
         loadChildren: () => import('./season/season.module').then(m => m.SeasonModule),
       },
+      {
+        path: 'player-point-history',
+        data: { pageTitle: 'pbpointsApp.playerPointHistory.home.title' },
+        loadChildren: () => import('./player-point-history/player-point-history.module').then(m => m.PlayerPointHistoryModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

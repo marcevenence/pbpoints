@@ -38,7 +38,7 @@
           <th scope="col"><span jhiTranslate="pbpointsApp.equipment.serial">Serial</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.equipment.picture1">Picture 1</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.equipment.picture2">Picture 2</span></th>
-          <!--<th scope="col"><span jhiTranslate="pbpointsApp.equipment.user">User</span></th>-->
+          <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col"><span jhiTranslate="pbpointsApp.equipment.user">User</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -68,9 +68,9 @@
               />
             </a>
           </td>
-          <!--<td>
+          <td *jhiHasAnyAuthority="'ROLE_ADMIN'">
             {{ equipment.user?.login }}
-          </td>-->
+          </td>
           <td class="text-right">
             <div class="btn-group">
               <!--<button
