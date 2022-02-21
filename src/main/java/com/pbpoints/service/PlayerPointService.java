@@ -1,6 +1,7 @@
 package com.pbpoints.service;
 
 import com.pbpoints.domain.Event;
+import com.pbpoints.domain.Season;
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.User;
 import com.pbpoints.service.dto.PlayerPointDTO;
@@ -50,4 +51,6 @@ public interface PlayerPointService {
     PlayerPointDTO findByUserAndTournamentAndCategory(Long userId, Long tournamentId, Long categoryId);
 
     void distPoints(List<PositionDTO> positions, Event event);
+
+    Float calculatePoints(Long userId, Season season, Tournament tournament);
 }

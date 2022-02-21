@@ -2,6 +2,8 @@ package com.pbpoints.repository;
 
 import com.pbpoints.domain.Event;
 import com.pbpoints.domain.EventCategory;
+import com.pbpoints.domain.Season;
+import com.pbpoints.domain.Tournament;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
     Optional<List<Event>> findByEndDate(LocalDate localDate);
+    List<Event> findByTournamentAndSeason(Tournament tournament, Season season);
 }

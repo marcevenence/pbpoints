@@ -2,11 +2,11 @@
   "pbpointsApp": {
     "playerPointHistory": {
       "home": {
-        "title": "Player Point Histories",
+        "title": "Historial de Puntos",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Player Point History",
-        "createOrEditLabel": "Crear o editar Player Point History",
-        "notFound": "Ningún Player Point Histories encontrado"
+        "createLabel": "Crear nuevo Historial de puntos",
+        "createOrEditLabel": "Crear o editar Historial",
+        "notFound": "No hay Historial"
       },
       "created": "Un nuevo Player Point History ha sido creado con el identificador {{ param }}",
       "updated": "Un Player Point History ha sido actualizado con el identificador {{ param }}",
@@ -15,13 +15,13 @@
         "question": "¿Seguro que quiere eliminar Player Point History {{ id }}?"
       },
       "detail": {
-        "title": "Player Point History"
+        "title": "Historial de Puntos"
       },
       "id": "ID",
-      "points": "Points",
+      "points": "Puntos",
       "playerPoint": "Player Point",
-      "category": "Category",
-      "season": "Season"
+      "category": "Categoria",
+      "season": "Temporada"
     }
   }
 }

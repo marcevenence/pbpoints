@@ -53,6 +53,8 @@ public class PlayerPointServiceImpl implements PlayerPointService {
 
     private final PlayerDetailPointRepository playerDetailPointRepository;
 
+    private final EventRepository eventRepository;
+
     public PlayerPointServiceImpl(
         PlayerPointRepository playerPointRepository,
         PlayerPointMapper playerPointMapper,
@@ -65,7 +67,8 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         EventCategoryRepository eventCategoryRepository,
         CategoryRepository categoryRepository,
         PlayerRepository playerRepository,
-        PlayerDetailPointRepository playerDetailPointRepository
+        PlayerDetailPointRepository playerDetailPointRepository,
+        EventRepository eventRepository
     ) {
         this.playerPointRepository = playerPointRepository;
         this.playerPointMapper = playerPointMapper;
@@ -79,6 +82,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         this.categoryRepository = categoryRepository;
         this.playerRepository = playerRepository;
         this.playerDetailPointRepository = playerDetailPointRepository;
+        this.eventRepository = eventRepository;
     }
 
     /**
@@ -224,5 +228,38 @@ public class PlayerPointServiceImpl implements PlayerPointService {
                 playerDetailPointRepository.save(playerDetailPoint);
             }
         }
+    }
+
+    public Float calculatePoints(Long userId, Season season, Tournament tournament) {
+        Optional<User> user = userService.getUser(userId);
+        if (user.isPresent()) {
+            PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament);
+            List<Event> events = eventRepository.findByTournamentAndSeason(tournament, season);
+            List<PlayerDetailPoint> playerDetailPoints = playerDetailPointRepository.findByPlayerPoint(playerPoint);
+            Float points = 0F;
+            Float maxPoints = 0F;
+            for (Event event : events) {
+                maxPoints = 0F;
+                List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
+                for (EventCategory evCat : eventCategories) {
+                    for (PlayerDetailPoint pdp : playerDetailPoints) {
+                        if (eventCategories.equals(pdp.getEventCategory())) {
+                            if (evCat.getCategory().getOrder() >= pdp.getEventCategory().getCategory().getOrder()) {
+                                if (pdp.getPoints() > maxPoints) {
+                                    maxPoints = pdp.getPoints();
+                                }
+                            } else {
+                                if ((pdp.getPoints() / 2) > maxPoints) {
+                                    maxPoints = pdp.getPoints() / 2;
+                                }
+                            }
+                        }
+                    }
+                }
+                points = points + maxPoints;
+            }
+            return points;
+        }
+        return 0F;
     }
 }

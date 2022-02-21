@@ -184,6 +184,7 @@ jhipster:
 # application:
 
 application:
-  cronFixture: 0 0 12 1/1 * ?
-  cronEventStatus: 0 0 12 1/1 * ?
-  cronDataExport: 0 0 12 1/1 * ?
+  cronFixture: 0 0 * * * ?
+  cronEventStatus: 0 0 * * * ?
+  cronDataExport: 0 0 * * * ?
+  cronCloseSeason: 0 0 * * * ?

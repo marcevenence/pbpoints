@@ -34,6 +34,10 @@ export class PlayerPointHistoryComponent implements OnInit {
     this.loadAll();
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   trackId(index: number, item: IPlayerPointHistory): number {
     return item.id!;
   }

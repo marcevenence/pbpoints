@@ -1,6 +1,8 @@
 package com.pbpoints.repository;
 
 import com.pbpoints.domain.PlayerDetailPoint;
+import com.pbpoints.domain.PlayerPoint;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PlayerDetailPointRepository extends JpaRepository<PlayerDetailPoint, Long>, JpaSpecificationExecutor<PlayerDetailPoint> {}
+public interface PlayerDetailPointRepository extends JpaRepository<PlayerDetailPoint, Long>, JpaSpecificationExecutor<PlayerDetailPoint> {
+    List<PlayerDetailPoint> findByPlayerPoint(PlayerPoint playerPoint);
+}

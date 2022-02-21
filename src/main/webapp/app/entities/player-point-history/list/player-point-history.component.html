@@ -3,11 +3,6 @@
     <span jhiTranslate="pbpointsApp.playerPointHistory.home.title">Player Point Histories</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="pbpointsApp.playerPointHistory.home.refreshListLabel">Refresh List</span>
-      </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -16,6 +11,17 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.playerPointHistory.home.createLabel"> Create a new Player Point History </span>
+      </button>
+
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-city"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>
