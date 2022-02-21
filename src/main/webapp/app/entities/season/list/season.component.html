@@ -3,11 +3,6 @@
     <span jhiTranslate="pbpointsApp.season.home.title">Seasons</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
-        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="pbpointsApp.season.home.refreshListLabel">Refresh List</span>
-      </button>
-
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
@@ -16,6 +11,16 @@
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="pbpointsApp.season.home.createLabel"> Create a new Season </span>
+      </button>
+      <button
+        id="jh-create-entity-back"
+        class="btn btn-primary float-right jh-create-entity create-province"
+        (click)="Cancel()"
+        data-toggle="tooltip"
+        [title]="'global.menu.back' | translate"
+      >
+        <fa-icon [icon]="'arrow-left'"></fa-icon>
+        <span jhiTranslate="global.menu.back">Back</span>
       </button>
     </div>
   </h2>
@@ -33,31 +38,20 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
+          <th scope="col"><span jhiTranslate="pbpointsApp.season.tournament">Tournament</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.season.anio">Anio</span></th>
           <th scope="col"><span jhiTranslate="pbpointsApp.season.status">Status</span></th>
-          <th scope="col"><span jhiTranslate="pbpointsApp.season.tournament">Tournament</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let season of seasons; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/season', season.id, 'view']">{{ season.id }}</a>
-          </td>
+          <td>{{ season.id }}</td>
+          <td>{{ season.tournament?.name }}</td>
           <td>{{ season.anio }}</td>
-          <td jhiTranslate="{{ 'pbpointsApp.status.' + season.status }}">{{ season.status }}</td>
-          <td>
-            <div *ngIf="season.tournament">
-              <a [routerLink]="['/tournament', season.tournament?.id, 'view']">{{ season.tournament?.name }}</a>
-            </div>
-          </td>
+          <td jhiTranslate="{{ 'pbpointsApp.Status.' + season.status }}">{{ season.status }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/season', season.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-
               <button type="submit" [routerLink]="['/season', season.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

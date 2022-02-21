@@ -97,7 +97,12 @@ public class SeasonService {
     @Transactional(readOnly = true)
     public Optional<SeasonDTO> findByTournamentAndAnio(TournamentDTO tournament, Integer anio) {
         log.debug("Request to get Season by Tournament and Year : {}", tournament, anio);
-        return Optional.of(seasonMapper.toDto(seasonRepository.findByTournamentAndAnio(tournamentMapper.toEntity(tournament), anio)));
+        try {
+            SeasonDTO sea = seasonMapper.toDto(seasonRepository.findByTournamentAndAnio(tournamentMapper.toEntity(tournament), anio));
+            return Optional.of(sea);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**

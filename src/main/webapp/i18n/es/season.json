@@ -2,11 +2,11 @@
   "pbpointsApp": {
     "season": {
       "home": {
-        "title": "Seasons",
+        "title": "Temporadas",
         "refreshListLabel": "Refrescar lista",
-        "createLabel": "Crear nuevo Season",
-        "createOrEditLabel": "Crear o editar Season",
-        "notFound": "Ningún Seasons encontrado"
+        "createLabel": "Crear nuevo Temporada",
+        "createOrEditLabel": "Crear o editar Temporada",
+        "notFound": "No hay temporadas"
       },
       "created": "Un nuevo Season ha sido creado con el identificador {{ param }}",
       "updated": "Un Season ha sido actualizado con el identificador {{ param }}",
@@ -15,12 +15,12 @@
         "question": "¿Seguro que quiere eliminar Season {{ id }}?"
       },
       "detail": {
-        "title": "Season"
+        "title": "Temporada"
       },
       "id": "ID",
-      "anio": "Anio",
-      "status": "Status",
-      "tournament": "Tournament"
+      "anio": "Año",
+      "status": "Estado",
+      "tournament": "Torneo"
     }
   }
 }

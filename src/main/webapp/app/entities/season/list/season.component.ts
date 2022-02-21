@@ -38,6 +38,10 @@ export class SeasonComponent implements OnInit {
     return item.id!;
   }
 
+  Cancel(): void {
+    window.history.back();
+  }
+
   delete(season: ISeason): void {
     const modalRef = this.modalService.open(SeasonDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.season = season;
