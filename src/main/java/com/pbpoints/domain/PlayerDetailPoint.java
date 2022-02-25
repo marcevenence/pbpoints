@@ -111,6 +111,7 @@ public class PlayerDetailPoint implements Serializable {
     public String toString() {
         return "PlayerDetailPoint{" +
             "id=" + getId() +
+            ", eventCategory=" + getEventCategory() +
             ", points=" + getPoints() +
             "}";
     }

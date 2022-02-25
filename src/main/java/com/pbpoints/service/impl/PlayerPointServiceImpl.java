@@ -243,7 +243,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
                 List<EventCategory> eventCategories = eventCategoryRepository.findByEvent(event);
                 for (EventCategory evCat : eventCategories) {
                     for (PlayerDetailPoint pdp : playerDetailPoints) {
-                        if (eventCategories.equals(pdp.getEventCategory())) {
+                        if (evCat.equals(pdp.getEventCategory())) {
                             if (evCat.getCategory().getOrder() >= pdp.getEventCategory().getCategory().getOrder()) {
                                 if (pdp.getPoints() > maxPoints) {
                                     maxPoints = pdp.getPoints();
@@ -258,6 +258,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
                 }
                 points = points + maxPoints;
             }
+            log.debug("FinPoints: {}", points);
             return points;
         }
         return 0F;

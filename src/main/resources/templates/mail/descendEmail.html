@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+  <head>
+    <title th:text="#{email.descend.title}">Ascend Category</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
+  </head>
+  <body>
+    <p th:text="#{email.descend.greeting(${user.lastName}, ${user.firstName})}">Dear</p>
+    <p th:text="#{email.descend.text1(${category.name}, ${tournament.name})}">Oh No! You suck and now you fall to .. in ..</p>
+    <br />
+    <p th:text="#{email.descend.text3}">Here you can find details of your weak progress in the last year</p>
+    <br />
+    <p th:text="#{email.descend.text4(${history.cantEvent})}">Events Played</p>
+    <p th:text="#{email.descend.text5(${history.totalPoints})}">Total Points</p>
+    <p th:text="#{email.descend.text6(${history.points})}">Points</p>
+    <p>
+      <span th:text="#{email.descend.text2}">Regards, </span>
+      <br />
+      <em th:text="#{email.signature}">PBPoints Team.</em>
+    </p>
+  </body>
+</html>

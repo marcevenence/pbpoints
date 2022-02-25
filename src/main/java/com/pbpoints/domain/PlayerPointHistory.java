@@ -26,6 +26,14 @@ public class PlayerPointHistory implements Serializable {
     @Column(name = "points", nullable = false)
     private Float points;
 
+    @NotNull
+    @Column(name = "points_total", nullable = false)
+    private Float totalPoints;
+
+    @NotNull
+    @Column(name = "cant_event", nullable = false)
+    private Integer cantEvent;
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "tournament", "user", "category" }, allowSetters = true)
     private PlayerPoint playerPoint;
@@ -79,6 +87,22 @@ public class PlayerPointHistory implements Serializable {
     public PlayerPointHistory playerPoint(PlayerPoint playerPoint) {
         this.setPlayerPoint(playerPoint);
         return this;
+    }
+
+    public Float getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(Float totalPoints) {
+        this.totalPoints = totalPoints;
+    }
+
+    public Integer getCantEvent() {
+        return cantEvent;
+    }
+
+    public void setCantEvent(Integer cantEvent) {
+        this.cantEvent = cantEvent;
     }
 
     public Category getCategory() {

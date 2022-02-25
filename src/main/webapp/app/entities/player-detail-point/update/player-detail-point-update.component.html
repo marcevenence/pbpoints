@@ -35,7 +35,6 @@
             >Player Point</label
           >
           <select class="form-control" id="field_playerPoint" data-cy="playerPoint" name="playerPoint" formControlName="playerPoint">
-            <option *ngIf="!editForm.get('playerPoint')!.value" [ngValue]="null" selected></option>
             <option
               [ngValue]="
                 playerPointOption.id === editForm.get('playerPoint')!.value?.id ? editForm.get('playerPoint')!.value : playerPointOption
@@ -69,7 +68,6 @@
             name="eventCategory"
             formControlName="eventCategory"
           >
-            <option [ngValue]="null"></option>
             <option
               [ngValue]="
                 eventCategoryOption.id === editForm.get('eventCategory')!.value?.id
@@ -78,7 +76,8 @@
               "
               *ngFor="let eventCategoryOption of eventCategoriesSharedCollection; trackBy: trackEventCategoryById"
             >
-              {{ eventCategoryOption.id }}
+              {{ eventCategoryOption.event?.tournament?.name }} - {{ eventCategoryOption.event?.name }} -
+              {{ eventCategoryOption.category?.name }}
             </option>
           </select>
         </div>

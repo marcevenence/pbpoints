@@ -2,15 +2,18 @@ package com.pbpoints.service.util;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.domain.enumeration.Status;
-import com.pbpoints.domain.enumeration.status;
 import com.pbpoints.repository.*;
+import com.pbpoints.service.MailService;
 import com.pbpoints.service.PlayerPointService;
 import java.time.LocalDate;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CloseUtil {
 
     private final Logger log = LoggerFactory.getLogger(CloseUtil.class);
@@ -35,6 +38,8 @@ public class CloseUtil {
 
     private final PlayerPointService playerPointService;
 
+    private final MailService mailService;
+
     public CloseUtil(
         TournamentRepository tournamentRepository,
         PlayerPointRepository playerPointRepository,
@@ -45,7 +50,8 @@ public class CloseUtil {
         CategoryRepository categoryRepository,
         EventRepository eventRepository,
         PlayerPointHistoryRepository playerPointHistoryRepository,
-        PlayerPointService playerPointService
+        PlayerPointService playerPointService,
+        MailService mailService
     ) {
         this.tournamentRepository = tournamentRepository;
         this.playerPointRepository = playerPointRepository;
@@ -57,18 +63,25 @@ public class CloseUtil {
         this.eventRepository = eventRepository;
         this.playerPointHistoryRepository = playerPointHistoryRepository;
         this.playerPointService = playerPointService;
+        this.mailService = mailService;
     }
 
     public Integer getQtyEvents(User user, List<Event> events) {
+        Integer cant = 0;
         for (Event ev : events) {
-            List<Long> qtyEvents = rosterEventRepository.countByUserIdAndEventId(user.getId(), ev.getId());
-            return qtyEvents.size();
+            Long qtyEvents = rosterEventRepository.countByUserIdAndEventId(user.getId(), ev.getId());
+            if (qtyEvents > 0) {
+                cant++;
+            }
         }
-        return 0;
+        return cant;
     }
 
+    @Async
     @Scheduled(cron = "${application.cronCloseSeason}")
     public void closeSeason() {
+        Float up = 75F;
+        Float down = 35F;
         PlayerPointHistory pph;
         log.info("Inicio proceso de cierre de temporada");
         List<Tournament> tournaments = tournamentRepository.findByEndSeasonDate(
@@ -79,14 +92,16 @@ public class CloseUtil {
             log.debug("torneos que cierran temporada: {}", tour);
             if (tour.getCategorize()) {
                 log.debug("Categoriza");
-                log.debug("Puntaje para subir de categoria: 75");
-                log.debug("Puntaje para bajar de categoria: 35");
+                log.debug("Puntaje para subir de categoria: {}", up);
+                log.debug("Puntaje para bajar de categoria: {}", down);
                 List<Season> seasons = seasonRepository.findByTournamentAndStatus(tour, Status.CREATED);
                 for (Season sea : seasons) {
                     log.debug("Procesando temporada: {}", sea.getAnio().toString());
                     List<Long> users = rosterEventRepository.findUsersByTournamentId(tour.getId());
                     for (Long user : users) {
+                        log.debug("UsuarioId: {}", user.toString());
                         Float points = playerPointService.calculatePoints(user, sea, tour);
+                        log.debug("Puntaje Obtenido: {}", points.toString());
                         PlayerPoint player = playerPointRepository.findByUserAndTournament(userRepository.findOneById(user), tour);
                         List<RosterEvent> actual = rosterEventRepository.findPlayersByTournamentIdAndPlayerIdAndAnio(
                             tour.getId(),
@@ -105,7 +120,9 @@ public class CloseUtil {
                                 pph.setCategory(player.getCategory());
                                 pph.setPlayerPoint(player);
                                 pph.setSeason(sea);
-                                pph.setPoints(points);
+                                pph.setPoints(0F);
+                                pph.setCantEvent(0);
+                                pph.setTotalPoints(points);
                                 playerPointHistoryRepository.save(pph);
                                 try {
                                     log.debug("Desciende Categoria");
@@ -130,7 +147,10 @@ public class CloseUtil {
                                         pph.setCategory(player.getCategory());
                                         pph.setPlayerPoint(player);
                                         pph.setSeason(sea);
-                                        pph.setPoints(points);
+                                        pph.setPoints(0F);
+                                        pph.setCantEvent(0);
+                                        pph.setTotalPoints(points);
+
                                         playerPointHistoryRepository.save(pph);
                                         log.debug("Subio categoria, vuelve a la categoria anterior");
                                         player.setCategory(lastCategory.getCategory());
@@ -142,7 +162,9 @@ public class CloseUtil {
                                     pph.setCategory(player.getCategory());
                                     pph.setPlayerPoint(player);
                                     pph.setSeason(sea);
-                                    pph.setPoints(points);
+                                    pph.setPoints(0F);
+                                    pph.setCantEvent(0);
+                                    pph.setTotalPoints(points);
                                     playerPointHistoryRepository.save(pph);
                                     log.debug("No hay registro history, se considera que no subio, mantiene");
                                 }
@@ -150,20 +172,21 @@ public class CloseUtil {
                         } else {
                             List<Event> eventos = eventRepository.findByTournamentAndSeason(tour, sea);
                             Integer cantEventos = getQtyEvents(player.getUser(), eventos);
+                            log.debug("Cant Eventos: {}", cantEventos);
+                            log.debug("Tamanio Eventos: {}", eventos);
                             if (eventos.size() < 3 || (eventos.size() >= 3 && cantEventos > 1)) {
-                                log.debug(
-                                    "FALTA cambiar al IF:  == 4 por -> AND si jugo en mas de un evento en una categoria sino mantiene categoria"
-                                );
+                                Float pointsDiv = points / (cantEventos * 100);
+                                log.debug("Puntaje: {}", pointsDiv);
                                 log.debug("Guardo el History");
-
                                 pph = new PlayerPointHistory();
                                 pph.setCategory(player.getCategory());
                                 pph.setPlayerPoint(player);
                                 pph.setSeason(sea);
-                                pph.setPoints(points);
+                                pph.setPoints(pointsDiv * 100);
+                                pph.setCantEvent(cantEventos);
+                                pph.setTotalPoints(points);
                                 playerPointHistoryRepository.save(pph);
-                                log.debug("FALTA Valido los puntos");
-                                if (points > 75) {
+                                if ((pointsDiv * 100) > up) {
                                     log.debug("Asciende");
                                     try {
                                         Category newCategory = categoryRepository.findByTournamentAndOrder(
@@ -171,21 +194,29 @@ public class CloseUtil {
                                             player.getCategory().getOrder() - 1
                                         );
                                         if (newCategory.getOrder() != 0) {
+                                            log.debug("Nueva Categoria: {}", newCategory);
                                             player.setCategory(newCategory);
                                             playerPointRepository.save(player);
+                                            log.debug("Actualizado");
+                                            mailService.sendAscendEmail(player.getUser(), tour, newCategory, pph);
                                         } else {
                                             log.debug("No hay categoria mayor, mantiene");
                                         }
-                                    } catch (Exception e) {}
+                                    } catch (Exception e) {
+                                        log.debug(e.getMessage());
+                                    }
                                 } else {
-                                    if (points <= 35) {
+                                    if ((pointsDiv * 100) <= down) {
                                         log.debug("Desciende Categoria");
                                         Category newCategory = categoryRepository.findByTournamentAndOrder(
                                             tour,
                                             player.getCategory().getOrder() + 1
                                         );
+                                        log.debug("Nueva Categoria: {}", newCategory);
                                         player.setCategory(newCategory);
                                         playerPointRepository.save(player);
+                                        log.debug("Actualizado");
+                                        mailService.sendDescendEmail(player.getUser(), tour, newCategory, pph);
                                     } else {
                                         log.debug("Mantiene");
                                     }
@@ -197,13 +228,17 @@ public class CloseUtil {
                                 pph.setCategory(player.getCategory());
                                 pph.setPlayerPoint(player);
                                 pph.setSeason(sea);
-                                pph.setPoints(points);
+                                pph.setPoints(0F);
+                                pph.setCantEvent(cantEventos);
+                                pph.setTotalPoints(points);
                                 playerPointHistoryRepository.save(pph);
                             }
                         }
                     }
+                    log.debug("Cierro Temporada: {}", sea);
                     sea.setStatus(Status.DONE);
                     seasonRepository.save(sea);
+                    log.debug("Temporada Cerrada");
                 }
             } else {
                 log.debug("No Categoriza");

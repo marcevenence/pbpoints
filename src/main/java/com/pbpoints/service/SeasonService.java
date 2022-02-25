@@ -101,7 +101,7 @@ public class SeasonService {
             SeasonDTO sea = seasonMapper.toDto(seasonRepository.findByTournamentAndAnio(tournamentMapper.toEntity(tournament), anio));
             return Optional.of(sea);
         } catch (Exception e) {
-            return null;
+            return Optional.empty();
         }
     }
 

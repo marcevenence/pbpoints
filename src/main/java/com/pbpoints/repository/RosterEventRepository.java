@@ -18,5 +18,5 @@ public interface RosterEventRepository extends JpaRepository<RosterEvent, Long> 
     List<RosterEvent> findPlayersByTournamentIdAndPlayerIdAndAnio(Long tournamentId, Long userId, Integer anio);
 
     @Query("select count(rosterEvent) from RosterEvent rosterEvent where rosterEvent.pbPointId = ?1 and rosterEvent.eventId = ?2")
-    List<Long> countByUserIdAndEventId(Long userId, Long eventId);
+    Long countByUserIdAndEventId(Long userId, Long eventId);
 }

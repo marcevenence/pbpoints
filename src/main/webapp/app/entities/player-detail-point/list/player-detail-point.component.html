@@ -42,6 +42,9 @@
           <th scope="col">
             <span jhiTranslate="pbpointsApp.playerDetailPoint.event">Event</span>
           </th>
+          <th scope="col">
+            <span jhiTranslate="pbpointsApp.playerDetailPoint.eventCategory">Category</span>
+          </th>
           <!--<th scope="col" >
             <span jhiTranslate="pbpointsApp.playerDetailPoint.playerPoint">Player Point</span> <fa-icon icon="sort"></fa-icon>
           </th>-->
@@ -61,6 +64,11 @@
               <div>{{ playerDetailPoint.eventCategory?.event?.tournament?.name }} - {{ playerDetailPoint.eventCategory?.event?.name }}</div>
             </div>
           </td>
+          <td>
+            <div *ngIf="playerDetailPoint.eventCategory">
+              <div>{{ playerDetailPoint.eventCategory?.category?.name }}</div>
+            </div>
+          </td>
           <td>{{ playerDetailPoint.points }}</td>
           <!--<td>
             <div *ngIf="playerDetailPoint.playerPoint">
@@ -77,7 +85,7 @@
               >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
+              </button>-->
 
               <button
                 type="submit"
@@ -87,7 +95,7 @@
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-              </button>-->
+              </button>
 
               <button type="submit" (click)="delete(playerDetailPoint)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>

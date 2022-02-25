@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -88,23 +87,13 @@ public class PlayerDetailPointResource {
      * or with status {@code 500 (Internal Server Error)} if the playerDetailPointDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/player-detail-points/{id}")
-    public ResponseEntity<PlayerDetailPointDTO> updatePlayerDetailPoint(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody PlayerDetailPointDTO playerDetailPointDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to update PlayerDetailPoint : {}, {}", id, playerDetailPointDTO);
+    @PutMapping("/player-detail-points")
+    public ResponseEntity<PlayerDetailPointDTO> updatePlayerDetailPoint(@Valid @RequestBody PlayerDetailPointDTO playerDetailPointDTO)
+        throws URISyntaxException {
+        log.debug("REST request to update PlayerDetailPoint : {}, {}", playerDetailPointDTO);
         if (playerDetailPointDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, playerDetailPointDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
-        }
-
-        if (!playerDetailPointRepository.existsById(id)) {
-            throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
-        }
-
         PlayerDetailPointDTO result = playerDetailPointService.save(playerDetailPointDTO);
         return ResponseEntity
             .ok()
