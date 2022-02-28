@@ -155,4 +155,16 @@ public class UserExtraService {
         log.debug("UserExtra: {} " + userExtra);
         return userExtra;
     }
+
+    /**
+     * Get one userExtra by id.
+     *
+     * @param username the id of the entity.
+     * @return the entity.
+     */
+    @Transactional(readOnly = true)
+    public Optional<UserExtraDTO> findOneByUsername(String username) {
+        log.debug("Request to get UserExtra : {}", username);
+        return userExtraRepository.findByUserLogin(username).map(userExtraMapper::toDto);
+    }
 }
