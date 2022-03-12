@@ -147,12 +147,36 @@ public class MailService {
     @Async
     public void sendAscendEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
         log.debug("Sending Ascend Category email to '{}'", user.getEmail());
-        sendEmailFromTemplate2(user, tournament, category, pph, "mail/ascendEmail", "email.ascend.title");
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/ascendEmail", "email.close.title");
     }
 
     @Async
     public void sendDescendEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
         log.debug("Sending Descend Category email to '{}'", user.getEmail());
-        sendEmailFromTemplate2(user, tournament, category, pph, "mail/descendEmail", "email.descend.title");
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/descendEmail", "email.close.title");
+    }
+
+    @Async
+    public void sendKeepEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
+        log.debug("Sending Keep Category email to '{}'", user.getEmail());
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/keepEmail", "email.close.title");
+    }
+
+    @Async
+    public void sendNoPlayEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
+        log.debug("Sending Keep Category email to '{}'", user.getEmail());
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/noPlayEmail", "email.close.title");
+    }
+
+    @Async
+    public void sendNoPlayDescEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
+        log.debug("Sending No Play Desc Category email to '{}'", user.getEmail());
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/noPlayDescEmail", "email.close.title");
+    }
+
+    @Async
+    public void sendNoPlayKeepEmail(User user, Tournament tournament, Category category, PlayerPointHistory pph) {
+        log.debug("Sending No Play Keep Category email to '{}'", user.getEmail());
+        sendEmailFromTemplate2(user, tournament, category, pph, "mail/noPlayKeepEmail", "email.close.title");
     }
 }

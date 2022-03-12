@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
   <head>
-    <title th:text="#{email.descend.title}">Ascend Category</title>
+    <title th:text="#{email.close.title(${tournament.name})}">Season Closed</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}" />
   </head>
   <body>
-    <p th:text="#{email.descend.greeting(${user.lastName}, ${user.firstName})}">Dear</p>
-    <p th:text="#{email.descend.text1(${category.name}, ${tournament.name})}">Oh No! You suck and now you fall to .. in ..</p>
+    <p th:text="#{email.close.greeting(${user.lastName}, ${user.firstName})}">Dear</p>
     <br />
-    <p th:text="#{email.descend.text3}">Here you can find details of your weak progress in the last year</p>
+    <p th:text="#{email.close.text1(${season.anio}, ${tournament.name})}">The Season of Tournament have finished</p>
     <br />
-    <p th:text="#{email.descend.text4(${history.cantEvent})}">Events Played</p>
-    <p th:text="#{email.descend.text5(${history.totalPoints})}">Total Points</p>
-    <p th:text="#{email.descend.text6(${history.points})}">Points</p>
+    <p th:text="#{email.close.text2}">Here you can find details of your progress in the last year</p>
+    <p th:text="#{email.close.text3(${history.cantEvent})}">Events Played</p>
+    <p th:text="#{email.close.text4(${history.totalPoints})}">Total Points</p>
+    <p th:text="#{email.close.text5(${history.points})}">Points</p>
+    <br />
+    <p th:text="#{email.descend.text1(${category.name})}">Congrats! You have been promote to ..</p>
+    <p th:text="#{email.descend.text2}">Points Needed</p>
+    <p th:text="#{email.close.text6}">View Profile</p>
+    <p th:text="#{email.close.text7}">We hope to see you next year</p>
+    <br />
     <p>
-      <span th:text="#{email.descend.text2}">Regards, </span>
+      <span th:text="#{email.regards}">Regards, </span>
       <br />
       <em th:text="#{email.signature}">PBPoints Team.</em>
     </p>

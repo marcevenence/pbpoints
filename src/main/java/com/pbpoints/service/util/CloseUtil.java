@@ -132,6 +132,7 @@ public class CloseUtil {
                                     );
                                     player.setCategory(newCategory);
                                     playerPointRepository.save(player);
+                                    mailService.sendNoPlayEmail(player.getUser(), tour, player.getCategory(), pph);
                                 } catch (Exception e) {
                                     log.debug("No hay categoria menor, mantiene categoria");
                                 }
@@ -155,6 +156,7 @@ public class CloseUtil {
                                         log.debug("Subio categoria, vuelve a la categoria anterior");
                                         player.setCategory(lastCategory.getCategory());
                                         playerPointRepository.save(player);
+                                        mailService.sendNoPlayDescEmail(player.getUser(), tour, lastCategory.getCategory(), pph);
                                     }
                                 } catch (Exception e) {
                                     log.debug("Guardo el History");
@@ -167,6 +169,7 @@ public class CloseUtil {
                                     pph.setTotalPoints(points);
                                     playerPointHistoryRepository.save(pph);
                                     log.debug("No hay registro history, se considera que no subio, mantiene");
+                                    mailService.sendNoPlayKeepEmail(player.getUser(), tour, player.getCategory(), pph);
                                 }
                             }
                         } else {
@@ -201,6 +204,7 @@ public class CloseUtil {
                                             mailService.sendAscendEmail(player.getUser(), tour, newCategory, pph);
                                         } else {
                                             log.debug("No hay categoria mayor, mantiene");
+                                            mailService.sendAscendEmail(player.getUser(), tour, player.getCategory(), pph);
                                         }
                                     } catch (Exception e) {
                                         log.debug(e.getMessage());
@@ -219,6 +223,7 @@ public class CloseUtil {
                                         mailService.sendDescendEmail(player.getUser(), tour, newCategory, pph);
                                     } else {
                                         log.debug("Mantiene");
+                                        mailService.sendDescendEmail(player.getUser(), tour, player.getCategory(), pph);
                                     }
                                 }
                             } else {
@@ -232,6 +237,7 @@ public class CloseUtil {
                                 pph.setCantEvent(cantEventos);
                                 pph.setTotalPoints(points);
                                 playerPointHistoryRepository.save(pph);
+                                mailService.sendKeepEmail(player.getUser(), tour, player.getCategory(), pph);
                             }
                         }
                     }
