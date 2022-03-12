@@ -129,7 +129,7 @@ public class UserExtraService {
      */
     @Transactional(readOnly = true)
     public Optional<UserExtraDTO> findOneByIdAndCode(Long id, String code) {
-        log.debug("Request to get UserExtra :", id, code);
+        log.debug("Request to get UserExtra : {}, {}", id, code);
         return userExtraRepository.findByIdAndCode(id, code).map(userExtraMapper::toDto);
     }
 

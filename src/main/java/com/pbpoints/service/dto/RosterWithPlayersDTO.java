@@ -6,9 +6,15 @@ public class RosterWithPlayersDTO {
 
     private List<PlayerDTO> players;
 
-    private TeamDTO team;
+    private Long teamId;
 
-    private EventCategoryDTO eventCategory;
+    private Long eventCategoryId;
+
+    public RosterWithPlayersDTO(List<PlayerDTO> players, Long teamId, Long eventCategoryId) {
+        this.players = players;
+        this.teamId = teamId;
+        this.eventCategoryId = eventCategoryId;
+    }
 
     public List<PlayerDTO> getPlayers() {
         return players;
@@ -18,24 +24,24 @@ public class RosterWithPlayersDTO {
         this.players = players;
     }
 
-    public TeamDTO getTeam() {
-        return team;
+    public Long getTeamId() {
+        return teamId;
     }
 
-    public void setTeam(TeamDTO team) {
-        this.team = team;
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 
-    public EventCategoryDTO getEventCategory() {
-        return eventCategory;
+    public Long getEventCategoryId() {
+        return eventCategoryId;
     }
 
-    public void setEventCategory(EventCategoryDTO eventCategory) {
-        this.eventCategory = eventCategory;
+    public void setEventCategoryId(Long eventCategory) {
+        this.eventCategoryId = eventCategoryId;
     }
 
     @Override
     public String toString() {
-        return "RosterWithPlayersDTO{" + "players=" + players + ", team=" + team + ", eventCategory=" + eventCategory + '}';
+        return "RosterWithPlayersDTO{" + "players=" + players + ", teamId=" + teamId + ", eventCategoryId=" + eventCategoryId + '}';
     }
 }

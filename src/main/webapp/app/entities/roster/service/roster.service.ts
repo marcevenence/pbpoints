@@ -9,8 +9,6 @@ import { IRoster, getRosterIdentifier } from '../roster.model';
 import { IRosterSubs } from '../roster-subs.model';
 import { IRosterSubsPl } from '../roster-subs-pl.model';
 import { IPlayer } from 'app/entities/player/player.model';
-import { IEventCategory } from 'app/entities/event-category/event-category.model';
-import { ITeam } from 'app/entities/team/team.model';
 
 export type EntityResponseType = HttpResponse<IRoster>;
 export type EntityArrayResponseType = HttpResponse<IRoster[]>;
@@ -25,8 +23,8 @@ export class RosterService {
     return this.http.post<IRoster>(this.resourceUrl, roster, { observe: 'response' });
   }
 
-  createWithPlayers(players: IPlayer[], team: ITeam, eventCategory: IEventCategory): Observable<EntityResponseType> {
-    const data = { players, team, eventCategory };
+  createWithPlayers(players: IPlayer[], teamId: number, eventCategoryId: number): Observable<EntityResponseType> {
+    const data = { players, teamId, eventCategoryId };
     return this.http.post<IRoster>(`${this.resourceUrl}/players`, data, { observe: 'response' });
   }
 
@@ -70,12 +68,12 @@ export class RosterService {
     return this.http.get<number>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  validatePlayer(rosterSubs: IRosterSubs): Observable<EntityResponseType> {
-    return this.http.put<IRosterSubs>(`${this.resourceUrl}/validatePlayer`, rosterSubs, { observe: 'response' });
+  validatePlayer(rosterSubs: IRosterSubs): Observable<HttpResponse<IPlayer>> {
+    return this.http.put<IPlayer>(`${this.resourceUrl}/validatePlayer`, rosterSubs, { observe: 'response' });
   }
 
-  validatePlayer2(rosterSubsPl: IRosterSubsPl): Observable<EntityResponseType> {
-    return this.http.put<IRosterSubsPl>(`${this.resourceUrl}/validatePlayer2`, rosterSubsPl, { observe: 'response' });
+  validatePlayer2(rosterSubsPl: IRosterSubsPl): Observable<HttpResponse<IPlayer>> {
+    return this.http.put<IPlayer>(`${this.resourceUrl}/validatePlayer2`, rosterSubsPl, { observe: 'response' });
   }
 
   addRosterToCollectionIfMissing(rosterCollection: IRoster[], ...rostersToCheck: (IRoster | null | undefined)[]): IRoster[] {

@@ -236,7 +236,9 @@ public class PlayerService {
     }
 
     private Optional<Player> findPlayer(Long userId, Roster roster) {
-        for (Player player : roster.getPlayers()) {
+        List<Player> players = playerRepository.findByRoster(roster);
+        log.debug("Players: {}", players);
+        for (Player player : players) {
             log.debug("Player: {}", player);
             if (player.getUser().getId().equals(userId)) {
                 return Optional.of(player);

@@ -167,7 +167,7 @@ export class RosterSubsComponent implements OnInit {
       this.subscribeToSaveResponseRoster(this.rosterService.updateWithPlayers(this.playerNews!, this.rosterParam.rId));
     } else {
       this.subscribeToSaveResponseRoster(
-        this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value, this.eventCategory!)
+        this.rosterService.createWithPlayers(this.playerNews!, this.findForm.get('team')!.value.id, this.eventCategory!.id!)
       );
     }
     window.history.back();

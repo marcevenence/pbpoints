@@ -2,15 +2,10 @@ package com.pbpoints.web.rest;
 
 import com.pbpoints.domain.*;
 import com.pbpoints.domain.enumeration.ProfileUser;
-import com.pbpoints.repository.CategoryRepository;
-import com.pbpoints.repository.PlayerPointRepository;
-import com.pbpoints.repository.UserRepository;
+import com.pbpoints.repository.*;
 import com.pbpoints.service.*;
 import com.pbpoints.service.dto.*;
-import com.pbpoints.service.mapper.EventCategoryMapper;
-import com.pbpoints.service.mapper.PlayerPointMapper;
-import com.pbpoints.service.mapper.TournamentMapper;
-import com.pbpoints.service.mapper.UserMapper;
+import com.pbpoints.service.mapper.*;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -69,6 +64,12 @@ public class RosterResource {
 
     private final PlayerPointMapper playerPointMapper;
 
+    private final TeamRepository teamRepository;
+
+    private final TeamMapper teamMapper;
+
+    private final EventCategoryRepository eventCategoryRepository;
+
     public RosterResource(
         RosterService rosterService,
         RosterQueryService rosterQueryService,
@@ -76,12 +77,15 @@ public class RosterResource {
         PlayerPointService playerPointService,
         UserExtraService userExtraService,
         UserRepository userRepository,
+        EventCategoryRepository eventCategoryRepository,
         EventCategoryService eventCategoryService,
         TournamentMapper tournamentMapper,
         CategoryRepository categoryRepository,
         PlayerPointRepository playerPointRepository,
         PlayerPointMapper playerPointMapper,
-        EventCategoryMapper eventCategoryMapper
+        EventCategoryMapper eventCategoryMapper,
+        TeamRepository teamRepository,
+        TeamMapper teamMapper
     ) {
         this.rosterService = rosterService;
         this.rosterQueryService = rosterQueryService;
@@ -89,12 +93,15 @@ public class RosterResource {
         this.playerPointService = playerPointService;
         this.userExtraService = userExtraService;
         this.userRepository = userRepository;
+        this.eventCategoryRepository = eventCategoryRepository;
         this.eventCategoryMapper = eventCategoryMapper;
         this.eventCategoryService = eventCategoryService;
         this.tournamentMapper = tournamentMapper;
         this.categoryRepository = categoryRepository;
         this.playerPointRepository = playerPointRepository;
         this.playerPointMapper = playerPointMapper;
+        this.teamRepository = teamRepository;
+        this.teamMapper = teamMapper;
     }
 
     /**
@@ -145,8 +152,10 @@ public class RosterResource {
             log.debug("Fallo el Try");
         }*/
         RosterDTO rosterDTO = new RosterDTO();
-        rosterDTO.setTeam(rosterWithPlayersDTO.getTeam());
-        rosterDTO.setEventCategory(rosterWithPlayersDTO.getEventCategory());
+        rosterDTO.setTeam(teamMapper.toDto(teamRepository.findById(rosterWithPlayersDTO.getTeamId()).get()));
+        rosterDTO.setEventCategory(
+            eventCategoryMapper.toDto(eventCategoryRepository.findById(rosterWithPlayersDTO.getEventCategoryId()).get())
+        );
         rosterDTO.setActive(true);
         log.debug("Before Roster Saved:");
         RosterDTO result = rosterService.save(rosterDTO);
@@ -434,6 +443,8 @@ public class RosterResource {
                 if (player.get().getProfile().toString().equals(rosterSubsDTO.getProfile())) {
                     throw new BadRequestAlertException("alreadyInOtherRoster", ENTITY_NAME, "alreadyInOtherRoster");
                 }
+            } else {
+                log.debug("Player No encontrado en otro roster.");
             }
         } catch (NoResultException e) {
             log.debug("Player No encontrado en otro roster");
@@ -445,7 +456,7 @@ public class RosterResource {
 
     @PutMapping("/rosters/validatePlayer2")
     public ResponseEntity<PlayerDTO> validatePlayer2(@Valid @RequestBody RosterSubsPlDTO rosterSubsPlDTO) throws URISyntaxException {
-        log.debug("validatePlayer with Params: {}", rosterSubsPlDTO.toString());
+        log.debug("validatePlayerPlDTO with Params: {}", rosterSubsPlDTO.toString());
         if (rosterSubsPlDTO.getPlayer().getRoster().getEventCategory().getEvent().getTournament().isCategorize()) {
             /*Valido si es una categoria mas alta, que no haya otros jugadores de esa categoria*/
             if (
