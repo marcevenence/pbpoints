@@ -16,9 +16,6 @@ public class FormatDTO implements Serializable {
 
     private String description;
 
-    @NotNull
-    private Float coeficient;
-
     private Integer playersQty;
 
     private TournamentDTO tournament;
@@ -45,14 +42,6 @@ public class FormatDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Float getCoeficient() {
-        return coeficient;
-    }
-
-    public void setCoeficient(Float coeficient) {
-        this.coeficient = coeficient;
     }
 
     public Integer getPlayersQty() {
@@ -104,8 +93,6 @@ public class FormatDTO implements Serializable {
             ", description='" +
             getDescription() +
             "'" +
-            ", coeficient=" +
-            getCoeficient() +
             ", playersQty=" +
             getPlayersQty() +
             ", tournament=" +

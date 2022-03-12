@@ -45,9 +45,6 @@
             <span jhiTranslate="pbpointsApp.format.description">Description</span>
           </th>
           <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col">
-            <span jhiTranslate="pbpointsApp.format.coeficient">Coeficient</span>
-          </th>
-          <th *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'" scope="col">
             <span jhiTranslate="pbpointsApp.format.playersQty">Players Qty</span>
           </th>
 
@@ -62,7 +59,6 @@
           <td>{{ format.tournament?.name }}</td>
           <td>{{ format.name }}</td>
           <td>{{ format.description }}</td>
-          <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ format.coeficient }}</td>
           <td *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'">{{ format.playersQty }}</td>
 
           <td class="text-right">

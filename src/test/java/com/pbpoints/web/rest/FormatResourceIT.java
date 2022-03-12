@@ -39,10 +39,6 @@ class FormatResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Float DEFAULT_COEFICIENT = 1F;
-    private static final Float UPDATED_COEFICIENT = 2F;
-    private static final Float SMALLER_COEFICIENT = 1F - 1F;
-
     private static final Integer DEFAULT_PLAYERS_QTY = 1;
     private static final Integer UPDATED_PLAYERS_QTY = 2;
     private static final Integer SMALLER_PLAYERS_QTY = 1 - 1;
@@ -74,11 +70,7 @@ class FormatResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Format createEntity(EntityManager em) {
-        Format format = new Format()
-            .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION)
-            .coeficient(DEFAULT_COEFICIENT)
-            .playersQty(DEFAULT_PLAYERS_QTY);
+        Format format = new Format().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).playersQty(DEFAULT_PLAYERS_QTY);
         // Add required entity
         Tournament tournament;
         if (TestUtil.findAll(em, Tournament.class).isEmpty()) {
@@ -99,11 +91,7 @@ class FormatResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Format createUpdatedEntity(EntityManager em) {
-        Format format = new Format()
-            .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .coeficient(UPDATED_COEFICIENT)
-            .playersQty(UPDATED_PLAYERS_QTY);
+        Format format = new Format().name(UPDATED_NAME).description(UPDATED_DESCRIPTION).playersQty(UPDATED_PLAYERS_QTY);
         // Add required entity
         Tournament tournament;
         if (TestUtil.findAll(em, Tournament.class).isEmpty()) {
@@ -138,7 +126,6 @@ class FormatResourceIT {
         Format testFormat = formatList.get(formatList.size() - 1);
         assertThat(testFormat.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testFormat.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testFormat.getCoeficient()).isEqualTo(DEFAULT_COEFICIENT);
         assertThat(testFormat.getPlayersQty()).isEqualTo(DEFAULT_PLAYERS_QTY);
     }
 
@@ -181,24 +168,6 @@ class FormatResourceIT {
 
     @Test
     @Transactional
-    void checkCoeficientIsRequired() throws Exception {
-        int databaseSizeBeforeTest = formatRepository.findAll().size();
-        // set the field null
-        format.setCoeficient(null);
-
-        // Create the Format, which fails.
-        FormatDTO formatDTO = formatMapper.toDto(format);
-
-        restFormatMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(formatDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Format> formatList = formatRepository.findAll();
-        assertThat(formatList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllFormats() throws Exception {
         // Initialize the database
         formatRepository.saveAndFlush(format);
@@ -211,7 +180,6 @@ class FormatResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(format.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].coeficient").value(hasItem(DEFAULT_COEFICIENT.doubleValue())))
             .andExpect(jsonPath("$.[*].playersQty").value(hasItem(DEFAULT_PLAYERS_QTY)));
     }
 
@@ -229,7 +197,6 @@ class FormatResourceIT {
             .andExpect(jsonPath("$.id").value(format.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.coeficient").value(DEFAULT_COEFICIENT.doubleValue()))
             .andExpect(jsonPath("$.playersQty").value(DEFAULT_PLAYERS_QTY));
     }
 
@@ -409,110 +376,6 @@ class FormatResourceIT {
 
     @Test
     @Transactional
-    void getAllFormatsByCoeficientIsEqualToSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient equals to DEFAULT_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.equals=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient equals to UPDATED_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.equals=" + UPDATED_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient not equals to DEFAULT_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.notEquals=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient not equals to UPDATED_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.notEquals=" + UPDATED_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsInShouldWork() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient in DEFAULT_COEFICIENT or UPDATED_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.in=" + DEFAULT_COEFICIENT + "," + UPDATED_COEFICIENT);
-
-        // Get all the formatList where coeficient equals to UPDATED_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.in=" + UPDATED_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient is not null
-        defaultFormatShouldBeFound("coeficient.specified=true");
-
-        // Get all the formatList where coeficient is null
-        defaultFormatShouldNotBeFound("coeficient.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient is greater than or equal to DEFAULT_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.greaterThanOrEqual=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient is greater than or equal to UPDATED_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.greaterThanOrEqual=" + UPDATED_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient is less than or equal to DEFAULT_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.lessThanOrEqual=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient is less than or equal to SMALLER_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.lessThanOrEqual=" + SMALLER_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsLessThanSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient is less than DEFAULT_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.lessThan=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient is less than UPDATED_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.lessThan=" + UPDATED_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
-    void getAllFormatsByCoeficientIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        formatRepository.saveAndFlush(format);
-
-        // Get all the formatList where coeficient is greater than DEFAULT_COEFICIENT
-        defaultFormatShouldNotBeFound("coeficient.greaterThan=" + DEFAULT_COEFICIENT);
-
-        // Get all the formatList where coeficient is greater than SMALLER_COEFICIENT
-        defaultFormatShouldBeFound("coeficient.greaterThan=" + SMALLER_COEFICIENT);
-    }
-
-    @Test
-    @Transactional
     void getAllFormatsByPlayersQtyIsEqualToSomething() throws Exception {
         // Initialize the database
         formatRepository.saveAndFlush(format);
@@ -645,7 +508,6 @@ class FormatResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(format.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].coeficient").value(hasItem(DEFAULT_COEFICIENT.doubleValue())))
             .andExpect(jsonPath("$.[*].playersQty").value(hasItem(DEFAULT_PLAYERS_QTY)));
 
         // Check, that the count call also returns 1
@@ -694,7 +556,7 @@ class FormatResourceIT {
         Format updatedFormat = formatRepository.findById(format.getId()).get();
         // Disconnect from session so that the updates on updatedFormat are not directly saved in db
         em.detach(updatedFormat);
-        updatedFormat.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).coeficient(UPDATED_COEFICIENT).playersQty(UPDATED_PLAYERS_QTY);
+        updatedFormat.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).playersQty(UPDATED_PLAYERS_QTY);
         FormatDTO formatDTO = formatMapper.toDto(updatedFormat);
 
         restFormatMockMvc
@@ -711,7 +573,6 @@ class FormatResourceIT {
         Format testFormat = formatList.get(formatList.size() - 1);
         assertThat(testFormat.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFormat.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testFormat.getCoeficient()).isEqualTo(UPDATED_COEFICIENT);
         assertThat(testFormat.getPlayersQty()).isEqualTo(UPDATED_PLAYERS_QTY);
     }
 
@@ -792,7 +653,7 @@ class FormatResourceIT {
         Format partialUpdatedFormat = new Format();
         partialUpdatedFormat.setId(format.getId());
 
-        partialUpdatedFormat.name(UPDATED_NAME).coeficient(UPDATED_COEFICIENT).playersQty(UPDATED_PLAYERS_QTY);
+        partialUpdatedFormat.name(UPDATED_NAME).playersQty(UPDATED_PLAYERS_QTY);
 
         restFormatMockMvc
             .perform(
@@ -808,7 +669,6 @@ class FormatResourceIT {
         Format testFormat = formatList.get(formatList.size() - 1);
         assertThat(testFormat.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFormat.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testFormat.getCoeficient()).isEqualTo(UPDATED_COEFICIENT);
         assertThat(testFormat.getPlayersQty()).isEqualTo(UPDATED_PLAYERS_QTY);
     }
 
@@ -824,11 +684,7 @@ class FormatResourceIT {
         Format partialUpdatedFormat = new Format();
         partialUpdatedFormat.setId(format.getId());
 
-        partialUpdatedFormat
-            .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .coeficient(UPDATED_COEFICIENT)
-            .playersQty(UPDATED_PLAYERS_QTY);
+        partialUpdatedFormat.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).playersQty(UPDATED_PLAYERS_QTY);
 
         restFormatMockMvc
             .perform(
@@ -844,7 +700,6 @@ class FormatResourceIT {
         Format testFormat = formatList.get(formatList.size() - 1);
         assertThat(testFormat.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFormat.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testFormat.getCoeficient()).isEqualTo(UPDATED_COEFICIENT);
         assertThat(testFormat.getPlayersQty()).isEqualTo(UPDATED_PLAYERS_QTY);
     }
 

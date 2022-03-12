@@ -28,10 +28,6 @@ public class Format implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @NotNull
-    @Column(name = "coeficient", nullable = false)
-    private Float coeficient;
-
     @Column(name = "players_qty")
     private Integer playersQty;
 
@@ -78,19 +74,6 @@ public class Format implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Float getCoeficient() {
-        return this.coeficient;
-    }
-
-    public Format coeficient(Float coeficient) {
-        this.coeficient = coeficient;
-        return this;
-    }
-
-    public void setCoeficient(Float coeficient) {
-        this.coeficient = coeficient;
     }
 
     public Integer getPlayersQty() {
@@ -145,7 +128,6 @@ public class Format implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", coeficient=" + getCoeficient() +
             ", playersQty=" + getPlayersQty() +
             "}";
     }

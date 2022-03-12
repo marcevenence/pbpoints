@@ -30,8 +30,6 @@ public class FormatCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
-    private FloatFilter coeficient;
-
     private IntegerFilter playersQty;
 
     private LongFilter tournamentId;
@@ -42,7 +40,6 @@ public class FormatCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.description = other.description == null ? null : other.description.copy();
-        this.coeficient = other.coeficient == null ? null : other.coeficient.copy();
         this.playersQty = other.playersQty == null ? null : other.playersQty.copy();
         this.tournamentId = other.tournamentId == null ? null : other.tournamentId.copy();
     }
@@ -76,14 +73,6 @@ public class FormatCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
-    public FloatFilter getCoeficient() {
-        return coeficient;
-    }
-
-    public void setCoeficient(FloatFilter coeficient) {
-        this.coeficient = coeficient;
-    }
-
     public IntegerFilter getPlayersQty() {
         return playersQty;
     }
@@ -113,7 +102,6 @@ public class FormatCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(name, that.name) &&
             Objects.equals(description, that.description) &&
-            Objects.equals(coeficient, that.coeficient) &&
             Objects.equals(playersQty, that.playersQty) &&
             Objects.equals(tournamentId, that.tournamentId)
         );
@@ -121,7 +109,7 @@ public class FormatCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, coeficient, playersQty, tournamentId);
+        return Objects.hash(id, name, description, playersQty, tournamentId);
     }
 
     @Override
@@ -131,7 +119,6 @@ public class FormatCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
-            (coeficient != null ? "coeficient=" + coeficient + ", " : "") +
             (playersQty != null ? "playersQty=" + playersQty + ", " : "") +
             (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
             "}"

@@ -11,11 +11,6 @@
       "fieldType": "String"
     },
     {
-      "fieldName": "coeficient",
-      "fieldType": "Float",
-      "fieldValidateRules": ["required"]
-    },
-    {
       "fieldName": "playersQty",
       "fieldType": "Integer"
     }

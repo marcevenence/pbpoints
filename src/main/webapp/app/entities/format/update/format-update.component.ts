@@ -23,7 +23,6 @@ export class FormatUpdateComponent implements OnInit {
     id: [],
     name: [null, [Validators.required]],
     description: [],
-    coeficient: [null, [Validators.required]],
     playersQty: [],
     tournament: [null, Validators.required],
   });
@@ -85,7 +84,6 @@ export class FormatUpdateComponent implements OnInit {
       id: format.id,
       name: format.name,
       description: format.description,
-      coeficient: format.coeficient,
       playersQty: format.playersQty,
       tournament: format.tournament,
     });
@@ -126,7 +124,6 @@ export class FormatUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       description: this.editForm.get(['description'])!.value,
-      coeficient: this.editForm.get(['coeficient'])!.value,
       playersQty: this.editForm.get(['playersQty'])!.value,
       tournament: this.editForm.get(['tournament'])!.value,
     };

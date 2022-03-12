@@ -24,7 +24,6 @@ describe('Service Tests', () => {
         id: 0,
         name: 'AAAAAAA',
         description: 'AAAAAAA',
-        coeficient: 0,
         playersQty: 0,
       };
     });
@@ -63,7 +62,6 @@ describe('Service Tests', () => {
             id: 1,
             name: 'BBBBBB',
             description: 'BBBBBB',
-            coeficient: 1,
             playersQty: 1,
           },
           elemDefault
@@ -82,7 +80,6 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             name: 'BBBBBB',
-            coeficient: 1,
             playersQty: 1,
           },
           new Format()
@@ -105,7 +102,6 @@ describe('Service Tests', () => {
             id: 1,
             name: 'BBBBBB',
             description: 'BBBBBB',
-            coeficient: 1,
             playersQty: 1,
           },
           elemDefault

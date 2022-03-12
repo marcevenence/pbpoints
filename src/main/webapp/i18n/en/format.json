@@ -20,7 +20,6 @@
       "id": "ID",
       "name": "Name",
       "description": "Description",
-      "coeficient": "Coeficient",
       "playersQty": "Players Qty",
       "tournament": "Tournament"
     }

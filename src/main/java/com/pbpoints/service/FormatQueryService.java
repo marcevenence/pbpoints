@@ -92,9 +92,6 @@ public class FormatQueryService extends QueryService<Format> {
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), Format_.description));
             }
-            if (criteria.getCoeficient() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getCoeficient(), Format_.coeficient));
-            }
             if (criteria.getPlayersQty() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPlayersQty(), Format_.playersQty));
             }
