@@ -56,7 +56,6 @@ entity EventCategory {
 entity Format {
   name String required
   description String
-  coeficient Float required
   playersQty Integer
 }
 entity Formula {
