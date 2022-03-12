@@ -21,6 +21,7 @@
       "name": "Nombre",
       "fromDate": "Fecha Inicio",
       "endDate": "Fecha Fin",
+      "startInscriptionDate": "Fecha Inicio Inscripcion",
       "endInscriptionDate": "Fecha Cierre Inscripcion",
       "endInscriptionPlayersDate": "Fecha Cierre Inscripcion Rosters",
       "status": "Estado",

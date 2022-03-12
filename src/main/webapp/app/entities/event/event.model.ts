@@ -9,6 +9,7 @@ export interface IEvent {
   name?: string | null;
   fromDate?: dayjs.Dayjs | null;
   endDate?: dayjs.Dayjs | null;
+  startInscriptionDate?: dayjs.Dayjs | null;
   endInscriptionDate?: dayjs.Dayjs | null;
   status?: Status | null;
   createDate?: dayjs.Dayjs | null;
@@ -25,6 +26,7 @@ export class Event implements IEvent {
     public name?: string | null,
     public fromDate?: dayjs.Dayjs | null,
     public endDate?: dayjs.Dayjs | null,
+    public startInscriptionDate?: dayjs.Dayjs | null,
     public endInscriptionDate?: dayjs.Dayjs | null,
     public status?: Status | null,
     public createDate?: dayjs.Dayjs | null,

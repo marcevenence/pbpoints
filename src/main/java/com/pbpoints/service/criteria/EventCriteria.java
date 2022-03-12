@@ -52,6 +52,8 @@ public class EventCriteria implements Serializable, Criteria {
 
     private LocalDateFilter endDate;
 
+    private LocalDateFilter startInscriptionDate;
+
     private LocalDateFilter endInscriptionDate;
 
     private StatusFilter status;
@@ -77,6 +79,7 @@ public class EventCriteria implements Serializable, Criteria {
         this.name = other.name == null ? null : other.name.copy();
         this.fromDate = other.fromDate == null ? null : other.fromDate.copy();
         this.endDate = other.endDate == null ? null : other.endDate.copy();
+        this.startInscriptionDate = other.startInscriptionDate == null ? null : other.startInscriptionDate.copy();
         this.endInscriptionDate = other.endInscriptionDate == null ? null : other.endInscriptionDate.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.createDate = other.createDate == null ? null : other.createDate.copy();
@@ -151,6 +154,14 @@ public class EventCriteria implements Serializable, Criteria {
 
     public void setEndDate(LocalDateFilter endDate) {
         this.endDate = endDate;
+    }
+
+    public LocalDateFilter getStartInscriptionDate() {
+        return startInscriptionDate;
+    }
+
+    public void setStartInscriptionDate(LocalDateFilter startInscriptionDate) {
+        this.startInscriptionDate = startInscriptionDate;
     }
 
     public LocalDateFilter getEndInscriptionDate() {
@@ -295,6 +306,7 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(name, that.name) &&
             Objects.equals(fromDate, that.fromDate) &&
             Objects.equals(endDate, that.endDate) &&
+            Objects.equals(startInscriptionDate, that.startInscriptionDate) &&
             Objects.equals(endInscriptionDate, that.endInscriptionDate) &&
             Objects.equals(status, that.status) &&
             Objects.equals(createDate, that.createDate) &&
@@ -314,6 +326,7 @@ public class EventCriteria implements Serializable, Criteria {
             name,
             fromDate,
             endDate,
+            startInscriptionDate,
             endInscriptionDate,
             status,
             createDate,
@@ -334,6 +347,7 @@ public class EventCriteria implements Serializable, Criteria {
             (name != null ? "name=" + name + ", " : "") +
             (fromDate != null ? "fromDate=" + fromDate + ", " : "") +
             (endDate != null ? "endDate=" + endDate + ", " : "") +
+            (startInscriptionDate != null ? "startInscriptionDate=" + startInscriptionDate + ", " : "") +
             (endInscriptionDate != null ? "endInscriptionDate=" + endInscriptionDate + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (createDate != null ? "createDate=" + createDate + ", " : "") +

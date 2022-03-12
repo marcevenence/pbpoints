@@ -34,6 +34,9 @@ public class Event implements Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "start_inscription_date")
+    private LocalDate startInscriptionDate;
+
     @Column(name = "end_inscription_date")
     private LocalDate endInscriptionDate;
 
@@ -113,6 +116,14 @@ public class Event implements Serializable {
     public Event endDate(LocalDate endDate) {
         this.setEndDate(endDate);
         return this;
+    }
+
+    public LocalDate getStartInscriptionDate() {
+        return startInscriptionDate;
+    }
+
+    public void setStartInscriptionDate(LocalDate startInscriptionDate) {
+        this.startInscriptionDate = startInscriptionDate;
     }
 
     public void setEndDate(LocalDate endDate) {
@@ -250,6 +261,7 @@ public class Event implements Serializable {
             ", name='" + getName() + "'" +
             ", fromDate='" + getFromDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
+            ", startInscriptionDate='" + getStartInscriptionDate() + "'" +
             ", endInscriptionDate='" + getEndInscriptionDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", createDate='" + getCreateDate() + "'" +

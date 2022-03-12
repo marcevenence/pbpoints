@@ -23,6 +23,9 @@
             <column name="end_date" type="date">
                 <constraints nullable="true" />
             </column>
+            <column name="start_inscription_date" type="date">
+                <constraints nullable="true" />
+            </column>
             <column name="end_inscription_date" type="date">
                 <constraints nullable="true" />
             </column>
@@ -69,6 +72,7 @@
             <column name="name" type="string"/>
             <column name="from_date" type="date"/>
             <column name="end_date" type="date"/>
+            <column name="start_inscription_date" type="date"/>
             <column name="end_inscription_date" type="date"/>
             <column name="status" type="string"/>
             <column name="create_date" type="${datetimeType}"/>

@@ -22,6 +22,8 @@ public class EventDTO implements Serializable {
 
     private LocalDate endDate;
 
+    private LocalDate startInscriptionDate;
+
     private LocalDate endInscriptionDate;
 
     private Status status;
@@ -69,6 +71,14 @@ public class EventDTO implements Serializable {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public LocalDate getStartInscriptionDate() {
+        return startInscriptionDate;
+    }
+
+    public void setStartInscriptionDate(LocalDate startInscriptionDate) {
+        this.startInscriptionDate = startInscriptionDate;
     }
 
     public LocalDate getEndInscriptionDate() {
@@ -164,6 +174,7 @@ public class EventDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", fromDate='" + getFromDate() + "'" +
             ", endDate='" + getEndDate() + "'" +
+            ", startInscriptionDate='" + getStartInscriptionDate() + "'" +
             ", endInscriptionDate='" + getEndInscriptionDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", createDate='" + getCreateDate() + "'" +

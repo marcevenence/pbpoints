@@ -36,6 +36,7 @@ export class EventUpdateComponent implements OnInit {
       name: [],
       fromDate: ['', Validators.required],
       endDate: ['', Validators.required],
+      startInscriptionDate: ['', Validators.required],
       endInscriptionDate: ['', Validators.required],
       endInscriptionPlayersDate: [null, [Validators.required]],
       status: [],
@@ -104,9 +105,7 @@ export class EventUpdateComponent implements OnInit {
         event.createDate = today;
         event.updatedDate = today;
       }
-
       this.updateForm(event);
-
       this.loadRelationshipsOptions();
     });
   }
@@ -137,6 +136,12 @@ export class EventUpdateComponent implements OnInit {
     return item.id!;
   }
 
+  onEndDateChange(): void {
+    if (this.editForm.get('tournament')!.value?.closeInscrDays !== null && this.editForm.get(['endDate'])!.value != null) {
+      this.editForm.patchValue({ endInscriptionDate: this.editForm.get(['endDate'])!.value });
+    }
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IEvent>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -163,6 +168,7 @@ export class EventUpdateComponent implements OnInit {
       fromDate: event.fromDate ? event.fromDate.format(DATE_FORMAT) : null,
       endDate: event.endDate ? event.endDate.format(DATE_FORMAT) : null,
       endInscriptionPlayersDate: event.endInscriptionPlayersDate ? event.endInscriptionPlayersDate.format(DATE_FORMAT) : null,
+      startInscriptionDate: event.startInscriptionDate ? event.startInscriptionDate.format(DATE_FORMAT) : null,
       endInscriptionDate: event.endInscriptionDate ? event.endInscriptionDate.format(DATE_FORMAT) : null,
       status: event.status,
       createDate: event.createDate ? event.createDate.format(DATE_TIME_FORMAT) : null,
@@ -213,6 +219,9 @@ export class EventUpdateComponent implements OnInit {
       name: this.editForm.get(['name'])!.value,
       fromDate: this.editForm.get(['fromDate'])!.value ? dayjs(this.editForm.get(['fromDate'])!.value, DATE_FORMAT) : undefined,
       endDate: this.editForm.get(['endDate'])!.value ? dayjs(this.editForm.get(['endDate'])!.value, DATE_FORMAT) : undefined,
+      startInscriptionDate: this.editForm.get(['startInscriptionDate'])!.value
+        ? dayjs(this.editForm.get(['startInscriptionDate'])!.value, DATE_FORMAT)
+        : undefined,
       endInscriptionDate: this.editForm.get(['endInscriptionDate'])!.value
         ? dayjs(this.editForm.get(['endInscriptionDate'])!.value, DATE_FORMAT)
         : undefined,

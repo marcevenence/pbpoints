@@ -21,6 +21,7 @@
       "name": "Name",
       "fromDate": "From Date",
       "endDate": "End Date",
+      "startInscriptionDate": "Start Inscription Date",
       "endInscriptionDate": "End Inscription Date",
       "status": "Status",
       "createDate": "Create Date",

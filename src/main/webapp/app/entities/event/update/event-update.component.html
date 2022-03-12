@@ -88,10 +88,27 @@
               name="endDate"
               formControlName="endDate"
               placeholder="YYYY-MM-DD"
+              (change)="onEndDateChange()"
             />
             <!--<span class="input-group-append">
               <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
             </span>-->
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="pbpointsApp.event.startInscriptionDate" for="field_startInscriptionDate"
+            >Start Inscription Date</label
+          >
+          <div class="input-group">
+            <input
+              id="field_startInscriptionDate"
+              data-cy="startInscriptionDate"
+              type="date"
+              class="form-control"
+              name="startInscriptionDate"
+              formControlName="startInscriptionDate"
+              placeholder="YYYY-MM-DD"
+            />
           </div>
         </div>
         <div class="form-group">

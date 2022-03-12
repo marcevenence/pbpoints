@@ -14,6 +14,10 @@
       "fieldType": "LocalDate"
     },
     {
+      "fieldName": "startInscriptionDate",
+      "fieldType": "LocalDate"
+    },
+    {
       "fieldName": "endInscriptionDate",
       "fieldType": "LocalDate"
     },
