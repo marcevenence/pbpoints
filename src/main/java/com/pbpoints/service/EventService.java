@@ -26,11 +26,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,7 +178,7 @@ public class EventService {
      * @throws TransformerConfigurationException
      * @throws IOException
      */
-    public void generarXML(Event event) throws ParserConfigurationException, TransformerConfigurationException, IOException {
+    public byte[] generarXML(Event event) throws ParserConfigurationException, TransformerConfigurationException, IOException {
         log.info("*** Generando XML para el evento {}", event);
 
         try {
@@ -340,10 +342,16 @@ public class EventService {
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             transformer.transform(domSource, result);
             log.info("*** Fichero Generado: --> {}", directory.concat(path));
+            ByteArrayOutputStream oStream = new ByteArrayOutputStream();
+            transformer.transform(domSource, new StreamResult(oStream));
+            byte[] xmlResult = oStream.toByteArray();
+            return xmlResult;
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
+            return null;
         } catch (TransformerException tfe) {
             tfe.printStackTrace();
+            return null;
         }
     }
 
@@ -732,17 +740,33 @@ public class EventService {
 
     @Scheduled(cron = "${application.cronEventStatus}")
     public void updateEventStatus() {
-        log.info("*** Inicio de Cierre de Eventos ***");
         log.info("Fecha Actual: " + LocalDate.now().toString());
-        Optional<List<Event>> events = eventRepository.findByEndDate(LocalDate.now());
+        log.info("*** Inicio de Cierre de Eventos ***");
+        Optional<List<Event>> events = eventRepository.findByEndDateAndStatus(LocalDate.now(), Status.CREATED);
         if (events.isPresent()) {
+            log.debug("eventos: {}", events.get());
             for (Event event : events.get()) {
                 event.setStatus(Status.DONE);
+                eventRepository.save(event);
                 log.info("Evento: " + event.getName() + " Finalizado");
             }
         } else {
             log.info("no hay eventos a cerrar para el día actual");
         }
         log.info("*** Fin de Cierre de Eventos  ***");
+
+        log.info("*** Inicio de Inscripcion de Eventos ***");
+        events = eventRepository.findByStartInscriptionDateAndStatus(LocalDate.now(), Status.PENDING);
+        if (events.isPresent()) {
+            log.debug("eventos: {}", events.get());
+            for (Event ev : events.get()) {
+                ev.status(Status.CREATED);
+                eventRepository.save(ev);
+                log.info("Inscripcion Evento: " + ev.getName() + " Finalizado");
+            }
+        } else {
+            log.info("no hay eventos a iniciar inscripcion para el día actual");
+        }
+        log.info("*** Fin de Inscripcion de Eventos ***");
     }
 }

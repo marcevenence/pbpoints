@@ -174,7 +174,7 @@ public class EventResource {
     }
 
     @GetMapping("/events/generateXML/{id}")
-    public ResponseEntity<String> createEventXML(@PathVariable Long id)
+    public ResponseEntity<byte[]> createEventXML(@PathVariable Long id)
         throws URISyntaxException, ParserConfigurationException, TransformerConfigurationException, IOException {
         log.debug("REST request to generar a fixture from: {}", id);
         if (id == null) {
@@ -201,8 +201,8 @@ public class EventResource {
                     "noEventCategoriesFound"
                 );
                 if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
-                eventService.generarXML(event);
-                return ResponseEntity.ok().body("Archivo generado con éxito");
+                byte[] res = eventService.generarXML(event);
+                return ResponseEntity.ok().body(res);
             } else {
                 throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
             }
