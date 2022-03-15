@@ -534,7 +534,7 @@ public class EventService {
         HtmlConverter.convertToPdf(new FileInputStream(tempFile.toString()), new FileOutputStream(tempPDFFile.toString()));
     }
 
-    public void generatePdf(Event event) throws IOException, URISyntaxException {
+    public File generatePdf(Event event) throws IOException, URISyntaxException {
         log.debug("*** Generando PDF ***");
 
         // write a tempFile
@@ -549,6 +549,7 @@ public class EventService {
         String title = event.getTournament().getName() + " - " + event.getName();
         String tournamentName = event.getTournament().getName();
         String eventName = event.getName();
+
         String mainTitle =
             "<div id=\\\"wrapper\\\">" +
             "  \n" +
@@ -558,6 +559,7 @@ public class EventService {
             "               <h2 style=\"text-align: center\">" +
             eventName +
             "</h2>\n";
+
         String tableHeader =
             "  <table id=\"keywords\" style =\"margin-left: auto; margin-right: auto\">\n" +
             "    <thead>\n" +
@@ -611,6 +613,8 @@ public class EventService {
             }
             List<Game> games = gameRepository.findByEventCategoryAndClasif(eventCategory, "1");
             for (Game game : games) {
+                int pointsA = game.getPointsA() == null ? 0 : game.getPointsA();
+                int pointsB = game.getPointsB() == null ? 0 : game.getPointsB();
                 body1 =
                     body1 +
                     "      <tr>\n" +
@@ -618,11 +622,11 @@ public class EventService {
                     game.getTeamA().getName() +
                     "</td>\n" +
                     "        <td>" +
-                    game.getPointsA().toString() +
+                    Integer.toString(pointsA) +
                     "</td>\n" +
                     "        <td>-</td>\n" +
                     "        <td>" +
-                    game.getPointsB().toString() +
+                    Integer.toString(pointsA) +
                     "</td>\n" +
                     "        <td>" +
                     game.getTeamB().getName() +
@@ -661,6 +665,7 @@ public class EventService {
                         "      </tr>\n";
                 }
             }
+            log.debug("HH");
             for (EventCategory eventCategory : eventCategories) {
                 body1 =
                     body1 +
@@ -735,6 +740,7 @@ public class EventService {
         //        Files.copy(Paths.get(ClassLoader.getSystemResource("templates/pdf/event.css").toURI()), tempFileCss, StandardCopyOption.REPLACE_EXISTING);
         Files.write(tempFile, htmlString.getBytes(StandardCharsets.UTF_8));
         HtmlConverter.convertToPdf(new FileInputStream(tempFile.toString()), new FileOutputStream(tempPDFFile.toString()));
+        return tempPDFFile.toFile();
     }
 
     @Scheduled(cron = "${application.cronEventStatus}")

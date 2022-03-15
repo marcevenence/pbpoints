@@ -259,8 +259,8 @@ public class EventResource {
         } else throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
     }
 
-    @GetMapping("/events/generatePDF/{id}")
-    public ResponseEntity<Void> generatePdf(@PathVariable Long id) throws IOException, URISyntaxException {
+    @GetMapping(value = "/events/generatePDF/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> generatePdf(@PathVariable Long id, HttpServletResponse response) throws IOException, URISyntaxException {
         log.debug("REST request to Generate a Pdf File from: {}", id);
         if (id == null) {
             throw new BadRequestAlertException("A event cannot have an empty ID", ENTITY_NAME, "idexists");
@@ -285,8 +285,9 @@ public class EventResource {
                 "noEventCategoriesFound"
             );
             if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
-            eventService.generatePdf(event);
-            return ResponseEntity.noContent().build();
+            File file = eventService.generatePdf(event);
+            response.setHeader("Content-Disposition", "attachment; filename=".concat(file.getName()));
+            return ResponseEntity.ok().body(Files.readAllBytes(file.toPath()));
         } else throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
     }
 }

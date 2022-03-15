@@ -9,6 +9,7 @@ import { EventService } from '../service/event.service';
 import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.component';
 import { EventSubmitDialogComponent } from '../submit/event-submit-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'jhi-event',
@@ -174,16 +175,22 @@ export class EventComponent implements OnInit {
     window.history.back();
   }
 
-  generatePDF(id: number): void {
-    this.eventService.generatePDF(id).subscribe(() => {
-      alert('PDF Generado con exito');
-    });
+  generatePDF(id: number, name: string): void {
+    this.eventService.generatePDF(id).subscribe((data: any) => {
+      saveAs(data, 'PBPoint_' + name + '.pdf');
+    }),
+      () => {
+        alert('Error al generar el archivo');
+      };
   }
 
-  generateXML(id: number): void {
-    this.eventService.generateXML(id).subscribe(() => {
-      alert('XML Generado con exito');
-    });
+  generateXML(id: number, name: string): void {
+    this.eventService.generateXML(id).subscribe((data: any) => {
+      saveAs(data, 'PBPoint_' + name + '.pbp');
+    }),
+      () => {
+        alert('Error al generar el archivo');
+      };
   }
 
   submitFile(): void {

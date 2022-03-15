@@ -40,16 +40,12 @@ export class EventService {
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  generateXML(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<IEvent>(`${this.resourceUrl}/generateXML/${id}`, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  generateXML(id: number): any {
+    return this.http.get(`${this.resourceUrl}/generateXML/${id}`, { responseType: 'blob' });
   }
 
-  generatePDF(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<IEvent>(`${this.resourceUrl}/generatePDF/${id}`, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+  generatePDF(id: number): any {
+    return this.http.get(`${this.resourceUrl}/generatePDF/${id}`, { responseType: 'blob' });
   }
 
   find(id: number): Observable<EntityResponseType> {
