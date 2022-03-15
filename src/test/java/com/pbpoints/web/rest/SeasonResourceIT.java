@@ -5,10 +5,10 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import ch.qos.logback.core.status.Status;
 import com.pbpoints.IntegrationTest;
 import com.pbpoints.domain.Season;
 import com.pbpoints.domain.Tournament;
+import com.pbpoints.domain.enumeration.Status;
 import com.pbpoints.repository.SeasonRepository;
 import com.pbpoints.service.dto.SeasonDTO;
 import com.pbpoints.service.mapper.SeasonMapper;

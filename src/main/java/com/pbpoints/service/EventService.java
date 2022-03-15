@@ -173,12 +173,11 @@ public class EventService {
      * A partir de todos los los equipos que van a participar en un
      * evento-categoria, se genera el fixture para generar los games
      *
-     * @param event
-     * @throws ParserConfigurationException
-     * @throws TransformerConfigurationException
-     * @throws IOException
+     * @param event evento para generar el xml
+     * @return XML con el evento
+     * @throws IOException en el caso que no se pueda generar el xml
      */
-    public byte[] generarXML(Event event) throws ParserConfigurationException, TransformerConfigurationException, IOException {
+    public File generarXML(Event event) throws IOException {
         log.info("*** Generando XML para el evento {}", event);
 
         try {
@@ -295,7 +294,8 @@ public class EventService {
                         game.appendChild(teama);
 
                         Element pointsa = document.createElement("POINTS_A");
-                        pointsa.appendChild(document.createTextNode(gameloop.getPointsA().toString()));
+                        int pointsA = gameloop.getPointsA() == null ? 0 : gameloop.getPointsA();
+                        pointsa.appendChild(document.createTextNode(Integer.toString(pointsA)));
                         game.appendChild(pointsa);
 
                         Element teamIdb = document.createElement("TEAM_ID_B");
@@ -307,7 +307,8 @@ public class EventService {
                         game.appendChild(teamb);
 
                         Element pointsb = document.createElement("POINTS_B");
-                        pointsb.appendChild(document.createTextNode(gameloop.getPointsB().toString()));
+                        int pointsB = gameloop.getPointsB() == null ? 0 : gameloop.getPointsB();
+                        pointsb.appendChild(document.createTextNode(Integer.toString(pointsB)));
                         game.appendChild(pointsb);
                     }
                 }
@@ -344,15 +345,13 @@ public class EventService {
             log.info("*** Fichero Generado: --> {}", directory.concat(path));
             ByteArrayOutputStream oStream = new ByteArrayOutputStream();
             transformer.transform(domSource, new StreamResult(oStream));
-            byte[] xmlResult = oStream.toByteArray();
-            return xmlResult;
-        } catch (ParserConfigurationException pce) {
+
+            // devuelvo el xml para descargarlo
+            return file;
+        } catch (ParserConfigurationException | TransformerException pce) {
             pce.printStackTrace();
-            return null;
-        } catch (TransformerException tfe) {
-            tfe.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     public boolean hasCategories(Event event) {
@@ -740,33 +739,17 @@ public class EventService {
 
     @Scheduled(cron = "${application.cronEventStatus}")
     public void updateEventStatus() {
-        log.info("Fecha Actual: " + LocalDate.now().toString());
         log.info("*** Inicio de Cierre de Eventos ***");
+        log.info("Fecha Actual: " + LocalDate.now().toString());
         Optional<List<Event>> events = eventRepository.findByEndDateAndStatus(LocalDate.now(), Status.CREATED);
         if (events.isPresent()) {
-            log.debug("eventos: {}", events.get());
             for (Event event : events.get()) {
                 event.setStatus(Status.DONE);
-                eventRepository.save(event);
                 log.info("Evento: " + event.getName() + " Finalizado");
             }
         } else {
             log.info("no hay eventos a cerrar para el día actual");
         }
         log.info("*** Fin de Cierre de Eventos  ***");
-
-        log.info("*** Inicio de Inscripcion de Eventos ***");
-        events = eventRepository.findByStartInscriptionDateAndStatus(LocalDate.now(), Status.PENDING);
-        if (events.isPresent()) {
-            log.debug("eventos: {}", events.get());
-            for (Event ev : events.get()) {
-                ev.status(Status.CREATED);
-                eventRepository.save(ev);
-                log.info("Inscripcion Evento: " + ev.getName() + " Finalizado");
-            }
-        } else {
-            log.info("no hay eventos a iniciar inscripcion para el día actual");
-        }
-        log.info("*** Fin de Inscripcion de Eventos ***");
     }
 }

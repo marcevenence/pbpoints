@@ -10,6 +10,7 @@ import com.pbpoints.service.dto.EventDTO;
 import com.pbpoints.service.dto.SeasonDTO;
 import com.pbpoints.service.mapper.EventMapper;
 import com.pbpoints.web.rest.errors.BadRequestAlertException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,9 +23,11 @@ import javax.xml.transform.TransformerConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -173,8 +176,8 @@ public class EventResource {
             .build();
     }
 
-    @GetMapping("/events/generateXML/{id}")
-    public ResponseEntity<byte[]> createEventXML(@PathVariable Long id)
+    @GetMapping(value = "/events/generateXML/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<FileSystemResource> createEventXML(@PathVariable Long id)
         throws URISyntaxException, ParserConfigurationException, TransformerConfigurationException, IOException {
         log.debug("REST request to generar a fixture from: {}", id);
         if (id == null) {
@@ -201,8 +204,8 @@ public class EventResource {
                     "noEventCategoriesFound"
                 );
                 if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
-                byte[] res = eventService.generarXML(event);
-                return ResponseEntity.ok().body(res);
+                File file = eventService.generarXML(event);
+                return ResponseEntity.ok().body(new FileSystemResource(file));
             } else {
                 throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
             }

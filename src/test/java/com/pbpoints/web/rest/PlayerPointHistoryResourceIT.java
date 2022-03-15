@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 class PlayerPointHistoryResourceIT {
 
     private static final Long DEFAULT_POINTS = 1L;
-    private static final Long UPDATED_POINTS = 2L;
+    private static final Float UPDATED_POINTS = Float.valueOf(2L);
     private static final Long SMALLER_POINTS = 1L - 1L;
 
     private static final String ENTITY_API_URL = "/api/player-point-histories";
@@ -66,7 +66,7 @@ class PlayerPointHistoryResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static PlayerPointHistory createEntity(EntityManager em) {
-        PlayerPointHistory playerPointHistory = new PlayerPointHistory().points(DEFAULT_POINTS);
+        PlayerPointHistory playerPointHistory = new PlayerPointHistory().points(Float.valueOf(DEFAULT_POINTS));
         // Add required entity
         Category category;
         if (TestUtil.findAll(em, Category.class).isEmpty()) {
