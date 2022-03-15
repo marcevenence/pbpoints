@@ -14,10 +14,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import org.slf4j.Logger;
@@ -177,7 +179,7 @@ public class EventResource {
     }
 
     @GetMapping(value = "/events/generateXML/{id}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<FileSystemResource> createEventXML(@PathVariable Long id)
+    public ResponseEntity<byte[]> createEventXML(@PathVariable Long id, HttpServletResponse response)
         throws URISyntaxException, ParserConfigurationException, TransformerConfigurationException, IOException {
         log.debug("REST request to generar a fixture from: {}", id);
         if (id == null) {
@@ -205,7 +207,9 @@ public class EventResource {
                 );
                 if (!eventService.hasGames(event)) throw new BadRequestAlertException("No Games Found", ENTITY_NAME, "noGamesFound");
                 File file = eventService.generarXML(event);
-                return ResponseEntity.ok().body(new FileSystemResource(file));
+                response.setHeader("Content-Disposition", "attachment; filename=".concat(file.getName()));
+
+                return ResponseEntity.ok().body(Files.readAllBytes(file.toPath()));
             } else {
                 throw new BadRequestAlertException("Event Not Found", ENTITY_NAME, "eventNotFound");
             }
