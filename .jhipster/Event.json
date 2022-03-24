@@ -70,7 +70,7 @@
       "otherEntityRelationshipName": "season",
       "relationshipName": "season",
       "relationshipType": "many-to-one",
-      "relationshipValidateRules": ["required"]
+      "relationshipValidateRules": "required"
     }
   ],
   "service": "serviceClass"
