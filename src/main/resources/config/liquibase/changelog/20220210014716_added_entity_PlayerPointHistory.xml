@@ -14,7 +14,7 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="points" type="bigint">
+            <column name="points" type="${floatType}">
                 <constraints nullable="false" />
             </column>
             <column name="player_point_id" type="bigint">

@@ -1,5 +1,9 @@
 {
-  "name": "Event",
+  "applications": "*",
+  "changelogDate": "20210406023732",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "event",
   "fields": [
     {
       "fieldName": "name",
@@ -40,30 +44,34 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "fluentMethods": true,
+  "javadoc": "Event entity.\\n@author Marcelo Miño",
+  "jpaMetamodelFiltering": true,
+  "name": "Event",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
   "relationships": [
     {
-      "relationshipType": "many-to-one",
       "otherEntityName": "tournament",
       "otherEntityRelationshipName": "event",
-      "relationshipName": "tournament"
+      "relationshipName": "tournament",
+      "relationshipType": "many-to-one"
     },
     {
-      "relationshipName": "field",
+      "otherEntityField": "name",
       "otherEntityName": "field",
+      "relationshipName": "field",
       "relationshipType": "many-to-one",
-      "relationshipValidateRules": ["required"],
-      "otherEntityField": "name"
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "season",
+      "otherEntityRelationshipName": "season",
+      "relationshipName": "season",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
     }
   ],
-  "javadoc": "Event entity.\\n@author Marcelo Miño",
-  "entityTableName": "event",
-  "dto": "mapstruct",
-  "pagination": "infinite-scroll",
-  "service": "serviceClass",
-  "jpaMetamodelFiltering": true,
-  "fluentMethods": true,
-  "readOnly": false,
-  "embedded": false,
-  "applications": "*",
-  "changelogDate": "20210406023732"
+  "service": "serviceClass"
 }

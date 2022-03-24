@@ -43,6 +43,8 @@
     <include file="config/liquibase/changelog/20211106105922_added_entity_Field.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211120225653_added_entity_TournamentGroup.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211125213835_added_entity_Equipment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220204012313_added_entity_Season.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220210014716_added_entity_PlayerPointHistory.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20210406023741_added_entity_constraints_Province.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210406023729_added_entity_constraints_City.xml" relativeToChangelogFile="false"/>
@@ -68,6 +70,8 @@
     <include file="config/liquibase/changelog/20211106105922_added_entity_constraints_Field.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211120225653_added_entity_constraints_TournamentGroup.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20211125213835_added_entity_constraints_Equipment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220204012313_added_entity_constraints_Season.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20220210014716_added_entity_constraints_PlayerPointHistory.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <include file="config/liquibase/changelog/20200401220000_update_user.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
