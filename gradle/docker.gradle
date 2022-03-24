@@ -3,7 +3,7 @@ jib {
         image = "adoptopenjdk:11-jre-hotspot"
     }
     to {
-        image = "pbpoints:latest"
+        image = "pbpoints_v2:latest"
     }
     container {
         entrypoint = ["bash", "-c", "/entrypoint.sh"]
