@@ -10,6 +10,7 @@ import { EventDeleteDialogComponent } from '../delete/event-delete-dialog.compon
 import { EventSubmitDialogComponent } from '../submit/event-submit-dialog.component';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 import { saveAs } from 'file-saver';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'jhi-event',
@@ -120,11 +121,15 @@ export class EventComponent implements OnInit {
     }
   }
 
-  canGenerate(status: string): boolean {
+  canGenerate(status: string, endInscriptionDate: any): boolean {
     if (status === 'PENDING' || status === 'CANCEL') {
       return false;
     } else {
-      return true;
+      if (endInscriptionDate <= dayjs().startOf('day') || this.currentAccount.authorities.includes('ROLE_OWNER_TOURNAMENT')) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 

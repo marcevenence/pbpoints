@@ -168,7 +168,7 @@ export class EventUpdateComponent implements OnInit {
       fromDate: event.fromDate ? event.fromDate.format(DATE_FORMAT) : null,
       endDate: event.endDate ? event.endDate.format(DATE_FORMAT) : null,
       endInscriptionPlayersDate: event.endInscriptionPlayersDate ? event.endInscriptionPlayersDate.format(DATE_FORMAT) : null,
-      startInscriptionDate: event.startInscriptionDate ? event.startInscriptionDate.format(DATE_FORMAT) : null,
+      startInscriptionDate: event.startInscriptionDate,
       endInscriptionDate: event.endInscriptionDate ? event.endInscriptionDate.format(DATE_FORMAT) : null,
       status: event.status,
       createDate: event.createDate ? event.createDate.format(DATE_TIME_FORMAT) : null,

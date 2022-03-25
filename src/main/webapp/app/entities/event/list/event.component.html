@@ -103,17 +103,6 @@
                 <fa-icon icon="file-upload"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.submit">Submit</span>
               </button>
-              <ng-container *ngIf="canGenerate(event.status!)">
-                <button
-                  type="submit"
-                  (click)="generatePDF(event.id!, event.name!)"
-                  class="btn btn-primary btn-sm"
-                  data-cy="entityPDFButton"
-                >
-                  <fa-icon [icon]="'file-pdf'"></fa-icon>
-                  <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
-                </button>
-              </ng-container>
               <button
                 *jhiHasAnyAuthority="'ROLE_OWNER_TOURNAMENT'"
                 (click)="generateXML(event.id!, event.name!)"
@@ -125,6 +114,17 @@
                 <fa-icon [icon]="'download'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
               </button>
+              <ng-container *ngIf="canGenerate(event.status!, event.endInscriptionDate)">
+                <button
+                  type="submit"
+                  (click)="generatePDF(event.id!, event.name!)"
+                  class="btn btn-primary btn-sm"
+                  data-cy="entityPDFButton"
+                >
+                  <fa-icon [icon]="'file-pdf'"></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
+                </button>
+              </ng-container>
               <button
                 type="submit"
                 [routerLink]="['/event-category']"
