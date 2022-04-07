@@ -114,7 +114,7 @@
                 <fa-icon [icon]="'download'"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="global.menu.custom.xml.export">Export File</span>
               </button>
-              <ng-container *ngIf="canGenerate(event.status!, event.endInscriptionDate)">
+              <!--<ng-container *ngIf="canGenerate(event.status!, event.endInscriptionDate)">
                 <button
                   type="submit"
                   (click)="generatePDF(event.id!, event.name!)"
@@ -124,7 +124,7 @@
                   <fa-icon [icon]="'file-pdf'"></fa-icon>
                   <span class="d-none d-md-inline" jhiTranslate="pbpointsApp.event.pdf">PDF</span>
                 </button>
-              </ng-container>
+              </ng-container>-->
               <button
                 type="submit"
                 [routerLink]="['/event-category']"
