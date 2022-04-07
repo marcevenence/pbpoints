@@ -127,8 +127,13 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     }
 
     @Transactional
-    public PlayerPointDTO findByUserAndTournament(User user, Tournament tournament) throws BadRequestAlertException {
-        return playerPointMapper.toDto(playerPointRepository.findByUserAndTournament(user, tournament));
+    public Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament) throws BadRequestAlertException {
+        Optional<PlayerPoint> optPlayerPoint = playerPointRepository.findByUserAndTournament(user, tournament);
+        if (optPlayerPoint.isPresent()) {
+            return Optional.of(playerPointMapper.toDto(optPlayerPoint.get()));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Transactional
@@ -156,7 +161,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
         Tournament tournament = tournamentMapper.toEntity(tournamentDTO.get());
 
         // Busco al usuario para ese torneo
-        PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament);
+        PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament).get();
 
         // Si no encuentro al playerPoint, es porque es la primera vez que entra.. lo creo
         if (playerPoint == null) {
@@ -209,7 +214,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
             for (Player pl : players) {
                 /*Cargo Player Points*/
                 try {
-                    playerPoint = playerPointRepository.findByUserAndTournament(pl.getUser(), event.getTournament());
+                    playerPoint = playerPointRepository.findByUserAndTournament(pl.getUser(), event.getTournament()).get();
                     playerPoint.setPoints(playerPoint.getPoints() + pos.getPoints());
                     playerPointRepository.save(playerPoint);
                 } catch (Exception e) {
@@ -233,7 +238,7 @@ public class PlayerPointServiceImpl implements PlayerPointService {
     public Float calculatePoints(Long userId, Season season, Tournament tournament) {
         Optional<User> user = userService.getUser(userId);
         if (user.isPresent()) {
-            PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament);
+            PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(user.get(), tournament).get();
             List<Event> events = eventRepository.findByTournamentAndSeason(tournament, season);
             List<PlayerDetailPoint> playerDetailPoints = playerDetailPointRepository.findByPlayerPoint(playerPoint);
             Float points = 0F;

@@ -4,6 +4,7 @@ import com.pbpoints.domain.PlayerPoint;
 import com.pbpoints.domain.Tournament;
 import com.pbpoints.domain.User;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +19,5 @@ public interface PlayerPointRepository extends JpaRepository<PlayerPoint, Long>,
     @Query("select playerPoint from PlayerPoint playerPoint where playerPoint.user.login = ?#{principal.username}")
     List<PlayerPoint> findByUserIsCurrentUser();
 
-    PlayerPoint findByUserAndTournament(User user, Tournament tournament);
+    Optional<PlayerPoint> findByUserAndTournament(User user, Tournament tournament);
 }

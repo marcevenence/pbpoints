@@ -46,7 +46,7 @@ public interface PlayerPointService {
      */
     void delete(Long id);
 
-    PlayerPointDTO findByUserAndTournament(User user, Tournament tournament);
+    Optional<PlayerPointDTO> findByUserAndTournament(User user, Tournament tournament);
 
     PlayerPointDTO findByUserAndTournamentAndCategory(Long userId, Long tournamentId, Long categoryId);
 

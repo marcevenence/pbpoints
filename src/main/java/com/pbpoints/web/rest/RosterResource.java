@@ -354,11 +354,9 @@ public class RosterResource {
                 playerd.setProfile(ProfileUser.PLAYER);
             }
         }
-        Optional<PlayerPointDTO> ppdto = Optional.of(
-            playerPointService.findByUserAndTournament(
-                userRepository.findOneById(rosterSubsDTO.getId()),
-                tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
-            )
+        Optional<PlayerPointDTO> ppdto = playerPointService.findByUserAndTournament(
+            userRepository.findOneById(rosterSubsDTO.getId()),
+            tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
         );
         if (!ppdto.isPresent()) {
             Category category = categoryRepository.LastCategoryByTournamentId(
@@ -403,10 +401,12 @@ public class RosterResource {
                         Integer qtyEx = 0;
                         for (PlayerDTO playerDTO : rosterSubsDTO.getPlayers()) {
                             if (playerDTO.getProfile().equals(ProfileUser.PLAYER)) {
-                                PlayerPoint pp = playerPointRepository.findByUserAndTournament(
-                                    userRepository.findById(playerDTO.getUser().getId()).get(),
-                                    tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
-                                );
+                                PlayerPoint pp = playerPointRepository
+                                    .findByUserAndTournament(
+                                        userRepository.findById(playerDTO.getUser().getId()).get(),
+                                        tournamentMapper.toEntity(rosterSubsDTO.getRoster().getEventCategory().getEvent().getTournament())
+                                    )
+                                    .get();
                                 if (pp.getCategory().getOrder() == ppdto.get().getCategory().getOrder()) {
                                     qtyEx++;
                                 }
@@ -493,12 +493,14 @@ public class RosterResource {
                     Integer qtyEx = 0;
                     for (PlayerDTO playerDTO : rosterSubsPlDTO.getPlayers()) {
                         if (playerDTO.getProfile().equals(ProfileUser.PLAYER)) {
-                            PlayerPoint pp = playerPointRepository.findByUserAndTournament(
-                                userRepository.findById(playerDTO.getUser().getId()).get(),
-                                tournamentMapper.toEntity(
-                                    rosterSubsPlDTO.getPlayer().getRoster().getEventCategory().getEvent().getTournament()
+                            PlayerPoint pp = playerPointRepository
+                                .findByUserAndTournament(
+                                    userRepository.findById(playerDTO.getUser().getId()).get(),
+                                    tournamentMapper.toEntity(
+                                        rosterSubsPlDTO.getPlayer().getRoster().getEventCategory().getEvent().getTournament()
+                                    )
                                 )
-                            );
+                                .get();
                             if (pp.getCategory().getOrder() == rosterSubsPlDTO.getPlayer().getCategory().getOrder()) {
                                 qtyEx++;
                             }

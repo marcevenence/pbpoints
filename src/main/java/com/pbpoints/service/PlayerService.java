@@ -119,7 +119,7 @@ public class PlayerService {
         }
         log.debug("Tournament Categorize");
         /*Obtengo la categoria a la que pertenece el jugador*/
-        PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(player.getUser(), tournament);
+        PlayerPoint playerPoint = playerPointRepository.findByUserAndTournament(player.getUser(), tournament).get();
         log.debug("Get PlayerPoint: {}", playerPoint);
         if (playerPoint == null) {
             playerPoint = new PlayerPoint();

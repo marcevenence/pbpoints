@@ -102,7 +102,7 @@ public class CloseUtil {
                         log.debug("UsuarioId: {}", user.toString());
                         Float points = playerPointService.calculatePoints(user, sea, tour);
                         log.debug("Puntaje Obtenido: {}", points.toString());
-                        PlayerPoint player = playerPointRepository.findByUserAndTournament(userRepository.findOneById(user), tour);
+                        PlayerPoint player = playerPointRepository.findByUserAndTournament(userRepository.findOneById(user), tour).get();
                         List<RosterEvent> actual = rosterEventRepository.findPlayersByTournamentIdAndPlayerIdAndAnio(
                             tour.getId(),
                             user,
